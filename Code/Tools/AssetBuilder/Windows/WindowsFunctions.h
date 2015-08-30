@@ -10,7 +10,7 @@
 #include <cstdint>
 #include <string>
 
-namespace eae6320
+namespace WindowsUtil
 {
 	// Interface
 	//==========

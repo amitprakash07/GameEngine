@@ -13,7 +13,7 @@
 // Interface
 //==========
 
-namespace eae6320
+namespace WindowsUtil
 {
 	namespace Graphics
 	{

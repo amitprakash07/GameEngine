@@ -35,7 +35,7 @@ bool BuildAsset( const char* i_relativePath )
 	// If the source file doesn't exist then it can't be built
 	{
 		std::string errorMessage;
-		if ( !eae6320::DoesFileExist( path_source.c_str(), &errorMessage ) )
+		if ( !WindowsUtil::DoesFileExist( path_source.c_str(), &errorMessage ) )
 		{
 			OutputErrorMessage( errorMessage.c_str(), path_source.c_str() );
 			return false;
@@ -46,7 +46,7 @@ bool BuildAsset( const char* i_relativePath )
 	bool shouldTargetBeBuilt;
 	{
 		// The simplest reason a target should be built is if it doesn't exist
-		if ( eae6320::DoesFileExist( path_target.c_str() ) )
+		if ( WindowsUtil::DoesFileExist( path_target.c_str() ) )
 		{
 			// Even if the target exists it may be out-of-date.
 			// If the source has been modified more recently than the target
@@ -54,8 +54,8 @@ bool BuildAsset( const char* i_relativePath )
 			uint64_t lastWriteTime_source, lastWriteTime_target;
 			{
 				std::string errorMessage;
-				if ( !eae6320::GetLastWriteTime( path_source.c_str(), lastWriteTime_source, &errorMessage ) ||
-					!eae6320::GetLastWriteTime( path_target.c_str(), lastWriteTime_target, &errorMessage ) )
+				if ( !WindowsUtil::GetLastWriteTime( path_source.c_str(), lastWriteTime_source, &errorMessage ) ||
+					!WindowsUtil::GetLastWriteTime( path_target.c_str(), lastWriteTime_target, &errorMessage ) )
 				{
 					OutputErrorMessage( errorMessage.c_str() );
 					return false;
@@ -78,7 +78,7 @@ bool BuildAsset( const char* i_relativePath )
 		std::cout << "Building " << path_source << "\n";
 
 		// Create the target directory if necessary
-		if ( !eae6320::CreateDirectoryIfNecessary( path_target, &errorMessage ) )
+		if ( !WindowsUtil::CreateDirectoryIfNecessary( path_target, &errorMessage ) )
 		{
 			OutputErrorMessage( errorMessage.c_str(), path_target.c_str() );
 			return false;
@@ -92,7 +92,7 @@ bool BuildAsset( const char* i_relativePath )
 			// Since we rely on timestamps to determine when a target was built
 			// its file time should be updated when the source gets copied
 			const bool shouldTargetFileTimeBeModified = true;
-			if ( !eae6320::CopyFile( path_source.c_str(), path_target.c_str(),
+			if ( !WindowsUtil::CopyFile( path_source.c_str(), path_target.c_str(),
 				shouldFunctionFailIfTargetAlreadyExists,shouldTargetFileTimeBeModified,
 				&errorMessage ) )
 			{
@@ -108,11 +108,11 @@ bool BuildAsset( const char* i_relativePath )
 bool InitializeAssetBuild()
 {
 	// These environment variables are set in SolutionMacros.props
-	if ( !eae6320::GetEnvironmentVariable( "AuthoredAssetDir", s_AuthoredAssetDir ) )
+	if ( !WindowsUtil::GetEnvironmentVariable( "AuthoredAssetDir", s_AuthoredAssetDir ) )
 	{
 		return false;
 	}
-	if ( !eae6320::GetEnvironmentVariable( "BuiltAssetDir", s_BuiltAssetDir ) )
+	if ( !WindowsUtil::GetEnvironmentVariable( "BuiltAssetDir", s_BuiltAssetDir ) )
 	{
 		return false;
 	}

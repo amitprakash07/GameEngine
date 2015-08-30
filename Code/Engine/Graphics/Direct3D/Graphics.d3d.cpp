@@ -67,7 +67,7 @@ namespace
 // Interface
 //==========
 
-bool eae6320::Graphics::Initialize( const HWND i_renderingWindow )
+bool WindowsUtil::Graphics::Initialize( const HWND i_renderingWindow )
 {
 	s_renderingWindow = i_renderingWindow;
 
@@ -104,7 +104,7 @@ OnError:
 	return false;
 }
 
-void eae6320::Graphics::Render()
+void WindowsUtil::Graphics::Render()
 {
 	// Every frame an entirely new image will be created.
 	// Before drawing anything, then, the previous image will be erased
@@ -180,7 +180,7 @@ void eae6320::Graphics::Render()
 	}
 }
 
-bool eae6320::Graphics::ShutDown()
+bool WindowsUtil::Graphics::ShutDown()
 {
 	bool wereThereErrors = false;
 
@@ -257,7 +257,7 @@ namespace
 		}
 		else
 		{
-			eae6320::UserOutput::Print( "Direct3D failed to create a Direct3D9 device" );
+			WindowsUtil::UserOutput::Print( "Direct3D failed to create a Direct3D9 device" );
 			return false;
 		}
 	}
@@ -273,7 +273,7 @@ namespace
 		}
 		else
 		{
-			eae6320::UserOutput::Print( "DirectX failed to create a Direct3D9 interface" );
+			WindowsUtil::UserOutput::Print( "DirectX failed to create a Direct3D9 interface" );
 			return false;
 		}
 	}
@@ -298,7 +298,7 @@ namespace
 				}
 				else
 				{
-					eae6320::UserOutput::Print( "Direct3D failed to get device creation parameters" );
+					WindowsUtil::UserOutput::Print( "Direct3D failed to get device creation parameters" );
 					return false;
 				}
 			}
@@ -330,13 +330,13 @@ namespace
 				result = s_direct3dDevice->SetVertexDeclaration( s_vertexDeclaration );
 				if ( FAILED( result ) )
 				{
-					eae6320::UserOutput::Print( "Direct3D failed to set the vertex declaration" );
+					WindowsUtil::UserOutput::Print( "Direct3D failed to set the vertex declaration" );
 					return false;
 				}
 			}
 			else
 			{
-				eae6320::UserOutput::Print( "Direct3D failed to create a Direct3D9 vertex declaration" );
+				WindowsUtil::UserOutput::Print( "Direct3D failed to create a Direct3D9 vertex declaration" );
 				return false;
 			}
 		}
@@ -355,7 +355,7 @@ namespace
 				&s_vertexBuffer, notUsed );
 			if ( FAILED( result ) )
 			{
-				eae6320::UserOutput::Print( "Direct3D failed to create a vertex buffer" );
+				WindowsUtil::UserOutput::Print( "Direct3D failed to create a vertex buffer" );
 				return false;
 			}
 		}
@@ -370,7 +370,7 @@ namespace
 					reinterpret_cast<void**>( &vertexData ), useDefaultLockingBehavior );
 				if ( FAILED( result ) )
 				{
-					eae6320::UserOutput::Print( "Direct3D failed to lock the vertex buffer" );
+					WindowsUtil::UserOutput::Print( "Direct3D failed to lock the vertex buffer" );
 					return false;
 				}
 			}
@@ -390,7 +390,7 @@ namespace
 				const HRESULT result = s_vertexBuffer->Unlock();
 				if ( FAILED( result ) )
 				{
-					eae6320::UserOutput::Print( "Direct3D failed to unlock the vertex buffer" );
+					WindowsUtil::UserOutput::Print( "Direct3D failed to unlock the vertex buffer" );
 					return false;
 				}
 			}
@@ -428,14 +428,14 @@ namespace
 					std::stringstream errorMessage;
 					errorMessage << "Direct3D failed to compile the fragment shader from the file " << sourceCodeFileName
 						<< ":\n" << reinterpret_cast<char*>( errorMessages->GetBufferPointer() );
-					eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::UserOutput::Print( errorMessage.str() );
 					errorMessages->Release();
 				}
 				else
 				{
 					std::stringstream errorMessage;
 					errorMessage << "Direct3D failed to compile the fragment shader from the file " << sourceCodeFileName;
-					eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::UserOutput::Print( errorMessage.str() );
 				}
 				return false;
 			}
@@ -447,7 +447,7 @@ namespace
 				&s_fragmentShader );
 			if ( FAILED( result ) )
 			{
-				eae6320::UserOutput::Print( "Direct3D failed to create the fragment shader" );
+				WindowsUtil::UserOutput::Print( "Direct3D failed to create the fragment shader" );
 				wereThereErrors = true;
 			}
 			compiledShader->Release();
@@ -484,14 +484,14 @@ namespace
 					std::stringstream errorMessage;
 					errorMessage << "Direct3D failed to compile the vertex shader from the file " << sourceCodeFileName
 						<< ":\n" << reinterpret_cast<char*>( errorMessages->GetBufferPointer() );
-					eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::UserOutput::Print( errorMessage.str() );
 					errorMessages->Release();
 				}
 				else
 				{
 					std::stringstream errorMessage;
 					errorMessage << "Direct3D failed to compile the vertex shader from the file " << sourceCodeFileName;
-					eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::UserOutput::Print( errorMessage.str() );
 				}
 				return false;
 			}
@@ -503,7 +503,7 @@ namespace
 				&s_vertexShader );
 			if ( FAILED( result ) )
 			{
-				eae6320::UserOutput::Print( "Direct3D failed to create the vertex shader" );
+				WindowsUtil::UserOutput::Print( "Direct3D failed to create the vertex shader" );
 				wereThereErrors = true;
 			}
 			compiledShader->Release();

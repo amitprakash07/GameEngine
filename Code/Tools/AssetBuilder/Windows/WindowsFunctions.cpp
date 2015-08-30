@@ -10,7 +10,7 @@
 // Interface
 //==========
 
-bool eae6320::CopyFile( const char* const i_path_source, const char* const i_path_target,
+bool WindowsUtil::CopyFile( const char* const i_path_source, const char* const i_path_target,
 	const bool i_shouldFunctionFailIfTargetAlreadyExists, const bool i_shouldTargetFileTimeBeModified,
 	std::string* o_errorMessage )
 {
@@ -100,7 +100,7 @@ bool eae6320::CopyFile( const char* const i_path_source, const char* const i_pat
 	}
 }
 
-bool eae6320::CreateDirectoryIfNecessary( const std::string& i_path, std::string* o_errorMessage )
+bool WindowsUtil::CreateDirectoryIfNecessary( const std::string& i_path, std::string* o_errorMessage )
 {
 	// If the path is to a file (likely), remove it so that only the directory remains
 	std::string directory;
@@ -148,7 +148,7 @@ bool eae6320::CreateDirectoryIfNecessary( const std::string& i_path, std::string
 				{
 					if ( o_errorMessage )
 					{
-						*o_errorMessage = eae6320::GetFormattedWindowsError( result );
+						*o_errorMessage = WindowsUtil::GetFormattedWindowsError( result );
 					}
 					return false;
 				}
@@ -170,14 +170,14 @@ bool eae6320::CreateDirectoryIfNecessary( const std::string& i_path, std::string
 		{
 			if ( o_errorMessage )
 			{
-				*o_errorMessage = eae6320::GetLastWindowsError();
+				*o_errorMessage = WindowsUtil::GetLastWindowsError();
 			}
 			return false;
 		}
 	}
 }
 
-bool eae6320::DoesFileExist( const char* const i_path, std::string* o_errorMessage, DWORD* o_errorCode )
+bool WindowsUtil::DoesFileExist( const char* const i_path, std::string* o_errorMessage, DWORD* o_errorCode )
 {
 	// Try to get information about the file
 	WIN32_FIND_DATA fileData;
@@ -196,18 +196,18 @@ bool eae6320::DoesFileExist( const char* const i_path, std::string* o_errorMessa
 	{
 		if ( o_errorMessage )
 		{
-			*o_errorMessage = eae6320::GetLastWindowsError( o_errorCode );
+			*o_errorMessage = WindowsUtil::GetLastWindowsError( o_errorCode );
 		}
 		return false;
 	}
 }
 
-bool eae6320::ExecuteCommand( const char* const i_command, DWORD* o_exitCode, std::string* o_errorMessage )
+bool WindowsUtil::ExecuteCommand( const char* const i_command, DWORD* o_exitCode, std::string* o_errorMessage )
 {
 	return ExecuteCommand( NULL, i_command, o_exitCode, o_errorMessage );
 }
 
-bool eae6320::ExecuteCommand( const char* const i_command, const char* const i_optionalArguments, DWORD* o_exitCode, std::string* o_errorMessage )
+bool WindowsUtil::ExecuteCommand( const char* const i_command, const char* const i_optionalArguments, DWORD* o_exitCode, std::string* o_errorMessage )
 {
 	bool wereThereErrors = false;
 
@@ -308,7 +308,7 @@ bool eae6320::ExecuteCommand( const char* const i_command, const char* const i_o
 	}
 }
 
-bool eae6320::GetEnvironmentVariable( const char* const i_key, std::string& o_value, std::string* o_errorMessage )
+bool WindowsUtil::GetEnvironmentVariable( const char* const i_key, std::string& o_value, std::string* o_errorMessage )
 {
 	// Windows requires a character buffer
 	// to copy the environment variable into.
@@ -366,7 +366,7 @@ bool eae6320::GetEnvironmentVariable( const char* const i_key, std::string& o_va
 	}
 }
 
-std::string eae6320::GetFormattedWindowsError( const DWORD i_errorCode )
+std::string WindowsUtil::GetFormattedWindowsError( const DWORD i_errorCode )
 {
 	std::string errorMessage;
 	{
@@ -402,7 +402,7 @@ std::string eae6320::GetFormattedWindowsError( const DWORD i_errorCode )
 	return errorMessage;
 }
 
-std::string eae6320::GetLastWindowsError( DWORD* o_optionalErrorCode )
+std::string WindowsUtil::GetLastWindowsError( DWORD* o_optionalErrorCode )
 {
 	// Windows stores the error as a code
 	const DWORD errorCode = GetLastError();
@@ -413,7 +413,7 @@ std::string eae6320::GetLastWindowsError( DWORD* o_optionalErrorCode )
 	return GetFormattedWindowsError( errorCode );
 }
 
-bool eae6320::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWriteTime, std::string* o_errorMessage )
+bool WindowsUtil::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWriteTime, std::string* o_errorMessage )
 {
 	// Get the last time that the file was written to
 	ULARGE_INTEGER lastWriteTime;
