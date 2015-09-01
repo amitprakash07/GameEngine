@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <string>
-#include "Windows/WindowsFunctions.h"
+#include "../../Engine/Windows/WindowsFunctions.h"
 
 // Static Data Initialization
 //===========================
@@ -46,7 +46,7 @@ bool BuildAsset( const char* i_relativePath )
 	bool shouldTargetBeBuilt;
 	{
 		// The simplest reason a target should be built is if it doesn't exist
-		if ( WindowsUtil::DoesFileExist( path_target.c_str() ) )
+		if (WindowsUtil::DoesFileExist( path_target.c_str() ) )
 		{
 			// Even if the target exists it may be out-of-date.
 			// If the source has been modified more recently than the target

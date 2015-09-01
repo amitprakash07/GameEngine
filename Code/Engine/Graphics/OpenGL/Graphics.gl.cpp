@@ -10,9 +10,9 @@
 #include <gl/GLU.h>
 #include <string>
 #include <sstream>
-#include "../../UserOutput/UserOutput.h"
-#include "../../Windows/Functions.h"
-#include "../../../External/OpenGlExtensions/OpenGlExtensions.h"
+//#include "../../UserOutput/UserOutput.h" --Need to Check
+#include "WindowsFunctions.h"
+#include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 
 // Static Data Initialization
 //===========================
@@ -97,7 +97,7 @@ bool WindowsUtil::Graphics::Initialize( const HWND i_renderingWindow )
 		std::string errorMessage;
 		if ( !OpenGlExtensions::Load( &errorMessage ) )
 		{
-			UserOutput::Print( errorMessage );
+			//UserOutput::Print( errorMessage );
 			goto OnError;
 		}
 	}
@@ -187,7 +187,7 @@ bool WindowsUtil::Graphics::ShutDown()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to delete the program: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				UserOutput::Print( errorMessage.str() );
+		//		UserOutput::Print( errorMessage.str() );
 			}
 			s_programId = 0;
 		}
@@ -201,7 +201,7 @@ bool WindowsUtil::Graphics::ShutDown()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to delete the vertex array: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				UserOutput::Print( errorMessage.str() );
+	//			UserOutput::Print( errorMessage.str() );
 			}
 			s_vertexArrayId = 0;
 		}
@@ -212,14 +212,14 @@ bool WindowsUtil::Graphics::ShutDown()
 			{
 				std::stringstream errorMessage;
 				errorMessage << "Windows failed to delete the OpenGL rendering context: " << GetLastWindowsError();
-				UserOutput::Print( errorMessage.str() );
+//				UserOutput::Print( errorMessage.str() );
 			}
 		}
 		else
 		{
 			std::stringstream errorMessage;
 			errorMessage << "Windows failed to unset the current OpenGL rendering context: " << GetLastWindowsError();
-			UserOutput::Print( errorMessage.str() );
+	//		UserOutput::Print( errorMessage.str() );
 		}
 		s_openGlRenderingContext = NULL;
 	}
@@ -252,12 +252,12 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to create a program: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+		//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 				return false;
 			}
 			else if ( s_programId == 0 )
 			{
-				WindowsUtil::UserOutput::Print( "OpenGL failed to create a program" );
+			//	WindowsUtil::UserOutput::Print( "OpenGL failed to create a program" );
 				return false;
 			}
 		}
@@ -299,7 +299,7 @@ namespace
 							std::stringstream errorMessage;
 							errorMessage << "OpenGL failed to get link info of the program: " <<
 								reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-							WindowsUtil::UserOutput::Print( errorMessage.str() );
+//							WindowsUtil::UserOutput::Print( errorMessage.str() );
 							return false;
 						}
 					}
@@ -308,7 +308,7 @@ namespace
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to get the length of the program link info: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						WindowsUtil::UserOutput::Print( errorMessage.str() );
+						//WindowsUtil::UserOutput::Print( errorMessage.str() );
 						return false;
 					}
 				}
@@ -323,7 +323,7 @@ namespace
 						{
 							std::stringstream errorMessage;
 							errorMessage << "The program failed to link:\n" << linkInfo;
-							WindowsUtil::UserOutput::Print( errorMessage.str() );
+				//			WindowsUtil::UserOutput::Print( errorMessage.str() );
 							return false;
 						}
 					}
@@ -332,7 +332,7 @@ namespace
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to find out if linking of the program succeeded: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						WindowsUtil::UserOutput::Print( errorMessage.str() );
+					//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 						return false;
 					}
 				}
@@ -342,7 +342,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to link the program: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+		//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 				return false;
 			}
 		}
@@ -357,7 +357,7 @@ namespace
 		s_deviceContext = GetDC( s_renderingWindow );
 		if ( s_deviceContext == NULL )
 		{
-			WindowsUtil::UserOutput::Print( "Windows failed to get the device context" );
+	//		WindowsUtil::UserOutput::Print( "Windows failed to get the device context" );
 			return false;
 		}
 		// Windows requires that an OpenGL "render context" is made for the window we want to use to render into
@@ -382,7 +382,7 @@ namespace
 					{
 						std::stringstream errorMessage;
 						errorMessage << "Windows couldn't choose the closest pixel format: " << WindowsUtil::GetLastWindowsError();
-						WindowsUtil::UserOutput::Print( errorMessage.str() );
+				//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 						return false;
 					}
 				}
@@ -391,7 +391,7 @@ namespace
 				{
 					std::stringstream errorMessage;
 					errorMessage << "Windows couldn't set the desired pixel format: " << WindowsUtil::GetLastWindowsError();
-					WindowsUtil::UserOutput::Print( errorMessage.str() );
+				//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 					return false;
 				}
 			}
@@ -401,7 +401,7 @@ namespace
 			{
 				std::stringstream errorMessage;
 				errorMessage << "Windows failed to create an OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+		//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 				return false;
 			}
 			// Set it as the rendering context of this thread
@@ -409,7 +409,7 @@ namespace
 			{
 				std::stringstream errorMessage;
 				errorMessage << "Windows failed to set the current OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+				//WindowsUtil::UserOutput::Print( errorMessage.str() );
 				return false;
 			}
 		}
@@ -437,7 +437,7 @@ namespace
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to bind the vertex array: " <<
 						reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-					WindowsUtil::UserOutput::Print( errorMessage.str() );
+				//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -447,7 +447,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to get an unused vertex array ID: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -467,7 +467,7 @@ namespace
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to bind the vertex buffer: " <<
 						reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-					WindowsUtil::UserOutput::Print( errorMessage.str() );
+				//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -477,7 +477,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to get an unused vertex buffer ID: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+				//WindowsUtil::UserOutput::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -507,7 +507,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to allocate the vertex buffer: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -539,7 +539,7 @@ namespace
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to enable the POSITION vertex attribute: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						WindowsUtil::UserOutput::Print( errorMessage.str() );
+					//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 						goto OnExit;
 					}
 				}
@@ -549,7 +549,7 @@ namespace
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to set the POSITION vertex attribute: " <<
 						reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-					WindowsUtil::UserOutput::Print( errorMessage.str() );
+				//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -583,7 +583,7 @@ namespace
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to delete the vertex buffer: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						WindowsUtil::UserOutput::Print( errorMessage.str() );
+					//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 						goto OnExit;
 					}
 					vertexBufferId = 0;
@@ -595,7 +595,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to unbind the vertex array: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -623,6 +623,7 @@ namespace
 					useDefaultSecurity, onlySucceedIfFileExists, useDefaultAttributes, dontUseTemplateFile );
 				if ( fileHandle == INVALID_HANDLE_VALUE )
 				{
+					DWORD s = GetLastError();
 					wereThereErrors = true;
 					if ( o_errorMessage )
 					{
@@ -722,7 +723,7 @@ namespace
 			glGetBooleanv( GL_SHADER_COMPILER, &isShaderCompilingSupported );
 			if ( !isShaderCompilingSupported )
 			{
-				WindowsUtil::UserOutput::Print( "Compiling shaders at run-time isn't supported on this implementation (this should never happen)" );
+//				WindowsUtil::UserOutput::Print( "Compiling shaders at run-time isn't supported on this implementation (this should never happen)" );
 				return false;
 			}
 		}
@@ -736,12 +737,18 @@ namespace
 			// Load the shader source code
 			size_t fileSize;
 			{
+				/*std::string temp;
+				WindowsUtil::GetEnvironmentVariable("BuildAssetDir", temp);
+				const char* sourceCodeFileName;
+				strcat(const_cast<char*>(sourceCodeFileName), temp.c_str());
+				strcat(const_cast<char*>(sourceCodeFileName), "fragmentShader.glsl");*/
+
 				const char* sourceCodeFileName = "data/fragmentShader.glsl";
 				std::string errorMessage;
 				if ( !LoadAndAllocateShaderProgram( sourceCodeFileName, shaderSource, fileSize, &errorMessage ) )
 				{
 					wereThereErrors = true;
-					WindowsUtil::UserOutput::Print( errorMessage );
+//					WindowsUtil::UserOutput::Print( errorMessage );
 					goto OnExit;
 				}
 			}
@@ -755,13 +762,13 @@ namespace
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to get an unused fragment shader ID: " <<
 						reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-					WindowsUtil::UserOutput::Print( errorMessage.str() );
+	//				WindowsUtil::UserOutput::Print( errorMessage.str() );
 					goto OnExit;
 				}
 				else if ( fragmentShaderId == 0 )
 				{
 					wereThereErrors = true;
-					WindowsUtil::UserOutput::Print( "OpenGL failed to get an unused fragment shader ID" );
+		//			WindowsUtil::UserOutput::Print( "OpenGL failed to get an unused fragment shader ID" );
 					goto OnExit;
 				}
 			}
@@ -777,7 +784,7 @@ namespace
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to set the fragment shader source code: " <<
 						reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-					WindowsUtil::UserOutput::Print( errorMessage.str() );
+	//				WindowsUtil::UserOutput::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -812,7 +819,7 @@ namespace
 							std::stringstream errorMessage;
 							errorMessage << "OpenGL failed to get compilation info of the fragment shader source code: " <<
 								reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-							WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//				WindowsUtil::UserOutput::Print( errorMessage.str() );
 							goto OnExit;
 						}
 					}
@@ -822,7 +829,7 @@ namespace
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to get the length of the fragment shader compilation info: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						WindowsUtil::UserOutput::Print( errorMessage.str() );
+		//				WindowsUtil::UserOutput::Print( errorMessage.str() );
 						goto OnExit;
 					}
 				}
@@ -838,7 +845,7 @@ namespace
 							wereThereErrors = true;
 							std::stringstream errorMessage;
 							errorMessage << "The fragment shader failed to compile:\n" << compilationInfo;
-							WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//				WindowsUtil::UserOutput::Print( errorMessage.str() );
 							goto OnExit;
 						}
 					}
@@ -848,7 +855,7 @@ namespace
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to find out if compilation of the fragment shader source code succeeded: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//			WindowsUtil::UserOutput::Print( errorMessage.str() );
 						goto OnExit;
 					}
 				}
@@ -859,7 +866,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to compile the fragment shader source code: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+	//			WindowsUtil::UserOutput::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -873,7 +880,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to attach the fragment shader to the program: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+	//			WindowsUtil::UserOutput::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -893,7 +900,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to delete the fragment shader ID: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+		//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 			}
 			fragmentShaderId = 0;
 		}
@@ -914,7 +921,7 @@ namespace
 			glGetBooleanv( GL_SHADER_COMPILER, &isShaderCompilingSupported );
 			if ( !isShaderCompilingSupported )
 			{
-				WindowsUtil::UserOutput::Print( "Compiling shaders at run-time isn't supported on this implementation (this should never happen)" );
+		//		WindowsUtil::UserOutput::Print( "Compiling shaders at run-time isn't supported on this implementation (this should never happen)" );
 				return false;
 			}
 		}
@@ -928,12 +935,22 @@ namespace
 			// Load the shader source code
 			size_t fileSize;
 			{
+				/*std::string temp;
+				if (!WindowsUtil::GetEnvironmentVariable("BuiltAssetDir", temp))
+				{
+					return false;
+				}
+				const char* sourceCodeFileName = new char[strlen(temp.c_str()) + 20];
+				strcat(const_cast<char*>(sourceCodeFileName), temp.c_str());
+				strcat(const_cast<char*>(sourceCodeFileName), "vertexShader.glsl");*/
+				
 				const char* sourceCodeFileName = "data/vertexShader.glsl";
+
 				std::string errorMessage;
 				if ( !LoadAndAllocateShaderProgram( sourceCodeFileName, shaderSource, fileSize, &errorMessage ) )
 				{
 					wereThereErrors = true;
-					WindowsUtil::UserOutput::Print( errorMessage );
+		//			WindowsUtil::UserOutput::Print( errorMessage );
 					goto OnExit;
 				}
 			}
@@ -947,13 +964,13 @@ namespace
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to get an unused vertex shader ID: " <<
 						reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-					WindowsUtil::UserOutput::Print( errorMessage.str() );
+		//			WindowsUtil::UserOutput::Print( errorMessage.str() );
 					goto OnExit;
 				}
 				else if ( vertexShaderId == 0 )
 				{
 					wereThereErrors = true;
-					WindowsUtil::UserOutput::Print( "OpenGL failed to get an unused vertex shader ID" );
+		//			WindowsUtil::UserOutput::Print( "OpenGL failed to get an unused vertex shader ID" );
 					goto OnExit;
 				}
 			}
@@ -969,7 +986,7 @@ namespace
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to set the vertex shader source code: " <<
 						reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-					WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -1004,7 +1021,7 @@ namespace
 							std::stringstream errorMessage;
 							errorMessage << "OpenGL failed to get compilation info of the vertex shader source code: " <<
 								reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-							WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//				WindowsUtil::UserOutput::Print( errorMessage.str() );
 							goto OnExit;
 						}
 					}
@@ -1014,7 +1031,7 @@ namespace
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to get the length of the vertex shader compilation info: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//			WindowsUtil::UserOutput::Print( errorMessage.str() );
 						goto OnExit;
 					}
 				}
@@ -1030,7 +1047,7 @@ namespace
 							wereThereErrors = true;
 							std::stringstream errorMessage;
 							errorMessage << "The vertex shader failed to compile:\n" << compilationInfo;
-							WindowsUtil::UserOutput::Print( errorMessage.str() );
+					//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 							goto OnExit;
 						}
 					}
@@ -1040,7 +1057,7 @@ namespace
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to find out if compilation of the vertex shader source code succeeded: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						WindowsUtil::UserOutput::Print( errorMessage.str() );
+				//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 						goto OnExit;
 					}
 				}
@@ -1051,7 +1068,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to compile the vertex shader source code: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+			//	WindowsUtil::UserOutput::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -1065,7 +1082,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to attach the vertex shader to the program: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+		//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -1085,7 +1102,7 @@ namespace
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to delete the vertex shader ID: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				WindowsUtil::UserOutput::Print( errorMessage.str() );
+		//		WindowsUtil::UserOutput::Print( errorMessage.str() );
 			}
 			vertexShaderId = 0;
 		}

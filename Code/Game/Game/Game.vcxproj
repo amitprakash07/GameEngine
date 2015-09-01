@@ -18,6 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Game.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -104,7 +117,20 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Windows.lib;OpenGLExtensions.lib;Graphics.lib;Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>copy "$(TargetPath)" "$(GameDir)$(TargetFileName)" /y</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Copy executable to final location</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>$(GameDir)$(TargetFileName)</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>$(TargetPath)</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -117,7 +143,20 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Windows.lib;Graphics.lib;Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>copy "$(TargetPath)" "$(GameDir)$(TargetFileName)" /y</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Copy executable to final location</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>$(GameDir)$(TargetFileName)</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>$(TargetPath)</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -134,7 +173,20 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Windows.lib;OpenGLExtensions.lib;Graphics.lib;Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>copy "$(TargetPath)" "$(GameDir)$(TargetFileName)" /y</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Copy executable to final location</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>$(GameDir)$(TargetFileName)</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>$(TargetPath)</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -151,10 +203,21 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Windows.lib;Graphics.lib;Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>copy "$(TargetPath)" "$(GameDir)$(TargetFileName)" /y</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Copy executable to final location</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>$(GameDir)$(TargetFileName)</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>$(TargetPath)</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
