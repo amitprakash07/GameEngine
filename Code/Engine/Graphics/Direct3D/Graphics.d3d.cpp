@@ -160,7 +160,7 @@ void WindowsUtil::Graphics::Render()
 				// It's possible to start rendering primitives in the middle of the stream
 				const unsigned int indexOfFirstVertexToRender = 0;
 				// We are drawing a single triangle
-				const unsigned int primitiveCountToRender = 1;
+				const unsigned int primitiveCountToRender = 2; //Changed to 2 for Two Triangles - Amit
 				result = s_direct3dDevice->DrawPrimitive( primitiveType, indexOfFirstVertexToRender, primitiveCountToRender );
 				assert( SUCCEEDED( result ) );
 			}
@@ -346,7 +346,7 @@ namespace
 		// Create a vertex buffer
 		{
 			// We are drawing a single triangle
-			const unsigned int verticesPerTriangle = 3;
+			const unsigned int verticesPerTriangle = 3; //changing from 3 to 6 for two triangles - Amit
 			const unsigned int bufferSize = verticesPerTriangle * sizeof( sVertex );
 			// We will define our own vertex format
 			const DWORD useSeparateVertexDeclaration = 0;
@@ -386,6 +386,18 @@ namespace
 
 				vertexData[2].x = 1.0f;
 				vertexData[2].y = 0.0f;
+
+				vertexData[3].x = 0.0f;
+				vertexData[3].y = 0.0f;
+
+				vertexData[4].x = 0.0f;
+				vertexData[4].y = 1.0f;
+
+				vertexData[5].x = 1.0f;
+				vertexData[5].y = 1.0f;
+
+
+
 			}
 			// The buffer must be "unlocked" before it can be used
 			{
