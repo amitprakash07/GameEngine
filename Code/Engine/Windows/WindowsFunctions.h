@@ -16,7 +16,7 @@ namespace WindowsUtil
 	//==========
 
 	bool CopyFile( const char* const i_path_source, const char* const i_path_target,
-		const bool i_shouldFunctionFailIfTargetAlreadyExists = false, const bool i_shouldTargetFileTimeBeModified = false,
+	const bool i_shouldFunctionFailIfTargetAlreadyExists = false, const bool i_shouldTargetFileTimeBeModified = false,
 		std::string* o_errorMessage = NULL );
 	bool CreateDirectoryIfNecessary( const std::string& i_path, std::string* o_errorMessage = NULL );
 	bool DoesFileExist( const char* const i_path, std::string* o_errorMessage = NULL, DWORD* o_errorCode = NULL );

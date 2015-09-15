@@ -10,7 +10,7 @@ namespace EngineCore
 	void Initialize(HINSTANCE hInstance, int windowLayout)
 	{
 		CreateMainWindow(hInstance, windowLayout, s_mainWindow);
-		WindowsUtil::Graphics::Initialize(s_mainWindow);
+		Engine::Graphics::GraphicsSystem::Initialize(s_mainWindow);
 	}
 
 	void onNewFrame()
@@ -29,7 +29,7 @@ namespace EngineCore
 
 		if(!hasWindowsSentAMessage)
 		{
-			WindowsUtil::Graphics::Render();
+			Engine::Graphics::GraphicsSystem::Render();
 		}
 		else
 		{
