@@ -448,3 +448,9 @@ bool WindowsUtil::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWr
 	o_lastWriteTime = static_cast<uint64_t>( lastWriteTime.QuadPart );
 	return true;
 }
+
+
+void WindowsUtil::Print(std::string i_str)
+{
+	std::cerr << i_str.c_str()<<"\n";
+}

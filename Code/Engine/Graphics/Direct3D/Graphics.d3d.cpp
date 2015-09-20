@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <sstream>
 #include "../Mesh.h"
-//#include "../../UserOutput/UserOutput.h"
+#include "../../Windows/WindowsFunctions.h"
 
 // Static Data Initialization
 //===========================
@@ -307,7 +307,7 @@ namespace Engine
 			}
 			else
 			{
-				//eae6320::UserOutput::Print( "Direct3D failed to create a Direct3D9 device" );
+				WindowsUtil::Print( "Direct3D failed to create a Direct3D9 device" );
 				return false;
 			}
 		}
@@ -346,7 +346,7 @@ namespace Engine
 					&s_indexBuffer, notUsed);
 				if (FAILED(result))
 				{
-					//eae6320::UserOutput::Print( "Direct3D failed to create an index buffer" );
+					WindowsUtil::Print( "Direct3D failed to create an index buffer" );
 					return false;
 				}
 			}
@@ -365,7 +365,7 @@ namespace Engine
 						Mesh::setIndexBuffer(s_indexBuffer); //Setting the index buffer to the Mesh data - Amit
 					if (FAILED(result))
 					{
-						//eae6320::UserOutput::Print( "Direct3D failed to lock the index buffer" );
+						WindowsUtil::Print( "Direct3D failed to lock the index buffer" );
 						return false;
 					}
 				}
@@ -401,7 +401,7 @@ namespace Engine
 					const HRESULT result = s_indexBuffer->Unlock();
 					if (FAILED(result))
 					{
-						//eae6320::UserOutput::Print( "Direct3D failed to unlock the index buffer" );
+						WindowsUtil::Print( "Direct3D failed to unlock the index buffer" );
 						return false;
 					}
 				}
@@ -421,7 +421,7 @@ namespace Engine
 			}
 			else
 			{
-				//eae6320::UserOutput::Print( "DirectX failed to create a Direct3D9 interface" );
+				WindowsUtil::Print( "DirectX failed to create a Direct3D9 interface" );
 				return false;
 			}
 		}
@@ -476,13 +476,13 @@ namespace Engine
 						Mesh::setVertexDeclaration(s_vertexDeclaration); //Setting the Vertex Declaration to the Mesh Data - Amit
 					if (FAILED(result))
 					{
-						//eae6320::UserOutput::Print( "Direct3D failed to set the vertex declaration" );
+						WindowsUtil::Print( "Direct3D failed to set the vertex declaration" );
 						return false;
 					}
 				}
 				else
 				{
-					//eae6320::UserOutput::Print( "Direct3D failed to create a Direct3D9 vertex declaration" );
+					WindowsUtil::Print( "Direct3D failed to create a Direct3D9 vertex declaration" );
 					return false;
 				}
 			}
@@ -506,7 +506,7 @@ namespace Engine
 
 				if (FAILED(result))
 				{
-					//eae6320::UserOutput::Print( "Direct3D failed to create a vertex buffer" );
+					WindowsUtil::Print( "Direct3D failed to create a vertex buffer" );
 					return false;
 				}
 			}
@@ -521,7 +521,7 @@ namespace Engine
 						reinterpret_cast<void**>(&vertexData), useDefaultLockingBehavior);
 					if (FAILED(result))
 					{
-						//eae6320::UserOutput::Print( "Direct3D failed to lock the vertex buffer" );
+						WindowsUtil::Print( "Direct3D failed to lock the vertex buffer" );
 						return false;
 					}
 				}
@@ -588,7 +588,7 @@ namespace Engine
 					const HRESULT result = s_vertexBuffer->Unlock();
 					if (FAILED(result))
 					{
-						//eae6320::UserOutput::Print( "Direct3D failed to unlock the vertex buffer" );
+						WindowsUtil::Print( "Direct3D failed to unlock the vertex buffer" );
 						return false;
 					}
 				}
@@ -610,7 +610,7 @@ namespace Engine
 			}
 			else
 			{
-				//eae6320::UserOutput::Print( "Direct3D failed to get the device's creation parameters" );
+				WindowsUtil::Print( "Direct3D failed to get the device's creation parameters" );
 			}
 			return result;
 		}
@@ -620,15 +620,20 @@ namespace Engine
 			// Load the source code from file and compile it
 			ID3DXBuffer* compiledShader;
 			{
-				const char* sourceCodeFileName = "data/fragmentShader.hlsl";
-				const D3DXMACRO* noMacros = nullptr;
+				const char* sourceCodeFileName = "data/standard.fshd"; //@Amit- To do to change the file name
+				const D3DXMACRO fragmentShaderMacro []=   //@Amit - now macro is not null changed to access the #defined platform code in shader file 
+				{
+					{"PLATFORM_D3D" , "1" },
+					{NULL,NULL}
+				};
+
 				ID3DXInclude* noIncludes = nullptr;
 				const char* entryPoint = "main";
 				const char* profile = "ps_3_0";
 				const DWORD noFlags = 0;
 				ID3DXBuffer* errorMessages = nullptr;
 				ID3DXConstantTable** noConstants = nullptr;
-				HRESULT result = D3DXCompileShaderFromFile(sourceCodeFileName, noMacros, noIncludes, entryPoint, profile, noFlags,
+				HRESULT result = D3DXCompileShaderFromFile(sourceCodeFileName, fragmentShaderMacro, noIncludes, entryPoint, profile, noFlags,
 					&compiledShader, &errorMessages, noConstants);
 				if (SUCCEEDED(result))
 				{
@@ -644,14 +649,14 @@ namespace Engine
 						std::stringstream errorMessage;
 						errorMessage << "Direct3D failed to compile the fragment shader from the file " << sourceCodeFileName
 							<< ":\n" << reinterpret_cast<char*>(errorMessages->GetBufferPointer());
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 						errorMessages->Release();
 					}
 					else
 					{
 						std::stringstream errorMessage;
 						errorMessage << "Direct3D failed to compile the fragment shader from the file " << sourceCodeFileName;
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 					}
 					return false;
 				}
@@ -663,7 +668,7 @@ namespace Engine
 					&s_fragmentShader);
 				if (FAILED(result))
 				{
-					//eae6320::UserOutput::Print( "Direct3D failed to create the fragment shader" );
+					WindowsUtil::Print( "Direct3D failed to create the fragment shader" );
 					wereThereErrors = true;
 				}
 				compiledShader->Release();
@@ -676,15 +681,19 @@ namespace Engine
 			// Load the source code from file and compile it
 			ID3DXBuffer* compiledShader;
 			{
-				const char* sourceCodeFileName = "data/vertexShader.hlsl";
-				const D3DXMACRO* noMacros = nullptr;
+				const char* sourceCodeFileName = "data/standard.vshd";//@Amit- To do to change the file name
+				const D3DXMACRO vertexShaderMacro[] =   //@Amit - now macro is not null changed to access the #defined platform code in shader file 
+				{
+					{ "PLATFORM_D3D", "1" },
+					{NULL,NULL}
+				};
 				ID3DXInclude* noIncludes = nullptr;
 				const char* entryPoint = "main";
 				const char* profile = "vs_3_0";
 				const DWORD noFlags = 0;
 				ID3DXBuffer* errorMessages = nullptr;
 				ID3DXConstantTable** noConstants = nullptr;
-				HRESULT result = D3DXCompileShaderFromFile(sourceCodeFileName, noMacros, noIncludes, entryPoint, profile, noFlags,
+				HRESULT result = D3DXCompileShaderFromFile(sourceCodeFileName, vertexShaderMacro, noIncludes, entryPoint, profile, noFlags,
 					&compiledShader, &errorMessages, noConstants);
 				if (SUCCEEDED(result))
 				{
@@ -700,14 +709,14 @@ namespace Engine
 						std::stringstream errorMessage;
 						errorMessage << "Direct3D failed to compile the vertex shader from the file " << sourceCodeFileName
 							<< ":\n" << reinterpret_cast<char*>(errorMessages->GetBufferPointer());
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 						errorMessages->Release();
 					}
 					else
 					{
 						std::stringstream errorMessage;
 						errorMessage << "Direct3D failed to compile the vertex shader from the file " << sourceCodeFileName;
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 					}
 					return false;
 				}
@@ -719,7 +728,7 @@ namespace Engine
 					&s_vertexShader);
 				if (FAILED(result))
 				{
-					//eae6320::UserOutput::Print( "Direct3D failed to create the vertex shader" );
+					WindowsUtil::Print( "Direct3D failed to create the vertex shader" );
 					wereThereErrors = true;
 				}
 				compiledShader->Release();

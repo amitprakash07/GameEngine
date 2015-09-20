@@ -99,7 +99,7 @@ bool Engine::Graphics::GraphicsSystem::Initialize(const HWND i_renderingWindow)
 		std::string errorMessage;
 		if (!OpenGlExtensions::Load(&errorMessage))
 		{
-			//UserOutput::Print( errorMessage );
+			WindowsUtil::Print( errorMessage );
 			goto OnError;
 		}
 	}
@@ -195,7 +195,7 @@ bool Engine::Graphics::GraphicsSystem::ShutDown()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to delete the program: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 			}
 			s_programId = 0;
 		}
@@ -209,7 +209,7 @@ bool Engine::Graphics::GraphicsSystem::ShutDown()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to delete the vertex array: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 			}
 			s_vertexArrayId = 0;
 		}
@@ -220,14 +220,14 @@ bool Engine::Graphics::GraphicsSystem::ShutDown()
 			{
 				std::stringstream errorMessage;
 				errorMessage << "Windows failed to delete the OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-				//UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 			}
 		}
 		else
 		{
 			std::stringstream errorMessage;
 			errorMessage << "Windows failed to unset the current OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-			//UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 		}
 		s_openGlRenderingContext = NULL;
 	}
@@ -261,12 +261,12 @@ bool Engine::Graphics::CreateProgram()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to create a program: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				return false;
 			}
 			else if ( s_programId == 0 )
 			{
-				//eae6320::UserOutput::Print( "OpenGL failed to create a program" );
+				WindowsUtil::Print( "OpenGL failed to create a program" );
 				return false;
 			}
 		}
@@ -308,7 +308,7 @@ bool Engine::Graphics::CreateProgram()
 							std::stringstream errorMessage;
 							errorMessage << "OpenGL failed to get link info of the program: " <<
 								reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-							//eae6320::UserOutput::Print( errorMessage.str() );
+							WindowsUtil::Print( errorMessage.str() );
 							return false;
 						}
 					}
@@ -317,7 +317,7 @@ bool Engine::Graphics::CreateProgram()
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to get the length of the program link info: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 						return false;
 					}
 				}
@@ -332,7 +332,7 @@ bool Engine::Graphics::CreateProgram()
 						{
 							std::stringstream errorMessage;
 							errorMessage << "The program failed to link:\n" << linkInfo;
-							//eae6320::UserOutput::Print( errorMessage.str() );
+							WindowsUtil::Print( errorMessage.str() );
 							return false;
 						}
 					}
@@ -341,7 +341,7 @@ bool Engine::Graphics::CreateProgram()
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to find out if linking of the program succeeded: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 						return false;
 					}
 				}
@@ -351,7 +351,7 @@ bool Engine::Graphics::CreateProgram()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to link the program: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				return false;
 			}
 		}
@@ -366,7 +366,7 @@ bool Engine::Graphics::CreateRenderingContext()
 		s_deviceContext = GetDC( Engine::Graphics::GraphicsSystem::getRenderingWindow() );
 		if ( s_deviceContext == nullptr )
 		{
-			//eae6320::UserOutput::Print( "Windows failed to get the device context" );
+			WindowsUtil::Print( "Windows failed to get the device context" );
 			return false;
 		}
 		// Windows requires that an OpenGL "render context" is made for the window we want to use to render into
@@ -391,7 +391,7 @@ bool Engine::Graphics::CreateRenderingContext()
 					{
 						std::stringstream errorMessage;
 						errorMessage << "Windows couldn't choose the closest pixel format: " << WindowsUtil::GetLastWindowsError();
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 						return false;
 					}
 				}
@@ -400,7 +400,7 @@ bool Engine::Graphics::CreateRenderingContext()
 				{
 					std::stringstream errorMessage;
 					errorMessage << "Windows couldn't set the desired pixel format: " << WindowsUtil::GetLastWindowsError();
-					//eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::Print( errorMessage.str() );
 					return false;
 				}
 			}
@@ -410,7 +410,7 @@ bool Engine::Graphics::CreateRenderingContext()
 			{
 				std::stringstream errorMessage;
 				errorMessage << "Windows failed to create an OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				return false;
 			}
 			// Set it as the rendering context of this thread
@@ -418,7 +418,7 @@ bool Engine::Graphics::CreateRenderingContext()
 			{
 				std::stringstream errorMessage;
 				errorMessage << "Windows failed to set the current OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				return false;
 			}
 		}
@@ -447,7 +447,7 @@ bool Engine::Graphics::CreateVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to bind the vertex array: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -457,7 +457,7 @@ bool Engine::Graphics::CreateVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to get an unused vertex array ID: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 			goto OnExit;
 		}
 	}
@@ -477,7 +477,7 @@ bool Engine::Graphics::CreateVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to bind the vertex buffer: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -487,7 +487,7 @@ bool Engine::Graphics::CreateVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to get an unused vertex buffer ID: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 			goto OnExit;
 		}
 	}
@@ -564,7 +564,7 @@ bool Engine::Graphics::CreateVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to allocate the vertex buffer: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 			goto OnExit;
 		}
 	}
@@ -596,7 +596,7 @@ bool Engine::Graphics::CreateVertexArray()
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to enable the POSITION vertex attribute: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					//eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -606,7 +606,7 @@ bool Engine::Graphics::CreateVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to set the POSITION vertex attribute: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -638,7 +638,7 @@ bool Engine::Graphics::CreateVertexArray()
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to enable the COLOR0 vertex attribute: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					//eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -648,7 +648,7 @@ bool Engine::Graphics::CreateVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to set the COLOR0 vertex attribute: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -669,7 +669,7 @@ bool Engine::Graphics::CreateVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to bind the index buffer: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -679,7 +679,7 @@ bool Engine::Graphics::CreateVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to get an unused index buffer ID: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 			goto OnExit;
 		}
 	}
@@ -727,7 +727,7 @@ bool Engine::Graphics::CreateVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to allocate the index buffer: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 			goto OnExit;
 		}
 
@@ -762,7 +762,7 @@ OnExit:
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to delete the vertex buffer: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					//eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::Print( errorMessage.str() );
 				}
 				vertexBufferId = 0;
 			}
@@ -779,7 +779,7 @@ OnExit:
 					std::stringstream errorMessage;
 					errorMessage << "\nOpenGL failed to delete the index buffer: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					//eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::Print( errorMessage.str() );
 				}
 				indexBufferId = 0;
 			}
@@ -790,7 +790,7 @@ OnExit:
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to unbind the vertex array: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 		}
 	}
 
@@ -802,17 +802,17 @@ bool Engine::Graphics::LoadAndAllocateShaderProgram(const char* i_path, void*& o
 	bool wereThereErrors = false;
 
 	// Load the shader source from disk
-	o_shader = NULL;
+	o_shader = nullptr;
 	HANDLE fileHandle = INVALID_HANDLE_VALUE;
 	{
 		// Open the file
 		{
 			const DWORD desiredAccess = FILE_GENERIC_READ;
 			const DWORD otherProgramsCanStillReadTheFile = FILE_SHARE_READ;
-			SECURITY_ATTRIBUTES* useDefaultSecurity = NULL;
+			SECURITY_ATTRIBUTES* useDefaultSecurity = nullptr;
 			const DWORD onlySucceedIfFileExists = OPEN_EXISTING;
 			const DWORD useDefaultAttributes = FILE_ATTRIBUTE_NORMAL;
-			const HANDLE dontUseTemplateFile = NULL;
+			const HANDLE dontUseTemplateFile = nullptr;
 			fileHandle = CreateFile(i_path, desiredAccess, otherProgramsCanStillReadTheFile,
 				useDefaultSecurity, onlySucceedIfFileExists, useDefaultAttributes, dontUseTemplateFile);
 			if (fileHandle == INVALID_HANDLE_VALUE)
@@ -820,9 +820,9 @@ bool Engine::Graphics::LoadAndAllocateShaderProgram(const char* i_path, void*& o
 				wereThereErrors = true;
 				if (o_errorMessage)
 				{
+					std::string windowsErrorMessage = WindowsUtil::GetLastWindowsError();
 					std::stringstream errorMessage;
-					errorMessage << "Windows failed to open the shader file: ";// <<
-						//eae6320::GetLastWindowsError();
+					errorMessage << "Windows failed to open the shader file: " << windowsErrorMessage;
 					*o_errorMessage = errorMessage.str();
 				}
 				goto OnExit;
@@ -841,29 +841,31 @@ bool Engine::Graphics::LoadAndAllocateShaderProgram(const char* i_path, void*& o
 				wereThereErrors = true;
 				if (o_errorMessage)
 				{
+					std::string windowsErrorMessage = WindowsUtil::GetLastWindowsError();
 					std::stringstream errorMessage;
-					errorMessage << "Windows failed to get the size of shader: ";// <<
-						//eae6320::GetLastWindowsError();
+					errorMessage << "Windows failed to get the size of shader: " << windowsErrorMessage;
 					*o_errorMessage = errorMessage.str();
 				}
 				goto OnExit;
 			}
+			// Add an extra byte for a NULL terminator
+			o_size += 1;
 		}
 		// Read the file's contents into temporary memory
 		o_shader = malloc(o_size);
 		if (o_shader)
 		{
 			DWORD bytesReadCount;
-			OVERLAPPED* readSynchronously = NULL;
+			OVERLAPPED* readSynchronously = nullptr;
 			if (ReadFile(fileHandle, o_shader, o_size,
 				&bytesReadCount, readSynchronously) == FALSE)
 			{
 				wereThereErrors = true;
 				if (o_errorMessage)
 				{
+					std::string windowsErrorMessage = WindowsUtil::GetLastWindowsError();
 					std::stringstream errorMessage;
-					errorMessage << "Windows failed to read the contents of shader: ";// <<
-						//eae6320::GetLastWindowsError();
+					errorMessage << "Windows failed to read the contents of shader: " << windowsErrorMessage;
 					*o_errorMessage = errorMessage.str();
 				}
 				goto OnExit;
@@ -880,6 +882,8 @@ bool Engine::Graphics::LoadAndAllocateShaderProgram(const char* i_path, void*& o
 			}
 			goto OnExit;
 		}
+		// Add the NULL terminator
+		reinterpret_cast<char*>(o_shader)[o_size - 1] = '\0';
 	}
 
 OnExit:
@@ -887,7 +891,7 @@ OnExit:
 	if (wereThereErrors && o_shader)
 	{
 		free(o_shader);
-		o_shader = NULL;
+		o_shader = nullptr;
 	}
 	if (fileHandle != INVALID_HANDLE_VALUE)
 	{
@@ -895,9 +899,9 @@ OnExit:
 		{
 			if (!wereThereErrors && o_errorMessage)
 			{
+				std::string windowsError = WindowsUtil::GetLastWindowsError();
 				std::stringstream errorMessage;
-				errorMessage << "Windows failed to close the shader file handle: ";// <<
-					//eae6320::GetLastWindowsError();
+				errorMessage << "Windows failed to close the shader file handle: " << windowsError;
 				*o_errorMessage = errorMessage.str();
 			}
 			wereThereErrors = true;
@@ -916,7 +920,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 		glGetBooleanv(GL_SHADER_COMPILER, &isShaderCompilingSupported);
 		if (!isShaderCompilingSupported)
 		{
-			//eae6320::UserOutput::Print( "Compiling shaders at run-time isn't supported on this implementation (this should never happen)" );
+			WindowsUtil::Print( "Compiling shaders at run-time isn't supported on this implementation (this should never happen)" );
 			return false;
 		}
 	}
@@ -925,17 +929,17 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 
 	// Load the source code from file and set it into a shader
 	GLuint fragmentShaderId = 0;
-	void* shaderSource = NULL;
+	void* shaderSource = nullptr;
 	{
 		// Load the shader source code
 		size_t fileSize;
 		{
-			const char* sourceCodeFileName = "data/fragmentShader.glsl";
+			const char* sourceCodeFileName = "data/standard.fshd"; //@Amit -TO-DO Need to change the file name
 			std::string errorMessage;
 			if (!LoadAndAllocateShaderProgram(sourceCodeFileName, shaderSource, fileSize, &errorMessage))
 			{
 				wereThereErrors = true;
-				//eae6320::UserOutput::Print( errorMessage );
+				WindowsUtil::Print( errorMessage );
 				goto OnExit;
 			}
 		}
@@ -949,21 +953,29 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to get an unused fragment shader ID: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				goto OnExit;
 			}
 			else if (fragmentShaderId == 0)
 			{
 				wereThereErrors = true;
-				//eae6320::UserOutput::Print( "OpenGL failed to get an unused fragment shader ID" );
+				WindowsUtil::Print( "OpenGL failed to get an unused fragment shader ID" );
 				goto OnExit;
 			}
 		}
 		// Set the source code into the shader
 		{
-			const GLsizei shaderSourceCount = 1;
-			const GLint length = static_cast<GLuint>(fileSize);
-			glShaderSource(fragmentShaderId, shaderSourceCount, reinterpret_cast<GLchar**>(&shaderSource), &length);
+			const GLsizei shaderSourceCount = 2; //@Amit - Changed to 2 from 1 - seems to refer to that shader in in the secon section in the file
+			const GLchar* shaderSources[] =
+			{
+				"#define PLATFORM_OPEN_GL\n", //@Amit - Changing as per the platform definition mentioned in the shader code
+				reinterpret_cast<GLchar*>(shaderSource)
+			};
+			
+			const GLint* sourcesAreNullTerminated = nullptr;
+			//const GLint length = static_cast<GLuint>(fileSize);
+			
+			glShaderSource(fragmentShaderId, shaderSourceCount, shaderSources, sourcesAreNullTerminated); //@Amit - changed here in teh last parameter(from length to sourcesAreNullTerminated)
 			const GLenum errorCode = glGetError();
 			if (errorCode != GL_NO_ERROR)
 			{
@@ -971,7 +983,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to set the fragment shader source code: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -993,7 +1005,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 				if (errorCode == GL_NO_ERROR)
 				{
 					sLogInfo info(static_cast<size_t>(infoSize));
-					GLsizei* dontReturnLength = NULL;
+					GLsizei* dontReturnLength = nullptr;
 					glGetShaderInfoLog(fragmentShaderId, static_cast<GLsizei>(infoSize), dontReturnLength, info.memory);
 					errorCode = glGetError();
 					if (errorCode == GL_NO_ERROR)
@@ -1006,7 +1018,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to get compilation info of the fragment shader source code: " <<
 							reinterpret_cast<const char*>(gluErrorString(errorCode));
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 						goto OnExit;
 					}
 				}
@@ -1016,7 +1028,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to get the length of the fragment shader compilation info: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					//eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -1032,7 +1044,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 						wereThereErrors = true;
 						std::stringstream errorMessage;
 						errorMessage << "The fragment shader failed to compile:\n" << compilationInfo;
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 						goto OnExit;
 					}
 				}
@@ -1042,7 +1054,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to find out if compilation of the fragment shader source code succeeded: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					//eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -1053,7 +1065,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to compile the fragment shader source code: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 			goto OnExit;
 		}
 	}
@@ -1067,7 +1079,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to attach the fragment shader to the program: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 			goto OnExit;
 		}
 	}
@@ -1087,14 +1099,14 @@ OnExit:
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to delete the fragment shader ID: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 		}
 		fragmentShaderId = 0;
 	}
-	if (shaderSource != NULL)
+	if (shaderSource != nullptr)
 	{
 		free(shaderSource);
-		shaderSource = NULL;
+		shaderSource = nullptr;
 	}
 
 	return !wereThereErrors;
@@ -1108,7 +1120,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 		glGetBooleanv(GL_SHADER_COMPILER, &isShaderCompilingSupported);
 		if (!isShaderCompilingSupported)
 		{
-			//eae6320::UserOutput::Print( "Compiling shaders at run-time isn't supported on this implementation (this should never happen)" );
+			WindowsUtil::Print( "Compiling shaders at run-time isn't supported on this implementation (this should never happen)" );
 			return false;
 		}
 	}
@@ -1117,17 +1129,17 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 
 	// Load the source code from file and set it into a shader
 	GLuint vertexShaderId = 0;
-	void* shaderSource = NULL;
+	void* shaderSource = nullptr;
 	{
 		// Load the shader source code
 		size_t fileSize;
 		{
-			const char* sourceCodeFileName = "data/vertexShader.glsl";
+			const char* sourceCodeFileName = "data/standard.vshd";  //@Amit To do - Need to change the file name
 			std::string errorMessage;
 			if (!LoadAndAllocateShaderProgram(sourceCodeFileName, shaderSource, fileSize, &errorMessage))
 			{
 				wereThereErrors = true;
-				//eae6320::UserOutput::Print( errorMessage );
+				WindowsUtil::Print( errorMessage );
 				goto OnExit;
 			}
 		}
@@ -1141,21 +1153,28 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to get an unused vertex shader ID: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				goto OnExit;
 			}
 			else if (vertexShaderId == 0)
 			{
 				wereThereErrors = true;
-				//eae6320::UserOutput::Print( "OpenGL failed to get an unused vertex shader ID" );
+				WindowsUtil::Print( "OpenGL failed to get an unused vertex shader ID" );
 				goto OnExit;
 			}
 		}
 		// Set the source code into the shader
 		{
-			const GLsizei shaderSourceCount = 1;
-			const GLint length = static_cast<GLuint>(fileSize);
-			glShaderSource(vertexShaderId, shaderSourceCount, reinterpret_cast<GLchar**>(&shaderSource), &length);
+			const GLsizei shaderSourceCount = 2;  //@Amit - seems it refers that the shader code is in the second section
+			const GLchar* shaderSources[] =
+			{
+				"#define PLATFORM_OPEN_GL\n",   //@Amit - like a string which will look up in the shader file
+				reinterpret_cast<GLchar*>(shaderSource)
+			};
+			const GLint* sourcesAreNullTerminated = nullptr;
+			//const GLint length = static_cast<GLuint>(fileSize);			
+			
+			glShaderSource(vertexShaderId, shaderSourceCount, shaderSources, sourcesAreNullTerminated);
 			const GLenum errorCode = glGetError();
 			if (errorCode != GL_NO_ERROR)
 			{
@@ -1163,7 +1182,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to set the vertex shader source code: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				//eae6320::UserOutput::Print( errorMessage.str() );
+				WindowsUtil::Print( errorMessage.str() );
 				goto OnExit;
 			}
 		}
@@ -1185,7 +1204,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 				if (errorCode == GL_NO_ERROR)
 				{
 					sLogInfo info(static_cast<size_t>(infoSize));
-					GLsizei* dontReturnLength = NULL;
+					GLsizei* dontReturnLength = nullptr;
 					glGetShaderInfoLog(vertexShaderId, static_cast<GLsizei>(infoSize), dontReturnLength, info.memory);
 					errorCode = glGetError();
 					if (errorCode == GL_NO_ERROR)
@@ -1198,7 +1217,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 						std::stringstream errorMessage;
 						errorMessage << "OpenGL failed to get compilation info of the vertex shader source code: " <<
 							reinterpret_cast<const char*>(gluErrorString(errorCode));
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 						goto OnExit;
 					}
 				}
@@ -1208,7 +1227,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to get the length of the vertex shader compilation info: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					//eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -1224,7 +1243,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 						wereThereErrors = true;
 						std::stringstream errorMessage;
 						errorMessage << "The vertex shader failed to compile:\n" << compilationInfo;
-						//eae6320::UserOutput::Print( errorMessage.str() );
+						WindowsUtil::Print( errorMessage.str() );
 						goto OnExit;
 					}
 				}
@@ -1234,7 +1253,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to find out if compilation of the vertex shader source code succeeded: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					//eae6320::UserOutput::Print( errorMessage.str() );
+					WindowsUtil::Print( errorMessage.str() );
 					goto OnExit;
 				}
 			}
@@ -1245,7 +1264,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to compile the vertex shader source code: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 			goto OnExit;
 		}
 	}
@@ -1259,7 +1278,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to attach the vertex shader to the program: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 			goto OnExit;
 		}
 	}
@@ -1279,14 +1298,14 @@ OnExit:
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to delete the vertex shader ID: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			//eae6320::UserOutput::Print( errorMessage.str() );
+			WindowsUtil::Print( errorMessage.str() );
 		}
 		vertexShaderId = 0;
 	}
-	if (shaderSource != NULL)
+	if (shaderSource != nullptr)
 	{
 		free(shaderSource);
-		shaderSource = NULL;
+		shaderSource = nullptr;
 	}
 
 	return !wereThereErrors;
