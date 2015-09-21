@@ -78,7 +78,8 @@ namespace Tools
 			// This function has a single argument
 			const int argumentCount = 1;			
 			lua_pushstring(mLuaState, i_relativePath);
-		//	lua_pushstring(mLuaState, i_relativePath);
+			
+			//	lua_pushstring(mLuaState, i_relativePath);
 			// This function will return a boolean indicating success or failure
 			// (if the call fails the Lua function itself should output the reason)
 			const int returnValueCount = 1;

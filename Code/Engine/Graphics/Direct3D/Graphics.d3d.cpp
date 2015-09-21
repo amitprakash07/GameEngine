@@ -23,9 +23,7 @@ namespace Engine
 		// This struct determines the layout of the data that the CPU will send to the GPU
 		struct sVertex
 		{
-			// POSITION
-			// 2 floats == 8 bytes
-			// Offset = 0
+			
 			float x, y;
 			// COLOR0
 			// 4 uint8_ts == 4 bytes
@@ -384,15 +382,9 @@ namespace Engine
 					// Triangle 0
 					//Check index for the vertex buffer need to be taken from zero or One ??
 
-					indexData[0] = 0;
-					indexData[1] = 1;
-					indexData[2] = 2;
-
-					// Triangle 1
-					indexData[3] = 0;
-					indexData[4] = 2;
-					indexData[5] = 3;
-					/************Amit**************************/
+					//Engine::Graphics::triangleIndex * tempIndex = Engine::Graphics::Mesh::getTriangleIndicesList();
+					uint32_t * tempIndicesList = Engine::Graphics::Mesh::getIndices();
+					memcpy(indexData, tempIndicesList, sizeof(uint32_t) * 6);
 
 				}
 
@@ -545,43 +537,9 @@ namespace Engine
 					// To make pure red you would use the max for R and nothing for G and B, so (1, 0, 0).
 					// Experiment with other values to see what happens!
 
-					vertexData[0].x = 0.0f;
-					vertexData[0].y = 0.0f;
-					// Red
-					vertexData[0].r = 255;
-					vertexData[0].g = 0;
-					vertexData[0].b = 0;
-					vertexData[0].a = 255;
+					Engine::Graphics::vertex* tempVertex = Engine::Graphics::Mesh::getVertex();
+					memcpy(vertexData, tempVertex, sizeof(tempVertex[0]) * 4); //*****************Amit***************************
 
-
-					//****************Amit ****************************
-					vertexData[1].x = 0.0f;
-					vertexData[1].y = 1.0f;
-
-					vertexData[1].r = 0;
-					vertexData[1].g = 255;
-					vertexData[1].b = 0;
-					vertexData[1].a = 255;
-
-
-					vertexData[2].x = 1.0f;
-					vertexData[2].y = 1.0f;
-
-					vertexData[2].r = 0;
-					vertexData[2].g = 0;
-					vertexData[2].b = 255;
-					vertexData[2].a = 255;
-
-
-					vertexData[3].x = 1.0f;
-					vertexData[3].y = 0.0f;
-
-					vertexData[3].r = 100;
-					vertexData[3].g = 100;
-					vertexData[3].b = 100;
-					vertexData[3].a = 255;
-
-					//*****************Amit***************************
 				}
 				// The buffer must be "unlocked" before it can be used
 				{

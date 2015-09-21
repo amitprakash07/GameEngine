@@ -106,7 +106,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command> "$(BinDir)AssetBuilder.exe" standard.fshd standard.vshd</Command>
+      <Command> "$(BinDir)AssetBuilder.exe" standard.fshd standard.vshd Mesh.lua</Command>
       <Message>Building Assets</Message>
       <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
     </CustomBuildStep>
@@ -124,7 +124,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command> "$(BinDir)AssetBuilder.exe" standard.fshd standard.vshd</Command>
+      <Command> "$(BinDir)AssetBuilder.exe" standard.fshd standard.vshd Mesh.lua</Command>
       <Message>Building Assets</Message>
       <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
     </CustomBuildStep>
@@ -146,7 +146,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <CustomBuildStep>
-      <Command> "$(BinDir)AssetBuilder.exe" standard.fshd standard.vshd</Command>
+      <Command> "$(BinDir)AssetBuilder.exe" standard.fshd standard.vshd Mesh.lua</Command>
       <Message>Building Assets</Message>
       <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
     </CustomBuildStep>
@@ -169,7 +169,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <CustomBuildStep>
-      <Command> "$(BinDir)AssetBuilder.exe" standard.fshd standard.vshd</Command>
+      <Command> "$(BinDir)AssetBuilder.exe" standard.fshd standard.vshd Mesh.lua</Command>
       <Message>Building Assets</Message>
       <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
     </CustomBuildStep>
