@@ -40,6 +40,12 @@ namespace
 }
 
 
+//HWND getWindowHandle()
+//{
+//	if (s_mainWindow)
+//		return s_mainWindow;
+//	return nullptr;
+//}
 
 // Main Function
 //==============

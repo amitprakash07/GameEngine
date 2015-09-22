@@ -3,18 +3,22 @@
 #include "..\Windows\WindowsProgram.h"
 #include "..\Graphics\Graphics.h"
 #include "..\Graphics\Mesh.h"
-#include "assert.h"
+#include <sstream>
+#include "..\Windows/WindowsFunctions.h"
 
 
 namespace EngineCore
 {	
 	HWND s_mainWindow;
+
 	void Initialize(HINSTANCE hInstance, int windowLayout)
 	{
 		CreateMainWindow(hInstance, windowLayout, s_mainWindow);
 		if (!Engine::Graphics::Mesh::LoadMesh())
 		{
-			assert("There is something went wrong while reading mesh data file - either file not found or bad data");
+			std::stringstream errorMessage;
+			errorMessage<< "There is something went wrong while reading mesh data file - either file not found or bad data";
+			WindowsUtil::Print(errorMessage.str());
 			exit(0);
 		}
 		Engine::Graphics::GraphicsSystem::Initialize(s_mainWindow);
