@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <string>
+#include  <sstream>
 
 namespace WindowsUtil
 {

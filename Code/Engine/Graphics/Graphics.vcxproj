@@ -30,6 +30,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="MeshCommon.cpp" />
+    <ClCompile Include="MeshLoadFromLua.cpp" />
     <ClCompile Include="OpenGL\Graphics.gl.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -40,10 +41,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshLoadFromLua.h" />
+    <ClInclude Include="Scene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1A97BFDF-D891-474A-86B1-6E76E89ABC73}</ProjectGuid>
@@ -116,6 +120,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(LibDir)</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(LibDir)</OutDir>

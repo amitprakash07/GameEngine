@@ -2,8 +2,7 @@
 #include "Core.h"
 #include "..\Windows\WindowsProgram.h"
 #include "..\Graphics\Graphics.h"
-#include "..\Graphics\Mesh.h"
-#include <sstream>
+#include "..\Graphics\Scene.h"
 #include "..\Windows/WindowsFunctions.h"
 
 
@@ -13,15 +12,21 @@ namespace EngineCore
 
 	void Initialize(HINSTANCE hInstance, int windowLayout)
 	{
+		std::stringstream errormessage;
 		CreateMainWindow(hInstance, windowLayout, s_mainWindow);
-		if (!Engine::Graphics::Mesh::LoadMesh())
+		Engine::Graphics::GraphicsSystem::Initialize(s_mainWindow);
+		if(!Engine::Graphics::Scene::addToScene("data/SquareMesh.lua"))
 		{
-			std::stringstream errorMessage;
-			errorMessage<< "There is something went wrong while reading mesh data file - either file not found or bad data";
-			WindowsUtil::Print(errorMessage.str());
+			errormessage << "Unable to add the Mesh";
+			WindowsUtil::Print(errormessage.str());
 			exit(0);
 		}
-		Engine::Graphics::GraphicsSystem::Initialize(s_mainWindow);
+		if(!Engine::Graphics::Scene::addToScene("data/TriangleMesh.lua"))
+		{
+			errormessage << "Unable to add the Mesh";
+			WindowsUtil::Print(errormessage.str());
+			exit(0);
+		}
 	}
 
 	void onNewFrame()
@@ -31,7 +36,7 @@ namespace EngineCore
 		
 		
 		{
-			HWND getMessagesFromAnyWindowBelongingToTheCurrentThread = NULL;
+			HWND getMessagesFromAnyWindowBelongingToTheCurrentThread = nullptr;
 			unsigned int getAllMessageTypes = 0;
 			unsigned int ifAMessageExistsRemoveItFromTheQueue = PM_REMOVE;
 			hasWindowsSentAMessage = PeekMessage(&message, getMessagesFromAnyWindowBelongingToTheCurrentThread,

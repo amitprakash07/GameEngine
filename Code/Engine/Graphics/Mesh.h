@@ -8,7 +8,8 @@
 #endif
 
 #include <stdint.h>
-
+#include "MeshLoadFromLua.h"
+#include <vector>
 
 
 namespace Engine
@@ -26,7 +27,11 @@ namespace Engine
 		{
 			float X;
 			float Y;
+#ifdef PLATFORM_D3D
+			uint8_t B, G, R, A;
+#elif PLATFORM_OPEN_GL
 			uint8_t R, G, B, A;
+#endif
 		};
 		struct triangleIndex
 		{
@@ -37,35 +42,33 @@ namespace Engine
 		class Mesh
 		{
 		public:
-			static bool drawMesh();
-			static bool LoadMesh();
-			static vertex* getVertex();
-			static uint32_t* getIndices();
-			static triangleIndex* getTriangleIndicesList();
-			static void setWinding(winding);
-			static winding getWinding();
-#ifdef PLATFORM_D3D
-			static IDirect3DVertexBuffer9* getVertexBuffer();
-			static IDirect3DIndexBuffer9* getIndexBuffer();
-			static IDirect3DVertexDeclaration9* getVertexDeclaration();
-			static void setVertexBuffer(IDirect3DVertexBuffer9*);
-			static void setIndexBuffer(IDirect3DIndexBuffer9*);
-			static void setVertexDeclaration(IDirect3DVertexDeclaration9*);
-#elif PLATFORM_OPEN_GL
-			static void setVertexID(GLuint i_vertexArrayID) { s_vertexArrayID = i_vertexArrayID; }
-#endif
+			bool drawMesh();
+			bool LoadMesh();
+			vertex* getVertex();
+			uint32_t* getIndices();
+			triangleIndex* getTriangleIndicesList();
+			void setWinding(winding);
+			winding getWinding();
+			void setMeshFileName(std::string);
+			std::string getMeshFileName();	
+			~Mesh();
 		private:
-			static vertex *mVertex;
-			static triangleIndex *mIndices;
-			static winding mWinding;
+			vertex *mVertex;
+			triangleIndex *mIndices;
+			winding mWinding;
+			int triangleCount;
+			int vertexCount;
+			std::string meshFileName;
 #ifdef PLATFORM_OPEN_GL
-			static GLuint s_vertexArrayID;
+			GLuint s_vertexArrayID;
+			bool createVertexArray();
 #elif PLATFORM_D3D
-			static IDirect3DVertexBuffer9* s_vertexBuffer;
-			static IDirect3DIndexBuffer9* s_indexBuffer;
-			static IDirect3DVertexDeclaration9* s_vertexDeclaration;
+			IDirect3DVertexBuffer9* s_vertexBuffer;
+			IDirect3DIndexBuffer9* s_indexBuffer;
+			IDirect3DVertexDeclaration9* s_vertexDeclaration;
+			bool createVertexBuffer();
+			bool createIndexBuffer();
 #endif
-			
 			
 		};
 	}

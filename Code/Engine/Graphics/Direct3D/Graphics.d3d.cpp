@@ -4,9 +4,7 @@
 #include "../Graphics.h"
 #include <d3dx9shader.h>
 #include <cassert>
-#include <cstdint>
-#include <sstream>
-#include "../Mesh.h"
+#include "../Scene.h"
 #include "../../Windows/WindowsFunctions.h"
 
 // Static Data Initialization
@@ -19,42 +17,7 @@ namespace Engine
 		HWND GraphicsSystem::s_renderingWindow = nullptr;
 		IDirect3D9* s_direct3dInterface = nullptr;
 		IDirect3DDevice9* s_direct3dDevice = nullptr;
-
-		// This struct determines the layout of the data that the CPU will send to the GPU
-		struct sVertex
-		{
-			
-			float x, y;
-			// COLOR0
-			// 4 uint8_ts == 4 bytes
-			// Offset = 8
-			uint8_t b, g, r, a;	// Direct3D expects the byte layout of a color to be different from what you might expect
-		};
-		IDirect3DVertexDeclaration9* s_vertexDeclaration = nullptr;
-
-		// The vertex buffer holds the data for each vertex
-		IDirect3DVertexBuffer9* s_vertexBuffer = nullptr;
-		// An index buffer describes how to make triangles with the vertices
-		// (i.e. it defines the vertex connectivity)
-		IDirect3DIndexBuffer9* s_indexBuffer = nullptr;
-
-		// The vertex shader is a program that operates on vertices.
-		// Its input comes from a C/C++ "draw call" and is:
-		//	* Position
-		//	* Any other data we want
-		// Its output is:
-		//	* Position
-		//		(So that the graphics hardware knows which pixels to fill in for the triangle)
-		//	* Any other data we want
 		IDirect3DVertexShader9* s_vertexShader = nullptr;
-		// The fragment shader is a program that operates on fragments
-		// (or potential pixels).
-		// Its input is:
-		//	* The data that was output from the vertex shader,
-		//		interpolated based on how close the fragment is
-		//		to each vertex in the triangle.
-		// Its output is:
-		//	* The final color that the pixel should be
 		IDirect3DPixelShader9* s_fragmentShader = nullptr;
 	}
 }
@@ -67,10 +30,7 @@ namespace Engine
 	namespace Graphics
 	{
 		bool CreateDevice();
-		bool CreateIndexBuffer();
 		bool CreateInterface();
-		bool CreateVertexBuffer();
-		HRESULT GetVertexProcessingUsage(DWORD& o_usage);
 		bool LoadFragmentShader();
 		bool LoadVertexShader();
 	}
@@ -95,14 +55,6 @@ bool Engine::Graphics::GraphicsSystem::Initialize( const HWND i_renderingWindow 
 	}
 
 	// Initialize the graphics objects
-	if ( !CreateVertexBuffer() )
-	{
-		goto OnError;
-	}
-	if ( !CreateIndexBuffer() )
-	{
-		goto OnError;
-	}
 	if ( !LoadVertexShader() )
 	{
 		goto OnError;
@@ -156,43 +108,7 @@ void Engine::Graphics::GraphicsSystem::Render()
 				assert( SUCCEEDED( result ) );
 			}
 
-			//// Bind a specific vertex buffer to the device as a data source
-			//{
-			//	// There can be multiple streams of data feeding the display adaptor at the same time
-			//	const unsigned int streamIndex = 0;
-			//	// It's possible to start streaming data in the middle of a vertex buffer
-			//	const unsigned int bufferOffset = 0;
-			//	// The "stride" defines how large a single vertex is in the stream of data
-			//	const unsigned int bufferStride = sizeof( sVertex );
-			//	result = s_direct3dDevice->SetStreamSource( streamIndex, s_vertexBuffer, bufferOffset, bufferStride );
-			//	assert( SUCCEEDED( result ) );
-			//}
-
-			//// Bind a specific index buffer to the device as a data source
-			//{
-			//	result = s_direct3dDevice->SetIndices( s_indexBuffer );
-			//	assert( SUCCEEDED( result ) );
-			//}
-			//
-			//// Render objects from the current streams
-			//{
-			//	// We are using triangles as the "primitive" type,
-			//	// and we have defined the vertex buffer as a triangle list
-			//	// (meaning that every triangle is defined by three vertices)
-			//	const D3DPRIMITIVETYPE primitiveType = D3DPT_TRIANGLELIST;
-			//	// It's possible to start rendering primitives in the middle of the stream
-			//	const unsigned int indexOfFirstVertexToRender = 0;
-			//	const unsigned int indexOfFirstIndexToUse = 0;
-			//	// We are drawing a square
-			//	const unsigned int vertexCountToRender = 3; // @Amit - Made three as each triangle needs three vertices from the vertex buffer EAE6320_TODO;	// How vertices from the vertex buffer will be used?
-			//	const unsigned int primitiveCountToRender = 2; // EAE6320_TODO;	// How many triangles will be drawn?
-
-			//	result = s_direct3dDevice->DrawIndexedPrimitive( primitiveType,
-			//		indexOfFirstVertexToRender, indexOfFirstVertexToRender, vertexCountToRender,
-			//		indexOfFirstIndexToUse, primitiveCountToRender );
-			//	assert( SUCCEEDED( result ) );
-			
-			Mesh::drawMesh();
+			Scene::drawScene();
 
 		}
 		result = s_direct3dDevice->EndScene();
@@ -231,7 +147,7 @@ bool Engine::Graphics::GraphicsSystem::ShutDown()
 				s_fragmentShader = nullptr;
 			}
 
-			if ( s_vertexBuffer )
+			/*if ( s_vertexBuffer )
 			{
 				s_vertexBuffer->Release();
 				s_vertexBuffer = nullptr;
@@ -246,7 +162,7 @@ bool Engine::Graphics::GraphicsSystem::ShutDown()
 				s_direct3dDevice->SetVertexDeclaration(nullptr);
 				s_vertexDeclaration->Release();
 				s_vertexDeclaration = nullptr;
-			}
+			}*/
 
 			s_direct3dDevice->Release();
 			s_direct3dDevice = nullptr;
@@ -271,427 +187,175 @@ IDirect3DDevice9* Engine::Graphics::GraphicsSystem::getDevice()
 // Helper Function Definitions
 //============================
 
-namespace Engine
+bool Engine::Graphics::CreateDevice()
 {
-	namespace Graphics
+	HWND s_renderingWindow = Engine::Graphics::GraphicsSystem::getRenderingWindow();
+	const UINT useDefaultDevice = D3DADAPTER_DEFAULT;
+	const D3DDEVTYPE useHardwareRendering = D3DDEVTYPE_HAL;
+	const DWORD useHardwareVertexProcessing = D3DCREATE_HARDWARE_VERTEXPROCESSING;
+	D3DPRESENT_PARAMETERS presentationParameters = { 0 };
 	{
-		bool CreateDevice()
 		{
-			HWND s_renderingWindow = Engine::Graphics::GraphicsSystem::getRenderingWindow();
-			const UINT useDefaultDevice = D3DADAPTER_DEFAULT;
-			const D3DDEVTYPE useHardwareRendering = D3DDEVTYPE_HAL;
-			const DWORD useHardwareVertexProcessing = D3DCREATE_HARDWARE_VERTEXPROCESSING;
-			D3DPRESENT_PARAMETERS presentationParameters = { 0 };
-			{
-				{
-					const unsigned int useRenderingWindowDimensions = 0;
-					presentationParameters.BackBufferWidth = useRenderingWindowDimensions;
-					presentationParameters.BackBufferHeight = useRenderingWindowDimensions;
-				}
-				presentationParameters.BackBufferFormat = D3DFMT_X8R8G8B8;
-				presentationParameters.BackBufferCount = 1;
-				presentationParameters.MultiSampleType = D3DMULTISAMPLE_NONE;
-				presentationParameters.SwapEffect = D3DSWAPEFFECT_DISCARD;
-				presentationParameters.hDeviceWindow = s_renderingWindow;
-				presentationParameters.Windowed = TRUE;
-				presentationParameters.EnableAutoDepthStencil = FALSE;
-				presentationParameters.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
-			}
-			HRESULT result = s_direct3dInterface->CreateDevice(useDefaultDevice, useHardwareRendering,
-				s_renderingWindow, useHardwareVertexProcessing, &presentationParameters, &s_direct3dDevice);
-			if (SUCCEEDED(result))
-			{
-				return true;
-			}
-			else
-			{
-				WindowsUtil::Print( "Direct3D failed to create a Direct3D9 device" );
-				return false;
-			}
+			const unsigned int useRenderingWindowDimensions = 0;
+			presentationParameters.BackBufferWidth = useRenderingWindowDimensions;
+			presentationParameters.BackBufferHeight = useRenderingWindowDimensions;
 		}
-
-		bool CreateIndexBuffer()
-		{
-			// The usage tells Direct3D how this vertex buffer will be used
-			DWORD usage = 0;
-			{
-				// The type of vertex processing should match what was specified when the device interface was created with CreateDevice()
-				const HRESULT result = GetVertexProcessingUsage(usage);
-				if (FAILED(result))
-				{
-					return false;
-				}
-				// Our code will only ever write to the buffer
-				usage |= D3DUSAGE_WRITEONLY;
-			}
-
-			// Create an index buffer
-			unsigned int bufferSize;
-			{
-				// We are drawing a square
-				const unsigned int triangleCount = 2; //@Amit EAE6320_TODO;	// How many triangles does a square have?
-				const unsigned int vertexCountPerTriangle = 3;
-				bufferSize = triangleCount * vertexCountPerTriangle * sizeof(uint32_t);  //Total of six 
-
-			   // We'll use 32-bit indices in this class to keep things simple
-				// (i.e. every index will be a 32 bit unsigned integer)
-				const D3DFORMAT format = D3DFMT_INDEX32;
-
-				// Place the index buffer into memory that Direct3D thinks is the most appropriate
-				const D3DPOOL useDefaultPool = D3DPOOL_DEFAULT;
-				HANDLE* notUsed = nullptr;
-				const HRESULT result = s_direct3dDevice->CreateIndexBuffer(bufferSize, usage, format, useDefaultPool,
-					&s_indexBuffer, notUsed);
-				if (FAILED(result))
-				{
-					WindowsUtil::Print( "Direct3D failed to create an index buffer" );
-					return false;
-				}
-			}
-
-			// Fill the index buffer with the triangles' connectivity data
-			{
-				// Before the index buffer can be changed it must be "locked"
-				uint32_t* indexData;
-				{
-					const unsigned int lockEntireBuffer = 0;
-					const DWORD useDefaultLockingBehavior = 0;
-					const HRESULT result = s_indexBuffer->Lock(lockEntireBuffer, lockEntireBuffer,
-						reinterpret_cast<void**>(&indexData), useDefaultLockingBehavior);
-
-					if (SUCCEEDED(result))
-						Mesh::setIndexBuffer(s_indexBuffer); //Setting the index buffer to the Mesh data - Amit
-					if (FAILED(result))
-					{
-						WindowsUtil::Print( "Direct3D failed to lock the index buffer" );
-						return false;
-					}
-				}
-
-				// Fill the buffer
-				{
-					// EAE6320_TODO:
-					// You will need to fill in 3 indices for each triangle that needs to be drawn.
-					// Each index will be a 32-bit unsigned integer,
-					// and will index into the vertex buffer array that you have created.
-					// The order of indices is important, but the correct order will depend on
-					// which vertex you have assigned to which spot in your vertex buffer
-					// (also remember to maintain the correct handedness for the triangle winding order).
-
-					//*************Amit***********************
-					// Triangle 0
-					//Check index for the vertex buffer need to be taken from zero or One ??
-
-					//Engine::Graphics::triangleIndex * tempIndex = Engine::Graphics::Mesh::getTriangleIndicesList();
-					uint32_t * tempIndicesList = Engine::Graphics::Mesh::getIndices();
-					memcpy(indexData, tempIndicesList, sizeof(uint32_t) * 6);
-
-				}
-
-				// The buffer must be "unlocked" before it can be used
-				{
-					const HRESULT result = s_indexBuffer->Unlock();
-					if (FAILED(result))
-					{
-						WindowsUtil::Print( "Direct3D failed to unlock the index buffer" );
-						return false;
-					}
-				}
-			}
-
-			return true;
-		}
-
-		bool CreateInterface()
-		{
-			// D3D_SDK_VERSION is #defined by the Direct3D header files,
-			// and is just a way to make sure that everything is up-to-date
-			s_direct3dInterface = Direct3DCreate9(D3D_SDK_VERSION);
-			if (s_direct3dInterface)
-			{
-				return true;
-			}
-			else
-			{
-				WindowsUtil::Print( "DirectX failed to create a Direct3D9 interface" );
-				return false;
-			}
-		}
-
-		bool CreateVertexBuffer()
-		{
-			// The usage tells Direct3D how this vertex buffer will be used
-			DWORD usage = 0;
-			{
-				// The type of vertex processing should match what was specified when the device interface was created with CreateDevice()
-				const HRESULT result = GetVertexProcessingUsage(usage);
-				if (FAILED(result))
-				{
-					return false;
-				}
-				// Our code will only ever write to the buffer
-				usage |= D3DUSAGE_WRITEONLY;
-			}
-
-			// Initialize the vertex format
-			{
-				// These elements must match the VertexFormat::sVertex layout struct exactly.
-				// They instruct Direct3D how to match the binary data in the vertex buffer
-				// to the input elements in a vertex shader
-				// (by using D3DDECLUSAGE enums here and semantics in the shader,
-				// so that, for example, D3DDECLUSAGE_POSITION here matches with POSITION in shader code).
-				// Note that OpenGL uses arbitrarily assignable number IDs to do the same thing.
-				D3DVERTEXELEMENT9 vertexElements[] =
-				{
-					// Stream 0
-
-					// POSITION
-					// 2 floats == 8 bytes
-					// Offset = 0
-					{ 0, 0, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
-
-					// COLOR0
-					// D3DCOLOR == 4 bytes
-					// Offset = 8
-					{ 0, 8, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0 },
-
-					// The following marker signals the end of the vertex declaration
-					D3DDECL_END()
-				};
-
-				HRESULT result = s_direct3dDevice->CreateVertexDeclaration(vertexElements, &s_vertexDeclaration);
-
-				if (SUCCEEDED(result))
-				{
-					result = s_direct3dDevice->SetVertexDeclaration(s_vertexDeclaration);
-					if (SUCCEEDED(result))
-						Mesh::setVertexDeclaration(s_vertexDeclaration); //Setting the Vertex Declaration to the Mesh Data - Amit
-					if (FAILED(result))
-					{
-						WindowsUtil::Print( "Direct3D failed to set the vertex declaration" );
-						return false;
-					}
-				}
-				else
-				{
-					WindowsUtil::Print( "Direct3D failed to create a Direct3D9 vertex declaration" );
-					return false;
-				}
-			}
-
-			// Create a vertex buffer
-			{
-				// We are drawing one square
-				const unsigned int vertexCount = 4; //@Amit EAE6320_TODO;	// What is the minimum number of vertices a square needs (so that no data is duplicated)?
-				const unsigned int bufferSize = vertexCount * sizeof(sVertex);
-
-				// We will define our own vertex format
-				const DWORD useSeparateVertexDeclaration = 0;
-
-				// Place the vertex buffer into memory that Direct3D thinks is the most appropriate
-				const D3DPOOL useDefaultPool = D3DPOOL_DEFAULT;
-				HANDLE* const notUsed = nullptr;
-				const HRESULT result = s_direct3dDevice->CreateVertexBuffer(bufferSize, usage, useSeparateVertexDeclaration, useDefaultPool,
-					&s_vertexBuffer, notUsed);
-
-				Mesh::setVertexBuffer(s_vertexBuffer); //Setting The Vertex BUffer in the Mesh data - amit
-
-				if (FAILED(result))
-				{
-					WindowsUtil::Print( "Direct3D failed to create a vertex buffer" );
-					return false;
-				}
-			}
-			// Fill the vertex buffer with the triangle's vertices
-			{
-				// Before the vertex buffer can be changed it must be "locked"
-				sVertex* vertexData;
-				{
-					const unsigned int lockEntireBuffer = 0;
-					const DWORD useDefaultLockingBehavior = 0;
-					const HRESULT result = s_vertexBuffer->Lock(lockEntireBuffer, lockEntireBuffer,
-						reinterpret_cast<void**>(&vertexData), useDefaultLockingBehavior);
-					if (FAILED(result))
-					{
-						WindowsUtil::Print( "Direct3D failed to lock the vertex buffer" );
-						return false;
-					}
-				}
-
-
-				// Fill the buffer
-				{
-					// You will need to fill in two pieces of information for each vertex:
-					//	* 2 floats for the POSITION
-					//	* 4 uint8_ts for the COLOR
-
-					// The floats for POSITION are for the X and Y coordinates, like in Assignment 02.
-					// The difference this time is that there should be fewer (because we are sharing data).
-
-					// The uint8_ts for COLOR are "RGBA", where "RGB" stands for "Red Green Blue" and "A" for "Alpha".
-					// Conceptually each of these values is a [0,1] value, but we store them as an 8-bit value to save space
-					// (color doesn't need as much precision as position),
-					// which means that the data we send to the GPU will be [0,255].
-					// For now the alpha value should _always_ be 255, and so you will choose color by changing the first three RGB values.
-					// To make white you should use (255, 255, 255), to make black (0, 0, 0).
-					// To make pure red you would use the max for R and nothing for G and B, so (1, 0, 0).
-					// Experiment with other values to see what happens!
-
-					Engine::Graphics::vertex* tempVertex = Engine::Graphics::Mesh::getVertex();
-					memcpy(vertexData, tempVertex, sizeof(tempVertex[0]) * 4); //*****************Amit***************************
-
-				}
-				// The buffer must be "unlocked" before it can be used
-				{
-					const HRESULT result = s_vertexBuffer->Unlock();
-					if (FAILED(result))
-					{
-						WindowsUtil::Print( "Direct3D failed to unlock the vertex buffer" );
-						return false;
-					}
-				}
-			}
-
-			return true;
-		}
-
-
-		HRESULT GetVertexProcessingUsage(DWORD& o_usage)
-		{
-			D3DDEVICE_CREATION_PARAMETERS deviceCreationParameters;
-			const HRESULT result = s_direct3dDevice->GetCreationParameters(&deviceCreationParameters);
-			if (SUCCEEDED(result))
-			{
-				DWORD vertexProcessingType = deviceCreationParameters.BehaviorFlags &
-					(D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MIXED_VERTEXPROCESSING | D3DCREATE_SOFTWARE_VERTEXPROCESSING);
-				o_usage = (vertexProcessingType != D3DCREATE_SOFTWARE_VERTEXPROCESSING) ? 0 : D3DUSAGE_SOFTWAREPROCESSING;
-			}
-			else
-			{
-				WindowsUtil::Print( "Direct3D failed to get the device's creation parameters" );
-			}
-			return result;
-		}
-
-		bool LoadFragmentShader()
-		{
-			// Load the source code from file and compile it
-			ID3DXBuffer* compiledShader;
-			{
-				const char* sourceCodeFileName = "data/standard.fshd"; //@Amit- To do to change the file name
-				const D3DXMACRO fragmentShaderMacro []=   //@Amit - now macro is not null changed to access the #defined platform code in shader file 
-				{
-					{"PLATFORM_D3D" , "1" },
-					{NULL,NULL}
-				};
-
-				ID3DXInclude* noIncludes = nullptr;
-				const char* entryPoint = "main";
-				const char* profile = "ps_3_0";
-				const DWORD noFlags = 0;
-				ID3DXBuffer* errorMessages = nullptr;
-				ID3DXConstantTable** noConstants = nullptr;
-				HRESULT result = D3DXCompileShaderFromFile(sourceCodeFileName, fragmentShaderMacro, noIncludes, entryPoint, profile, noFlags,
-					&compiledShader, &errorMessages, noConstants);
-				if (SUCCEEDED(result))
-				{
-					if (errorMessages)
-					{
-						errorMessages->Release();
-					}
-				}
-				else
-				{
-					if (errorMessages)
-					{
-						std::stringstream errorMessage;
-						errorMessage << "Direct3D failed to compile the fragment shader from the file " << sourceCodeFileName
-							<< ":\n" << reinterpret_cast<char*>(errorMessages->GetBufferPointer());
-						WindowsUtil::Print( errorMessage.str() );
-						errorMessages->Release();
-					}
-					else
-					{
-						std::stringstream errorMessage;
-						errorMessage << "Direct3D failed to compile the fragment shader from the file " << sourceCodeFileName;
-						WindowsUtil::Print( errorMessage.str() );
-					}
-					return false;
-				}
-			}
-			// Create the fragment shader object
-			bool wereThereErrors = false;
-			{
-				HRESULT result = s_direct3dDevice->CreatePixelShader(reinterpret_cast<DWORD*>(compiledShader->GetBufferPointer()),
-					&s_fragmentShader);
-				if (FAILED(result))
-				{
-					WindowsUtil::Print( "Direct3D failed to create the fragment shader" );
-					wereThereErrors = true;
-				}
-				compiledShader->Release();
-			}
-			return !wereThereErrors;
-		}
-
-		bool LoadVertexShader()
-		{
-			// Load the source code from file and compile it
-			ID3DXBuffer* compiledShader;
-			{
-				const char* sourceCodeFileName = "data/standard.vshd";//@Amit- To do to change the file name
-				const D3DXMACRO vertexShaderMacro[] =   //@Amit - now macro is not null changed to access the #defined platform code in shader file 
-				{
-					{ "PLATFORM_D3D", "1" },
-					{NULL,NULL}
-				};
-				ID3DXInclude* noIncludes = nullptr;
-				const char* entryPoint = "main";
-				const char* profile = "vs_3_0";
-				const DWORD noFlags = 0;
-				ID3DXBuffer* errorMessages = nullptr;
-				ID3DXConstantTable** noConstants = nullptr;
-				HRESULT result = D3DXCompileShaderFromFile(sourceCodeFileName, vertexShaderMacro, noIncludes, entryPoint, profile, noFlags,
-					&compiledShader, &errorMessages, noConstants);
-				if (SUCCEEDED(result))
-				{
-					if (errorMessages)
-					{
-						errorMessages->Release();
-					}
-				}
-				else
-				{
-					if (errorMessages)
-					{
-						std::stringstream errorMessage;
-						errorMessage << "Direct3D failed to compile the vertex shader from the file " << sourceCodeFileName
-							<< ":\n" << reinterpret_cast<char*>(errorMessages->GetBufferPointer());
-						WindowsUtil::Print( errorMessage.str() );
-						errorMessages->Release();
-					}
-					else
-					{
-						std::stringstream errorMessage;
-						errorMessage << "Direct3D failed to compile the vertex shader from the file " << sourceCodeFileName;
-						WindowsUtil::Print( errorMessage.str() );
-					}
-					return false;
-				}
-			}
-			// Create the vertex shader object
-			bool wereThereErrors = false;
-			{
-				HRESULT result = s_direct3dDevice->CreateVertexShader(reinterpret_cast<DWORD*>(compiledShader->GetBufferPointer()),
-					&s_vertexShader);
-				if (FAILED(result))
-				{
-					WindowsUtil::Print( "Direct3D failed to create the vertex shader" );
-					wereThereErrors = true;
-				}
-				compiledShader->Release();
-			}
-			return !wereThereErrors;
-		}
+		presentationParameters.BackBufferFormat = D3DFMT_X8R8G8B8;
+		presentationParameters.BackBufferCount = 1;
+		presentationParameters.MultiSampleType = D3DMULTISAMPLE_NONE;
+		presentationParameters.SwapEffect = D3DSWAPEFFECT_DISCARD;
+		presentationParameters.hDeviceWindow = s_renderingWindow;
+		presentationParameters.Windowed = TRUE;
+		presentationParameters.EnableAutoDepthStencil = FALSE;
+		presentationParameters.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
+	}
+	HRESULT result = s_direct3dInterface->CreateDevice(useDefaultDevice, useHardwareRendering,
+		s_renderingWindow, useHardwareVertexProcessing, &presentationParameters, &s_direct3dDevice);
+	if (SUCCEEDED(result))
+	{
+		return true;
+	}
+	else
+	{
+		WindowsUtil::Print("Direct3D failed to create a Direct3D9 device");
+		return false;
 	}
 }
+
+bool Engine::Graphics::CreateInterface()
+{
+	// D3D_SDK_VERSION is #defined by the Direct3D header files,
+	// and is just a way to make sure that everything is up-to-date
+	s_direct3dInterface = Direct3DCreate9(D3D_SDK_VERSION);
+	if (s_direct3dInterface)
+	{
+		return true;
+	}
+	else
+	{
+		WindowsUtil::Print("DirectX failed to create a Direct3D9 interface");
+		return false;
+	}
+}
+
+bool Engine::Graphics::LoadFragmentShader()
+{
+	// Load the source code from file and compile it
+	ID3DXBuffer* compiledShader;
+	{
+		const char* sourceCodeFileName = "data/standard.fshd"; //@Amit- To do to change the file name
+		const D3DXMACRO fragmentShaderMacro[] =   //@Amit - now macro is not null changed to access the #defined platform code in shader file 
+		{
+			{"PLATFORM_D3D" , "1" },
+			{NULL,NULL}
+		};
+
+		ID3DXInclude* noIncludes = nullptr;
+		const char* entryPoint = "main";
+		const char* profile = "ps_3_0";
+		const DWORD noFlags = 0;
+		ID3DXBuffer* errorMessages = nullptr;
+		ID3DXConstantTable** noConstants = nullptr;
+		HRESULT result = D3DXCompileShaderFromFile(sourceCodeFileName, fragmentShaderMacro, noIncludes, entryPoint, profile, noFlags,
+			&compiledShader, &errorMessages, noConstants);
+		if (SUCCEEDED(result))
+		{
+			if (errorMessages)
+			{
+				errorMessages->Release();
+			}
+		}
+		else
+		{
+			if (errorMessages)
+			{
+				std::stringstream errorMessage;
+				errorMessage << "Direct3D failed to compile the fragment shader from the file " << sourceCodeFileName
+					<< ":\n" << reinterpret_cast<char*>(errorMessages->GetBufferPointer());
+				WindowsUtil::Print(errorMessage.str());
+				errorMessages->Release();
+			}
+			else
+			{
+				std::stringstream errorMessage;
+				errorMessage << "Direct3D failed to compile the fragment shader from the file " << sourceCodeFileName;
+				WindowsUtil::Print(errorMessage.str());
+			}
+			return false;
+		}
+	}
+	// Create the fragment shader object
+	bool wereThereErrors = false;
+	{
+		HRESULT result = s_direct3dDevice->CreatePixelShader(reinterpret_cast<DWORD*>(compiledShader->GetBufferPointer()),
+			&s_fragmentShader);
+		if (FAILED(result))
+		{
+			WindowsUtil::Print("Direct3D failed to create the fragment shader");
+			wereThereErrors = true;
+		}
+		compiledShader->Release();
+	}
+	return !wereThereErrors;
+}
+
+bool Engine::Graphics::LoadVertexShader()
+{
+	// Load the source code from file and compile it
+	ID3DXBuffer* compiledShader;
+	{
+		const char* sourceCodeFileName = "data/standard.vshd";//@Amit- To do to change the file name
+		const D3DXMACRO vertexShaderMacro[] =   //@Amit - now macro is not null changed to access the #defined platform code in shader file 
+		{
+			{ "PLATFORM_D3D", "1" },
+			{NULL,NULL}
+		};
+		ID3DXInclude* noIncludes = nullptr;
+		const char* entryPoint = "main";
+		const char* profile = "vs_3_0";
+		const DWORD noFlags = 0;
+		ID3DXBuffer* errorMessages = nullptr;
+		ID3DXConstantTable** noConstants = nullptr;
+		HRESULT result = D3DXCompileShaderFromFile(sourceCodeFileName, vertexShaderMacro, noIncludes, entryPoint, profile, noFlags,
+			&compiledShader, &errorMessages, noConstants);
+		if (SUCCEEDED(result))
+		{
+			if (errorMessages)
+			{
+				errorMessages->Release();
+			}
+		}
+		else
+		{
+			if (errorMessages)
+			{
+				std::stringstream errorMessage;
+				errorMessage << "Direct3D failed to compile the vertex shader from the file " << sourceCodeFileName
+					<< ":\n" << reinterpret_cast<char*>(errorMessages->GetBufferPointer());
+				WindowsUtil::Print(errorMessage.str());
+				errorMessages->Release();
+			}
+			else
+			{
+				std::stringstream errorMessage;
+				errorMessage << "Direct3D failed to compile the vertex shader from the file " << sourceCodeFileName;
+				WindowsUtil::Print(errorMessage.str());
+			}
+			return false;
+		}
+	}
+	// Create the vertex shader object
+	bool wereThereErrors = false;
+	{
+		HRESULT result = s_direct3dDevice->CreateVertexShader(reinterpret_cast<DWORD*>(compiledShader->GetBufferPointer()),
+			&s_vertexShader);
+		if (FAILED(result))
+		{
+			WindowsUtil::Print("Direct3D failed to create the vertex shader");
+			wereThereErrors = true;
+		}
+		compiledShader->Release();
+	}
+	return !wereThereErrors;
+}
+	

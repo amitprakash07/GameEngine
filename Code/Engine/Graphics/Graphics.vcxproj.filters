@@ -21,10 +21,14 @@
     <ClCompile Include="OpenGL\Mesh.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="MeshLoadFromLua.cpp" />
     <ClCompile Include="MeshCommon.cpp" />
+    <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshLoadFromLua.h" />
+    <ClInclude Include="Scene.h" />
   </ItemGroup>
 </Project>

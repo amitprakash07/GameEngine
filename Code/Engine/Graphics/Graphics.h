@@ -37,7 +37,6 @@ namespace Engine
 #ifdef PLATFORM_D3D
 			static IDirect3DDevice9* getDevice();
 #endif
-
 		private:
 			static HWND s_renderingWindow;
 

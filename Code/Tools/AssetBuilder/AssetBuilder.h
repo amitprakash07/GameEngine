@@ -11,9 +11,9 @@ namespace Tools
 		{
 		public:
 			static bool Initialize(); //Initializing Lua
-			static bool BuildAsset(const char* const i_relativePath);			
+			static bool BuildAssets();			
 			static bool ShutDown(); //Shutting Down Lua
-			static void OutputErrorMessage(const char* const i_errorMessage, const char* const i_optionalFileName = NULL);
+			static void OutputErrorMessage(const char* const i_errorMessage, const char* const i_optionalFileName = nullptr);
 		private:
 			static lua_State * mLuaState;
 			static int luaCopyFile(lua_State * i_luaState = mLuaState);
