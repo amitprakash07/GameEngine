@@ -14,7 +14,7 @@
 // WindowsFunctions.h contains convenience functionality for Windows features;
 // in this example program we just use it to get error messages
 #include "WindowsFunctions.h"
-
+#include <sstream>
 
 // Static Data Initialization
 //===========================
@@ -36,6 +36,7 @@ namespace
 	//	// If you don't change the name below from the default then
 	//	// your program could have problems when it is run at the same time on the same computer
 	//	// as one of your classmate's
+	
 	const char* s_mainWindowClass_name = "Amit Prakash - Main Window Class";
 }
 
@@ -180,7 +181,16 @@ HWND CreateMainWindowHandle( const HINSTANCE i_thisInstanceOfTheProgram, const i
 	{
 		// The window's "caption"
 		// (The text that is displayed in the title bar)
-		const char* windowCaption = "Amit Prakash's - WindowsUtil Game";
+		std::string windowCaptionString = "Amit Prakash's - WindowsUtil Game";
+		//char* windowCaption = "Amit Prakash's - WindowsUtil Game";
+		std::string platform;
+#ifdef PLATFORM_D3D
+		platform = " --DirectX";
+#elif PLATFORM_OPEN_GL
+		platform = " --OpenGL";
+#endif
+		windowCaptionString.append(platform);
+		//strcat(windowCaption, platform);
 		// The window's style
 		const DWORD windowStyle =
 			// "Overlapped" is basically the same as "top-level"
@@ -225,7 +235,7 @@ HWND CreateMainWindowHandle( const HINSTANCE i_thisInstanceOfTheProgram, const i
 		// Ask Windows to create the specified window.
 		// CreateWindowEx() will return a handle to the window,
 		// which is what we'll use to communicate with Windows about this window
-		mainWindow = CreateWindowEx( windowStyle_extended, s_mainWindowClass_name, windowCaption, windowStyle,
+		mainWindow = CreateWindowEx( windowStyle_extended, s_mainWindowClass_name, windowCaptionString.c_str(), windowStyle,
 			position_x, position_y, width, height,
 			hParent, hMenu, hProgram, userData );
 		if ( mainWindow == NULL )
