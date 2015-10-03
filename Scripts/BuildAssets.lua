@@ -96,7 +96,7 @@ local function BuildAsset( i_sourceRelativePath, i_targetRelativePath, i_builder
 		end
 	end
 
-	-- Build the target if necessary
+	--[[ Build the target if necessary
 	if shouldTargetBeBuilt then
 		-- Create the target directory if necessary
 		CreateDirectoryIfNecessary( path_target )
@@ -114,6 +114,7 @@ local function BuildAsset( i_sourceRelativePath, i_targetRelativePath, i_builder
 	else
 		return true
 	end
+]]
 
 	-- Build the target if necessary
 	if shouldTargetBeBuilt then
@@ -136,6 +137,8 @@ local function BuildAsset( i_sourceRelativePath, i_targetRelativePath, i_builder
 
 			-- Surround the entire command line in quotes
 			local commandLine = "\"" .. command .. " " .. arguments .. "\""
+			print(commandLine)
+			
 			local result, terminationType, exitCode = os.execute( commandLine )
 			if result then
 				-- Display a message for each asset

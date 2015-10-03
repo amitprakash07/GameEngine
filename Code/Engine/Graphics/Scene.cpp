@@ -24,7 +24,7 @@ bool Engine::Graphics::Scene::addToScene(std::string i_fileName)
 void Engine::Graphics::Scene::drawScene()
 {
 	std::stringstream errormessage;
-	int meshCount = scene.size();
+	size_t meshCount = scene.size();
 	if(meshCount == 0)
 	{
 		errormessage << "There is no mesh in the scene to draw.";

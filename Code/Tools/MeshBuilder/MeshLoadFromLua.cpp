@@ -1,15 +1,15 @@
 #include "Mesh.h"
 #include "../../Externals/Lua/Includes.h"
-#include "../Windows/WindowsFunctions.h"
+#include "../../Engine/Windows/WindowsFunctions.h"
 #include <assert.h>
 
 #define MESHFILE_PATH "data/SquareMesh.lua"
 
 
-bool LuaLoadVertex(lua_State* i_luaState, Engine::Graphics::Mesh* i_mesh)
+bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 {
 	int vertexCount = luaL_len(i_luaState, -1);
-	Engine::Graphics::vertex *tempVertex = i_mesh->getVertex();
+	Tools::AssetBuilder::vertex *tempVertex = i_mesh->getVertex();
 	if (!tempVertex)
 		return false;
 
@@ -97,19 +97,19 @@ bool LuaLoadVertex(lua_State* i_luaState, Engine::Graphics::Mesh* i_mesh)
 	return true;
 }
 
-bool LuaLoadTriangleIndex(lua_State* i_luaState, Engine::Graphics::Mesh* i_mesh)
+bool LuaLoadTriangleIndex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 {
 	int indicesCount;
-	Engine::Graphics::triangleIndex* tempIndices = i_mesh->getTriangleIndicesList();
-	Engine::Graphics::winding defaultWinding;
+	Tools::AssetBuilder::triangleIndex* tempIndices = i_mesh->getTriangleIndicesList();
+	Tools::AssetBuilder::winding defaultWinding;
 	lua_pushstring(i_luaState, "winding");
 	lua_gettable(i_luaState, -2);
 
 	std::string windingValue = lua_tostring(i_luaState, -1);
 	if (strcmp(windingValue.c_str(), "right") == 0)
-		defaultWinding = Engine::Graphics::RIGHT;
+		defaultWinding = Tools::AssetBuilder::RIGHT;
 	else
-		defaultWinding = Engine::Graphics::LEFT;
+		defaultWinding = Tools::AssetBuilder::LEFT;
 
 	i_mesh->setWinding(defaultWinding);
 
@@ -147,7 +147,7 @@ bool LuaLoadTriangleIndex(lua_State* i_luaState, Engine::Graphics::Mesh* i_mesh)
 
 		}
 #ifdef PLATFORM_D3D
-		if (i_mesh->getWinding() == Engine::Graphics::RIGHT)
+		if (i_mesh->getWinding() == Tools::AssetBuilder::RIGHT)
 		{
 			int temp = tempIndices[i - 1].second;
 			tempIndices[i - 1].second = tempIndices[i - 1].third;
@@ -156,7 +156,7 @@ bool LuaLoadTriangleIndex(lua_State* i_luaState, Engine::Graphics::Mesh* i_mesh)
 #endif
 
 #ifdef PLATFORM_OPEN_GL
-		if (i_mesh->getWinding() == Engine::Graphics::LEFT)
+		if (i_mesh->getWinding() == Tools::AssetBuilder::LEFT)
 		{
 			int temp = tempIndices[i - 1].second;
 			tempIndices[i - 1].second = tempIndices[i - 1].third;
