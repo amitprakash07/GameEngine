@@ -8,7 +8,6 @@
 #endif
 
 #include <stdint.h>
-#include "MeshLoadFromLua.h"
 #include <vector>
 
 
@@ -33,12 +32,7 @@ namespace Engine
 			uint8_t R, G, B, A;
 #endif
 		};
-		struct triangleIndex
-		{
-			uint8_t first, second, third;
-		};
-		
-		
+				
 		class Mesh
 		{
 		public:
@@ -46,7 +40,6 @@ namespace Engine
 			bool LoadMesh();
 			vertex* getVertex();
 			uint32_t* getIndices();
-			triangleIndex* getTriangleIndicesList();
 			void setWinding(winding);
 			winding getWinding();
 			void setMeshFileName(std::string);
@@ -54,7 +47,7 @@ namespace Engine
 			~Mesh();
 		private:
 			vertex *mVertex;
-			triangleIndex *mIndices;
+			uint32_t *mIndices;
 			winding mWinding;
 			int triangleCount;
 			int vertexCount;

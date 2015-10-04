@@ -1,6 +1,9 @@
 #include "Mesh.h"
 #include "../Windows/WindowsFunctions.h"
+#include <fstream>
+#include "Graphics.h"
 
+typedef char BYTES;
 
 Engine::Graphics::vertex* Engine::Graphics::Mesh::getVertex()
 {
@@ -13,14 +16,7 @@ uint32_t* Engine::Graphics::Mesh::getIndices()
 {
 	if (mIndices)
 	{
-		uint32_t* indices = new uint32_t[triangleCount * 3];
-		for (int i = 0; i < triangleCount; i++)
-		{
-			indices[i * 3 + 0] = mIndices[i].first;
-			indices[i * 3 + 1] = mIndices[i].second;
-			indices[i * 3 + 2] = mIndices[i].third;
-		}
-		return indices;
+		return mIndices;
 	}
 	return nullptr;
 }
@@ -51,114 +47,77 @@ Engine::Graphics::winding Engine::Graphics::Mesh::getWinding()
 	return mWinding;
 }
 
-Engine::Graphics::triangleIndex* Engine::Graphics::Mesh::getTriangleIndicesList()
-{
-	if (mIndices)
-		return mIndices;
-	return nullptr;
-}
-
 bool Engine::Graphics::Mesh::LoadMesh()
 {
-	lua_State *mLuaState = nullptr;
 	std::stringstream errormessage;
-	mLuaState = luaL_newstate();
 
-	//Creating Lua State
-	if (!mLuaState)
-	{
-		errormessage << "Failed to create a new Lua state \n";
-		WindowsUtil::Print(errormessage.str());
-		exitAndShutdownLua(mLuaState);
-		return false;
-	}
+	std::ifstream readFile;
 
-	//Loading the lua file
-	if(meshFileName.empty())
-	{
-		errormessage << "No File Name for the mesh. Call setMeshFileName(char*) before calling LoadMesh()";
-		WindowsUtil::Print(errormessage.str());
-		exitAndShutdownLua(mLuaState);
-		return false;
-	}
-		
-	int luaResult = luaL_loadfile(mLuaState, meshFileName.c_str());
+	
+	//char * filename;
+	//memcpy(filename, getMeshFileName().c_str(), sizeof(char)*size);
+	///*strcpy(filename, getMeshFileName().c_str());*/
 
-	//Checking the load was successful or not
-	if (luaResult != LUA_OK)
-	{
-		errormessage << "Unable to load the file. \n" << lua_tostring(mLuaState, 1);
+	if(!readFile.is_open())
+		readFile.open(const_cast<char*>(getMeshFileName().c_str()), std::ifstream::binary);
+	
+	readFile.seekg(0, readFile.end);
+	size_t length = readFile.tellg();
+	readFile.seekg(0, readFile.beg);
 
-		//Popping out the error message
-		lua_pop(mLuaState, 1);
-		WindowsUtil::Print(errormessage.str());
-		exitAndShutdownLua(mLuaState);
-		return false;
-	}
+	BYTES * buffer = new BYTES[length];
 
-	//Extracting the table at once in a single return
-	int returnCount = LUA_MULTRET; // Return _everything_ that the file returns
-	int argumentCount = 0;
-	int noMessageHandler = 0;
+	
+	//Lets read evrything from asset binary file
+	readFile.read(buffer, length);
+	
+	readFile.close();//Closing the file Pointer
 
-	luaResult = lua_pcall(mLuaState, argumentCount, returnCount, noMessageHandler);
-	if (!isLuaResultOkay(mLuaState, luaResult) || returnCount > 1 || !isTable(mLuaState))
-	{
-		exitAndShutdownLua(mLuaState);
-		return false;
-	}
+	BYTES * currentPosition = buffer;
+	/* My Binary Format
+	vertexcount-4 byte-int triangleCount-4byte-int  winding order- sizeof(windingorder)
+	vertices
+	indices
+	*/
+	vertexCount = *reinterpret_cast<int*> (currentPosition); //vertexCount
+	currentPosition += sizeof(int);
 
-	const char* vertices = "vertices";
-	lua_pushstring(mLuaState, vertices);
-	lua_gettable(mLuaState, -2);
+	triangleCount = *reinterpret_cast<int*>(currentPosition); //No of triangles
+	currentPosition += sizeof(int);
 
-	if (isTable(mLuaState)) //Vertices Table
-	{
-		vertexCount = luaL_len(mLuaState, -1);
-		if (vertexCount > 0)
-		{
-			mVertex = new vertex[vertexCount];
-			if (!LuaLoadVertex(mLuaState, this))
-				return false;
-		}
-		else
-		{
-			errormessage << "No Vertices in the Lua file \n.";
-			WindowsUtil::Print(errormessage.str());
-			exitAndShutdownLua(mLuaState);
-			return false;
-		}
+	mWinding = *reinterpret_cast<winding*>(currentPosition); //winding order
+	currentPosition += sizeof(winding);
 
-	}
-	lua_pop(mLuaState, 1); //Popping out the vertices Table
+	//creating vertex memmory
+	if (!mVertex)
+		mVertex = new vertex[vertexCount];
+	//copying buffer data to the mVertex
+	memcpy(mVertex, reinterpret_cast<vertex*>(currentPosition), sizeof(vertex)*vertexCount);
+	currentPosition += sizeof(vertex)*vertexCount;
 
-
-	const char* indices = "indices";
-	lua_pushstring(mLuaState, indices);
-	lua_gettable(mLuaState, -2);
-	if (isTable(mLuaState)) //indices Table
-	{
-
-		lua_pushstring(mLuaState, "nooftriangles");
-		lua_gettable(mLuaState, -2);
-		triangleCount = static_cast<int>(lua_tonumber(mLuaState, -1));
-		lua_pop(mLuaState, 1);// Popping out the nooftriangles
-
-		if (triangleCount > 0)
-		{
-			mIndices = new triangleIndex[triangleCount];
-			if (!LuaLoadTriangleIndex(mLuaState, this))
-				return false;
-		}
-	}
-
-	lua_pop(mLuaState, 1); //Popping out the indices table
-
-	lua_pop(mLuaState, 1); //Popping out complete table
-	exitAndShutdownLua(mLuaState);
+	//creating indices memory
+	if (!mIndices)
+		mIndices = new uint32_t[triangleCount * 3];
+	//copying indices data from the memory
+	memcpy(mIndices, reinterpret_cast<uint32_t*>(currentPosition), sizeof(uint32_t) * 3 * triangleCount);
+	
+	//Freeing memory
+	currentPosition = nullptr;
+	delete buffer;	
 
 
 #ifdef PLATFORM_D3D
+	//Changing Winding order
+	if (mWinding == Engine::Graphics::RIGHT)
+	{
+		for (int i = 0; i < triangleCount;i++)
+		{
+			uint32_t temp = mIndices[i*3 + 2];
+			mIndices[i * 3 + 2] = mIndices[i * 3 + 1];
+			mIndices[i * 3 + 1] = temp;
+		}
+	}
+
 	if(!createVertexBuffer())
 	{
 		errormessage << "Unable to Create VertexBuffer for the Mesh.";
@@ -171,7 +130,17 @@ bool Engine::Graphics::Mesh::LoadMesh()
 		WindowsUtil::Print(errormessage.str());
 		return false;
 	}
+
 #elif PLATFORM_OPEN_GL
+	if (mWinding == Engine::Graphics::LEFT)
+	{
+		for (int i = 0; i < triangleCount; i++)
+		{
+			uint32_t temp = mIndices[i * 3 + 2];
+			mIndices[i * 3 + 2] = mIndices[i * 3 + 1];
+			mIndices[i * 3 + 1] = temp;
+		}
+	}
 	if(! createVertexArray())
 	{
 		errormessage << "Unable to Create Vertex and Index Buffer for the Mesh.";
@@ -196,4 +165,23 @@ Engine::Graphics::Mesh::~Mesh()
 		delete mIndices;
 		mIndices = nullptr;
 	}
+
+#ifdef PLATFORM_D3D
+	
+	if (s_vertexBuffer)
+		s_vertexBuffer->Release();
+	
+	if (s_indexBuffer)
+		s_indexBuffer->Release();
+	
+	if (s_vertexDeclaration)
+	{
+		GraphicsSystem::getDevice()->SetVertexDeclaration(nullptr);
+		s_vertexDeclaration->Release();
+	}
+
+	s_vertexBuffer = nullptr;
+	s_indexBuffer = nullptr;
+	s_vertexDeclaration = nullptr;
+#endif
 }

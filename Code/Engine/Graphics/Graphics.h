@@ -12,7 +12,7 @@
 #ifdef PLATFORM_D3D
 #include <d3d9.h>
 #elif PLATFORM_OPEN_GL
-//#include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
+#include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 #endif
 
 namespace Engine

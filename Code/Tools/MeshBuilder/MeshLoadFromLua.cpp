@@ -3,8 +3,6 @@
 #include "../../Engine/Windows/WindowsFunctions.h"
 #include <assert.h>
 
-#define MESHFILE_PATH "data/SquareMesh.lua"
-
 
 bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 {
@@ -59,6 +57,11 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 		lua_pushstring(i_luaState, "color");
 		lua_gettable(i_luaState, -2);
 		int countColorChannels = luaL_len(i_luaState, -1);
+
+#ifdef BUILD_DEBUG
+		std::cout << "Printing Color Channels" << countColorChannels << std::endl;
+#endif
+
 		if(countColorChannels <3)
 		{
 			std::stringstream errormessage;
@@ -75,16 +78,35 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 			switch (j - 1)
 			{
 			case 0:
-				tempVertex[i-1].R = static_cast<uint8_t>(lua_tonumber(i_luaState, -1) * 255);
+				tempVertex[i-1].R = static_cast<uint8_t>(lua_tonumber(i_luaState, -1));
+				tempVertex[i - 1].R *= 255;
+#ifdef BUILD_DEBUG
+				std::cout << "Let's print loading colors\n";
+				std::cout << tempVertex[i - 1].R << std::endl;
+#endif
 				break;
 			case 1:
-				tempVertex[i-1].G = static_cast<uint8_t>(lua_tonumber(i_luaState, -1) * 255);
+#ifdef BUILD_DEBUG
+				std::cout<<"Printing directly from lua"<< lua_tonumber(i_luaState, -1) * 255;
+#endif
+				tempVertex[i-1].G = static_cast<uint8_t>(lua_tonumber(i_luaState, -1));
+				tempVertex[i - 1].G *= 255;
+#ifdef BUILD_DEBUG
+				std::cout << tempVertex[i - 1].R << std::endl;
+#endif				
 				break;
 			case 2:
-				tempVertex[i-1].B = static_cast<uint8_t>(lua_tonumber(i_luaState, -1) * 255);
-				break;
+				tempVertex[i - 1].B = static_cast<uint8_t>(lua_tonumber(i_luaState, -1));
+				tempVertex[i - 1].B *= 255;
+#ifdef BUILD_DEBUG
+				std::cout << tempVertex[i - 1].R << std::endl;
+#endif			break;
 			case 3:
-				tempVertex[i-1].A = static_cast<uint8_t>(lua_tonumber(i_luaState, -1) * 255);
+				tempVertex[i - 1].A = static_cast<uint8_t>(lua_tonumber(i_luaState, -1));
+				tempVertex[i - 1].A *= 255;
+#ifdef BUILD_DEBUG
+				std::cout << tempVertex[i - 1].R << std::endl;
+#endif				
 				break;
 			}
 			lua_pop(i_luaState, 1);//Popping out the previous color value
@@ -146,23 +168,6 @@ bool LuaLoadTriangleIndex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_me
 
 
 		}
-#ifdef PLATFORM_D3D
-		if (i_mesh->getWinding() == Tools::AssetBuilder::RIGHT)
-		{
-			int temp = tempIndices[i - 1].second;
-			tempIndices[i - 1].second = tempIndices[i - 1].third;
-			tempIndices[i - 1].third = temp;
-		}
-#endif
-
-#ifdef PLATFORM_OPEN_GL
-		if (i_mesh->getWinding() == Tools::AssetBuilder::LEFT)
-		{
-			int temp = tempIndices[i - 1].second;
-			tempIndices[i - 1].second = tempIndices[i - 1].third;
-			tempIndices[i - 1].third = temp;
-		}
-#endif
 		lua_pop(i_luaState, 1); //Popping out the indices array
 	}
 

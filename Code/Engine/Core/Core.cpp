@@ -3,8 +3,8 @@
 #include "..\Windows\WindowsProgram.h"
 #include "..\Graphics\Graphics.h"
 #include "..\Graphics\Scene.h"
-#include "..\Windows/WindowsFunctions.h"
-
+#include "..\Windows\WindowsFunctions.h"
+#include "..\Graphics\Effects.h"
 
 namespace EngineCore
 {	
@@ -15,17 +15,21 @@ namespace EngineCore
 		std::stringstream errormessage;
 		CreateMainWindow(hInstance, windowLayout, s_mainWindow);
 		Engine::Graphics::GraphicsSystem::Initialize(s_mainWindow);
-		if(!Engine::Graphics::Scene::addToScene("data/SquareMesh.lua"))
+		Engine::Graphics::Effect *effect = new Engine::Graphics::Effect();
+		if (effect->setShaders())
 		{
-			errormessage << "Unable to add the Mesh";
-			WindowsUtil::Print(errormessage.str());
-			exit(0);
-		}
-		if(!Engine::Graphics::Scene::addToScene("data/TriangleMesh.lua"))
-		{
-			errormessage << "Unable to add the Mesh";
-			WindowsUtil::Print(errormessage.str());
-			exit(0);
+			if (!Engine::Graphics::Scene::addToScene("data/SquareMesh.mesh"))
+			{
+				errormessage << "Unable to add the Mesh";
+				WindowsUtil::Print(errormessage.str());
+				exit(0);
+			}
+			if (!Engine::Graphics::Scene::addToScene("data/TriangleMesh.mesh"))
+			{
+				errormessage << "Unable to add the Mesh";
+				WindowsUtil::Print(errormessage.str());
+				exit(0);
+			}
 		}
 	}
 

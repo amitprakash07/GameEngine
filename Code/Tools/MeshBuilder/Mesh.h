@@ -26,9 +26,10 @@ namespace Tools
 			uint8_t R, G, B, A;
 #endif
 		};
+		
 		struct triangleIndex
 		{
-			uint8_t first, second, third;
+			uint32_t first, second, third;
 		};
 		
 		
@@ -42,7 +43,12 @@ namespace Tools
 			void setWinding(winding);
 			winding getWinding();
 			void setMeshFileName(std::string);
-			std::string getMeshFileName();	
+			std::string getMeshFileName();
+			int getVertexCount();
+			int getTriangleCount();
+#ifdef BUILD_DEBUG
+			void displayVertices();
+#endif
 			~Mesh();
 		private:
 			vertex *mVertex;

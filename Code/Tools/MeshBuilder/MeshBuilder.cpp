@@ -4,34 +4,86 @@
 #include "MeshBuilder.h"
 #include "Mesh.h"
 #include "../../Engine/Windows/WindowsFunctions.h"
-#include <iostream>
+#include <fstream>
 
 // Interface
 //==========
 
 // Build
 //------
+typedef char BYTES;
 
 bool Tools::AssetBuilder::MeshBuilder::Build(const std::vector<std::string>&)
 {
 	bool wereThereErrors = false;
 	Mesh *m = new Mesh();
 	m->setMeshFileName(m_path_source);
-	m->LoadMesh();
-	std::cout << "Loaded Mesh Successfully";
-	std::cout << "Winding order of the Mesh is" << m->getWinding();
-	//// Copy the source to the target
-	//{
-	//	const bool dontFailIfTargetAlreadyExists = false;
-	//	const bool updateTheTargetFileTime = true;
-	//	std::string errorMessage;
-	//	if (!WindowsUtil::CopyFile(m_path_source, m_path_target, dontFailIfTargetAlreadyExists, updateTheTargetFileTime, &errorMessage))
-	//	{
-	//		wereThereErrors = true;
-	//		std::stringstream decoratedErrorMessage;
-	//		decoratedErrorMessage << "Windows failed to copy \"" << m_path_source << "\" to \"" << m_path_target << "\": " << errorMessage << "in File" << __FILE__;
-	//		WindowsUtil::Print(decoratedErrorMessage.str().c_str());
-	//	}
-	//}
+	if(m->LoadMesh())
+	{
+#ifdef BUILD_DEBUG
+		m->displayVertices();
+#endif
+		std::ofstream writeToFile;
+		writeToFile.open(m_path_target, std::ofstream::binary);
+		/* My Binary Format
+		vertexcount triangleCount  winding order
+		vertices
+		indices
+		*/
+		
+		{
+			//Writing vertexCount - First write
+			BYTES *bytes = new BYTES[sizeof(int)];
+			int * vCount = new int;
+			*vCount = m->getVertexCount();
+			memcpy(bytes, vCount, sizeof(int));
+			writeToFile.write(bytes, sizeof(int));
+			delete vCount;
+			vCount = nullptr;
+			delete bytes;
+			bytes = nullptr;
+		}
+		
+		{
+			//Writing TriangleCount and winding - Second Write 
+			BYTES * bytes = new BYTES[sizeof(int) + sizeof(winding)];
+			int * triCount = new int;
+			*triCount = m->getTriangleCount();
+			memcpy(bytes, triCount, sizeof(int));
+			winding *tempWinding = new winding();
+			*tempWinding = m->getWinding();
+			memcpy(bytes + sizeof(int), tempWinding, sizeof(winding));
+			writeToFile.write(bytes, sizeof(int) + sizeof(winding));
+			delete triCount;
+			delete tempWinding;
+			delete bytes;
+			triCount = nullptr;
+			tempWinding = nullptr;
+			bytes = nullptr;			
+		}
+		
+	
+		{
+			//Writing vertices - Third Write
+			BYTES * bytes = new BYTES[sizeof(vertex)* m->getVertexCount()];
+			memcpy(bytes, m->getVertex(), sizeof(vertex)* m->getVertexCount());
+			writeToFile.write(bytes, sizeof(vertex)* m->getVertexCount());
+			delete bytes;
+			bytes = nullptr;
+		}
+		
+		{
+			//writing indices - Fourth Write
+			BYTES *bytes = new BYTES[sizeof(triangleIndex) * m->getTriangleCount()];
+			memcpy(bytes, m->getIndices(), sizeof(uint32_t)* m->getTriangleCount() * 3);
+			writeToFile.write(bytes, sizeof(triangleIndex)* m->getTriangleCount());
+			delete bytes;
+			bytes = nullptr;
+		}
+		writeToFile.close();
+	}
+
+	delete m; //deleting mesh pointer
+
 	return !wereThereErrors;
 }

@@ -18,11 +18,11 @@ return
 		BuildTool = "MeshBuilder.exe",
 		{
 			src = "SquareMesh.lua",
-			target = "SquareMesh.lua",
+			target = "SquareMesh.mesh",
 		},
 		{
 			src = "TriangleMesh.lua",
-			target = "TriangleMesh.lua",
+			target = "TriangleMesh.mesh",
 		}
 	}
 

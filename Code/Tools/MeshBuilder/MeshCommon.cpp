@@ -2,7 +2,7 @@
 #include "../../Engine/Windows/WindowsFunctions.h"
 #include "../../Externals/Lua/Includes.h"
 #include "MeshLoadFromLua.h"
-
+#include <iostream>
 
 Tools::AssetBuilder::vertex* Tools::AssetBuilder::Mesh::getVertex()
 {
@@ -25,6 +25,16 @@ uint32_t* Tools::AssetBuilder::Mesh::getIndices()
 		return indices;
 	}
 	return nullptr;
+}
+
+int Tools::AssetBuilder::Mesh::getVertexCount()
+{
+	return vertexCount;
+}
+
+int Tools::AssetBuilder::Mesh::getTriangleCount()
+{
+	return triangleCount;
 }
 
 void Tools::AssetBuilder::Mesh::setMeshFileName(std::string i_fileName)
@@ -175,3 +185,18 @@ Tools::AssetBuilder::Mesh::~Mesh()
 		mIndices = nullptr;
 	}
 }
+
+#ifdef BUILD_DEBUG
+void Tools::AssetBuilder::Mesh::displayVertices()
+{
+	std::cout << "Size of Vertex is" << sizeof(vertex) << std::endl;
+	for (int i = 0; i < vertexCount; i++)
+	{
+		if(mVertex)
+		{
+			std::cout << "\nPosition = [" << mVertex[i].X << " , " << mVertex[i].Y << " ]\n";
+			std::cout << "\nColor =[" << mVertex[i].R << "," << mVertex[i].G << "," << mVertex[i].B << "," << mVertex[i].A << "]\n";
+		}
+	}
+}
+#endif
