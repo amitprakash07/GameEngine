@@ -1,5 +1,5 @@
-#include "Effect.h"
-#include "../Windows/WindowsFunctions.h"
+#include "../Effect.h"
+#include "../../Windows/WindowsFunctions.h"
 #include <assert.h>
 
 namespace Engine

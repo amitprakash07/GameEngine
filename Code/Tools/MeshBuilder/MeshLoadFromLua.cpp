@@ -165,9 +165,23 @@ bool LuaLoadTriangleIndex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_me
 			}
 			
 			lua_pop(i_luaState, 1); //Popping out the every index order data
-
-
 		}
+
+#ifdef PLATFORM_D3D
+		if (i_mesh->getWinding() == Tools::AssetBuilder::RIGHT)
+		{
+			int temp = tempIndices[i - 1].second;
+			tempIndices[i - 1].second = tempIndices[i - 1].third;
+			tempIndices[i - 1].third = temp;
+		}
+#elif PLATFORM_OPEN_GL
+		if (i_mesh->getWinding() == Tools::AssetBuilder::LEFT)
+		{
+			int temp = tempIndices[i - 1].second;
+			tempIndices[i - 1].second = tempIndices[i - 1].third;
+			tempIndices[i - 1].third = temp;
+		}
+#endif
 		lua_pop(i_luaState, 1); //Popping out the indices array
 	}
 

@@ -1,7 +1,7 @@
 
-#include "Effect.h"
-#include "../Windows/WindowsFunctions.h"
-#include "Graphics.h"
+#include "../Effect.h"
+#include "../../Windows/WindowsFunctions.h"
+#include "../Graphics.h"
 #include <assert.h>
 
 bool Engine::Graphics::Effect::setShaders()

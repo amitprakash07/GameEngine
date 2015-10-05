@@ -78,21 +78,18 @@ bool Engine::Graphics::Mesh::LoadMesh()
 	triangleCount = *reinterpret_cast<int*>(currentPosition); //No of triangles
 	currentPosition += sizeof(int);
 
-	mWinding = *reinterpret_cast<winding*>(currentPosition); //winding order
-	currentPosition += sizeof(winding);
-
 	//creating vertex memmory
 	if (!mVertex)
 		mVertex = new vertex[vertexCount];
 	//copying buffer data to the mVertex
-	memcpy(mVertex, reinterpret_cast<vertex*>(currentPosition), sizeof(vertex)*vertexCount);
+	memcpy(mVertex, reinterpret_cast<vertex*>(currentPosition), sizeof(vertex)*vertexCount); //Vertices
 	currentPosition += sizeof(vertex)*vertexCount;
 
 	//creating indices memory
 	if (!mIndices)
 		mIndices = new uint32_t[triangleCount * 3];
 	//copying indices data from the memory
-	memcpy(mIndices, reinterpret_cast<uint32_t*>(currentPosition), sizeof(uint32_t) * 3 * triangleCount);
+	memcpy(mIndices, reinterpret_cast<uint32_t*>(currentPosition), sizeof(uint32_t) * 3 * triangleCount); //Indices
 	
 	//Freeing memory
 	currentPosition = nullptr;
@@ -100,17 +97,6 @@ bool Engine::Graphics::Mesh::LoadMesh()
 
 
 #ifdef PLATFORM_D3D
-	//Changing Winding order
-	if (mWinding == Engine::Graphics::RIGHT)
-	{
-		for (int i = 0; i < triangleCount;i++)
-		{
-			uint32_t temp = mIndices[i*3 + 2];
-			mIndices[i * 3 + 2] = mIndices[i * 3 + 1];
-			mIndices[i * 3 + 1] = temp;
-		}
-	}
-
 	if(!createVertexBuffer())
 	{
 		errormessage << "Unable to Create VertexBuffer for the Mesh.";
@@ -125,15 +111,6 @@ bool Engine::Graphics::Mesh::LoadMesh()
 	}
 
 #elif PLATFORM_OPEN_GL
-	if (mWinding == Engine::Graphics::LEFT)
-	{
-		for (int i = 0; i < triangleCount; i++)
-		{
-			uint32_t temp = mIndices[i * 3 + 2];
-			mIndices[i * 3 + 2] = mIndices[i * 3 + 1];
-			mIndices[i * 3 + 1] = temp;
-		}
-	}
 	if(! createVertexArray())
 	{
 		errormessage << "Unable to Create Vertex and Index Buffer for the Mesh.";

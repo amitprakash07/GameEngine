@@ -26,7 +26,7 @@ bool Tools::AssetBuilder::MeshBuilder::Build(const std::vector<std::string>&)
 		std::ofstream writeToFile;
 		writeToFile.open(m_path_target, std::ofstream::binary);
 		/* My Binary Format
-		vertexcount triangleCount  winding order
+		vertexcount triangleCount
 		vertices
 		indices
 		*/
@@ -45,20 +45,15 @@ bool Tools::AssetBuilder::MeshBuilder::Build(const std::vector<std::string>&)
 		}
 		
 		{
-			//Writing TriangleCount and winding - Second Write 
-			BYTES * bytes = new BYTES[sizeof(int) + sizeof(winding)];
+			//Writing TriangleCount  
+			BYTES * bytes = new BYTES[sizeof(int)];
 			int * triCount = new int;
 			*triCount = m->getTriangleCount();
 			memcpy(bytes, triCount, sizeof(int));
-			winding *tempWinding = new winding();
-			*tempWinding = m->getWinding();
-			memcpy(bytes + sizeof(int), tempWinding, sizeof(winding));
-			writeToFile.write(bytes, sizeof(int) + sizeof(winding));
+			writeToFile.write(bytes, sizeof(int));
 			delete triCount;
-			delete tempWinding;
 			delete bytes;
-			triCount = nullptr;
-			tempWinding = nullptr;
+			triCount = nullptr;			
 			bytes = nullptr;			
 		}
 		
