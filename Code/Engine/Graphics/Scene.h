@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "Mesh.h"
+#include "Effects.h"
 
 namespace Engine
 {
@@ -18,7 +19,6 @@ namespace Engine
 			~Scene();
 		private:
 			static std::vector<Mesh*> scene;
-
 		};
 	}
 }

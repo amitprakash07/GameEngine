@@ -1,5 +1,5 @@
 
-#include "Effects.h"
+#include "Effect.h"
 #include "../Windows/WindowsFunctions.h"
 #include "Graphics.h"
 #include <assert.h>
@@ -19,10 +19,12 @@ bool Engine::Graphics::Effect::setShaders()
 	return false;
 }
 
-Engine::Graphics::Effect::Effect()
+Engine::Graphics::Effect::Effect(std::string i_vertexShader, std::string i_fragmentShader)
 {
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
+	vertexShader = i_vertexShader;
+	fragmentShader = i_fragmentShader;
 }
 
 Engine::Graphics::Effect::~Effect()
@@ -43,7 +45,7 @@ bool Engine::Graphics::Effect::LoadVertexShader()
 	// Load the source code from file and compile it
 	ID3DXBuffer* compiledShader;
 	{
-		const char* sourceCodeFileName = "data/standard.vshd";//@Amit- To do to change the file name
+		const char* sourceCodeFileName = vertexShader.c_str();//@Amit- To do to change the file name
 		const D3DXMACRO vertexShaderMacro[] =   //@Amit - now macro is not null changed to access the #defined platform code in shader file 
 		{
 			{ "PLATFORM_D3D", "1" },
@@ -103,7 +105,7 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 	// Load the source code from file and compile it
 	ID3DXBuffer* compiledShader;
 	{
-		const char* sourceCodeFileName = "data/standard.fshd"; //@Amit- To do to change the file name
+		const char* sourceCodeFileName = fragmentShader.c_str(); //@Amit- To do to change the file name
 		const D3DXMACRO fragmentShaderMacro[] =   //@Amit - now macro is not null changed to access the #defined platform code in shader file 
 		{
 			{ "PLATFORM_D3D" , "1" },

@@ -53,21 +53,14 @@ bool Engine::Graphics::Mesh::LoadMesh()
 
 	std::ifstream readFile;
 
-	
-	//char * filename;
-	//memcpy(filename, getMeshFileName().c_str(), sizeof(char)*size);
-	///*strcpy(filename, getMeshFileName().c_str());*/
-
 	if(!readFile.is_open())
-		readFile.open(const_cast<char*>(getMeshFileName().c_str()), std::ifstream::binary);
+		readFile.open(meshFileName.c_str(), std::ifstream::binary);
 	
 	readFile.seekg(0, readFile.end);
 	size_t length = readFile.tellg();
 	readFile.seekg(0, readFile.beg);
 
 	BYTES * buffer = new BYTES[length];
-
-	
 	//Lets read evrything from asset binary file
 	readFile.read(buffer, length);
 	

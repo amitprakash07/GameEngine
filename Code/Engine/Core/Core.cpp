@@ -14,10 +14,15 @@ namespace EngineCore
 	{
 		std::stringstream errormessage;
 		CreateMainWindow(hInstance, windowLayout, s_mainWindow);
-		Engine::Graphics::GraphicsSystem::Initialize(s_mainWindow);
-		Engine::Graphics::Effect *effect = new Engine::Graphics::Effect();
-		if (effect->setShaders())
+		if (Engine::Graphics::GraphicsSystem::Initialize(s_mainWindow))
 		{
+			if (!Engine::Graphics::Effects::addEffect("data/standard.vshd", "data/standard.fshd"))
+			{
+				errormessage << "Unable to set the shader effets";
+				WindowsUtil::Print(errormessage.str());
+				exit(0);
+			}
+
 			if (!Engine::Graphics::Scene::addToScene("data/SquareMesh.mesh"))
 			{
 				errormessage << "Unable to add the Mesh";

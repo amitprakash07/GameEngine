@@ -1,4 +1,4 @@
-#include "Effects.h"
+#include "Effect.h"
 #include "../Windows/WindowsFunctions.h"
 #include <assert.h>
 
@@ -7,9 +7,7 @@ namespace Engine
 	namespace Graphics
 	{
 		bool LoadAndAllocateShaderProgram(const char* i_path, void*& o_shader, size_t& o_size, std::string* o_errorMessage);
-		bool LoadFragmentShader(const GLuint i_programId);
-		bool LoadVertexShader(const GLuint i_programId);
-
+		
 		struct sLogInfo
 		{
 			GLchar* memory;
@@ -51,11 +49,11 @@ bool Engine::Graphics::Effect::CreateProgram()
 		}
 	}
 	// Load and attach the shaders
-	if (!LoadVertexShader(s_programId))
+	if (!LoadVertexShader())
 	{
 		return false;
 	}
-	if (!LoadFragmentShader(s_programId))
+	if (!LoadFragmentShader())
 	{
 		return false;
 	}
@@ -254,7 +252,7 @@ OnExit:
 	return !wereThereErrors;
 }
 
-bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
+bool Engine::Graphics::Effect::LoadFragmentShader()
 {
 	// Verify that compiling shaders at run-time is supported
 	{
@@ -276,7 +274,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 		// Load the shader source code
 		size_t fileSize;
 		{
-			const char* sourceCodeFileName = "data/standard.fshd"; //@Amit -TO-DO Need to change the file name
+			const char* sourceCodeFileName = fragmentShader.c_str(); //@Amit -TO-DO Need to change the file name
 			std::string errorMessage;
 			if (!LoadAndAllocateShaderProgram(sourceCodeFileName, shaderSource, fileSize, &errorMessage))
 			{
@@ -414,7 +412,7 @@ bool Engine::Graphics::LoadFragmentShader(const GLuint i_programId)
 	}
 	// Attach the shader to the program
 	{
-		glAttachShader(i_programId, fragmentShaderId);
+		glAttachShader(s_programId, fragmentShaderId);
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
 		{
@@ -455,7 +453,7 @@ OnExit:
 	return !wereThereErrors;
 }
 
-bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
+bool Engine::Graphics::Effect::LoadVertexShader()
 {
 	// Verify that compiling shaders at run-time is supported
 	{
@@ -477,7 +475,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 		// Load the shader source code
 		size_t fileSize;
 		{
-			const char* sourceCodeFileName = "data/standard.vshd";  //@Amit To do - Need to change the file name
+			const char* sourceCodeFileName = vertexShader.c_str();  //@Amit To do - Need to change the file name
 			std::string errorMessage;
 			if (!LoadAndAllocateShaderProgram(sourceCodeFileName, shaderSource, fileSize, &errorMessage))
 			{
@@ -614,7 +612,7 @@ bool Engine::Graphics::LoadVertexShader(const GLuint i_programId)
 	}
 	// Attach the shader to the program
 	{
-		glAttachShader(i_programId, vertexShaderId);
+		glAttachShader(s_programId, vertexShaderId);
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
 		{
@@ -655,9 +653,11 @@ OnExit:
 	return !wereThereErrors;
 }
 
-Engine::Graphics::Effect::Effect()
+Engine::Graphics::Effect::Effect(std::string i_vertexShader, std::string i_fragmentShader)
 {
 	s_programId = 0;
+	vertexShader = i_vertexShader;
+	fragmentShader = i_fragmentShader;
 }
 
 Engine::Graphics::Effect::~Effect()
