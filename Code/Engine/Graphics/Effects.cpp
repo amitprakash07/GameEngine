@@ -3,7 +3,6 @@
 
 
 std::vector<Engine::Graphics::Effect*> Engine::Graphics::Effects::effects;
-
 bool Engine::Graphics::Effects::addEffect(std::string i_vertexShader, std::string i_fragmentShader)
 {
 	bool success = false;
@@ -26,18 +25,20 @@ bool Engine::Graphics::Effects::addEffect(std::string i_vertexShader, std::strin
 	}	
 	return success;
 }
-
-
 Engine::Graphics::Effects::Effects()
 {
 	effects.reserve(20);
 }
-
 Engine::Graphics::Effects::~Effects()
+{
+	
+}
+void Engine::Graphics::Effects::removeAllEffects()
 {
 	for (int i = 0; i < effects.size(); i++)
 		delete effects[i];
 }
+
 
 
 

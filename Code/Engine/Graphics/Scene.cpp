@@ -19,8 +19,6 @@ bool Engine::Graphics::Scene::addToScene(std::string i_fileName)
 	WindowsUtil::Print(errormessage.str());
 	return false;
 }
-
-
 void Engine::Graphics::Scene::drawScene()
 {
 	std::stringstream errormessage;
@@ -41,16 +39,18 @@ void Engine::Graphics::Scene::drawScene()
 		}
 	}
 }
-
-
 Engine::Graphics::Scene::Scene()
 {
 	scene.reserve(10);
 }
-
 Engine::Graphics::Scene::~Scene()
 {
-	for (int i = 0; i < scene.size();i++)
+	
+}
+void Engine::Graphics::Scene::deleteScene()
+{
+	for (int i = 0; i < scene.size(); i++)
 		delete scene[i];
 }
+
 

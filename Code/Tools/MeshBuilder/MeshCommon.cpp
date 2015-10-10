@@ -10,7 +10,6 @@ Tools::AssetBuilder::vertex* Tools::AssetBuilder::Mesh::getVertex()
 		return mVertex;
 	return nullptr;
 }
-
 uint32_t* Tools::AssetBuilder::Mesh::getIndices()
 {
 	if (mIndices)
@@ -26,17 +25,14 @@ uint32_t* Tools::AssetBuilder::Mesh::getIndices()
 	}
 	return nullptr;
 }
-
 int Tools::AssetBuilder::Mesh::getVertexCount()
 {
 	return vertexCount;
 }
-
 int Tools::AssetBuilder::Mesh::getTriangleCount()
 {
 	return triangleCount;
 }
-
 void Tools::AssetBuilder::Mesh::setMeshFileName(std::string i_fileName)
 {
 	if (!i_fileName.empty())
@@ -45,31 +41,26 @@ void Tools::AssetBuilder::Mesh::setMeshFileName(std::string i_fileName)
 		//memcpy(meshFileName, i_fileName, sizeof(char)*strlen(i_fileName));
 	}
 }
-
 std::string Tools::AssetBuilder::Mesh::getMeshFileName()
 {
 	if (!meshFileName.empty())
 		return meshFileName;
 	return nullptr;
 }
-
 void Tools::AssetBuilder::Mesh::setWinding(winding i_winding)
 {
 	mWinding = i_winding;
 }
-
 Tools::AssetBuilder::winding Tools::AssetBuilder::Mesh::getWinding()
 {
 	return mWinding;
 }
-
 Tools::AssetBuilder::triangleIndex* Tools::AssetBuilder::Mesh::getTriangleIndicesList()
 {
 	if (mIndices)
 		return mIndices;
 	return nullptr;
 }
-
 bool Tools::AssetBuilder::Mesh::LoadMesh()
 {
 	lua_State *mLuaState = nullptr;
@@ -170,7 +161,6 @@ bool Tools::AssetBuilder::Mesh::LoadMesh()
 	exitAndShutdownLua(mLuaState);
 	return true;
 }
-
 Tools::AssetBuilder::Mesh::~Mesh()
 {
 	if (mVertex)
@@ -185,7 +175,6 @@ Tools::AssetBuilder::Mesh::~Mesh()
 		mIndices = nullptr;
 	}
 }
-
 #ifdef BUILD_DEBUG
 void Tools::AssetBuilder::Mesh::displayVertices()
 {

@@ -118,7 +118,6 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 	}
 	return true;
 }
-
 bool LuaLoadTriangleIndex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 {
 	int indicesCount;
@@ -188,7 +187,6 @@ bool LuaLoadTriangleIndex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_me
 	return true;
 }
 
-
 /**********************************************Lua Error Check Helper Functions*******************************************/
 bool isString(lua_State * luaState)
 {
@@ -201,7 +199,6 @@ bool isString(lua_State * luaState)
 	}
 	return true;
 }
-
 bool isTable(lua_State* luaState)
 {
 	if (!lua_istable(luaState, -1))
@@ -213,7 +210,6 @@ bool isTable(lua_State* luaState)
 	}
 	return true;
 }
-
 bool isValueNil(lua_State * luaState)
 {
 
@@ -226,7 +222,6 @@ bool isValueNil(lua_State * luaState)
 	}
 	return false;
 }
-
 bool isValueNumber(lua_State* luaState)
 {
 	if (lua_type(luaState, -1) != LUA_TNUMBER)
@@ -238,7 +233,6 @@ bool isValueNumber(lua_State* luaState)
 	}
 	return true;
 }
-
 bool exitAndShutdownLua(lua_State *i_luaState)
 {
 	if (i_luaState)
@@ -253,7 +247,6 @@ bool exitAndShutdownLua(lua_State *i_luaState)
 	WindowsUtil::Print(errormessage.str());
 	return true;
 }
-
 bool isLuaResultOkay(lua_State *i_luaState, int result)
 {
 	if (result != LUA_OK)

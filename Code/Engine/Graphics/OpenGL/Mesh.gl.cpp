@@ -29,7 +29,6 @@ bool Engine::Graphics::Mesh::drawMesh()
 	assert(glGetError() == GL_NO_ERROR);
 	return (glGetError() == GL_NO_ERROR);
 }
-
 bool Engine::Graphics::Mesh::createVertexArray()
 {
 	bool wereThereErrors = false;
@@ -108,6 +107,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(vertex), reinterpret_cast<GLvoid*>(vertexData),
 			// Our code will only ever write to the buffer
 			GL_STATIC_DRAW);
+		delete vertexData;
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
 		{
@@ -244,6 +244,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, bufferSize, reinterpret_cast<const GLvoid*>(indexData),
 			// Our code will only ever write to the buffer
 			GL_STATIC_DRAW);
+		delete indexData;
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
 		{
@@ -318,4 +319,8 @@ OnExit:
 	}
 
 	return !wereThereErrors;
+}
+Engine::Graphics::Mesh::~Mesh()
+{
+		
 }

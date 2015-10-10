@@ -16,7 +16,6 @@ namespace Engine
 		};
 	}
 }
-
 bool Engine::Graphics::Effect::setShaders()
 {
 	if(CreateProgram())
@@ -27,7 +26,6 @@ bool Engine::Graphics::Effect::setShaders()
 	}
 	return false;
 }
-
 bool Engine::Graphics::Effect::CreateProgram()
 {
 	// Create a program
@@ -136,7 +134,6 @@ bool Engine::Graphics::Effect::CreateProgram()
 
 	return true;
 }
-
 bool Engine::Graphics::LoadAndAllocateShaderProgram(const char* i_path, void*& o_shader, size_t& o_size, std::string* o_errorMessage)
 {
 	bool wereThereErrors = false;
@@ -251,7 +248,6 @@ OnExit:
 
 	return !wereThereErrors;
 }
-
 bool Engine::Graphics::Effect::LoadFragmentShader()
 {
 	// Verify that compiling shaders at run-time is supported
@@ -452,7 +448,6 @@ OnExit:
 
 	return !wereThereErrors;
 }
-
 bool Engine::Graphics::Effect::LoadVertexShader()
 {
 	// Verify that compiling shaders at run-time is supported
@@ -652,14 +647,12 @@ OnExit:
 
 	return !wereThereErrors;
 }
-
 Engine::Graphics::Effect::Effect(std::string i_vertexShader, std::string i_fragmentShader)
 {
 	s_programId = 0;
 	vertexShader = i_vertexShader;
 	fragmentShader = i_fragmentShader;
 }
-
 Engine::Graphics::Effect::~Effect()
 {
 	if (s_programId != 0)

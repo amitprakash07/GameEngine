@@ -137,7 +137,6 @@ IDirect3DDevice9* Engine::Graphics::GraphicsSystem::getDevice()
 	return nullptr;
 }
 
-
 // Helper Function Definitions
 //============================
 

@@ -11,6 +11,7 @@ namespace Engine
 		{
 		public:
 			static bool addEffect(std::string, std::string);
+			static void removeAllEffects();
 			Effects();
 			~Effects();
 		private:

@@ -11,7 +11,6 @@ Engine::Graphics::vertex* Engine::Graphics::Mesh::getVertex()
 		return mVertex;
 	return nullptr;
 }
-
 uint32_t* Engine::Graphics::Mesh::getIndices()
 {
 	if (mIndices)
@@ -20,7 +19,6 @@ uint32_t* Engine::Graphics::Mesh::getIndices()
 	}
 	return nullptr;
 }
-
 void Engine::Graphics::Mesh::setMeshFileName(std::string i_fileName)
 {
 	if (!i_fileName.empty())
@@ -29,24 +27,20 @@ void Engine::Graphics::Mesh::setMeshFileName(std::string i_fileName)
 		//memcpy(meshFileName, i_fileName, sizeof(char)*strlen(i_fileName));
 	}
 }
-
 std::string Engine::Graphics::Mesh::getMeshFileName()
 {
 	if (!meshFileName.empty())
 		return meshFileName;
 	return nullptr;
 }
-
 void Engine::Graphics::Mesh::setWinding(winding i_winding)
 {
 	mWinding = i_winding;
 }
-
 Engine::Graphics::winding Engine::Graphics::Mesh::getWinding()
 {
 	return mWinding;
 }
-
 bool Engine::Graphics::Mesh::LoadMesh()
 {
 	std::stringstream errormessage;
@@ -68,7 +62,7 @@ bool Engine::Graphics::Mesh::LoadMesh()
 
 	BYTES * currentPosition = buffer;
 	/* My Binary Format
-	vertexcount-4 byte-int triangleCount-4byte-int  winding order- sizeof(windingorder)
+	vertexcount-4 byte-int triangleCount-4byte-int
 	vertices
 	indices
 	*/
@@ -122,36 +116,4 @@ bool Engine::Graphics::Mesh::LoadMesh()
 	return true;
 }
 
-Engine::Graphics::Mesh::~Mesh()
-{
-	if (mVertex)
-	{
-		delete mVertex;
-		mVertex = nullptr;
-	}
 
-	if (mIndices)
-	{
-		delete mIndices;
-		mIndices = nullptr;
-	}
-
-#ifdef PLATFORM_D3D
-	
-	if (s_vertexBuffer)
-		s_vertexBuffer->Release();
-	
-	if (s_indexBuffer)
-		s_indexBuffer->Release();
-	
-	if (s_vertexDeclaration)
-	{
-		GraphicsSystem::getDevice()->SetVertexDeclaration(nullptr);
-		s_vertexDeclaration->Release();
-	}
-
-	s_vertexBuffer = nullptr;
-	s_indexBuffer = nullptr;
-	s_vertexDeclaration = nullptr;
-#endif
-}

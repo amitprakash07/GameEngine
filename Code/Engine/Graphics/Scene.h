@@ -15,6 +15,7 @@ namespace Engine
 		public:
 			static bool addToScene(std::string);
 			static void drawScene();
+			static void deleteScene();
 			Scene();
 			~Scene();
 		private:

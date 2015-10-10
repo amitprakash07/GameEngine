@@ -11,7 +11,6 @@ namespace Engine
 		HRESULT GetVertexProcessingUsage(DWORD& o_usage);
 	}
 }
-
 bool Engine::Graphics::Mesh::drawMesh()
 {
 	HRESULT result;
@@ -52,7 +51,6 @@ bool Engine::Graphics::Mesh::drawMesh()
 		
 		return(SUCCEEDED(result));	
 }
-
 bool Engine::Graphics::Mesh::createVertexBuffer()
 {
 	DWORD usage = 0;
@@ -147,7 +145,6 @@ bool Engine::Graphics::Mesh::createVertexBuffer()
 	return true;
 
 }
-
 bool Engine::Graphics::Mesh::createIndexBuffer()
 {
 	// The usage tells Direct3D how this vertex buffer will be used
@@ -210,7 +207,6 @@ bool Engine::Graphics::Mesh::createIndexBuffer()
 	
 	return true;
 }
-
 HRESULT Engine::Graphics::GetVertexProcessingUsage(DWORD& o_usage)
 {
 	D3DDEVICE_CREATION_PARAMETERS deviceCreationParameters;
@@ -227,6 +223,34 @@ HRESULT Engine::Graphics::GetVertexProcessingUsage(DWORD& o_usage)
 	}
 	return result;
 }
+Engine::Graphics::Mesh::~Mesh()
+{
+	if (mVertex)
+	{
+		delete mVertex;
+		mVertex = nullptr;
+	}
+	if (mIndices)
+	{
+		delete mIndices;
+		mIndices = nullptr;
+	}
+	if (s_vertexBuffer)
+		s_vertexBuffer->Release();
 
+	if (s_indexBuffer)
+		s_indexBuffer->Release();
+
+	if (s_vertexDeclaration)
+	{
+		GraphicsSystem::getDevice()->SetVertexDeclaration(nullptr);
+		s_vertexDeclaration->Release();
+	}
+
+	s_vertexBuffer = nullptr;
+	s_indexBuffer = nullptr;
+	s_vertexDeclaration = nullptr;
+
+}
 
 

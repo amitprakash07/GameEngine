@@ -8,7 +8,8 @@ namespace EngineCore
 {
 	void Initialize(HINSTANCE hInstance, int windowLayout);
 	void onNewFrame();
-	bool isWindowClosed();
+	bool isWindowClosed(HINSTANCE hInstance);
+	void shutDownEngine();
 }
 
 #endif
