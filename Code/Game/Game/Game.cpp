@@ -7,7 +7,7 @@
 int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_commandLineArguments,	int i_initialWindowDisplayState)
 {
 	{
-		_CrtSetBreakAlloc(156);
+		//_CrtSetBreakAlloc(156);
 		EngineCore::Initialize(i_thisInstanceOfTheProgram, i_initialWindowDisplayState);
 		while (!EngineCore::isWindowClosed(i_thisInstanceOfTheProgram))
 			EngineCore::onNewFrame();

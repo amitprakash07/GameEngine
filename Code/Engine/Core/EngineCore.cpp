@@ -1,12 +1,12 @@
 
-#include "Core.h"
+#include "EngineCore.h"
 #include "..\Windows\WindowsProgram.h"
 #include "..\Graphics\Graphics.h"
 #include "..\Graphics\Scene.h"
 #include "..\Windows\WindowsFunctions.h"
 #include "..\Graphics\Effects.h"
 
-void EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
+void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 {
 	std::stringstream errormessage;
 	Engine::WindowUtil::WindowingSystem::CreateMainWindow(hInstance, windowLayout);
@@ -17,7 +17,7 @@ void EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 			errormessage << "Unable to set the shader effets";
 			WindowsUtil::Print(errormessage.str());
 			exit(0);
-		}
+		} 
 
 		if (!Engine::Graphics::Scene::addToScene("data/SquareMesh.mesh"))
 		{
@@ -33,7 +33,7 @@ void EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 		}
 	}
 }
-void EngineCore::onNewFrame()
+void Engine::EngineCore::onNewFrame()
 {
 	MSG message = {};
 	bool hasWindowsSentAMessage;
@@ -58,7 +58,7 @@ void EngineCore::onNewFrame()
 	}
 
 }
-bool EngineCore::isWindowClosed(HINSTANCE hInstance)
+bool Engine::EngineCore::isWindowClosed(HINSTANCE hInstance)
 {
 	if (Engine::WindowUtil::WindowingSystem::getMainWindow() == nullptr)
 	{
@@ -74,8 +74,22 @@ bool EngineCore::isWindowClosed(HINSTANCE hInstance)
 	}
 	return false;
 }
-void EngineCore::shutDownEngine()
+void Engine::EngineCore::shutDownEngine()
 {
 	Engine::Graphics::Effects::removeAllEffects();
 	Engine::Graphics::Scene::deleteScene();
 }
+Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::getMessagingSystem()
+{
+	return Engine::MessagingSystem::getMessagingSystem();
+}
+Engine::SharedPointer<Engine::Time::FrameTime> Engine::EngineCore::getFrameTimeController()
+{
+	return Engine::Time::FrameTime::getFrameTimeController();
+}
+Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::getStringPool()
+{
+	return Engine::StringPool::getStringPool();
+}
+
+

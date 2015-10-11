@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="HashedString.h" />
+    <ClInclude Include="SharedPointer.h" />
+    <ClInclude Include="StringPool.h" />
+    <ClInclude Include="UniquePtr.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SharedPointer.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HashedString.cpp" />
+    <ClCompile Include="StringPool.cpp" />
+    <ClCompile Include="UniquePtr.cpp" />
+  </ItemGroup>
+</Project>
