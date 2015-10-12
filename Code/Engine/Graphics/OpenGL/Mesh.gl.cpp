@@ -320,7 +320,25 @@ OnExit:
 
 	return !wereThereErrors;
 }
+
 Engine::Graphics::Mesh::~Mesh()
 {
-		
+	if (mVertex)
+		delete mVertex;
+	if (mIndices)
+		delete mIndices;
+
+	mVertex = nullptr;
+	mIndices = nullptr;
+}
+
+Engine::Graphics::Mesh::Mesh(std::string i_meshName, std::string i_fileName)
+{
+	mVertex = nullptr;
+	mIndices = nullptr;
+	meshFileName = i_fileName;
+	meshName = i_meshName;
+	mWinding = Engine::Graphics::winding::RIGHT;
+	triangleCount = 0;
+	vertexCount = 0;
 }

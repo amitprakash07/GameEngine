@@ -187,7 +187,7 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
     <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -268,12 +268,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="WindowsFunctions.cpp" />
-    <ClCompile Include="WindowsProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsFunctions.h" />
     <ClInclude Include="WindowsIncludes.h" />
-    <ClInclude Include="WindowsProgram.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

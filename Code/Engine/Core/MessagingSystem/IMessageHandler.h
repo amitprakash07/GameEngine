@@ -2,15 +2,17 @@
 #define __I_MESSAGE_HANDLER_H
 
 #include "../Utilities/HashedString.h"
-#include "../additionaltypes.h"
+#include "../EngineCore/additionaltypes.h"
 //#include "_assert.h"
+
 
 namespace Engine
 {	
+	class RTTI;
 	class IMessageHandler
 	{
 	public: 
-		virtual void HandleMessage(Engine::utils::StringHash &, void *i_MessageSender, void* i_pMessageData)=0;
+		virtual void HandleMessage(Engine::utils::StringHash &, RTTI *i_MessageSender, void* i_pMessageData)=0;
 		virtual  ~IMessageHandler(){};
 		IMessageHandler(){};
 		

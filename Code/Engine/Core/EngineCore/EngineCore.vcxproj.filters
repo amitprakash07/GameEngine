@@ -3,8 +3,12 @@
   <ItemGroup>
     <ClInclude Include="additionaltypes.h" />
     <ClInclude Include="EngineCore.h" />
+    <ClInclude Include="WindowsProgram.h" />
+    <ClInclude Include="RTTI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp" />
+    <ClCompile Include="WindowsProgram.cpp" />
+    <ClCompile Include="RTTI.cpp" />
   </ItemGroup>
 </Project>

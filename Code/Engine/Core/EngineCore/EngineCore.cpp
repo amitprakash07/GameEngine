@@ -1,15 +1,15 @@
 
 #include "EngineCore.h"
-#include "..\Windows\WindowsProgram.h"
-#include "..\Graphics\Graphics.h"
-#include "..\Graphics\Scene.h"
-#include "..\Windows\WindowsFunctions.h"
-#include "..\Graphics\Effects.h"
+#include "WindowsProgram.h"
+#include "..\..\Graphics\Graphics.h"
+#include "..\..\Graphics\Scene.h"
+#include "..\..\Windows\WindowsFunctions.h"
+#include "..\..\Graphics\Effects.h"
 
 void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 {
 	std::stringstream errormessage;
-	Engine::WindowUtil::WindowingSystem::CreateMainWindow(hInstance, windowLayout);
+	getWindowingSystem()->CreateMainWindow(hInstance, windowLayout);
 	if (Engine::Graphics::GraphicsSystem::Initialize(Engine::WindowUtil::WindowingSystem::getMainWindow()))
 	{
 		if (!Engine::Graphics::Effects::addEffect("data/standard.vshd", "data/standard.fshd"))
@@ -91,5 +91,17 @@ Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::getStringPool()
 {
 	return Engine::StringPool::getStringPool();
 }
+
+Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::EngineCore::getWindowingSystem()
+{
+	return Engine::WindowUtil::WindowingSystem::getWindow();
+}
+
+Engine::SharedPointer<Engine::InputController> Engine::EngineCore::getInputController()
+{
+	return Engine::InputController::getINputController();
+}
+
+
 
 

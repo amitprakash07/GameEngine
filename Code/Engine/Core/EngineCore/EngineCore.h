@@ -2,11 +2,13 @@
 #ifndef __CORE_H
 #define __CORE_H
 
-#include "../Windows/WindowsIncludes.h"
-#include "MessagingSystem/MessagingSystem.h"
-#include "Time/FrameTime.h"
-#include "Utilities/SharedPointer.h"
-#include "Utilities/StringPool.h"
+#include "../../Windows/WindowsIncludes.h"
+#include "../MessagingSystem/MessagingSystem.h"
+#include "../Time/FrameTime.h"
+#include "../Utilities/SharedPointer.h"
+#include "../Utilities/StringPool.h"
+#include "WindowsProgram.h"
+#include "../InputController/InputController.h"
 
 namespace Engine
 {
@@ -20,6 +22,9 @@ namespace Engine
 		static SharedPointer<Engine::MessagingSystem> getMessagingSystem();
 		static SharedPointer<Engine::Time::FrameTime> getFrameTimeController();
 		static SharedPointer<Engine::StringPool> getStringPool();
+		static SharedPointer<Engine::WindowUtil::WindowingSystem> getWindowingSystem();
+		static SharedPointer<Engine::InputController> getInputController();
+
 	};
 	
 }

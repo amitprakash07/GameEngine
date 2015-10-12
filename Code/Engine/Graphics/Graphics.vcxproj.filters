@@ -22,20 +22,17 @@
       <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="MeshCommon.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Effects.cpp" />
     <ClCompile Include="OpenGL\Effect.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Direct3D\Effect.d3d.cpp">
       <Filter>Direct3D</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.Common.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Scene.h" />
     <ClInclude Include="Effect.h" />
-    <ClInclude Include="Effects.h" />
   </ItemGroup>
 </Project>

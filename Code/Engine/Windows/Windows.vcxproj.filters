@@ -2,11 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="WindowsFunctions.cpp" />
-    <ClCompile Include="WindowsProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsFunctions.h" />
     <ClInclude Include="WindowsIncludes.h" />
-    <ClInclude Include="WindowsProgram.h" />
   </ItemGroup>
 </Project>

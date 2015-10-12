@@ -9,6 +9,8 @@
 #endif
 
 #include <vector>
+#include <map>
+#include "../Core/Utilities/SharedPointer.h"
 
 namespace Engine
 {
@@ -17,14 +19,19 @@ namespace Engine
 		class Effect
 		{
 		public:
+			static bool addEffectToList(std::string, std::string, std::string);
+			static Engine::SharedPointer<Effect> getEffect(std::string);
+			static void deleteAllEffect();
 			bool setShaders();
-			Effect(std::string, std::string);
 			~Effect();
 		private:
+			static std::map<std::string, Engine::SharedPointer<Effect>> mEffectList;
+			std::string shaderName;
 			std::string fragmentShader;
 			std::string vertexShader;
 			bool LoadFragmentShader();
 			bool LoadVertexShader();
+			Effect(std::string, std::string, std::string);
 #ifdef PLATFORM_D3D
 			IDirect3DVertexShader9* s_vertexShader;
 			IDirect3DPixelShader9* s_fragmentShader;

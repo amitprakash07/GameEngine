@@ -19,10 +19,11 @@ bool Engine::Graphics::Effect::setShaders()
 	return false;
 }
 
-Engine::Graphics::Effect::Effect(std::string i_vertexShader, std::string i_fragmentShader)
+Engine::Graphics::Effect::Effect(std::string i_shaderName, std::string i_vertexShader, std::string i_fragmentShader)
 {
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
+	shaderName = i_shaderName;
 	vertexShader = i_vertexShader;
 	fragmentShader = i_fragmentShader;
 }

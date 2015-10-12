@@ -9,6 +9,8 @@
 
 #include <stdint.h>
 #include <vector>
+#include <map>
+#include "../Core/Utilities/SharedPointer.h"
 
 
 namespace Engine
@@ -36,22 +38,27 @@ namespace Engine
 		class Mesh
 		{
 		public:
+			static bool addToMeshList(std::string, std::string);
+			static SharedPointer<Mesh> getMesh(std::string);
+			static void deleteAllMesh();
 			bool drawMesh();
 			bool LoadMesh();
 			vertex* getVertex();
 			uint32_t* getIndices();
 			void setWinding(winding);
 			winding getWinding();
-			void setMeshFileName(std::string);
 			std::string getMeshFileName();	
 			~Mesh();
 		private:
+			static std::map<std::string, SharedPointer<Mesh>> meshList;
 			vertex *mVertex;
 			uint32_t *mIndices;
 			winding mWinding;
 			int triangleCount;
 			int vertexCount;
 			std::string meshFileName;
+			std::string meshName;
+			Mesh(std::string, std::string);
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;
 			bool createVertexArray();

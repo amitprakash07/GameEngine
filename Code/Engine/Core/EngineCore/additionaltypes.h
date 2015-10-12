@@ -27,6 +27,15 @@ namespace Engine
 		};
 		typedef _MessagePriority Priority;
 
+		enum _Direction
+		{
+			UP,
+			DOWN,
+			LEFT,
+			RIGHT
+		};
+		typedef _Direction Direction;
+
 		enum _Axis
 		{
 			XAxis = 0,

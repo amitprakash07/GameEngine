@@ -18,6 +18,12 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="InputController.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="InputController.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{44956D80-3BB9-42B5-8615-FEE3D452643F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

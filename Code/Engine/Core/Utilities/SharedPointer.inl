@@ -1,8 +1,10 @@
 #include <assert.h>
+#include <typeinfo>
+
 namespace Engine
 {
 	template <typename T>
-	SharedPointer<T>::SharedPointer()
+	inline SharedPointer<T>::SharedPointer()
 	{
 		m_WrappingObject = nullptr;
 		m_referenceCount = new unsigned int;
@@ -10,7 +12,7 @@ namespace Engine
 	}
 
 	template<typename T>
-	SharedPointer<T>::SharedPointer(T* i_ptr)
+	inline SharedPointer<T>::SharedPointer(T* i_ptr)
 	{
 		assert(i_ptr != nullptr);
 		m_WrappingObject = i_ptr;
@@ -19,13 +21,13 @@ namespace Engine
 	}
 	
 	template<typename T>
-	SharedPointer<T>::~SharedPointer()
+	inline SharedPointer<T>::~SharedPointer()
 	{
 		deleteObject();
 	}
 
 	template<typename T>
-	SharedPointer<T>::SharedPointer(const SharedPointer<T> & i_other)
+	inline SharedPointer<T>::SharedPointer(const SharedPointer<T> & i_other)
 	{
 		m_WrappingObject = i_other.m_WrappingObject;
 		m_referenceCount = i_other.m_referenceCount;
@@ -33,7 +35,7 @@ namespace Engine
 	}
 
 	template<typename T>
-	SharedPointer<T>::SharedPointer(SharedPointer<T> * i_other)
+	inline SharedPointer<T>::SharedPointer(SharedPointer<T> * i_other)
 	{
 		m_WrappingObject = i_other.m_WrappingObject;
 		m_referenceCount = i_other.m_referenceCount;
@@ -41,7 +43,7 @@ namespace Engine
 	}
 
 	template<typename T>
-	SharedPointer<T>& SharedPointer<T>::operator=(SharedPointer<T> &i_other)
+	inline SharedPointer<T>& SharedPointer<T>::operator=(SharedPointer<T> &i_other)
 	{
 		if (!isEqual( i_other))
 		{
@@ -55,22 +57,35 @@ namespace Engine
 	}
 
 	template<typename T>
-	bool SharedPointer<T>::isEqual(SharedPointer<T> &i_other)
+	inline bool SharedPointer<T>::isEqual(SharedPointer<T> &i_other)
 	{
 		if (m_WrappingObject == i_other.m_WrappingObject)
 			return true;
 		return false;
 	}
 
+	template <>
+	inline bool Engine::SharedPointer<Engine::RTTI>::isBothSameType(Engine::RTTI* i_ptr)
+	{
+		if(i_ptr)
+		{
+			if (m_WrappingObject->isType(i_ptr))
+				return true;
+			return false;
+		}
+		return false;
+	}
+
+
 	template<typename T>
-	T& SharedPointer<T>::operator*()
+	inline T& SharedPointer<T>::operator*()
 	{
 		assert(m_WrappingObject);
 		return *m_WrappingObject;
 	}
 
 	template<typename T>
-	T* SharedPointer<T>::operator->()
+	inline T* SharedPointer<T>::operator->()
 	{
 		assert(m_WrappingObject);
 		if (!this->isNull())
@@ -79,7 +94,7 @@ namespace Engine
 	}
 
 	template<typename T>
-	bool SharedPointer<T>::deleteObject()
+	inline bool SharedPointer<T>::deleteObject()
 	{
 		assert(m_WrappingObject);
 		if (!this->isNull())
@@ -100,7 +115,7 @@ namespace Engine
 	}
 
 	template<typename T>
-	bool SharedPointer<T>::isNull()
+	inline bool SharedPointer<T>::isNull()
 	{
 		if (m_WrappingObject == nullptr)//|| m_WrappingObject == null)
 			return true;

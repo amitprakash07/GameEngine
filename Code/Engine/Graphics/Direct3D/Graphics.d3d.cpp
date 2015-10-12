@@ -4,9 +4,8 @@
 #include "../Graphics.h"
 #include <d3dx9shader.h>
 #include <cassert>
-#include "../Scene.h"
 #include "../../Windows/WindowsFunctions.h"
-#include "../Effects.h"
+
 
 // Static Data Initialization
 //===========================
@@ -89,7 +88,7 @@ void Engine::Graphics::GraphicsSystem::Render()
 
 		assert( SUCCEEDED( result ) );
 		{
-			Scene::drawScene();
+			Scene::drawScene(); //Need To work on this
 
 		}
 		result = s_direct3dDevice->EndScene();

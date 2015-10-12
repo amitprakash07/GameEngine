@@ -1,9 +1,19 @@
 #include "WindowsProgram.h"
 #include "Resources/Resource.h"
-#include "WindowsFunctions.h"
+#include "../../Windows/WindowsFunctions.h"
+#include "EngineCore.h"
 
-HWND Engine::WindowUtil::WindowingSystem::s_mainWindow = nullptr;
-const char* Engine::WindowUtil::WindowingSystem::s_mainWindowClassName =  "Amit Prakash - Main Window Class";
+
+Engine::WindowUtil::WindowingSystem* Engine::WindowUtil::WindowingSystem::mWindowingSystem = nullptr;
+
+Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::WindowUtil::WindowingSystem::getWindow()
+{
+	if(mWindowingSystem == nullptr)
+		mWindowingSystem = new WindowingSystem();
+		
+	return mWindowingSystem;
+}
+
 bool Engine::WindowUtil::WindowingSystem::CreateMainWindow(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState)
 {
 	ATOM mainWindowClass = RegisterMainWindowClass(i_thisInstanceOfTheProgram);
@@ -16,13 +26,15 @@ bool Engine::WindowUtil::WindowingSystem::CreateMainWindow(const HINSTANCE i_thi
 	}
 	return false;
 }
+
 ATOM Engine::WindowUtil::WindowingSystem::RegisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)
 {
 	WNDCLASSEX wndClassEx = { 0 };
 	wndClassEx.cbSize = sizeof(WNDCLASSEX);
 	wndClassEx.hInstance = i_thisInstanceOfTheProgram;
+#ifdef PLATFORM_D3D
 	wndClassEx.style = 0;
-#ifdef WindowsUtil_PLATFORM_GL
+#elif PLATFORM_OPEN_GL
 	wndClassEx.style |= CS_OWNDC;
 #endif
 	wndClassEx.lpfnWndProc = OnMessageReceived;
@@ -36,14 +48,14 @@ ATOM Engine::WindowUtil::WindowingSystem::RegisterMainWindowClass(const HINSTANC
 	wndClassEx.hIcon = LoadIcon(i_thisInstanceOfTheProgram, MAKEINTRESOURCE(IDI_BIG));
 	wndClassEx.hIconSm = LoadIcon(i_thisInstanceOfTheProgram, MAKEINTRESOURCE(IDI_SMALL));
 	// The cursor that should display when the mouse pointer is over windows of this class
-	wndClassEx.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wndClassEx.hCursor = LoadCursor(nullptr , IDC_ARROW);
 	// The "brush" that windows of this class should use as a background
 	// (Setting this is a bit confusing but not important,
 	// so don't be alarmed if the next line looks scary)
 	wndClassEx.hbrBackground = reinterpret_cast<HBRUSH>(IntToPtr(COLOR_BACKGROUND + 1));
 	// A menu can be specified that all windows of this class would use by default,
 	// but usually this is set for each window individually
-	wndClassEx.lpszMenuName = NULL;
+	wndClassEx.lpszMenuName = nullptr;
 	// The class name (see comments where this is initialized)
 	wndClassEx.lpszClassName = s_mainWindowClassName;
 	// Now all of the above information is given to Windows.
@@ -59,6 +71,7 @@ ATOM Engine::WindowUtil::WindowingSystem::RegisterMainWindowClass(const HINSTANC
 	}
 	return mainWindowClass;
 }
+
 HWND Engine::WindowUtil::WindowingSystem::CreateMainWindowHandle( const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState )
 {
 	// Create the main window
@@ -201,6 +214,7 @@ HWND Engine::WindowUtil::WindowingSystem::CreateMainWindowHandle( const HINSTANC
 //	return nullptr;
 
 }
+
 LRESULT CALLBACK Engine::WindowUtil::WindowingSystem::OnMessageReceived(HWND i_window, UINT i_message, WPARAM i_wParam, LPARAM i_lParam)
 {
 	switch (i_message)
@@ -234,7 +248,6 @@ LRESULT CALLBACK Engine::WindowUtil::WindowingSystem::OnMessageReceived(HWND i_w
 		//			PostQuitMessage(exitCode);*/
 		//			SendMessage(i_window, WM_NCDESTROY, i_wParam, i_lParam);
 		//		}
-
 		//		// For WM_CHAR messages, return 0 to indicate that it was processed
 		//		return 0;
 		//	}
@@ -246,12 +259,19 @@ LRESULT CALLBACK Engine::WindowUtil::WindowingSystem::OnMessageReceived(HWND i_w
 
 		//}
 		// If the key press wasn't handled pass it on to Windows to process in the default way
+
+		
+		break;
+	}
+	case WM_KEYDOWN:
+	{
+		Engine::EngineCore::getMessagingSystem()->sendMessage(Engine::EngineCore::getStringPool()->findString("Key Down"), mWindowingSystem, reinterpret_cast<void*>(i_wParam));
 		break;
 	}
 	// The window's nonclient area is being destroyed
 	case WM_NCDESTROY:
 	{
-		s_mainWindow = nullptr;
+		mWindowingSystem->s_mainWindow = nullptr;
 		// When the main window is destroyed
 		// a WM_QUIT message should be sent
 		// (if this isn't done the application would continue to run with no window).
@@ -265,6 +285,7 @@ LRESULT CALLBACK Engine::WindowUtil::WindowingSystem::OnMessageReceived(HWND i_w
 	// Pass any messages that weren't handled on to Windows
 	return DefWindowProc(i_window, i_message, i_wParam, i_lParam);
 }
+
 bool Engine::WindowUtil::WindowingSystem::UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)
 {
 	if (UnregisterClass(s_mainWindowClassName, i_thisInstanceOfTheProgram) != FALSE)
@@ -278,12 +299,14 @@ bool Engine::WindowUtil::WindowingSystem::UnregisterMainWindowClass(const HINSTA
 		return false;
 	}
 }
+
 HWND Engine::WindowUtil::WindowingSystem::getMainWindow()
 {
-	if (s_mainWindow)
-		return s_mainWindow;
+	if (mWindowingSystem->s_mainWindow)
+		return mWindowingSystem->s_mainWindow;
 	return nullptr;
 }
+
 bool Engine::WindowUtil::WindowingSystem::CleanupMainWindow()
 {
 	if ( s_mainWindow != nullptr )
@@ -303,16 +326,29 @@ bool Engine::WindowUtil::WindowingSystem::CleanupMainWindow()
 	}
 	return true;
 }
+
 bool Engine::WindowUtil::WindowingSystem::OnMainWindowClosed( const HINSTANCE i_thisInstanceOfTheProgram )
 {
 	bool wereThereErrors = false;
-	if ( !CleanupMainWindow() )
+	if ( !mWindowingSystem->CleanupMainWindow() )
 		wereThereErrors = true;
-	if ( !UnregisterMainWindowClass( i_thisInstanceOfTheProgram ) )
+	if ( !mWindowingSystem->UnregisterMainWindowClass( i_thisInstanceOfTheProgram ) )
 		wereThereErrors = true;
 	
 	return !wereThereErrors;
 }
+
+Engine::WindowUtil::WindowingSystem::WindowingSystem()
+{
+	s_mainWindow = nullptr;
+	s_mainWindowClassName = "Amit Prakash - Main Window Class";
+	setTypeInfo("Engine::WindowUtil::WindowingSystem");
+}
+
+
+
+
+
 
 
 

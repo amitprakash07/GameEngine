@@ -15,7 +15,7 @@ namespace Engine
 		static SharedPointer<MessagingSystem> getMessagingSystem();
 		void addMessageHandler(Engine::utils::StringHash &, IMessageHandler *, Engine::typedefs::Priority);
 		bool removeMessageHandler(Engine::utils::StringHash&, IMessageHandler*);
-		void sendMessage(Engine::utils::StringHash &, void *, void* message_data = nullptr);
+		void sendMessage(Engine::utils::StringHash, RTTI *, void* message_data = nullptr);
 		~MessagingSystem();
 	private:
 		static MessagingSystem* mMessagingSystem;
@@ -23,6 +23,5 @@ namespace Engine
 		MessagingSystem();
 	};
 }
-
 
 #endif

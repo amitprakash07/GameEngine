@@ -33,7 +33,7 @@ void Engine::MessagingSystem::addMessageHandler(Engine::utils::StringHash & i_me
 	std::vector<MessageHandle> tempList = m_MessageHandlers[i_message];
 	std::sort(tempList.begin(), tempList.end());
 }
-void Engine::MessagingSystem::sendMessage(Engine::utils::StringHash & i_message, void * i_messageSender, void* message_data)
+void Engine::MessagingSystem::sendMessage(Engine::utils::StringHash i_message, RTTI * i_messageSender, void* message_data)
 {
 	assert(i_messageSender);
 	assert(!i_message.isNil());

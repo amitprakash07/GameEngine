@@ -1,9 +1,36 @@
 #include "Mesh.h"
 #include "../Windows/WindowsFunctions.h"
 #include <fstream>
-#include "Graphics.h"
+
 
 typedef char BYTES;
+
+std::map<std::string, Engine::SharedPointer<Engine::Graphics::Mesh>> Engine::Graphics::Mesh::meshList;
+
+bool Engine::Graphics::Mesh::addToMeshList(std::string i_meshName, std::string i_fileName)
+{
+	if (!i_fileName.empty())
+	{
+		Engine::SharedPointer<Mesh> newMesh(new Mesh(i_meshName, i_fileName));
+		newMesh->LoadMesh();
+		meshList[i_fileName] = newMesh; 
+		return true;
+	}
+
+	std::stringstream errormessage;
+	errormessage << "Unable to add Scene. Mesh Pointer is null. Load Mesh again";
+	WindowsUtil::Print(errormessage.str());
+	return false;
+}
+
+Engine::SharedPointer<Engine::Graphics::Mesh> Engine::Graphics::Mesh::getMesh(std::string i_fileName)
+{
+	if(!i_fileName.empty())
+	{
+		return (meshList[i_fileName]);
+	}
+	return (Engine::SharedPointer<Engine::Graphics::Mesh>());
+}
 
 Engine::Graphics::vertex* Engine::Graphics::Mesh::getVertex()
 {
@@ -11,6 +38,7 @@ Engine::Graphics::vertex* Engine::Graphics::Mesh::getVertex()
 		return mVertex;
 	return nullptr;
 }
+
 uint32_t* Engine::Graphics::Mesh::getIndices()
 {
 	if (mIndices)
@@ -19,28 +47,24 @@ uint32_t* Engine::Graphics::Mesh::getIndices()
 	}
 	return nullptr;
 }
-void Engine::Graphics::Mesh::setMeshFileName(std::string i_fileName)
-{
-	if (!i_fileName.empty())
-	{
-		meshFileName = i_fileName;
-		//memcpy(meshFileName, i_fileName, sizeof(char)*strlen(i_fileName));
-	}
-}
+
 std::string Engine::Graphics::Mesh::getMeshFileName()
 {
 	if (!meshFileName.empty())
 		return meshFileName;
 	return nullptr;
 }
+
 void Engine::Graphics::Mesh::setWinding(winding i_winding)
 {
 	mWinding = i_winding;
 }
+
 Engine::Graphics::winding Engine::Graphics::Mesh::getWinding()
 {
 	return mWinding;
 }
+
 bool Engine::Graphics::Mesh::LoadMesh()
 {
 	std::stringstream errormessage;
@@ -115,5 +139,12 @@ bool Engine::Graphics::Mesh::LoadMesh()
 	
 	return true;
 }
+
+void Engine::Graphics::Mesh::deleteAllMesh()
+{
+	for (std::map<std::string, Engine::SharedPointer<Engine::Graphics::Mesh>>::iterator i = meshList.begin(); i != meshList.end(); ++i)
+		i->second.deleteObject();
+}
+
 
 
