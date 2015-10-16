@@ -3,8 +3,8 @@
 
 
 #include <vector>
-#include "../EngineCore/additionaltypes.h"
-#include "SharedPointer.h"
+#include "additionaltypes.h"
+#include "../Utilities/SharedPointer.h"
 
 namespace Engine
 {

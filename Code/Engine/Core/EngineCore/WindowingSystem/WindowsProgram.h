@@ -9,9 +9,9 @@
 //=============
 
 #include <string>
-#include "../../Windows/WindowsIncludes.h"
-#include "../Utilities/SharedPointer.h"
-#include "RTTI.h"
+#include "../../../Windows/WindowsIncludes.h"
+#include "../../Utilities/SharedPointer.h"
+#include "../../Utilities/RTTI.h"
 
 namespace Engine
 {
@@ -20,11 +20,14 @@ namespace Engine
 		class WindowingSystem:public Engine::RTTI
 		{
 		public:
-			static SharedPointer<WindowingSystem> getWindow();
-			static HWND getMainWindow();
+			static SharedPointer<WindowingSystem> getWindowingSystem();
+			HWND getMainWindow();
 			bool CreateMainWindow(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState);
 			static bool OnMainWindowClosed(const HINSTANCE i_thisInstanceOfTheProgram);
-			bool isType(RTTI*) override;
+			~WindowingSystem();
+			//RTTI Virtual functions
+			std::string getTypeInfo() override;
+			bool isBothSameType(SharedPointer<RTTI>, std::string) override;
 		private:
 			static WindowingSystem* mWindowingSystem;
 			HWND s_mainWindow;
@@ -35,6 +38,7 @@ namespace Engine
 			bool UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram);
 			bool CleanupMainWindow();
 			WindowingSystem();
+			std::string typeName;
 		};
 	}
 }

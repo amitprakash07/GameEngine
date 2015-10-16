@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include "../Utilities/SharedPointer.h"
+#include "../Utilities/additionaltypes.h"
 
 namespace Engine
 {
@@ -13,9 +14,9 @@ namespace Engine
 	{
 	public:
 		static SharedPointer<MessagingSystem> getMessagingSystem();
-		void addMessageHandler(Engine::utils::StringHash &, IMessageHandler *, Engine::typedefs::Priority);
+		void addMessageHandler(Engine::utils::StringHash &, IMessageHandler*, Engine::typedefs::Priority);
 		bool removeMessageHandler(Engine::utils::StringHash&, IMessageHandler*);
-		void sendMessage(Engine::utils::StringHash, RTTI *, void* message_data = nullptr);
+		void sendMessage(Engine::utils::StringHash&, RTTI*, void* message_data = nullptr);
 		~MessagingSystem();
 	private:
 		static MessagingSystem* mMessagingSystem;

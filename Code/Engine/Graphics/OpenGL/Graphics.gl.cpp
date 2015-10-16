@@ -7,8 +7,8 @@
 #include <cstdint>
 #include <string>
 #include <sstream>
-#include "../Scene.h"
 #include "../../Windows/WindowsFunctions.h"
+#include "../../Core/EngineCore/Objects/Scene.h"
 
 // Static Data Initialization
 //===========================
@@ -85,7 +85,7 @@ void Engine::Graphics::GraphicsSystem::Render()
 	}
 
 	
-	Scene::drawScene();
+	Engine::Scene::getRenderableScene()->drawScene();
 	
 
 	// Everything has been drawn to the "back buffer", which is just an image in memory.

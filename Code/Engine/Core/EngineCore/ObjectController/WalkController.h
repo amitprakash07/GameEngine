@@ -9,7 +9,13 @@ namespace Engine
 	class WalkController:public IObjectController
 	{
 	public:
-		void updateGameObject(Engine::SharedPointer<GameObject> & i_gameObject, Engine::typedefs::Direction i_dir) override;
+		void updateGameObject(GameObject &i_gameObject, Engine::typedefs::Direction i_dir) override;
+		~WalkController(){}
+	private:
+		WalkController()
+		{
+			
+		}
 	};
 }
 

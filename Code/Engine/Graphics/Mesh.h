@@ -58,6 +58,7 @@ namespace Engine
 			int vertexCount;
 			std::string meshFileName;
 			std::string meshName;
+			static bool isMeshExist(std::string);
 			Mesh(std::string, std::string);
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;

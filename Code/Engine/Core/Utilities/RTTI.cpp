@@ -1,5 +1,5 @@
 #include "RTTI.h"
-#include "EngineCore.h"
+#include "StringPool.h"
 
 Engine::RTTI::~RTTI()
 {
@@ -9,7 +9,7 @@ Engine::RTTI::~RTTI()
 void Engine::RTTI::setTypeInfo(char* i_char)
 {
 	if(i_char)
-		mTypeInfo = Engine::EngineCore::getStringPool()->findString(i_char);
+		mTypeInfo = Engine::StringPool::getStringPool()->findString(i_char);
 }
 
 bool Engine::RTTI::isType(RTTI* i_RTTI_ptr)

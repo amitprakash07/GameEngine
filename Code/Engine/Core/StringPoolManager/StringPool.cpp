@@ -1,5 +1,5 @@
 #include "StringPool.h"
-#include "HashedString.h"
+#include "../Utilities/HashedString.h"
 
 Engine::StringPool* Engine::StringPool::mStringPool = nullptr;
 

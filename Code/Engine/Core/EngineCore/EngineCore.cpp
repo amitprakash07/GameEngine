@@ -1,38 +1,62 @@
 
 #include "EngineCore.h"
-#include "WindowsProgram.h"
 #include "..\..\Graphics\Graphics.h"
-#include "..\..\Graphics\Scene.h"
 #include "..\..\Windows\WindowsFunctions.h"
-#include "..\..\Graphics\Effects.h"
+#include "Objects/Scene.h"
+#include <iostream>
+
+
+Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::mMessagingSystem = Engine::MessagingSystem::getMessagingSystem();
+Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::mStringPool = Engine::StringPool::getStringPool();
+Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::EngineCore::mWindowingSystem = Engine::WindowUtil::WindowingSystem::getWindowingSystem();
+Engine::SharedPointer<Engine::InputController> Engine::EngineCore::mInputController = Engine::InputController::getInputController();
+//Engine::SharedPointer<Engine::EngineCore> Engine::EngineCore::mEngineInstance;
+
 
 void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 {
-	std::stringstream errormessage;
-	getWindowingSystem()->CreateMainWindow(hInstance, windowLayout);
-	if (Engine::Graphics::GraphicsSystem::Initialize(Engine::WindowUtil::WindowingSystem::getMainWindow()))
+	std::stringstream errormessage;	
+	//mEngineInstance->mWindowingSystem = SharedPointer<Engine::WindowUtil::WindowingSystem>(Engine::WindowUtil::WindowingSystem::getWindowingSystem());
+	if (!mWindowingSystem.isNull())
 	{
-		if (!Engine::Graphics::Effects::addEffect("data/standard.vshd", "data/standard.fshd"))
+		mWindowingSystem->CreateMainWindow(hInstance, windowLayout);
+		if (!Engine::Graphics::GraphicsSystem::Initialize(mWindowingSystem->getMainWindow()))
 		{
-			errormessage << "Unable to set the shader effets";
-			WindowsUtil::Print(errormessage.str());
-			exit(0);
-		} 
-
-		if (!Engine::Graphics::Scene::addToScene("data/SquareMesh.mesh"))
-		{
-			errormessage << "Unable to add the Mesh";
-			WindowsUtil::Print(errormessage.str());
-			exit(0);
-		}
-		if (!Engine::Graphics::Scene::addToScene("data/TriangleMesh.mesh"))
-		{
-			errormessage << "Unable to add the Mesh";
-			WindowsUtil::Print(errormessage.str());
-			exit(0);
+			errormessage << "Unable to initialize Graphics System";
+			std::cerr << errormessage.str().c_str();
+			/*mMessagingSystem = Engine::MessagingSystem::getMessagingSystem();
+			mStringPool = Engine::StringPool::getStringPool();
+			mInputController = Engine::InputController::getInputController();*/
 		}
 	}
 }
+
+
+Engine::EngineCore::EngineCore()
+{
+
+}
+
+Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::EngineCore::getWindowingSystem()
+{
+	return mWindowingSystem;
+}
+
+Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::getMessagingSystem()
+{
+	return mMessagingSystem;
+}
+
+Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::getStringPool()
+{
+	return mStringPool;
+}
+
+Engine::SharedPointer<Engine::InputController> Engine::EngineCore::getInputController()
+{
+	return mInputController;
+}
+
 void Engine::EngineCore::onNewFrame()
 {
 	MSG message = {};
@@ -58,11 +82,12 @@ void Engine::EngineCore::onNewFrame()
 	}
 
 }
+
 bool Engine::EngineCore::isWindowClosed(HINSTANCE hInstance)
 {
-	if (Engine::WindowUtil::WindowingSystem::getMainWindow() == nullptr)
+	if (mWindowingSystem->getMainWindow() == nullptr)
 	{
-		if (Engine::WindowUtil::WindowingSystem::OnMainWindowClosed(hInstance))
+		if (mWindowingSystem->OnMainWindowClosed(hInstance))
 			return true;
 		else
 		{
@@ -74,33 +99,23 @@ bool Engine::EngineCore::isWindowClosed(HINSTANCE hInstance)
 	}
 	return false;
 }
+
 void Engine::EngineCore::shutDownEngine()
 {
-	Engine::Graphics::Effects::removeAllEffects();
-	Engine::Graphics::Scene::deleteScene();
-}
-Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::getMessagingSystem()
-{
-	return Engine::MessagingSystem::getMessagingSystem();
-}
-Engine::SharedPointer<Engine::Time::FrameTime> Engine::EngineCore::getFrameTimeController()
-{
-	return Engine::Time::FrameTime::getFrameTimeController();
-}
-Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::getStringPool()
-{
-	return Engine::StringPool::getStringPool();
+	mMessagingSystem.deleteObject();
+	mStringPool.deleteObject();
+	mInputController.deleteObject();
+	Engine::Scene::deleteAllScene();
 }
 
-Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::EngineCore::getWindowingSystem()
-{
-	return Engine::WindowUtil::WindowingSystem::getWindow();
-}
 
-Engine::SharedPointer<Engine::InputController> Engine::EngineCore::getInputController()
-{
-	return Engine::InputController::getINputController();
-}
+
+
+
+
+
+
+
 
 
 

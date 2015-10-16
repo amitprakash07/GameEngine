@@ -47,6 +47,7 @@ bool Engine::Graphics::Effect::CreateProgram()
 			WindowsUtil::Print("OpenGL failed to create a program");
 			return false;
 		}
+
 	}
 	// Load and attach the shaders
 	if (!LoadVertexShader())
@@ -112,6 +113,17 @@ bool Engine::Graphics::Effect::CreateProgram()
 						errorMessage << "The program failed to link:\n" << linkInfo;
 						WindowsUtil::Print(errorMessage.str());
 						return false;
+					}
+					else
+					{
+						/*Program Linking finished - grabbing the uniform loacation from the shader*/
+						s_uniformPositionOffset = glGetUniformLocation(s_programId, "g_position_offset");
+						if(s_uniformPositionOffset == -1)
+						{
+							std::stringstream errormesage;
+							errormesage << "Unable to get the uniform loacation from the linked program. Please check the shader code";
+							WindowsUtil::Print(errormesage.str());
+						}
 					}
 				}
 				else
@@ -656,10 +668,12 @@ OnExit:
 Engine::Graphics::Effect::Effect(std::string i_shader, std::string i_vertexShader, std::string i_fragmentShader)
 {
 	s_programId = 0;
+	s_uniformPositionOffset = 0;
 	shaderName = i_shader;
 	vertexShader = i_vertexShader;
 	fragmentShader = i_fragmentShader;
 }
+
 Engine::Graphics::Effect::~Effect()
 {
 	if (s_programId != 0)
@@ -676,3 +690,20 @@ Engine::Graphics::Effect::~Effect()
 		s_programId = 0;
 	}
 }
+
+void Engine::Graphics::Effect::setPositionOffset(Engine::Math::cVector i_offsetPosition)
+{
+	GLfloat *temp = new GLfloat[2];
+	temp[0] = i_offsetPosition.x;
+	temp[1] = i_offsetPosition.y;
+	glUniform2fv(s_uniformPositionOffset, 1, temp);
+	const GLenum errorCode = glGetError();
+	if(!(errorCode == GL_NO_ERROR))
+	{
+		std::stringstream errormessage;
+		errormessage << "Unable to set the position offset";
+		WindowsUtil::Print(errormessage.str());
+	}
+	delete temp;
+}
+

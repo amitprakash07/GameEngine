@@ -23,7 +23,6 @@ namespace Engine
 			static uint64_t						getCurrentTick();
 
 		private:
-			static FrameTime*				    mFrameTime;
 			uint64_t							lastTick;
 			uint64_t							currentTick;
 			uint64_t							pauseTimerTick;

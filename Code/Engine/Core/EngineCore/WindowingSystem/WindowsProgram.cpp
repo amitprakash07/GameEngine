@@ -1,18 +1,38 @@
 #include "WindowsProgram.h"
 #include "Resources/Resource.h"
-#include "../../Windows/WindowsFunctions.h"
-#include "EngineCore.h"
+#include "../../../Windows/WindowsFunctions.h"
+#include "../../MessagingSystem/MessagingSystem.h"
+#include "../../StringPoolManager/StringPool.h"
+#include "../EngineCore.h"
+
 
 
 Engine::WindowUtil::WindowingSystem* Engine::WindowUtil::WindowingSystem::mWindowingSystem = nullptr;
 
-Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::WindowUtil::WindowingSystem::getWindow()
+std::string Engine::WindowUtil::WindowingSystem::getTypeInfo()
 {
-	if(mWindowingSystem == nullptr)
+	if (!typeName.empty())
+		return typeName;
+
+	return "";
+}
+
+bool Engine::WindowUtil::WindowingSystem::isBothSameType(SharedPointer<RTTI> i_first, std::string i_second)
+{
+	if (i_first->getTypeInfo() == i_second)
+		return true;
+	return false;
+}
+
+
+Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::WindowUtil::WindowingSystem::getWindowingSystem()
+{
+	if (mWindowingSystem == nullptr)
 		mWindowingSystem = new WindowingSystem();
-		
+
 	return mWindowingSystem;
 }
+
 
 bool Engine::WindowUtil::WindowingSystem::CreateMainWindow(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState)
 {
@@ -265,7 +285,8 @@ LRESULT CALLBACK Engine::WindowUtil::WindowingSystem::OnMessageReceived(HWND i_w
 	}
 	case WM_KEYDOWN:
 	{
-		Engine::EngineCore::getMessagingSystem()->sendMessage(Engine::EngineCore::getStringPool()->findString("Key Down"), mWindowingSystem, reinterpret_cast<void*>(i_wParam));
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("KeyDown");
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, mWindowingSystem, reinterpret_cast<void*>(i_wParam));
 		break;
 	}
 	// The window's nonclient area is being destroyed
@@ -342,13 +363,13 @@ Engine::WindowUtil::WindowingSystem::WindowingSystem()
 {
 	s_mainWindow = nullptr;
 	s_mainWindowClassName = "Amit Prakash - Main Window Class";
-	setTypeInfo("Engine::WindowUtil::WindowingSystem");
+	typeName = "Engine::WindowUtil::WindowingSystem";
 }
 
-
-
-
-
+Engine::WindowUtil::WindowingSystem::~WindowingSystem()
+{
+	
+}
 
 
 

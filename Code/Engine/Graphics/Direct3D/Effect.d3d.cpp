@@ -1,4 +1,3 @@
-
 #include "../Effect.h"
 #include "../../Windows/WindowsFunctions.h"
 #include "../Graphics.h"
@@ -26,6 +25,8 @@ Engine::Graphics::Effect::Effect(std::string i_shaderName, std::string i_vertexS
 	shaderName = i_shaderName;
 	vertexShader = i_vertexShader;
 	fragmentShader = i_fragmentShader;
+	s_constantsTable = nullptr;
+	s_uniformPositionOffset = nullptr;
 }
 
 Engine::Graphics::Effect::~Effect()
@@ -36,8 +37,17 @@ Engine::Graphics::Effect::~Effect()
 	if (s_fragmentShader)
 		s_fragmentShader->Release();
 
+	if (s_constantsTable)
+		s_constantsTable->Release();
+
+	if (s_uniformPositionOffset)
+		delete s_uniformPositionOffset;
+
+	s_uniformPositionOffset = nullptr;
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
+	s_constantsTable = nullptr;
+
 
 }
 
@@ -57,11 +67,18 @@ bool Engine::Graphics::Effect::LoadVertexShader()
 		const char* profile = "vs_3_0";
 		const DWORD noFlags = 0;
 		ID3DXBuffer* errorMessages = nullptr;
-		ID3DXConstantTable** noConstants = nullptr;
+		//ID3DXConstantTable** noConstants = nullptr;
 		HRESULT result = D3DXCompileShaderFromFile(sourceCodeFileName, vertexShaderMacro, noIncludes, entryPoint, profile, noFlags,
-			&compiledShader, &errorMessages, noConstants);
+			&compiledShader, &errorMessages, &s_constantsTable); //@ Amit for constant table
 		if (SUCCEEDED(result))
 		{
+			s_uniformPositionOffset = s_constantsTable->GetConstantByName(nullptr, "g_position_offset"); //@Amit for getting the position offset
+			if(s_uniformPositionOffset == nullptr)
+			{
+				std::stringstream errormessage_another;
+				errormessage_another << "Unable to get the Handle for the uniform offset";
+				WindowsUtil::Print(errormessage_another.str());
+			}
 			if (errorMessages)
 			{
 				errorMessages->Release();
@@ -160,5 +177,20 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 		compiledShader->Release();
 	}
 	return !wereThereErrors;
+}
+
+void Engine::Graphics::Effect::setPositionOffset(Engine::Math::cVector i_positionOffset)
+{
+	FLOAT *temp = new FLOAT[2];
+	temp[0] = i_positionOffset.x;
+	temp[1] = i_positionOffset.y;
+	HRESULT result = s_constantsTable->SetFloatArray(Engine::Graphics::GraphicsSystem::getDevice(), s_uniformPositionOffset, temp, 2);
+	if(!SUCCEEDED(result))
+	{
+		std::stringstream errormessage;
+		errormessage << "Unable to set the Uniform position";
+		WindowsUtil::Print(errormessage.str());
+	}
+	delete temp;
 }
 

@@ -260,6 +260,9 @@ Engine::Graphics::Mesh::~Mesh()
 
 Engine::Graphics::Mesh::Mesh(std::string i_meshName, std::string i_fileName)
 {
+	s_vertexBuffer = nullptr;
+	s_indexBuffer = nullptr;
+	s_vertexDeclaration = nullptr;
 	mVertex = nullptr;
 	mIndices = nullptr;
 	meshFileName = i_fileName;

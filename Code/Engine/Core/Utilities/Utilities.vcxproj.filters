@@ -3,15 +3,15 @@
   <ItemGroup>
     <ClInclude Include="HashedString.h" />
     <ClInclude Include="SharedPointer.h" />
-    <ClInclude Include="StringPool.h" />
     <ClInclude Include="UniquePtr.h" />
+    <ClInclude Include="additionaltypes.h" />
+    <ClInclude Include="RTTI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedPointer.inl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HashedString.cpp" />
-    <ClCompile Include="StringPool.cpp" />
     <ClCompile Include="UniquePtr.cpp" />
   </ItemGroup>
 </Project>

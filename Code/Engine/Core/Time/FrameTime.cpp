@@ -3,19 +3,15 @@
 #include "TimeHelper.h"
 #include <assert.h>
 
-Engine::Time::FrameTime* Engine::Time::FrameTime::mFrameTime = nullptr;
 Engine::SharedPointer<Engine::Time::FrameTime> Engine::Time::FrameTime::getFrameTimeController()
 {
-	if (mFrameTime == nullptr)
-	{
-		LARGE_INTEGER *tempFrequency = new LARGE_INTEGER;
-		LARGE_INTEGER *tempStartCounter = new LARGE_INTEGER;
-		assert(QueryPerformanceFrequency(tempFrequency)); //takes Pointer
-		assert(QueryPerformanceCounter(tempStartCounter)); //tekes Pointer
-		mFrameTime = new FrameTime(tempFrequency, tempStartCounter);
-	}
-	return mFrameTime;
+	LARGE_INTEGER *tempFrequency = new LARGE_INTEGER;
+	LARGE_INTEGER *tempStartCounter = new LARGE_INTEGER;
+	assert(QueryPerformanceFrequency(tempFrequency)); //takes Pointer
+	assert(QueryPerformanceCounter(tempStartCounter)); //tekes Pointer
+	return (SharedPointer<Engine::Time::FrameTime>(new FrameTime(tempFrequency, tempStartCounter)));
 }
+
 Engine::Time::FrameTime::FrameTime(LARGE_INTEGER * i_frequency, LARGE_INTEGER * i_hRCounter)
 		{
 			frameTimeFrequency = i_frequency->QuadPart;
@@ -29,6 +25,7 @@ Engine::Time::FrameTime::FrameTime(LARGE_INTEGER * i_frequency, LARGE_INTEGER * 
 			i_frequency = nullptr;
 			i_hRCounter = nullptr;
 		}
+
 void Engine::Time::FrameTime::pauseTimer(bool i_input)
 {
 	if (i_input == true)
@@ -42,6 +39,7 @@ void Engine::Time::FrameTime::pauseTimer(bool i_input)
 	else
 		isTimerPaused = false;
 }
+
 void Engine::Time::FrameTime::updateDeltaTime()
 {
 	LARGE_INTEGER *tempTick = new LARGE_INTEGER;
@@ -60,16 +58,19 @@ void Engine::Time::FrameTime::updateDeltaTime()
 	lastTick = currentTick;
 	delete tempTick;
 }
+
 float Engine::Time::FrameTime::getdeltaTime()
 {
 	return deltaTime;
 }
+
 uint64_t Engine::Time::FrameTime::getCurrentTick()
 {
 	LARGE_INTEGER *tempTick = new LARGE_INTEGER;
 	assert(QueryPerformanceCounter(tempTick));
 	return (tempTick->QuadPart);
 }
+
 float Engine::Time::FrameTime::getdeltaTimeDuringFrame()
 {
 	LARGE_INTEGER *tempTick = new LARGE_INTEGER;
@@ -79,6 +80,7 @@ float Engine::Time::FrameTime::getdeltaTimeDuringFrame()
 	delete tempTick;
 	return o_deltaTime;
 }
+
 bool Engine::Time::FrameTime::getTimerStatus()
 {
 	return isTimerPaused;

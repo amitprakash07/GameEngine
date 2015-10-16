@@ -2,13 +2,12 @@
 #ifndef __CORE_H
 #define __CORE_H
 
-#include "../../Windows/WindowsIncludes.h"
+#include "WindowingSystem/WindowsProgram.h"
+#include "../StringPoolManager/StringPool.h"
 #include "../MessagingSystem/MessagingSystem.h"
-#include "../Time/FrameTime.h"
+#include "InputController/InputController.h"
 #include "../Utilities/SharedPointer.h"
-#include "../Utilities/StringPool.h"
-#include "WindowsProgram.h"
-#include "../InputController/InputController.h"
+
 
 namespace Engine
 {
@@ -20,13 +19,17 @@ namespace Engine
 		static bool isWindowClosed(HINSTANCE hInstance);
 		static void shutDownEngine();
 		static SharedPointer<Engine::MessagingSystem> getMessagingSystem();
-		static SharedPointer<Engine::Time::FrameTime> getFrameTimeController();
 		static SharedPointer<Engine::StringPool> getStringPool();
 		static SharedPointer<Engine::WindowUtil::WindowingSystem> getWindowingSystem();
 		static SharedPointer<Engine::InputController> getInputController();
-
+	private:
+		EngineCore();
+		static SharedPointer<EngineCore> mEngineInstance;
+		static SharedPointer<Engine::MessagingSystem> mMessagingSystem;
+		static SharedPointer<Engine::StringPool> mStringPool;
+		static SharedPointer<Engine::WindowUtil::WindowingSystem> mWindowingSystem;
+		static SharedPointer<Engine::InputController> mInputController;
 	};
-	
 }
 
 #endif

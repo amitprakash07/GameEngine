@@ -1,8 +1,6 @@
 #ifndef __SHARED_PTR_H
 #define __SHARED_PTR_H
 
-#include "../EngineCore/RTTI.h"
-
 namespace Engine
 {
 	template<typename T>
@@ -14,7 +12,7 @@ namespace Engine
 		bool deleteObject();
 		SharedPointer(const SharedPointer<T> &);
 		SharedPointer<T>& operator=(SharedPointer<T> &);
-		bool isBothSameType(RTTI* i_ptr);
+		//bool isBothSameType(RTTI* i_ptr);
 		bool isEqual(SharedPointer<T> &);
 		SharedPointer(SharedPointer<T> *);
 		T& operator*();
@@ -31,7 +29,17 @@ namespace Engine
 #include "SharedPointer.inl"
 
 
-
+//template <>
+//inline bool Engine::SharedPointer<Engine::RTTI>::isBothSameType(Engine::RTTI* i_ptr)
+//{
+//	if (i_ptr)
+//	{
+//		if (m_WrappingObject->isType(i_ptr))
+//			return true;
+//		return false;
+//	}
+//	return false;
+//}
 
 
 #endif //SHARED_PTR_H

@@ -3,12 +3,55 @@
   <ItemGroup>
     <ClInclude Include="additionaltypes.h" />
     <ClInclude Include="EngineCore.h" />
-    <ClInclude Include="WindowsProgram.h" />
-    <ClInclude Include="RTTI.h" />
+    <ClInclude Include="InputController\InputController.h">
+      <Filter>InputController</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowingSystem\WindowsProgram.h">
+      <Filter>WindowingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameObject.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Scene.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectController\IObjectController.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectController\WalkController.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp" />
-    <ClCompile Include="WindowsProgram.cpp" />
-    <ClCompile Include="RTTI.cpp" />
+    <ClCompile Include="InputController\InputController.cpp">
+      <Filter>InputController</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowingSystem\WindowsProgram.cpp">
+      <Filter>WindowingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GameObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Scene.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectController\WalkController.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="InputController">
+      <UniqueIdentifier>{f30162a3-7185-491c-879c-2403d16df46c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WindowingSystem">
+      <UniqueIdentifier>{7706782f-b0be-47fc-98aa-301926863680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{4f0680e2-5cbd-4d6f-91c4-2ffd509a0b81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectController">
+      <UniqueIdentifier>{7324fb0d-6b5d-4ad6-a0d9-7c5f45023aaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

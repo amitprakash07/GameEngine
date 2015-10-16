@@ -1,6 +1,8 @@
 #ifndef _EFECTS_H
 #define _EFECTS_H
 
+#include "../Windows/WindowsIncludes.h"
+
 #ifdef PLATFORM_D3D
 #include <d3dx9shader.h>
 #elif PLATFORM_OPEN_GL
@@ -11,6 +13,7 @@
 #include <vector>
 #include <map>
 #include "../Core/Utilities/SharedPointer.h"
+#include "../Core/Maths/cVector.h"
 
 namespace Engine
 {
@@ -20,23 +23,31 @@ namespace Engine
 		{
 		public:
 			static bool addEffectToList(std::string, std::string, std::string);
+			static Engine::SharedPointer<Effect> getEffect(std::string, std::string);
 			static Engine::SharedPointer<Effect> getEffect(std::string);
 			static void deleteAllEffect();
 			bool setShaders();
 			~Effect();
+			void setPositionOffset(Engine::Math::cVector);
 		private:
 			static std::map<std::string, Engine::SharedPointer<Effect>> mEffectList;
 			std::string shaderName;
 			std::string fragmentShader;
 			std::string vertexShader;
+			std::string effectName;
+			Engine::Math::cVector positionOffset;
 			bool LoadFragmentShader();
 			bool LoadVertexShader();
+			static bool isEffectExist(std::string, std::string);
 			Effect(std::string, std::string, std::string);
 #ifdef PLATFORM_D3D
 			IDirect3DVertexShader9* s_vertexShader;
 			IDirect3DPixelShader9* s_fragmentShader;
+			ID3DXConstantTable*    s_constantsTable;
+			D3DXHANDLE				s_uniformPositionOffset;
 #elif PLATFORM_OPEN_GL
 			GLuint s_programId;
+			GLint s_uniformPositionOffset;
 			bool CreateProgram();
 #endif
 		};

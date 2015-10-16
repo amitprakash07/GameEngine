@@ -2,17 +2,19 @@
 #define __I_MESSAGE_HANDLER_H
 
 #include "../Utilities/HashedString.h"
-#include "../EngineCore/additionaltypes.h"
+#include "../Utilities/RTTI.h"
+#include "../Utilities/SharedPointer.h"
+#include "../Utilities/additionaltypes.h"
+
 //#include "_assert.h"
 
 
 namespace Engine
 {	
-	class RTTI;
 	class IMessageHandler
 	{
 	public: 
-		virtual void HandleMessage(Engine::utils::StringHash &, RTTI *i_MessageSender, void* i_pMessageData)=0;
+		virtual void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData)=0;
 		virtual  ~IMessageHandler(){};
 		IMessageHandler(){};
 		
@@ -20,7 +22,7 @@ namespace Engine
 
 	struct _IMessageHandle
 	{
-		IMessageHandler * mHandler;
+		IMessageHandler* mHandler;
 		Engine::typedefs::Priority mMessagePriority;
 
 		_IMessageHandle(IMessageHandler* i_handler, Engine::typedefs::Priority i_priority)

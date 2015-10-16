@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <typeinfo>
 
 namespace Engine
 {
@@ -47,7 +46,7 @@ namespace Engine
 	{
 		if (!isEqual( i_other))
 		{
-			deleteObject();
+			if(!isNull()) deleteObject();
 			m_WrappingObject = i_other.m_WrappingObject;
 			assert(m_referenceCount);
 			m_referenceCount = i_other.m_referenceCount;
@@ -64,19 +63,7 @@ namespace Engine
 		return false;
 	}
 
-	template <>
-	inline bool Engine::SharedPointer<Engine::RTTI>::isBothSameType(Engine::RTTI* i_ptr)
-	{
-		if(i_ptr)
-		{
-			if (m_WrappingObject->isType(i_ptr))
-				return true;
-			return false;
-		}
-		return false;
-	}
-
-
+	
 	template<typename T>
 	inline T& SharedPointer<T>::operator*()
 	{
@@ -102,8 +89,10 @@ namespace Engine
 			if ((*m_referenceCount-1) == 0)
 			{
 				//EngineController::GameEngine::isEngineInitialized() ? EngineController::GameEngine::getMemoryManager()->__free(m_WrappingObject) : delete m_WrappingObject; 
-				delete m_WrappingObject;
-				delete m_referenceCount;
+				if(m_WrappingObject)
+					delete m_WrappingObject;
+				if(m_referenceCount)
+					delete m_referenceCount;
 				m_WrappingObject = nullptr;
 			}
 			else

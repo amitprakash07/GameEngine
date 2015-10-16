@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "../Windows/WindowsFunctions.h"
 #include <fstream>
+#include "../../Engine/Core/Utilities/HashedString.h"
 
 
 typedef char BYTES;
@@ -9,16 +10,20 @@ std::map<std::string, Engine::SharedPointer<Engine::Graphics::Mesh>> Engine::Gra
 
 bool Engine::Graphics::Mesh::addToMeshList(std::string i_meshName, std::string i_fileName)
 {
-	if (!i_fileName.empty())
+	if (!i_fileName.empty()) 
 	{
-		Engine::SharedPointer<Mesh> newMesh(new Mesh(i_meshName, i_fileName));
-		newMesh->LoadMesh();
-		meshList[i_fileName] = newMesh; 
+		if (!isMeshExist(i_fileName))
+		{
+			Engine::SharedPointer<Mesh> newMesh(new Mesh(i_meshName, i_fileName));
+			newMesh->LoadMesh();
+			meshList[i_meshName] = newMesh;
+		}
+		
 		return true;
 	}
 
 	std::stringstream errormessage;
-	errormessage << "Unable to add Scene. Mesh Pointer is null. Load Mesh again";
+	errormessage << "Unable to load Mesh. FileName is null. Load Mesh again";
 	WindowsUtil::Print(errormessage.str());
 	return false;
 }
@@ -145,6 +150,21 @@ void Engine::Graphics::Mesh::deleteAllMesh()
 	for (std::map<std::string, Engine::SharedPointer<Engine::Graphics::Mesh>>::iterator i = meshList.begin(); i != meshList.end(); ++i)
 		i->second.deleteObject();
 }
+
+bool Engine::Graphics::Mesh::isMeshExist(std::string i_fileName)
+{
+	if(!i_fileName.empty())
+	{
+		for (std::map<std::string, SharedPointer<Mesh>>::iterator i = meshList.begin(); i !=meshList.end(); ++i)
+		{
+			if (Engine::utils::StringHash(i->first.c_str()) == Engine::utils::StringHash(i_fileName.c_str()))
+				return true;
+		}
+		return false;
+	}
+	return false;
+}
+
 
 
 
