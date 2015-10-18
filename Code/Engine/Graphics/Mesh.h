@@ -12,7 +12,6 @@
 #include <map>
 #include "../Core/Utilities/SharedPointer.h"
 
-
 namespace Engine
 {
 	namespace Graphics
@@ -35,7 +34,7 @@ namespace Engine
 #endif
 		};
 				
-		class Mesh
+		class Mesh:public RTTI
 		{
 		public:
 			static bool addToMeshList(std::string, std::string);
@@ -47,7 +46,9 @@ namespace Engine
 			uint32_t* getIndices();
 			void setWinding(winding);
 			winding getWinding();
-			std::string getMeshFileName();	
+			std::string getMeshFileName();
+			std::string getTypeInfo() override { return ""; }
+			bool isBothSameType(RTTI*, std::string) override { return true; }
 			~Mesh();
 		private:
 			static std::map<std::string, SharedPointer<Mesh>> meshList;

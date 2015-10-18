@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="additionaltypes.h" />
     <ClInclude Include="EngineCore.h" />
     <ClInclude Include="InputController\InputController.h">
       <Filter>InputController</Filter>
@@ -14,9 +13,6 @@
     </ClInclude>
     <ClInclude Include="Objects\Scene.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectController\IObjectController.h">
-      <Filter>ObjectController</Filter>
     </ClInclude>
     <ClInclude Include="ObjectController\WalkController.h">
       <Filter>ObjectController</Filter>

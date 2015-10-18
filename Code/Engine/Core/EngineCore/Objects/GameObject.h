@@ -5,14 +5,13 @@
 #include "../../../Graphics/Effect.h"
 #include "../../../Core/Utilities/SharedPointer.h"
 #include "../../../Core/Maths/cVector.h"
-#include "../ObjectController/IObjectController.h"
-#include "../../../Core/MessagingSystem/IMessageHandler.h"
-#include "../../../Core/Utilities/RTTI.h"
+#include "../../Utilities/IObjectController.h"
+#include "../../../Core/Utilities/IMessageHandler.h"
 
 
 namespace Engine
 {
-	class GameObject : public IMessageHandler, public RTTI
+	class GameObject : public IMessageHandler
 	{
 	public:
 		static SharedPointer<GameObject> CreateGameObject(std::string, std::string, std::string, std::string, std::string);
@@ -23,8 +22,8 @@ namespace Engine
 		Engine::Math::cVector getOffsetPosition();
 		bool isRenderable();
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
-		std::string getTypeInfo() override;
-		bool isBothSameType(SharedPointer<RTTI>, std::string) override;
+		std::string getTypeInfo() override { return ""; }
+		bool isBothSameType(RTTI*, std::string) override { return true; }
 		GameObject();
 		~GameObject();
 	private:
@@ -34,7 +33,6 @@ namespace Engine
 		IObjectController*							mObjectController;
 		bool										renderable;
 		Engine::Math::cVector						mPositionOffset;
-		std::string mTypeInfo;
 	};
 }
 

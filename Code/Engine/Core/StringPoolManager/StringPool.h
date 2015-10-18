@@ -6,16 +6,19 @@
 #include "additionaltypes.h"
 #include "../Utilities/SharedPointer.h"
 
+
 namespace Engine
 {
-	class StringPool
+	class StringPool:public RTTI
 	{
 	public:
 		static SharedPointer<StringPool>			getStringPool();
 		char*										findString(char*);
-		~StringPool();
+		std::string getTypeInfo() override { return ""; }
+		bool isBothSameType(RTTI*, std::string) override { return true; }
+				~StringPool();
 	private:
-		static StringPool*							mStringPool;
+		static SharedPointer<StringPool>			mStringPool;
 		std::vector<Engine::typedefs::String>		mStringList;
 		char*										addString(char *);
 		StringPool();

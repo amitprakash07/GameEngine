@@ -9,7 +9,7 @@ Engine::SharedPointer<Engine::Time::FrameTime> Engine::Time::FrameTime::getFrame
 	LARGE_INTEGER *tempStartCounter = new LARGE_INTEGER;
 	assert(QueryPerformanceFrequency(tempFrequency)); //takes Pointer
 	assert(QueryPerformanceCounter(tempStartCounter)); //tekes Pointer
-	return (SharedPointer<Engine::Time::FrameTime>(new FrameTime(tempFrequency, tempStartCounter)));
+	return (SharedPointer<Engine::Time::FrameTime>(new FrameTime(tempFrequency, tempStartCounter), "Engine::Time::FrameTime"));
 }
 
 Engine::Time::FrameTime::FrameTime(LARGE_INTEGER * i_frequency, LARGE_INTEGER * i_hRCounter)

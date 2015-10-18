@@ -2,19 +2,19 @@
 #define __I_MESSAGE_HANDLER_H
 
 #include "../Utilities/HashedString.h"
-#include "../Utilities/RTTI.h"
 #include "../Utilities/SharedPointer.h"
 #include "../Utilities/additionaltypes.h"
-
-//#include "_assert.h"
+#include "../Utilities/RTTI.h"
 
 
 namespace Engine
 {	
-	class IMessageHandler
+	class IMessageHandler: public RTTI
 	{
 	public: 
-		virtual void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData)=0;
+		virtual void HandleMessage(Engine::utils::StringHash &,  RTTI* i_MessageSender, void* i_pMessageData)=0; //Do not delete i_messageSenderPointer
+		virtual std::string getTypeInfo() override = 0;
+		virtual bool isBothSameType(RTTI*, std::string) override = 0;
 		virtual  ~IMessageHandler(){};
 		IMessageHandler(){};
 		

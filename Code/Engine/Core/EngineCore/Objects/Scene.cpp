@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "../../../Graphics/Effect.h"
 #include "../../../Graphics/Mesh.h"
+#include "../../../Windows/WindowsFunctions.h"
 
 std::map<std::string, Engine::SharedPointer<Engine::Scene>> Engine::Scene::mSceneList;
 
@@ -16,12 +17,19 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::CreateNewScene(std::string i
 {
 	if (!i_sceneName.empty())
 	{
-		SharedPointer<Engine::Scene> temp = SharedPointer<Engine::Scene>(new Scene(i_sceneName));
+		SharedPointer<Engine::Scene> temp = SharedPointer<Engine::Scene>(new Scene(i_sceneName), "Engine::Scene");
 		mSceneList[i_sceneName] = temp;
 		return (getScene(i_sceneName));
 	}
 	return(SharedPointer<Scene>());
 }
+
+
+Engine::SharedPointer<Engine::Time::FrameTime> Engine::Scene::getTimer()
+{
+	return(getRenderableScene()->mTimer);
+}
+
 
 
 Engine::Scene::~Scene()
@@ -57,6 +65,9 @@ void Engine::Scene::drawScene()
 		(*i)->getEffect()->setPositionOffset((*i)->getOffsetPosition());
 		(*i)->getMesh()->drawMesh();
 	}
+	mTimer->updateDeltaTime();
+	std::stringstream errormessage;
+
 }
 
 

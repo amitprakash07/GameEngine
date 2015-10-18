@@ -8,16 +8,19 @@
 
 namespace Engine
 {
-	class Scene
+	class Scene:public RTTI
 	{
 	public:
 		static SharedPointer<Scene> CreateNewScene(std::string);
+		static SharedPointer<Engine::Time::FrameTime> getTimer();
 		bool addToScene(SharedPointer<GameObject>&);
 		void drawScene();
 		static SharedPointer<Engine::Scene> getScene(std::string);
 		void renderScene(bool);
 		static Engine::SharedPointer<Scene> getRenderableScene();
 		static void deleteAllScene();
+		std::string getTypeInfo() override { return ""; }
+		bool isBothSameType(RTTI*, std::string) override { return true; }
 		~Scene();
 	private:
 		Scene(std::string);

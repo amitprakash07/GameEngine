@@ -29,6 +29,7 @@ namespace Engine
 
 		enum _Direction
 		{
+			NONE,
 			UP,
 			DOWN,
 			LEFT,

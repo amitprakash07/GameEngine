@@ -20,14 +20,14 @@ namespace Engine
 		static void shutDownEngine();
 		static SharedPointer<Engine::MessagingSystem> getMessagingSystem();
 		static SharedPointer<Engine::StringPool> getStringPool();
-		static SharedPointer<Engine::WindowUtil::WindowingSystem> getWindowingSystem();
+		static SharedPointer<Engine::Windows::WindowingSystem> getWindowingSystem();
 		static SharedPointer<Engine::InputController> getInputController();
 	private:
 		EngineCore();
-		static SharedPointer<EngineCore> mEngineInstance;
+		//static SharedPointer<EngineCore> mEngineInstance;
 		static SharedPointer<Engine::MessagingSystem> mMessagingSystem;
 		static SharedPointer<Engine::StringPool> mStringPool;
-		static SharedPointer<Engine::WindowUtil::WindowingSystem> mWindowingSystem;
+		static SharedPointer<Engine::Windows::WindowingSystem> mWindowingSystem;
 		static SharedPointer<Engine::InputController> mInputController;
 	};
 }

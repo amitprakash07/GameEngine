@@ -19,7 +19,7 @@ namespace Engine
 {
 	namespace Graphics
 	{
-		class Effect
+		class Effect:public RTTI
 		{
 		public:
 			static bool addEffectToList(std::string, std::string, std::string);
@@ -27,6 +27,8 @@ namespace Engine
 			static Engine::SharedPointer<Effect> getEffect(std::string);
 			static void deleteAllEffect();
 			bool setShaders();
+			std::string getTypeInfo() override { return ""; }
+			bool isBothSameType(RTTI*, std::string) override { return true; }
 			~Effect();
 			void setPositionOffset(Engine::Math::cVector);
 		private:

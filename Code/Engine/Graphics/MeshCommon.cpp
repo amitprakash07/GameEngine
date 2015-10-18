@@ -14,11 +14,10 @@ bool Engine::Graphics::Mesh::addToMeshList(std::string i_meshName, std::string i
 	{
 		if (!isMeshExist(i_fileName))
 		{
-			Engine::SharedPointer<Mesh> newMesh(new Mesh(i_meshName, i_fileName));
+			Engine::SharedPointer<Mesh> newMesh(new Mesh(i_meshName, i_fileName), "Engine::Graphics::Mesh");
 			newMesh->LoadMesh();
 			meshList[i_meshName] = newMesh;
 		}
-		
 		return true;
 	}
 
@@ -80,7 +79,7 @@ bool Engine::Graphics::Mesh::LoadMesh()
 		readFile.open(meshFileName.c_str(), std::ifstream::binary);
 	
 	readFile.seekg(0, readFile.end);
-	size_t length = readFile.tellg();
+	size_t length = static_cast<size_t>(readFile.tellg());
 	readFile.seekg(0, readFile.beg);
 
 	BYTES * buffer = new BYTES[length];

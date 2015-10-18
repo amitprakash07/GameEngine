@@ -17,7 +17,7 @@ bool Engine::Graphics::Effect::addEffectToList(std::string i_shaderName, std::st
 		}
 		else
 		{
-			Engine::SharedPointer<Engine::Graphics::Effect> effect(new Effect(i_shaderName, i_vertexShader, i_fragmentShader));
+			Engine::SharedPointer<Engine::Graphics::Effect> effect(new Effect(i_shaderName, i_vertexShader, i_fragmentShader), "Engine::Graphics::Effect");
 			if (!effect.isNull())
 			{
 				mEffectList[i_shaderName] = effect;

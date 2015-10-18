@@ -6,6 +6,8 @@
     <ClInclude Include="UniquePtr.h" />
     <ClInclude Include="additionaltypes.h" />
     <ClInclude Include="RTTI.h" />
+    <ClInclude Include="IMessageHandler.h" />
+    <ClInclude Include="IObjectController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedPointer.inl" />

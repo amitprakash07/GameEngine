@@ -1,20 +1,19 @@
 #include "StringPool.h"
 #include "../Utilities/HashedString.h"
 
-Engine::StringPool* Engine::StringPool::mStringPool = nullptr;
+Engine::SharedPointer<Engine::StringPool> Engine::StringPool::mStringPool;
 
 Engine::SharedPointer<Engine::StringPool> Engine::StringPool::getStringPool()
 {
-	if (mStringPool == nullptr)
+	if (mStringPool.isNull())
 	{
 		/*mStringPool = EngineController::GameEngine::isEngineInitialized() ?
 			new (EngineController::GameEngine::getMemoryManager()->__alloc(sizeof(StringPool))) StringPool() :
 		*/
-		mStringPool = new StringPool();
+		SharedPointer<StringPool> tempPool(new StringPool(), "Engine::StringPool");
+		mStringPool = tempPool;
 	}
-
 	return mStringPool;
-
 }//getStringPool
 
 Engine::StringPool::~StringPool()
@@ -48,7 +47,6 @@ char* Engine::StringPool::findString(char * i_string)
 	}
 	return nullptr;
 }//end find function
-
 
 char* Engine::StringPool::addString(char* i_String)
 {

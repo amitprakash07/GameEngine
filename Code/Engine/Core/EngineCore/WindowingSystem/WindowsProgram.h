@@ -15,21 +15,20 @@
 
 namespace Engine
 {
-	namespace WindowUtil
+	namespace Windows
 	{
-		class WindowingSystem:public Engine::RTTI
+		class WindowingSystem: public Engine::RTTI
 		{
 		public:
 			static SharedPointer<WindowingSystem> getWindowingSystem();
 			HWND getMainWindow();
 			bool CreateMainWindow(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState);
 			static bool OnMainWindowClosed(const HINSTANCE i_thisInstanceOfTheProgram);
-			~WindowingSystem();
-			//RTTI Virtual functions
 			std::string getTypeInfo() override;
-			bool isBothSameType(SharedPointer<RTTI>, std::string) override;
+			bool isBothSameType(RTTI*, std::string) override;
+			~WindowingSystem();
 		private:
-			static WindowingSystem* mWindowingSystem;
+			static SharedPointer<WindowingSystem> mWindowingSystem;
 			HWND s_mainWindow;
 			const char* s_mainWindowClassName;
 			HWND CreateMainWindowHandle(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState);
@@ -38,7 +37,6 @@ namespace Engine
 			bool UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram);
 			bool CleanupMainWindow();
 			WindowingSystem();
-			std::string typeName;
 		};
 	}
 }

@@ -1,7 +1,7 @@
 #ifndef __WALK_CONTROLLER_H
 #define __WALK_CONTROLLER_H
 
-#include "IObjectController.h"
+#include "../../Utilities/IObjectController.h"
 
 
 namespace Engine
@@ -10,12 +10,12 @@ namespace Engine
 	{
 	public:
 		void updateGameObject(GameObject &i_gameObject, Engine::typedefs::Direction i_dir) override;
+		std::string getTypeInfo() override { return ""; }
+		bool isBothSameType(RTTI*, std::string) override { return true; }
+		WalkController(){}
 		~WalkController(){}
 	private:
-		WalkController()
-		{
-			
-		}
+		
 	};
 }
 

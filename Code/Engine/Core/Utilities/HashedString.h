@@ -1,11 +1,13 @@
 #ifndef __HASHED_STRING_H
 #define __HASHED_STRING_H
 
+#include "RTTI.h"
+
 namespace Engine
 {
 	namespace utils
 	{
-		class StringHash
+		class StringHash:public RTTI
 		{
 		public:
 			StringHash();
@@ -20,6 +22,8 @@ namespace Engine
 			static unsigned __int32					Hash(const char *);
 			static unsigned __int32					Hash(const void *, size_t);
 			bool									isNil() const;
+			std::string getTypeInfo() override { return ""; }
+			bool isBothSameType(RTTI*, std::string) override { return true; }
 
 		private:
 			unsigned __int32 mHash;

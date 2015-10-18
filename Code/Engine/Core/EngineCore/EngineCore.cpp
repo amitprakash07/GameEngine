@@ -1,4 +1,3 @@
-
 #include "EngineCore.h"
 #include "..\..\Graphics\Graphics.h"
 #include "..\..\Windows\WindowsFunctions.h"
@@ -8,13 +7,16 @@
 
 Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::mMessagingSystem = Engine::MessagingSystem::getMessagingSystem();
 Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::mStringPool = Engine::StringPool::getStringPool();
-Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::EngineCore::mWindowingSystem = Engine::WindowUtil::WindowingSystem::getWindowingSystem();
+Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::mWindowingSystem = Engine::Windows::WindowingSystem::getWindowingSystem();
 Engine::SharedPointer<Engine::InputController> Engine::EngineCore::mInputController = Engine::InputController::getInputController();
 //Engine::SharedPointer<Engine::EngineCore> Engine::EngineCore::mEngineInstance;
 
 
 void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 {
+	/*SharedPointer<MessagingSystem> temp = Engine::MessagingSystem::getMessagingSystem();
+	mMessagingSystem = temp;*/
+
 	std::stringstream errormessage;	
 	//mEngineInstance->mWindowingSystem = SharedPointer<Engine::WindowUtil::WindowingSystem>(Engine::WindowUtil::WindowingSystem::getWindowingSystem());
 	if (!mWindowingSystem.isNull())
@@ -37,7 +39,7 @@ Engine::EngineCore::EngineCore()
 
 }
 
-Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::EngineCore::getWindowingSystem()
+Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::getWindowingSystem()
 {
 	return mWindowingSystem;
 }

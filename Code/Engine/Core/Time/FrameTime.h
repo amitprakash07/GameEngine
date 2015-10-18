@@ -10,7 +10,7 @@ namespace Engine
 {
 	namespace Time
 	{
-		class FrameTime
+		class FrameTime:public RTTI
 		{
 		public:
 
@@ -20,6 +20,8 @@ namespace Engine
 			float								getdeltaTime();
 			float								getdeltaTimeDuringFrame();
 			void								updateDeltaTime();
+			std::string getTypeInfo() override { return ""; }
+			bool isBothSameType(RTTI*, std::string) override { return true; }
 			static uint64_t						getCurrentTick();
 
 		private:

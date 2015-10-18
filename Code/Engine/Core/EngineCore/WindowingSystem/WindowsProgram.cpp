@@ -4,37 +4,22 @@
 #include "../../MessagingSystem/MessagingSystem.h"
 #include "../../StringPoolManager/StringPool.h"
 #include "../EngineCore.h"
+#include <iostream>
 
 
+Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::Windows::WindowingSystem::mWindowingSystem;
 
-Engine::WindowUtil::WindowingSystem* Engine::WindowUtil::WindowingSystem::mWindowingSystem = nullptr;
-
-std::string Engine::WindowUtil::WindowingSystem::getTypeInfo()
+Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::Windows::WindowingSystem::getWindowingSystem()
 {
-	if (!typeName.empty())
-		return typeName;
-
-	return "";
-}
-
-bool Engine::WindowUtil::WindowingSystem::isBothSameType(SharedPointer<RTTI> i_first, std::string i_second)
-{
-	if (i_first->getTypeInfo() == i_second)
-		return true;
-	return false;
-}
-
-
-Engine::SharedPointer<Engine::WindowUtil::WindowingSystem> Engine::WindowUtil::WindowingSystem::getWindowingSystem()
-{
-	if (mWindowingSystem == nullptr)
-		mWindowingSystem = new WindowingSystem();
-
+	if (mWindowingSystem.isNull())
+	{
+		SharedPointer<Engine::Windows::WindowingSystem> temp(new WindowingSystem(), "Engine::Windows::WindowingSystem");
+		mWindowingSystem = temp;
+	}
 	return mWindowingSystem;
 }
 
-
-bool Engine::WindowUtil::WindowingSystem::CreateMainWindow(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState)
+bool Engine::Windows::WindowingSystem::CreateMainWindow(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState)
 {
 	ATOM mainWindowClass = RegisterMainWindowClass(i_thisInstanceOfTheProgram);
 	if (mainWindowClass != NULL)
@@ -47,7 +32,7 @@ bool Engine::WindowUtil::WindowingSystem::CreateMainWindow(const HINSTANCE i_thi
 	return false;
 }
 
-ATOM Engine::WindowUtil::WindowingSystem::RegisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)
+ATOM Engine::Windows::WindowingSystem::RegisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)
 {
 	WNDCLASSEX wndClassEx = { 0 };
 	wndClassEx.cbSize = sizeof(WNDCLASSEX);
@@ -92,7 +77,7 @@ ATOM Engine::WindowUtil::WindowingSystem::RegisterMainWindowClass(const HINSTANC
 	return mainWindowClass;
 }
 
-HWND Engine::WindowUtil::WindowingSystem::CreateMainWindowHandle( const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState )
+HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle( const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState )
 {
 	// Create the main window
 	HWND mainWindow;
@@ -235,7 +220,7 @@ HWND Engine::WindowUtil::WindowingSystem::CreateMainWindowHandle( const HINSTANC
 
 }
 
-LRESULT CALLBACK Engine::WindowUtil::WindowingSystem::OnMessageReceived(HWND i_window, UINT i_message, WPARAM i_wParam, LPARAM i_lParam)
+LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_window, UINT i_message, WPARAM i_wParam, LPARAM i_lParam)
 {
 	switch (i_message)
 	{
@@ -279,20 +264,24 @@ LRESULT CALLBACK Engine::WindowUtil::WindowingSystem::OnMessageReceived(HWND i_w
 
 		//}
 		// If the key press wasn't handled pass it on to Windows to process in the default way
-
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("KeyDown");
+		SharedPointer<WindowingSystem> tempWindowingSystem = Engine::EngineCore::getWindowingSystem();
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, reinterpret_cast<IMessageHandler*>(tempWindowingSystem.getRawPointer()), reinterpret_cast<void*>(i_wParam));
+		break;
 		
 		break;
 	}
 	case WM_KEYDOWN:
 	{
 		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("KeyDown");
-		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, mWindowingSystem, reinterpret_cast<void*>(i_wParam));
+		SharedPointer<WindowingSystem> tempWindowingSystem = Engine::EngineCore::getWindowingSystem();
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, reinterpret_cast<IMessageHandler*>(tempWindowingSystem.getRawPointer()), reinterpret_cast<void*>(i_wParam));
 		break;
 	}
 	// The window's nonclient area is being destroyed
 	case WM_NCDESTROY:
 	{
-		mWindowingSystem->s_mainWindow = nullptr;
+		//mWindowingSystem->s_mainWindow = nullptr;
 		// When the main window is destroyed
 		// a WM_QUIT message should be sent
 		// (if this isn't done the application would continue to run with no window).
@@ -307,7 +296,7 @@ LRESULT CALLBACK Engine::WindowUtil::WindowingSystem::OnMessageReceived(HWND i_w
 	return DefWindowProc(i_window, i_message, i_wParam, i_lParam);
 }
 
-bool Engine::WindowUtil::WindowingSystem::UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)
+bool Engine::Windows::WindowingSystem::UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)
 {
 	if (UnregisterClass(s_mainWindowClassName, i_thisInstanceOfTheProgram) != FALSE)
 		return true;
@@ -321,14 +310,14 @@ bool Engine::WindowUtil::WindowingSystem::UnregisterMainWindowClass(const HINSTA
 	}
 }
 
-HWND Engine::WindowUtil::WindowingSystem::getMainWindow()
+HWND Engine::Windows::WindowingSystem::getMainWindow()
 {
-	if (mWindowingSystem->s_mainWindow)
-		return mWindowingSystem->s_mainWindow;
+	if (s_mainWindow)
+		return s_mainWindow;
 	return nullptr;
 }
 
-bool Engine::WindowUtil::WindowingSystem::CleanupMainWindow()
+bool Engine::Windows::WindowingSystem::CleanupMainWindow()
 {
 	if ( s_mainWindow != nullptr )
 	{
@@ -348,7 +337,7 @@ bool Engine::WindowUtil::WindowingSystem::CleanupMainWindow()
 	return true;
 }
 
-bool Engine::WindowUtil::WindowingSystem::OnMainWindowClosed( const HINSTANCE i_thisInstanceOfTheProgram )
+bool Engine::Windows::WindowingSystem::OnMainWindowClosed( const HINSTANCE i_thisInstanceOfTheProgram )
 {
 	bool wereThereErrors = false;
 	if ( !mWindowingSystem->CleanupMainWindow() )
@@ -359,17 +348,29 @@ bool Engine::WindowUtil::WindowingSystem::OnMainWindowClosed( const HINSTANCE i_
 	return !wereThereErrors;
 }
 
-Engine::WindowUtil::WindowingSystem::WindowingSystem()
+Engine::Windows::WindowingSystem::WindowingSystem()
 {
 	s_mainWindow = nullptr;
 	s_mainWindowClassName = "Amit Prakash - Main Window Class";
-	typeName = "Engine::WindowUtil::WindowingSystem";
 }
 
-Engine::WindowUtil::WindowingSystem::~WindowingSystem()
+Engine::Windows::WindowingSystem::~WindowingSystem()
 {
-	
+	/*std::cout << "Something";
+	s_mainWindow = nullptr;*/
 }
+
+bool Engine::Windows::WindowingSystem::isBothSameType(RTTI*, std::string)
+{
+	return true;
+}
+
+std::string Engine::Windows::WindowingSystem::getTypeInfo()
+{
+	return "";
+}
+
+
 
 
 

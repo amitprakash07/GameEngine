@@ -2,16 +2,20 @@
 #include <algorithm>
 #include <assert.h>
 
-Engine::MessagingSystem* Engine::MessagingSystem::mMessagingSystem = nullptr;
+
+Engine::SharedPointer<Engine::MessagingSystem> Engine::MessagingSystem::mMessagingSystem;
 
 Engine::SharedPointer<Engine::MessagingSystem> Engine::MessagingSystem::getMessagingSystem()
 {
-	if (mMessagingSystem == nullptr)
+	if (mMessagingSystem.isNull())
 	{
 		/*mMessagingSystem = EngineController::GameEngine::isEngineInitialized() ?
 			new(EngineController::GameEngine::getMemoryManager()->__alloc(sizeof(MessagingSystem))) MessagingSystem() :
 			new MessagingSystem();*/
-		mMessagingSystem = new MessagingSystem();
+
+
+		SharedPointer<Engine::MessagingSystem> temp(SharedPointer<MessagingSystem>(new MessagingSystem(), "Engine::MessagingSystem"));
+		mMessagingSystem = temp;
 	}
 	return mMessagingSystem;
 }
@@ -28,7 +32,7 @@ Engine::MessagingSystem::~MessagingSystem()
 
 void Engine::MessagingSystem::addMessageHandler(Engine::utils::StringHash & i_message, IMessageHandler* i_pMessageHandler, Engine::typedefs::Priority i_priority)
 {
-	assert(i_pMessageHandler != nullptr);
+	assert(i_pMessageHandler != nullptr); // != nullptr);
 	assert(!i_message.isNil());
 	MessageHandle temp{ i_pMessageHandler, i_priority };
 	m_MessageHandlers[i_message].push_back(temp);
@@ -38,7 +42,7 @@ void Engine::MessagingSystem::addMessageHandler(Engine::utils::StringHash & i_me
 
 void Engine::MessagingSystem::sendMessage(Engine::utils::StringHash & i_message, RTTI* i_messageSender, void* message_data)
 {
-	assert(i_messageSender == i_messageSender);
+	assert(i_messageSender!=nullptr); //!= nullptr);
 	assert(!i_message.isNil());
 	std::vector<MessageHandle> tempList = m_MessageHandlers[i_message];
 	size_t handleCount = tempList.size();
