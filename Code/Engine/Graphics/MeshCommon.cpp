@@ -117,30 +117,6 @@ bool Engine::Graphics::Mesh::LoadMesh()
 	currentPosition = nullptr;
 	delete buffer;	
 
-
-#ifdef PLATFORM_D3D
-	if(!createVertexBuffer())
-	{
-		errormessage << "Unable to Create VertexBuffer for the Mesh.";
-		WindowsUtil::Print(errormessage.str());
-		return false;
-	}
-	if(!createIndexBuffer())
-	{
-		errormessage << "Unable to create Index Buffer for the Mesh.";
-		WindowsUtil::Print(errormessage.str());
-		return false;
-	}
-
-#elif PLATFORM_OPEN_GL
-	if(! createVertexArray())
-	{
-		errormessage << "Unable to Create Vertex and Index Buffer for the Mesh.";
-		WindowsUtil::Print(errormessage.str());
-		return false;
-	}
-#endif
-	
 	return true;
 }
 

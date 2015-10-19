@@ -286,9 +286,11 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		// a WM_QUIT message should be sent
 		// (if this isn't done the application would continue to run with no window).
 		// This is where the exitCode in WaitForShutdown() comes from:
+		//mWindowingSystem->s_mainWindow = nullptr;
 		int exitCode = 0;	// Arbitrary de facto success code
 		PostQuitMessage(exitCode);	// This sends a WM_QUIT message
 									// For WM_NCDESTROY messages, return 0 to indicate that it was processed
+		
 		return 0;
 	}
 	}//Switch 

@@ -452,8 +452,8 @@ bool WindowsUtil::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWr
 
 void WindowsUtil::Print(std::string i_str)
 {
-#if _DEBUG
+//#if _DEBUG
 	MessageBox(nullptr, i_str.c_str(),nullptr, MB_OK);
-#endif
+//#endif
 	std::cerr << i_str.c_str()<<"\n";
 }

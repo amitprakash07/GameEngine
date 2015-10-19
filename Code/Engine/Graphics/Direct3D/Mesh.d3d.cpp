@@ -14,6 +14,19 @@ namespace Engine
 
 bool Engine::Graphics::Mesh::drawMesh()
 {
+	std::stringstream errormessage;
+	if (!createVertexBuffer())
+	{
+		errormessage << "Unable to Create VertexBuffer for the Mesh.";
+		WindowsUtil::Print(errormessage.str());
+		return false;
+	}
+	if (!createIndexBuffer())
+	{
+		errormessage << "Unable to create Index Buffer for the Mesh.";
+		WindowsUtil::Print(errormessage.str());
+		return false;
+	}
 	HRESULT result;
 	// Bind a specific vertex buffer to the device as a data source
 	

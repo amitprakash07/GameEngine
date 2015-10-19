@@ -7,7 +7,13 @@
 
 bool Engine::Graphics::Mesh::drawMesh()
 {
-
+	std::stringstream errormessage;
+	if (!createVertexArray())
+	{
+		errormessage << "Unable to Create Vertex and Index Buffer for the Mesh.";
+		WindowsUtil::Print(errormessage.str());
+		return false;
+	}
 	// Bind a specific vertex buffer to the device as a data source
 	glBindVertexArray(s_vertexArrayID);
 	assert(glGetError() == GL_NO_ERROR);

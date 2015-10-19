@@ -20,8 +20,10 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_comman
 		Engine::SharedPointer<Engine::GameObject> triangleOne = Engine::GameObject::CreateGameObject("triangle", "data/TriangleMesh.mesh", "standard", "data/standard.vshd", "data/standard.fshd");
 		Engine::SharedPointer<Engine::GameObject> triangleTwo = Engine::GameObject::CreateGameObject("triangle", "data/TriangleMesh.mesh", "standard", "data/standard.vshd", "data/standard.fshd");
 		square->setGameObjectController(new Engine::WalkController());
-		triangleOne->setPositionOffset(Engine::Math::cVector(0.25, 0.25, 0.25));
-		triangleOne->setPositionOffset(Engine::Math::cVector(-0.25, -0.25, -0.25));
+		//triangleOne->setPositionOffset(Engine::Math::cVector(0.75, 0.75, 0.25));
+		triangleOne->setPositionOffset(Engine::Math::cVector(-0.75, -0.75, -0.25));
+		triangleTwo->setPositionOffset(Engine::Math::cVector(0.75, 0.75, 0.25));
+		//triangleTwo->setPositionOffset(Engine::Math::cVector(-0.75, -0.75, -0.25));
 		scene->addToScene(square);
 		scene->addToScene(triangleOne);
 		scene->addToScene(triangleTwo);

@@ -54,7 +54,7 @@ void Engine::Time::FrameTime::updateDeltaTime()
 		pauseTimerTick = 0;
 	}
 
-	//	if (timeDiff > (1 / 60)) timeDiff = (1 / 60);
+	//if (timeDiff > (1 / 60)) timeDiff = (1 / 60);
 	lastTick = currentTick;
 	delete tempTick;
 }
