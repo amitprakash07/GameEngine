@@ -57,6 +57,38 @@ void Engine::Scene::renderScene(bool i_render)
 }
 
 
+void Engine::Scene::deactivateAllSceneToRender()
+{
+	for (std::map<std::string, SharedPointer<Scene>>::iterator i = mSceneList.begin(); i != mSceneList.end(); ++i)
+		i->second->render = false;
+}
+
+
+Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
+{
+	for (std::map<std::string, SharedPointer<Scene>>::iterator i = mSceneList.begin(); i != mSceneList.end(); ++i)
+	{
+		if (i->second->render)
+			return i->second;
+	}
+	return(SharedPointer<Scene>());
+}
+
+//void Engine::Scene::deleteAllScene()
+//{
+//	for (std::map<std::string, SharedPointer<Scene>>::iterator i = mSceneList.begin(); i != mSceneList.end(); ++i)
+//	{
+//		SharedPointer<Scene> tempScene = i->second;
+//		for (std::vector<SharedPointer<GameObject>>::iterator j = tempScene->mScene.begin(); j != tempScene->mScene.end(); ++i)
+//		{
+//			j
+//		}
+//	}
+//}
+
+
+
+
 void Engine::Scene::drawScene()
 {
 	for (std::vector<SharedPointer<Engine::GameObject>>::iterator i = mScene.begin(); i != mScene.end(); ++i)
@@ -99,24 +131,6 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getScene(std::string i_scene
 		}
 	}
 	return(SharedPointer<Scene>());
-}
-
-
-Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
-{
-	for (std::map<std::string, SharedPointer<Scene>>::iterator i = mSceneList.begin(); i != mSceneList.end(); ++i)
-	{
-		if (i->second->render)
-			return i->second;
-	}
-	return(SharedPointer<Scene>());
-}
-
-
-void Engine::Scene::deactivateAllSceneToRender()
-{
-	for (std::map<std::string, SharedPointer<Scene>>::iterator i = mSceneList.begin(); i != mSceneList.end(); ++i)
-		i->second->render = false;
 }
 
 

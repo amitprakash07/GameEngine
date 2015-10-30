@@ -5,6 +5,7 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#pragma warning(disable :4006)
 // Platform Specific Header Files
 //=============
 #include "../Windows/WindowsIncludes.h"

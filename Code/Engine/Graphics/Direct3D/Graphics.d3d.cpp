@@ -6,6 +6,7 @@
 #include "../../Windows/WindowsFunctions.h"
 #include "../../Core/EngineCore/Objects/Scene.h"
 
+#pragma warning(disable :4006)
 
 // Static Data Initialization
 //===========================
@@ -80,9 +81,7 @@ void Engine::Graphics::GraphicsSystem::Render()
 			clearTheRenderTarget, clearColor, noZBuffer, noStencilBuffer );
 		assert( SUCCEEDED( result ) );
 	}
-
-	// The actual function calls that draw geometry must be made between paired calls to
-	// BeginScene() and EndScene()
+		
 	{
 		HRESULT result = s_direct3dDevice->BeginScene();
 

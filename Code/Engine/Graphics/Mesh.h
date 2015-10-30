@@ -1,6 +1,6 @@
 #ifndef __MESH_H
 #define __MESH_H
-
+#pragma warning(disable :4006)
 #ifdef PLATFORM_OPEN_GL
 #include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 #elif PLATFORM_D3D

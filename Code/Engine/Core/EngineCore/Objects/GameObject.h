@@ -14,7 +14,7 @@ namespace Engine
 	class GameObject : public IMessageHandler
 	{
 	public:
-		static SharedPointer<GameObject> CreateGameObject(std::string, std::string, std::string, std::string, std::string);
+		static SharedPointer<GameObject> CreateGameObject(std::string, std::string, std::string, std::string);
 		void setGameObjectController(IObjectController *);
 		SharedPointer<Engine::Graphics::Mesh>       getMesh();
 		SharedPointer<Engine::Graphics::Effect>		getEffect();

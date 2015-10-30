@@ -11,6 +11,9 @@
     <BuiltAssetDir>$(GameDir)data\</BuiltAssetDir>
     <ScriptDir>$(SolutionDir)Scripts\</ScriptDir>
   </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Lib />
+  </ItemDefinitionGroup>
   <ItemGroup>
     <BuildMacro Include="TempDir">
       <Value>$(TempDir)</Value>

@@ -27,7 +27,7 @@ namespace Engine
 		//static SharedPointer<EngineCore> mEngineInstance;
 		static SharedPointer<Engine::MessagingSystem> mMessagingSystem;
 		static SharedPointer<Engine::StringPool> mStringPool;
-		static SharedPointer<Engine::Windows::WindowingSystem> mWindowingSystem;
+		static SharedPointer<Engine::Windows::WindowingSystem> mEngineWindowingSystem;
 		static SharedPointer<Engine::InputController> mInputController;
 	};
 }

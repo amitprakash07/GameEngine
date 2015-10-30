@@ -42,11 +42,23 @@ end
 
 --EAE6320_TODO: I have shown the simplest parameters to BuildAsset() that are possible.
 --You should definitely feel free to change these
-local function BuildAsset( i_sourceRelativePath, i_targetRelativePath, i_builderFileName )
+local function BuildAsset( resourceTable )
 	-- Get the absolute paths to the source and target
 	--EAE6320_TODO: I am assuming that the relative path of the source and target is the same,
 	--but if this isn't true for you (i.e. you use different extensions)
 	--then you will need to update this part
+	count = 1
+	for i,j in ipairs(resourceTable) do
+		count = count + 1
+	end
+
+
+	print(resourceTable[1])
+	i_builderFileName = resourceTable[1]
+
+	i_sourceRelativePath = resourceTable[2]
+	i_targetRelativePath = resourceTable[3]
+
 	local path_source = s_AuthoredAssetDir .. i_sourceRelativePath
 	local path_target = s_BuiltAssetDir .. i_targetRelativePath
 
@@ -126,6 +138,14 @@ local function BuildAsset( i_sourceRelativePath, i_targetRelativePath, i_builder
 			local command = "\"" .. path_builder .. "\""
 			-- The source and target path must always be passed in
 			local arguments = "\"" .. path_source .. "\" \"" .. path_target .. "\""
+
+			counter = 3
+			if(count > 3) then
+				while (counter < (count-1)) do
+					counter = counter +1
+					arguments = arguments .. " " ..resourceTable[counter]
+				end
+			end
 			-- If you create a mechanism so that some asset types could include extra arguments
 			-- you would concatenate them here, something like:
 			-- arguments = arguments .. " " .. i_optionalArguments
@@ -136,9 +156,10 @@ local function BuildAsset( i_sourceRelativePath, i_targetRelativePath, i_builder
 			-- "arguments" should go in Debugging->Command Arguments
 
 			-- Surround the entire command line in quotes
+
 			local commandLine = "\"" .. command .. " " .. arguments .. "\""
 			print(commandLine)
-			
+
 			local result, terminationType, exitCode = os.execute( commandLine )
 			if result then
 				-- Display a message for each asset
@@ -190,7 +211,14 @@ local function BuildAssets( i_assetsToBuild )
 	else
 		for i,u in ipairs(i_assetsToBuild) do
 			for j,v in ipairs(i_assetsToBuild[i]) do
-				isAssetBuild, anyError = BuildAsset(v["src"], v["target"], i_assetsToBuild[i]["BuildTool"])
+				list = {}
+				if (v['type']) then
+					list = {i_assetsToBuild[i]["BuildTool"], v["src"], v["target"], v['type']}
+				else
+					list = {i_assetsToBuild[i]["BuildTool"], v["src"], v["target"]}
+				end
+				print(list)
+				isAssetBuild, anyError = BuildAsset(list)
 				if not isAssetBuild then
 					errorMessage = errorMessage .. "Unable to build file. Returning exit code" .. anyError
 					wereThereErrors = true
@@ -213,6 +241,7 @@ if commandLineArgument then
 	local path_assetsToBuild = commandLineArgument
 	if DoesFileExist( path_assetsToBuild ) then
 			assetsToBuild = dofile( path_assetsToBuild )
+
 		return BuildAssets( assetsToBuild )
 	else
 		OutputErrorMessage( "The path to the list of assets to build that was provided to BuildAssets.lua as argument #1 (\"" ..

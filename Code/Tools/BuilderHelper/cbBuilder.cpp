@@ -2,7 +2,7 @@
 //=============
 
 #include "cbBuilder.h"
-#include "../../Engine/Windows/WindowsFunctions.h"
+#include "../../Externals/LuaHelper/LuaHelper.h"
 
 // Interface
 //==========
@@ -14,6 +14,9 @@ bool Tools::AssetBuilder::cbBuilder::ParseCommandArgumentsAndBuild( char** i_arg
 {
 	const unsigned int commandCount = 1;
 	const unsigned int actualArgumentCount = i_argumentCount - commandCount;
+	std::stringstream message;
+	//message << "\nTotal ArgumentCount "<<actualArgumentCount;
+	//LuaHelper::OutputErrorMessage(message.str().c_str());
 	const unsigned int requiredArgumentCount = 2;
 	if ( actualArgumentCount >= requiredArgumentCount )
 	{
@@ -23,7 +26,10 @@ bool Tools::AssetBuilder::cbBuilder::ParseCommandArgumentsAndBuild( char** i_arg
 		std::vector<std::string> optionalArguments;
 		for ( unsigned int i = ( commandCount + requiredArgumentCount ); i < i_argumentCount; ++i )
 		{
+			/*message << "Optional Argument = " << i_arguments[i];
+			LuaHelper::OutputErrorMessage(message.str().c_str());*/
 			optionalArguments.push_back( i_arguments[i] );
+
 		}
 		return Build( optionalArguments );
 	}
@@ -44,7 +50,7 @@ bool Tools::AssetBuilder::cbBuilder::ParseCommandArgumentsAndBuild( char** i_arg
 		{
 			errorMessage << "only " << actualArgumentCount << " were provided\n";
 		}
-		WindowsUtil::Print( errorMessage.str().c_str() );
+		LuaHelper::OutputErrorMessage(errorMessage.str().c_str());
 		return false;
 	}
 }

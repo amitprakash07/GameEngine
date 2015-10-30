@@ -34,5 +34,6 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="Includes.h" />
   </ItemGroup>
 </Project>

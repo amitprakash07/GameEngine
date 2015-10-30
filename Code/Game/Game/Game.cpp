@@ -16,9 +16,9 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_comman
 		//_CrtSetBreakAlloc(156);
 		Engine::EngineCore::Initialize(i_thisInstanceOfTheProgram, i_initialWindowDisplayState);
 		Engine::SharedPointer<Engine::Scene> scene = Engine::Scene::CreateNewScene("TriangleSquareTriangle");
-		Engine::SharedPointer<Engine::GameObject> square = Engine::GameObject::CreateGameObject("square", "data/SquareMesh.mesh", "standard", "data/standard.vshd", "data/standard.fshd");
-		Engine::SharedPointer<Engine::GameObject> triangleOne = Engine::GameObject::CreateGameObject("triangle", "data/TriangleMesh.mesh", "standard", "data/standard.vshd", "data/standard.fshd");
-		Engine::SharedPointer<Engine::GameObject> triangleTwo = Engine::GameObject::CreateGameObject("triangle", "data/TriangleMesh.mesh", "standard", "data/standard.vshd", "data/standard.fshd");
+		Engine::SharedPointer<Engine::GameObject> square = Engine::GameObject::CreateGameObject("square", "data/SquareMesh.mesh", "standard", "data/standardEffect.effect");
+		Engine::SharedPointer<Engine::GameObject> triangleOne = Engine::GameObject::CreateGameObject("triangle", "data/TriangleMesh.mesh", "standard", "data/standardEffect.effect");
+		Engine::SharedPointer<Engine::GameObject> triangleTwo = Engine::GameObject::CreateGameObject("triangle", "data/TriangleMesh.mesh", "standard", "data/standardEffect.effect");
 		square->setGameObjectController(new Engine::WalkController());
 		//triangleOne->setPositionOffset(Engine::Math::cVector(0.75, 0.75, 0.25));
 		triangleOne->setPositionOffset(Engine::Math::cVector(-0.75, -0.75, -0.25));
@@ -30,7 +30,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_comman
 		scene->renderScene(true);
 		while (!Engine::EngineCore::isWindowClosed(i_thisInstanceOfTheProgram))
 			Engine::EngineCore::onNewFrame();
-		Engine::EngineCore::shutDownEngine();
+		//Engine::EngineCore::shutDownEngine();
 	}
-	_CrtDumpMemoryLeaks();
+	//_CrtDumpMemoryLeaks();
 }

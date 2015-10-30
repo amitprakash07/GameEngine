@@ -1,6 +1,5 @@
 #include "Mesh.h"
-#include "../../Externals/Lua/Includes.h"
-#include "../../Engine/Windows/WindowsFunctions.h"
+#include "../../Externals/LuaHelper/LuaHelper.h"
 #include <assert.h>
 
 
@@ -27,7 +26,7 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 		{
 			std::stringstream errormessage;
 			errormessage << "Atleast x and y coordinates are required for a vertex. found " << counts << "\n";
-			WindowsUtil::Print(errormessage.str());
+			LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
 			return false;
 		}
 
@@ -66,7 +65,7 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 		{
 			std::stringstream errormessage;
 			errormessage << "Atleast 3 color channels are required to color the vertex. Found " << countColorChannels << "\n";
-			WindowsUtil::Print(errormessage.str());
+			LuaHelper::OutputErrorMessage(errormessage.str().c_str(),__FILE__);
 			return false;
 		}
 
@@ -187,79 +186,3 @@ bool LuaLoadTriangleIndex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_me
 	return true;
 }
 
-/**********************************************Lua Error Check Helper Functions*******************************************/
-bool isString(lua_State * luaState)
-{
-	if (lua_type(luaState, -1) != LUA_TSTRING)
-	{
-		std::stringstream errorMessage;
-		errorMessage << "The value for  must be a string  (instead of a " << luaL_typename(luaState, -1) << ")\n";
-		WindowsUtil::Print(errorMessage.str());
-		return false;
-	}
-	return true;
-}
-bool isTable(lua_State* luaState)
-{
-	if (!lua_istable(luaState, -1))
-	{
-		std::stringstream errorMessage;
-		errorMessage << "Asset files must return a table (instead of a " << luaL_typename(luaState, -1) << ")\n";
-		WindowsUtil::Print(errorMessage.str());
-		return false;
-	}
-	return true;
-}
-bool isValueNil(lua_State * luaState)
-{
-
-	if (lua_isnil(luaState, -1))
-	{
-		std::stringstream errorMessage;
-		errorMessage << "No value for the given key  was found in the asset table \n";
-		WindowsUtil::Print(errorMessage.str());
-		return true;
-	}
-	return false;
-}
-bool isValueNumber(lua_State* luaState)
-{
-	if (lua_type(luaState, -1) != LUA_TNUMBER)
-	{
-		std::stringstream errorMessage;
-		errorMessage << "The Value for the key is not a double \n";
-		WindowsUtil::Print(errorMessage.str());
-		return false;
-	}
-	return true;
-}
-bool exitAndShutdownLua(lua_State *i_luaState)
-{
-	if (i_luaState)
-	{
-		assert(lua_gettop(i_luaState) == 0);
-		lua_close((i_luaState));
-		i_luaState = nullptr;
-		return true;
-	}
-	std::stringstream errormessage;
-	errormessage << "Lua state is already NULL. No need to shutdown again\n";
-	WindowsUtil::Print(errormessage.str());
-	return true;
-}
-bool isLuaResultOkay(lua_State *i_luaState, int result)
-{
-	if (result != LUA_OK)
-	{
-		std::stringstream errormessage;
-		errormessage << "Unable to load the file. \n" << lua_tostring(i_luaState, 1);
-
-		//Popping out the error message
-		lua_pop(i_luaState, 1);
-		WindowsUtil::Print(errormessage.str());
-		exitAndShutdownLua(i_luaState);
-		return false;
-	}
-	return true;
-}
-/*************************************************************************************************************************************/

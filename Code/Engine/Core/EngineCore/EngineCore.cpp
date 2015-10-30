@@ -1,34 +1,30 @@
 #include "EngineCore.h"
 #include "..\..\Graphics\Graphics.h"
+#include "..\..\Graphics/Effect.h"
+#include "..\..\Graphics/Mesh.h"
 #include "..\..\Windows\WindowsFunctions.h"
 #include "Objects/Scene.h"
 #include <iostream>
 
 
+
 Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::mMessagingSystem = Engine::MessagingSystem::getMessagingSystem();
 Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::mStringPool = Engine::StringPool::getStringPool();
-Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::mWindowingSystem = Engine::Windows::WindowingSystem::getWindowingSystem();
+Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::mEngineWindowingSystem = Engine::Windows::WindowingSystem::getWindowingSystem();
 Engine::SharedPointer<Engine::InputController> Engine::EngineCore::mInputController = Engine::InputController::getInputController();
-//Engine::SharedPointer<Engine::EngineCore> Engine::EngineCore::mEngineInstance;
 
 
 void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 {
-	/*SharedPointer<MessagingSystem> temp = Engine::MessagingSystem::getMessagingSystem();
-	mMessagingSystem = temp;*/
-
 	std::stringstream errormessage;	
-	//mEngineInstance->mWindowingSystem = SharedPointer<Engine::WindowUtil::WindowingSystem>(Engine::WindowUtil::WindowingSystem::getWindowingSystem());
-	if (!mWindowingSystem.isNull())
+	if (!mEngineWindowingSystem.isNull())
 	{
-		mWindowingSystem->CreateMainWindow(hInstance, windowLayout);
-		if (!Engine::Graphics::GraphicsSystem::Initialize(mWindowingSystem->getMainWindow()))
+		mEngineWindowingSystem->CreateMainWindow(hInstance, windowLayout);
+		if (!Engine::Graphics::GraphicsSystem::Initialize(mEngineWindowingSystem->getMainWindow()))
 		{
 			errormessage << "Unable to initialize Graphics System";
 			std::cerr << errormessage.str().c_str();
-			/*mMessagingSystem = Engine::MessagingSystem::getMessagingSystem();
-			mStringPool = Engine::StringPool::getStringPool();
-			mInputController = Engine::InputController::getInputController();*/
+			
 		}
 	}
 }
@@ -41,7 +37,7 @@ Engine::EngineCore::EngineCore()
 
 Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::getWindowingSystem()
 {
-	return mWindowingSystem;
+	return mEngineWindowingSystem;
 }
 
 Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::getMessagingSystem()
@@ -63,8 +59,6 @@ void Engine::EngineCore::onNewFrame()
 {
 	MSG message = {};
 	bool hasWindowsSentAMessage;
-
-
 	{
 		HWND getMessagesFromAnyWindowBelongingToTheCurrentThread = nullptr;
 		unsigned int getAllMessageTypes = 0;
@@ -87,9 +81,10 @@ void Engine::EngineCore::onNewFrame()
 
 bool Engine::EngineCore::isWindowClosed(HINSTANCE hInstance)
 {
-	if (mWindowingSystem->getMainWindow() == nullptr)
+	if (mEngineWindowingSystem->getMainWindow() == nullptr)
 	{
-		if (mWindowingSystem->OnMainWindowClosed(hInstance))
+		shutDownEngine();
+		if (mEngineWindowingSystem->OnMainWindowClosed(hInstance))
 			return true;
 		else
 		{
@@ -104,10 +99,12 @@ bool Engine::EngineCore::isWindowClosed(HINSTANCE hInstance)
 
 void Engine::EngineCore::shutDownEngine()
 {
+	Engine::Scene::deleteAllScene();
+	Engine::Graphics::Mesh::deleteAllMesh();
+	Engine::Graphics::Effect::deleteAllEffect();
 	mMessagingSystem.deleteObject();
 	mStringPool.deleteObject();
-	mInputController.deleteObject();
-	Engine::Scene::deleteAllScene();
+	mInputController.deleteObject();	
 }
 
 

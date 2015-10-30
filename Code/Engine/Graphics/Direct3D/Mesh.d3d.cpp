@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include "../../Windows/WindowsFunctions.h"
 
+#pragma warning(disable :4006)
+
 namespace Engine
 {
 	namespace Graphics

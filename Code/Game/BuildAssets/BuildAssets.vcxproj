@@ -224,7 +224,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='_ENGINE_DEBUG|Win32'">
@@ -242,7 +242,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>%(Outputs)</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|Win32'">
@@ -260,7 +260,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>%(Outputs)</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -279,7 +279,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -301,7 +301,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -323,7 +323,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -348,7 +348,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|Win32'">
@@ -370,7 +370,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>%(Outputs)</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -393,7 +393,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -419,7 +419,7 @@
     <CustomBuildStep>
       <Command> "$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
-      <Outputs>_ALWAYS_RUN_;%(Outputs)</Outputs>
+      <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>

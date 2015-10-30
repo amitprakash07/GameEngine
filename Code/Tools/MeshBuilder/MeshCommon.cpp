@@ -1,6 +1,6 @@
 #include "Mesh.h"
-#include "../../Engine/Windows/WindowsFunctions.h"
 #include "../../Externals/Lua/Includes.h"
+#include "../../Externals/LuaHelper/LuaHelper.h"
 #include "MeshLoadFromLua.h"
 #include <iostream>
 
@@ -71,8 +71,8 @@ bool Tools::AssetBuilder::Mesh::LoadMesh()
 	if (!mLuaState)
 	{
 		errormessage << "Failed to create a new Lua state \n";
-		WindowsUtil::Print(errormessage.str());
-		exitAndShutdownLua(mLuaState);
+		LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
+		LuaHelper::exitAndShutdownLua(mLuaState);
 		return false;
 	}
 
@@ -80,8 +80,8 @@ bool Tools::AssetBuilder::Mesh::LoadMesh()
 	if(meshFileName.empty())
 	{
 		errormessage << "No File Name for the mesh. Call setMeshFileName(char*) before calling LoadMesh()";
-		WindowsUtil::Print(errormessage.str());
-		exitAndShutdownLua(mLuaState);
+		LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
+		LuaHelper::exitAndShutdownLua(mLuaState);
 		return false;
 	}
 		
@@ -94,8 +94,8 @@ bool Tools::AssetBuilder::Mesh::LoadMesh()
 
 		//Popping out the error message
 		lua_pop(mLuaState, 1);
-		WindowsUtil::Print(errormessage.str());
-		exitAndShutdownLua(mLuaState);
+		LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
+		LuaHelper::exitAndShutdownLua(mLuaState);
 		return false;
 	}
 
@@ -105,9 +105,9 @@ bool Tools::AssetBuilder::Mesh::LoadMesh()
 	int noMessageHandler = 0;
 
 	luaResult = lua_pcall(mLuaState, argumentCount, returnCount, noMessageHandler);
-	if (!isLuaResultOkay(mLuaState, luaResult) || returnCount > 1 || !isTable(mLuaState))
+	if (!LuaHelper::isLuaResultOkay(mLuaState, luaResult) || returnCount > 1 || !LuaHelper::isTable(mLuaState))
 	{
-		exitAndShutdownLua(mLuaState);
+		LuaHelper::exitAndShutdownLua(mLuaState);
 		return false;
 	}
 
@@ -115,7 +115,7 @@ bool Tools::AssetBuilder::Mesh::LoadMesh()
 	lua_pushstring(mLuaState, vertices);
 	lua_gettable(mLuaState, -2);
 
-	if (isTable(mLuaState)) //Vertices Table
+	if (LuaHelper::isTable(mLuaState)) //Vertices Table
 	{
 		vertexCount = luaL_len(mLuaState, -1);
 		if (vertexCount > 0)
@@ -127,8 +127,8 @@ bool Tools::AssetBuilder::Mesh::LoadMesh()
 		else
 		{
 			errormessage << "No Vertices in the Lua file \n.";
-			WindowsUtil::Print(errormessage.str());
-			exitAndShutdownLua(mLuaState);
+			LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
+			LuaHelper::exitAndShutdownLua(mLuaState);
 			return false;
 		}
 
@@ -139,7 +139,7 @@ bool Tools::AssetBuilder::Mesh::LoadMesh()
 	const char* indices = "indices";
 	lua_pushstring(mLuaState, indices);
 	lua_gettable(mLuaState, -2);
-	if (isTable(mLuaState)) //indices Table
+	if (LuaHelper::isTable(mLuaState)) //indices Table
 	{
 
 		lua_pushstring(mLuaState, "nooftriangles");
@@ -158,7 +158,7 @@ bool Tools::AssetBuilder::Mesh::LoadMesh()
 	lua_pop(mLuaState, 1); //Popping out the indices table
 
 	lua_pop(mLuaState, 1); //Popping out complete table
-	exitAndShutdownLua(mLuaState);
+	LuaHelper::exitAndShutdownLua(mLuaState);
 	return true;
 }
 Tools::AssetBuilder::Mesh::~Mesh()

@@ -205,19 +205,6 @@ HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle( const HINSTANCE i
 	// Display the window in the initial state that Windows requested
 	ShowWindow( mainWindow, i_initialWindowDisplayState );
 	return mainWindow;
-
-//OnError:
-//
-//	if ( DestroyWindow( mainWindow ) == FALSE )
-//	{
-//		std::string errorMessage( "Windows failed to destroy the main window "
-//			"after an error in creation: " );
-//		errorMessage += WindowsUtil::GetLastWindowsError();
-//		MessageBox(nullptr, errorMessage.c_str(), nullptr, MB_OK | MB_ICONERROR );
-//	}
-//	mainWindow = nullptr;
-//	return nullptr;
-
 }
 
 LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_window, UINT i_message, WPARAM i_wParam, LPARAM i_lParam)
@@ -287,7 +274,8 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		// (if this isn't done the application would continue to run with no window).
 		// This is where the exitCode in WaitForShutdown() comes from:
 		//mWindowingSystem->s_mainWindow = nullptr;
-		int exitCode = 0;	// Arbitrary de facto success code
+		EngineCore::getWindowingSystem()->s_mainWindow = nullptr;
+		int exitCode = 0;			// Arbitrary de facto success code
 		PostQuitMessage(exitCode);	// This sends a WM_QUIT message
 									// For WM_NCDESTROY messages, return 0 to indicate that it was processed
 		
@@ -342,9 +330,9 @@ bool Engine::Windows::WindowingSystem::CleanupMainWindow()
 bool Engine::Windows::WindowingSystem::OnMainWindowClosed( const HINSTANCE i_thisInstanceOfTheProgram )
 {
 	bool wereThereErrors = false;
-	if ( !mWindowingSystem->CleanupMainWindow() )
+	if ( !EngineCore::getWindowingSystem()->CleanupMainWindow() )
 		wereThereErrors = true;
-	if ( !mWindowingSystem->UnregisterMainWindowClass( i_thisInstanceOfTheProgram ) )
+	if ( !EngineCore::getWindowingSystem()->UnregisterMainWindowClass( i_thisInstanceOfTheProgram ) )
 		wereThereErrors = true;
 	
 	return !wereThereErrors;

@@ -6,12 +6,12 @@
 
 
 
-Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(std::string i_meshName, std::string i_meshFileName, std::string i_effectName, std::string i_vertexShaderFileName, std::string i_fragmentShaderFileName)
+Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(std::string i_meshName, std::string i_meshFileName, std::string i_effectName, std::string i_effectFileName)
 {
 	SharedPointer<GameObject> tempGameObject(new GameObject(i_meshName, i_effectName), "Engine::GameObject");
 	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateGameObject"));
 	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempGameObject.getRawPointer()), Engine::typedefs::HIGH);
-	if (!i_meshName.empty() && !i_meshFileName.empty() && !i_effectName.empty() && !i_vertexShaderFileName.empty() && !i_fragmentShaderFileName.empty())
+	if (!i_meshName.empty() && !i_meshFileName.empty() && !i_effectName.empty() && !i_effectFileName.empty())
 	{
 		std::stringstream errormessage;
 		if (!Engine::Graphics::Mesh::addToMeshList(i_meshName, i_meshFileName))
@@ -22,7 +22,7 @@ Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(s
 			return (SharedPointer<GameObject>());
 		}
 		
-		if(!Engine::Graphics::Effect::addEffectToList(i_effectName, i_vertexShaderFileName, i_fragmentShaderFileName))
+		if(!Engine::Graphics::Effect::addEffectToList(i_effectName, i_effectFileName))
 		{
 			errormessage << "Unable to Load Effect";
 			MessageBox(nullptr, errormessage.str().c_str(), nullptr, MB_OK);
@@ -122,7 +122,7 @@ Engine::Math::cVector Engine::GameObject::getOffsetPosition()
 
 Engine::GameObject::~GameObject()
 {
-	
+	delete mObjectController;
 }
 
 

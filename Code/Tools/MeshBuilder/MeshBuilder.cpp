@@ -3,7 +3,6 @@
 
 #include "MeshBuilder.h"
 #include "Mesh.h"
-#include "../../Engine/Windows/WindowsFunctions.h"
 #include <fstream>
 
 // Interface

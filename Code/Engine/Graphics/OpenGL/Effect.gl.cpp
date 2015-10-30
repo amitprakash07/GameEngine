@@ -17,14 +17,19 @@ namespace Engine
 	}
 }
 
+
+bool Engine::Graphics::Effect::LoadShaders()
+{
+	if (CreateProgram())
+		return true;
+	return false;
+}
+
 bool Engine::Graphics::Effect::setShaders()
 {
-	if(CreateProgram())
-	{
-		glUseProgram(s_programId);
-		assert(glGetError() == GL_NO_ERROR);
+	glUseProgram(s_programId);
+	if (glGetError() == GL_NO_ERROR)
 		return true;
-	}
 	return false;
 }
 
@@ -317,10 +322,9 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 		}
 		// Set the source code into the shader
 		{
-			const GLsizei shaderSourceCount = 3; //@Amit - Changed to 2 from 1 - seems to refer to that shader in in the secon section in the file
+			const GLsizei shaderSourceCount = 2; //@Amit - Changed to 2 from 1 - seems to refer to that shader in in the secon section in the file
 			const GLchar* shaderSources[] =
 			{
-				"#version 330\n",
 				"#define PLATFORM_OPEN_GL\n", //@Amit - Changing as per the platform definition mentioned in the shader code
 				reinterpret_cast<GLchar*>(shaderSource)
 			};
@@ -518,10 +522,9 @@ bool Engine::Graphics::Effect::LoadVertexShader()
 		}
 		// Set the source code into the shader
 		{
-			const GLsizei shaderSourceCount = 3;  //@Amit - seems it refers that the shader code is in the second section
+			const GLsizei shaderSourceCount = 2;  //@Amit - seems it refers that the shader code is in the second section
 			const GLchar* shaderSources[] =
 			{
-				"#version 330\n",
 				"#define PLATFORM_OPEN_GL\n",   //@Amit - like a string which will look up in the shader file
 				reinterpret_cast<GLchar*>(shaderSource)
 			};
@@ -665,13 +668,12 @@ OnExit:
 	return !wereThereErrors;
 }
 
-Engine::Graphics::Effect::Effect(std::string i_shader, std::string i_vertexShader, std::string i_fragmentShader)
+Engine::Graphics::Effect::Effect(std::string i_shader, std::string i_effectFileName)
 {
 	s_programId = 0;
 	s_uniformPositionOffset = 0;
 	shaderName = i_shader;
-	vertexShader = i_vertexShader;
-	fragmentShader = i_fragmentShader;
+	effectFileName = i_effectFileName;
 }
 
 Engine::Graphics::Effect::~Effect()
