@@ -322,11 +322,10 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 		}
 		// Set the source code into the shader
 		{
-			const GLsizei shaderSourceCount = 2; //@Amit - Changed to 2 from 1 - seems to refer to that shader in in the secon section in the file
+			const GLsizei shaderSourceCount = 1; //@Amit - Changed to 2 from 1 - seems to refer to that shader in in the secon section in the file
 			const GLchar* shaderSources[] =
 			{
-				"#define PLATFORM_OPEN_GL\n", //@Amit - Changing as per the platform definition mentioned in the shader code
-				reinterpret_cast<GLchar*>(shaderSource)
+				 reinterpret_cast<GLchar*>(shaderSource)
 			};
 
 			const GLint* sourcesAreNullTerminated = nullptr;
@@ -522,10 +521,10 @@ bool Engine::Graphics::Effect::LoadVertexShader()
 		}
 		// Set the source code into the shader
 		{
-			const GLsizei shaderSourceCount = 2;  //@Amit - seems it refers that the shader code is in the second section
+			const GLsizei shaderSourceCount = 1;  //@Amit - seems it refers that the shader code is in the second section
 			const GLchar* shaderSources[] =
 			{
-				"#define PLATFORM_OPEN_GL\n",   //@Amit - like a string which will look up in the shader file
+				//@Amit - like a string which will look up in the shader file
 				reinterpret_cast<GLchar*>(shaderSource)
 			};
 			const GLint* sourcesAreNullTerminated = nullptr;

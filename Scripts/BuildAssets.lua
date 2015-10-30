@@ -217,7 +217,6 @@ local function BuildAssets( i_assetsToBuild )
 				else
 					list = {i_assetsToBuild[i]["BuildTool"], v["src"], v["target"]}
 				end
-				print(list)
 				isAssetBuild, anyError = BuildAsset(list)
 				if not isAssetBuild then
 					errorMessage = errorMessage .. "Unable to build file. Returning exit code" .. anyError

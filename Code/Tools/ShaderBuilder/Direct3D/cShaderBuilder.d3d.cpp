@@ -22,22 +22,15 @@ bool Tools::AssetBuilder::cShaderBuilder::Build( const std::vector<std::string>&
 	{
 		if ( i_arguments.size() >= 1 )
 		{
-			/*errorMessage << "Optional Argument To Shader Builder = " << i_arguments[0]<<std::endl;
-			std::cerr << errorMessage.str().c_str();*/
+			
 			const std::string& argument = i_arguments[0];
-			//errorMessage << "Optional Argument To Shader Builder = " << argument << std::endl;
-			//std::cerr << errorMessage.str().c_str();
+			
 			if ( argument == "vertex" )
 			{
-				/*errorMessage << "I am vertex shader\n";
-				std::cerr << errorMessage.str().c_str();
-				*/
 				shaderType = Engine::Graphics::ShaderType::Vertex;
 			}
 			else if ( argument == "fragment" )
 			{
-				/*errorMessage << "I am fragment shader\n";
-				std::cerr << errorMessage.str().c_str();*/
 				shaderType = Engine::Graphics::ShaderType::Fragment;
 			}
 			else
