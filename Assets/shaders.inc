@@ -3,9 +3,9 @@
 	to set up platform-specific preprocessor directives
 	so that the shader itself can be mostly platform-independent
 */
-//Hello
+
 #if defined(PLATFORM_D3D)
-//kdjhkjdfhkjdf
+
 // Translate GLSL variable types to HLSL
 #define vec2 float2
 #define vec3 float3
