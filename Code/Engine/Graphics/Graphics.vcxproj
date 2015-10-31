@@ -70,6 +70,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Effect.Common.cpp" />
+    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="MeshCommon.cpp" />
     <ClCompile Include="OpenGL\Effect.gl.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|x64'">true</ExcludedFromBuild>

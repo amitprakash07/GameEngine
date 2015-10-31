@@ -35,13 +35,8 @@ namespace Engine
 	}
 }
 
-// Interface
-//==========
-
-bool Engine::Graphics::GraphicsSystem::Initialize( const HWND i_renderingWindow )
+bool Engine::Graphics::GraphicsSystem::create()
 {
-	s_renderingWindow = i_renderingWindow;
-
 	// Initialize the interface to the Direct3D9 library
 	if ( !CreateInterface() )
 	{
@@ -61,52 +56,55 @@ OnError:
 	return false;
 }
 
-void Engine::Graphics::GraphicsSystem::Render()
+void Engine::Graphics::GraphicsSystem::showBuffer()
+{
+	// Everything has been drawn to the "back buffer", which is just an image in memory.
+	// In order to display it, the contents of the back buffer must be "presented"
+	// (to the front buffer)
+	const RECT* noSourceRectangle = nullptr;
+	const RECT* noDestinationRectangle = nullptr;
+	const HWND useDefaultWindow = nullptr;
+	const RGNDATA* noDirtyRegion = nullptr;
+	HRESULT result = s_direct3dDevice->Present( noSourceRectangle, noDestinationRectangle, useDefaultWindow, noDirtyRegion );
+	assert( SUCCEEDED( result ) );
+}
+
+void Engine::Graphics::GraphicsSystem::beginScene()
+{
+	HRESULT result = s_direct3dDevice->BeginScene();
+	assert(SUCCEEDED(result));
+}
+
+void Engine::Graphics::GraphicsSystem::endScene()
+{
+	HRESULT result = s_direct3dDevice->EndScene();;
+	assert(SUCCEEDED(result));
+}
+
+bool Engine::Graphics::GraphicsSystem::clear()
 {
 	// Every frame an entirely new image will be created.
 	// Before drawing anything, then, the previous image will be erased
 	// by "clearing" the image buffer (filling it with a solid color)
+	const D3DRECT* subRectanglesToClear = nullptr;
+	const DWORD subRectangleCount = 0;
+	const DWORD clearTheRenderTarget = D3DCLEAR_TARGET;
+	D3DCOLOR clearColor;
 	{
-		const D3DRECT* subRectanglesToClear = nullptr;
-		const DWORD subRectangleCount = 0;
-		const DWORD clearTheRenderTarget = D3DCLEAR_TARGET;
-		D3DCOLOR clearColor;
-		{
-			// Black is usually used:
-			clearColor = D3DCOLOR_XRGB( 0, 0, 0 );
-		}
-		const float noZBuffer = 0.0f;
-		const DWORD noStencilBuffer = 0;
-		HRESULT result = s_direct3dDevice->Clear( subRectangleCount, subRectanglesToClear,
-			clearTheRenderTarget, clearColor, noZBuffer, noStencilBuffer );
-		assert( SUCCEEDED( result ) );
+		// Black is usually used:
+		clearColor = D3DCOLOR_XRGB(0, 0, 0);
 	}
-		
-	{
-		HRESULT result = s_direct3dDevice->BeginScene();
+	const float noZBuffer = 0.0f;
+	const DWORD noStencilBuffer = 0;
+	HRESULT result = s_direct3dDevice->Clear(subRectangleCount, subRectanglesToClear,
+		clearTheRenderTarget, clearColor, noZBuffer, noStencilBuffer);
 
-		assert( SUCCEEDED( result ) );
-		{
-			Engine::Scene::getRenderableScene()->drawScene(); //Need To work on this-- I think done
-		}
-		result = s_direct3dDevice->EndScene();
-		assert( SUCCEEDED( result ) );
-	}
-
-	// Everything has been drawn to the "back buffer", which is just an image in memory.
-	// In order to display it, the contents of the back buffer must be "presented"
-	// (to the front buffer)
-	{
-		const RECT* noSourceRectangle = nullptr;
-		const RECT* noDestinationRectangle = nullptr;
-		const HWND useDefaultWindow = nullptr;
-		const RGNDATA* noDirtyRegion = nullptr;
-		HRESULT result = s_direct3dDevice->Present( noSourceRectangle, noDestinationRectangle, useDefaultWindow, noDirtyRegion );
-		assert( SUCCEEDED( result ) );
-	}
+	if (SUCCEEDED(result))
+		return true;
+	return false;
 }
 
-bool Engine::Graphics::GraphicsSystem::ShutDown()
+bool Engine::Graphics::GraphicsSystem::destroy()
 {
 	bool wereThereErrors = false;
 
@@ -133,9 +131,6 @@ IDirect3DDevice9* Engine::Graphics::GraphicsSystem::getDevice()
 		return s_direct3dDevice;
 	return nullptr;
 }
-
-// Helper Function Definitions
-//============================
 
 bool Engine::Graphics::CreateDevice()
 {

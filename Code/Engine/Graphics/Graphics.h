@@ -40,6 +40,12 @@ namespace Engine
 #endif
 		private:
 			static HWND s_renderingWindow;
+			static bool create();
+			static bool clear();
+			static void showBuffer();
+			static void beginScene();
+			static void endScene();
+			static bool destroy();
 
 		};
 	}

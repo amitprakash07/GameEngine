@@ -42,22 +42,22 @@ end
 
 --EAE6320_TODO: I have shown the simplest parameters to BuildAsset() that are possible.
 --You should definitely feel free to change these
-local function BuildAsset( resourceTable )
+local function BuildAsset( resourceTable, dependencies_table )
 	-- Get the absolute paths to the source and target
 	--EAE6320_TODO: I am assuming that the relative path of the source and target is the same,
 	--but if this isn't true for you (i.e. you use different extensions)
 	--then you will need to update this part
-	count = 1
-	for i,j in ipairs(resourceTable) do
-		count = count + 1
-	end
 
-
-	print(resourceTable[1])
 	i_builderFileName = resourceTable[1]
-
 	i_sourceRelativePath = resourceTable[2]
 	i_targetRelativePath = resourceTable[3]
+
+	local dependenciesExist = false
+	if(dependencies_table) then
+		if(#(dependencies_table) > 0) then
+			dependenciesExist = true
+		end
+	end
 
 	local path_source = s_AuthoredAssetDir .. i_sourceRelativePath
 	local path_target = s_BuiltAssetDir .. i_targetRelativePath
@@ -86,7 +86,7 @@ local function BuildAsset( resourceTable )
 	end
 
 	-- Decide if the target needs to be built
-	local shouldTargetBeBuilt
+	local shouldTargetBeBuilt = false
 	do
 		-- The simplest reason a target should be built is if it doesn't exist
 		local doesTargetExist = DoesFileExist( path_target )
@@ -94,9 +94,40 @@ local function BuildAsset( resourceTable )
 			-- Even if the target exists it may be out-of-date.
 			-- If the source has been modified more recently than the target
 			-- then the target should be re-built.
+
 			local lastWriteTime_source = GetLastWriteTime( path_source )
 			local lastWriteTime_target = GetLastWriteTime( path_target )
-			shouldTargetBeBuilt = lastWriteTime_source > lastWriteTime_target
+			--We also need to check the dependency
+			--if dependency is changed then we have to build
+			-- let's calculate the max of all the dependency to compare to the target time
+			if dependenciesExist then
+			--check dependency file exists or not and calculate max time for modification among all
+				local maxTimeForDependency = 0.0
+				for i,v in ipairs(dependencies_table) do
+					local dependencyPath = s_AuthoredAssetDir .. v
+					print(dependencyPath)
+					local fileExists = DoesFileExist(dependencyPath)
+					if not fileExists then
+						local errorMessage = "Dependent File " .. dependencyPath .. " does not exists"
+						OutputErrorMessage(errorMessage)
+					end
+
+					local lastWriteTimeForDependencyFile = GetLastWriteTime( dependencyPath )
+					--print(lastWriteTimeForDependencyFile)
+					if maxTimeForDependency < lastWriteTimeForDependencyFile then
+						maxTimeForDependency = lastWriteTimeForDependencyFile
+					end
+				end
+				--print(maxTimeForDependency)
+				shouldTargetBeBuilt = maxTimeForDependency > lastWriteTime_target
+				--print(shouldTargetBeBuilt)
+			end
+
+
+			if not shouldTargetBeBuilt then
+				shouldTargetBeBuilt = lastWriteTime_source > lastWriteTime_target
+			end
+
 			if not shouldTargetBeBuilt then
 				-- Even if the target was built from the current source
 				-- the builder may have changed which could cause different output
@@ -107,26 +138,6 @@ local function BuildAsset( resourceTable )
 			shouldTargetBeBuilt = true;
 		end
 	end
-
-	--[[ Build the target if necessary
-	if shouldTargetBeBuilt then
-		-- Create the target directory if necessary
-		CreateDirectoryIfNecessary( path_target )
-		-- Copy the source to the target
-		local result, errorMessage = CopyFile( path_source, path_target )
-		if result then
-			-- Display a message when an asset builds successfully
-			print( "Built " .. path_source )
-			return true;
-		else
-			-- Display a message describing why the asset didn't build
-			OutputErrorMessage( errorMessage, path_source )
-			return false
-		end
-	else
-		return true
-	end
-]]
 
 	-- Build the target if necessary
 	if shouldTargetBeBuilt then
@@ -139,9 +150,11 @@ local function BuildAsset( resourceTable )
 			-- The source and target path must always be passed in
 			local arguments = "\"" .. path_source .. "\" \"" .. path_target .. "\""
 
+			count = #(resourceTable)
+			print("count = " .. count)
 			counter = 3
 			if(count > 3) then
-				while (counter < (count-1)) do
+				while (counter < (count)) do
 					counter = counter +1
 					arguments = arguments .. " " ..resourceTable[counter]
 				end
@@ -201,7 +214,7 @@ local function BuildAsset( resourceTable )
 end
 
 
-local function BuildAssets( i_assetsToBuild )
+local function BuildAssets( i_assetsToBuild)
 	local wereThereErrors = false
     local errorMessage
 	if type(i_assetsToBuild) ~= 'table' then
@@ -212,12 +225,13 @@ local function BuildAssets( i_assetsToBuild )
 		for i,u in ipairs(i_assetsToBuild) do
 			for j,v in ipairs(i_assetsToBuild[i]) do
 				list = {}
-				if (v['type']) then
-					list = {i_assetsToBuild[i]["BuildTool"], v["src"], v["target"], v['type']}
+				if (v['optionaltype']) then
+					list = {i_assetsToBuild[i]["BuildTool"], v["src"], v["target"], v['optionaltype']}
 				else
 					list = {i_assetsToBuild[i]["BuildTool"], v["src"], v["target"]}
 				end
-				isAssetBuild, anyError = BuildAsset(list)
+				i_dependencies = v["dependencies"]
+				isAssetBuild, anyError = BuildAsset(list, i_dependencies)
 				if not isAssetBuild then
 					errorMessage = errorMessage .. "Unable to build file. Returning exit code" .. anyError
 					wereThereErrors = true
@@ -238,10 +252,10 @@ end
 local commandLineArgument = ...
 if commandLineArgument then
 	local path_assetsToBuild = commandLineArgument
+	--OutputErrorMessage(commandLineArgument)
 	if DoesFileExist( path_assetsToBuild ) then
 			assetsToBuild = dofile( path_assetsToBuild )
-
-		return BuildAssets( assetsToBuild )
+			return BuildAssets( assetsToBuild )
 	else
 		OutputErrorMessage( "The path to the list of assets to build that was provided to BuildAssets.lua as argument #1 (\"" ..
 			path_assetsToBuild .. "\") doesn't exist" )

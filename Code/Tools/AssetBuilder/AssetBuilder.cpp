@@ -80,6 +80,13 @@ bool Tools::AssetBuilder::AssetBuilderUsingLua::BuildAssets()
 			return !wereThereErrors;
 		}
 	}
+	else
+	{
+		wereThereErrors = true;
+		std::stringstream othererrormessage;
+		othererrormessage << "Something wrong with your script file" << buildScript.c_str();
+		OutputErrorMessage(othererrormessage.str().c_str());
+	}
 	return !wereThereErrors;
 }
 		
@@ -215,7 +222,6 @@ int Tools::AssetBuilder::AssetBuilderUsingLua::luaGetEnvironmentVariable(lua_Sta
 	std::string errorMessage;
 	if (WindowsUtil::GetEnvironmentVariable(i_key, value))
 	{
-		//EAE6320_TODO	// Return the value as a string
 		lua_pushstring(i_luaState, value.c_str());
 		lua_pushstring(i_luaState, errorMessage.c_str());
 	}
@@ -223,7 +229,6 @@ int Tools::AssetBuilder::AssetBuilderUsingLua::luaGetEnvironmentVariable(lua_Sta
 	{
 		lua_pushstring(i_luaState, "nil");
 		lua_pushstring(i_luaState, errorMessage.c_str());
-		//EAE6320_TODO	// On failure return two values: a nil and the error message
 	}
 	return 2;
 }
@@ -236,18 +241,19 @@ int Tools::AssetBuilder::AssetBuilderUsingLua::luaGetLastWriteTime(lua_State * i
 	// Get the last time that the file was written to
 	uint64_t lastWriteTime;
 	std::string errorMessage;
+	std::stringstream other_message;
 	if (WindowsUtil::GetLastWriteTime(i_path, lastWriteTime, &errorMessage))
 	{
 		const lua_Number lastWriteTime_asNumber = static_cast<lua_Number>(lastWriteTime);
-		lua_pushnumber(i_luaState, 1);
-		return 1; //number of return values is 1
+		other_message << lastWriteTime_asNumber << " Before conversion " << lastWriteTime;
+		lua_pushnumber(i_luaState, lastWriteTime_asNumber);
+		return 1;
 	}
 	else
 	{
 		lua_pushnumber(i_luaState, 1);
 		lua_pushstring(i_luaState, errorMessage.c_str());
-		return 2; //number of returned values is 2
-		// Throw a Lua error with the error message
+		return 2; 
 	}
 
 }

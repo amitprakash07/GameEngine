@@ -6,6 +6,7 @@ return
 			src = "SquareMesh.lua",
 			target = "SquareMesh.mesh",
 		},
+
 		{
 			src = "TriangleMesh.lua",
 			target = "TriangleMesh.mesh",
@@ -17,7 +18,7 @@ return
 		BuildTool = "EffectBuilder.exe",
 		{
 			src = "standardEffect.lua",
-			target = "standardEffect.effect",
+			target = "standardEffect.effect"
 		}
 	},
 
@@ -26,14 +27,24 @@ return
 		{
 			src = "standard.fshd",
 			target = "standard.fshd",
-			type = "fragment"
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"shaders.inc"
+			}
+
 		},
 
 		{
 			src = "standard.vshd",
 			target = "standard.vshd",
-			type = "vertex"
-		}
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"shaders.inc"
+			}
+		},
+
 	}
 
 }

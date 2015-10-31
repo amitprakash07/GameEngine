@@ -40,10 +40,8 @@ namespace Engine
 
 // Interface
 //==========
-bool Engine::Graphics::GraphicsSystem::Initialize(const HWND i_renderingWindow)
+bool Engine::Graphics::GraphicsSystem::create()
 {
-	s_renderingWindow = i_renderingWindow;
-
 	// Create an OpenGL rendering context
 	if (!CreateRenderingContext())
 	{
@@ -63,50 +61,65 @@ bool Engine::Graphics::GraphicsSystem::Initialize(const HWND i_renderingWindow)
 	return true;
 
 OnError:
-
 	ShutDown();
 	return false;
 }
 
-void Engine::Graphics::GraphicsSystem::Render()
+
+bool Engine::Graphics::GraphicsSystem::clear()
 {
 	// Every frame an entirely new image will be created.
 	// Before drawing anything, then, the previous image will be erased
 	// by "clearing" the image buffer (filling it with a solid color)
-	{
-		// Black is usually used
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		assert(glGetError() == GL_NO_ERROR);
-		// In addition to the color, "depth" and "stencil" can also be cleared,
-		// but for now we only care about color
-		const GLbitfield clearColor = GL_COLOR_BUFFER_BIT;
-		glClear(clearColor);
-		assert(glGetError() == GL_NO_ERROR);
-	}
+	// Black is usually used
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	if (glGetError() != GL_NO_ERROR)
+		return false;
+	// In addition to the color, "depth" and "stencil" can also be cleared,
+	// but for now we only care about color
+	const GLbitfield clearColor = GL_COLOR_BUFFER_BIT;
+	glClear(clearColor);
+	if (glGetError() == GL_NO_ERROR)
+		return true;
+	
+	return false;
+}
+
+
+void Engine::Graphics::GraphicsSystem::beginScene()
+{
+	//Works like a stub - does nothing
+}
+
+void Engine::Graphics::GraphicsSystem::endScene()
+{
+	//Works like a stub - does nothing
+}
+
 
 	
-	Engine::Scene::getRenderableScene()->drawScene();
 	
-
+void Engine::Graphics::GraphicsSystem::showBuffer()
+{
 	// Everything has been drawn to the "back buffer", which is just an image in memory.
 	// In order to display it, the contents of the back buffer must be swapped with the "front buffer"
 	// (which is what the user sees)
+	if (s_renderingWindow)
 	{
-		if (s_renderingWindow)
-		{
-			BOOL result = SwapBuffers(s_deviceContext);
-		//	assert(result != FALSE);
-		}
-	}
+		BOOL result = SwapBuffers(s_deviceContext);
+		assert(result != FALSE);
+	}	
 }
 
-bool Engine::Graphics::GraphicsSystem::ShutDown()
+
+
+bool Engine::Graphics::GraphicsSystem::destroy()
 {
 	bool wereThereErrors = false;
 
-	if (s_openGlRenderingContext != NULL)
+	if (s_openGlRenderingContext != nullptr)
 	{
-		if (wglMakeCurrent(s_deviceContext, NULL) != FALSE)
+		if (wglMakeCurrent(s_deviceContext, nullptr) != FALSE)
 		{
 			if (wglDeleteContext(s_openGlRenderingContext) == FALSE)
 			{
@@ -121,17 +134,17 @@ bool Engine::Graphics::GraphicsSystem::ShutDown()
 			errorMessage << "Windows failed to unset the current OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
 			WindowsUtil::Print( errorMessage.str() );
 		}
-		s_openGlRenderingContext = NULL;
+		s_openGlRenderingContext = nullptr;
 	}
 
-	if (s_deviceContext != NULL)
+	if (s_deviceContext != nullptr)
 	{
 		// The documentation says that this call isn't necessary when CS_OWNDC is used
 		ReleaseDC(s_renderingWindow, s_deviceContext);
-		s_deviceContext = NULL;
+		s_deviceContext = nullptr;
 	}
 
-	s_renderingWindow = NULL;
+	s_renderingWindow = nullptr;
 
 	return !wereThereErrors;
 }
