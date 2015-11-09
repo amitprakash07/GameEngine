@@ -5,7 +5,8 @@
 #include <gl/GLU.h>
 #include "../../Windows/WindowsFunctions.h"
 
-bool Engine::Graphics::Mesh::drawMesh()
+
+bool Engine::Graphics::Mesh::createBuffers()
 {
 	std::stringstream errormessage;
 	if (!createVertexArray())
@@ -16,8 +17,16 @@ bool Engine::Graphics::Mesh::drawMesh()
 	}
 	// Bind a specific vertex buffer to the device as a data source
 	glBindVertexArray(s_vertexArrayID);
-	assert(glGetError() == GL_NO_ERROR);
-	
+	if (glGetError() == GL_NO_ERROR)
+		return true;
+
+	return false;
+}
+
+
+
+bool Engine::Graphics::Mesh::drawMesh()
+{
 	// Render objects from the current streams
 	// We are using triangles as the "primitive" type,
 	// and we have defined the vertex buffer as a triangle list
@@ -35,6 +44,7 @@ bool Engine::Graphics::Mesh::drawMesh()
 	assert(glGetError() == GL_NO_ERROR);
 	return (glGetError() == GL_NO_ERROR);
 }
+
 bool Engine::Graphics::Mesh::createVertexArray()
 {
 	bool wereThereErrors = false;
@@ -135,7 +145,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		// Offset = 0
 		{
 			const GLuint vertexElementLocation = 0;
-			const GLint elementCount = 2;
+			const GLint elementCount = 3; // for 3 floats in the position
 			const GLboolean notNormalized = GL_FALSE;	// The given floats should be used as-is
 			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
 			const GLenum errorCode = glGetError();

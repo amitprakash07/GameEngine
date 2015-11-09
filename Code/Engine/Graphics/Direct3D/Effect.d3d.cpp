@@ -3,6 +3,7 @@
 #include "../Graphics.h"
 #include <assert.h>
 #include <fstream>
+#include "../../Core/Maths/Functions.h"
 
 
 bool Engine::Graphics::Effect::setShaders()
@@ -33,7 +34,9 @@ Engine::Graphics::Effect::Effect(std::string i_shaderName, std::string i_effectF
 	s_fragmentShader = nullptr;
 	shaderName = i_shaderName;
 	s_constantsTable = nullptr;
-	s_uniformPositionOffset = nullptr;
+	s_uniformLocalToWorld = nullptr;
+	s_uniformWorldToView = nullptr;
+	s_uniformViewToScreen = nullptr;
 	effectFileName = i_effectFileName;
 }
 
@@ -51,7 +54,9 @@ Engine::Graphics::Effect::~Effect()
 	//if (s_uniformPositionOffset)
 	//	delete s_uniformPositionOffset;
 
-	s_uniformPositionOffset = nullptr;
+	s_uniformLocalToWorld = nullptr;
+	s_uniformWorldToView = nullptr;
+	s_uniformViewToScreen = nullptr;
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
 	s_constantsTable = nullptr;
@@ -81,8 +86,7 @@ bool Engine::Graphics::Effect::LoadVertexShader()
 
 		if (SUCCEEDED(result))
 		{
-			s_uniformPositionOffset = s_constantsTable->GetConstantByName(nullptr, "g_position_offset"); //@Amit for getting the position offset
-			if(s_uniformPositionOffset == nullptr)
+			if(!ReadUniforms())
 			{
 				std::stringstream errormessage_another;
 				errormessage_another << "Unable to get the Handle for the uniform offset";
@@ -159,18 +163,31 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 }
 
 
-void Engine::Graphics::Effect::setPositionOffset(Engine::Math::cVector i_positionOffset)
+void Engine::Graphics::Effect::setUniforms(Engine::Math::cVector i_position, Engine::Math::cQuaternion i_orientation)
 {
-	FLOAT *temp = new FLOAT[2];
-	temp[0] = i_positionOffset.x;
-	temp[1] = i_positionOffset.y;
+	/*
+	For setting floats
 	HRESULT result = s_constantsTable->SetFloatArray(Engine::Graphics::GraphicsSystem::getDevice(), s_uniformPositionOffset, temp, 2);
+	*/
+	m_uniforms.calculateUniforms(i_position, i_orientation);
+	HRESULT result = s_constantsTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
+		s_uniformLocalToWorld,
+		reinterpret_cast<const D3DXMATRIX*>(&m_uniforms.g_transform_localToWorld));
+	
+	result |= s_constantsTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
+		s_uniformWorldToView,
+		reinterpret_cast<const D3DXMATRIX*>(&m_uniforms.g_transform_worldToView));
+
+	result |= s_constantsTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
+		s_uniformViewToScreen,
+		reinterpret_cast<const D3DXMATRIX*>(&m_uniforms.g_transform_viewToScreen));
+	
 	if(!SUCCEEDED(result))
 	{
 		std::stringstream errormessage;
 		errormessage << "Unable to set the Uniform position";
 		WindowsUtil::Print(errormessage.str());
 	}
-	delete temp;
+	//delete temp;
 }
 

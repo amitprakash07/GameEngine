@@ -17,7 +17,6 @@ namespace Engine
 	}
 }
 
-
 bool Engine::Graphics::Effect::LoadShaders()
 {
 	if (CreateProgram())
@@ -122,8 +121,7 @@ bool Engine::Graphics::Effect::CreateProgram()
 					else
 					{
 						/*Program Linking finished - grabbing the uniform loacation from the shader*/
-						s_uniformPositionOffset = glGetUniformLocation(s_programId, "g_position_offset");
-						if(s_uniformPositionOffset == -1)
+						if(!ReadUniforms())
 						{
 							std::stringstream errormesage;
 							errormesage << "Unable to get the uniform loacation from the linked program. Please check the shader code";
@@ -670,7 +668,9 @@ OnExit:
 Engine::Graphics::Effect::Effect(std::string i_shader, std::string i_effectFileName)
 {
 	s_programId = 0;
-	s_uniformPositionOffset = 0;
+	s_uniformLocalToWorld = 0;
+	s_uniformWorldToView = 0;
+	s_uniformViewToScreen = 0;
 	shaderName = i_shader;
 	effectFileName = i_effectFileName;
 }
@@ -692,12 +692,20 @@ Engine::Graphics::Effect::~Effect()
 	}
 }
 
-void Engine::Graphics::Effect::setPositionOffset(Engine::Math::cVector i_offsetPosition)
+void Engine::Graphics::Effect::setUniforms(Engine::Math::cVector i_position, Engine::Math::cQuaternion i_orientation)
 {
-	GLfloat *temp = new GLfloat[2];
+
+	/*GLfloat *temp = new GLfloat[2];
 	temp[0] = i_offsetPosition.x;
 	temp[1] = i_offsetPosition.y;
-	glUniform2fv(s_uniformPositionOffset, 1, temp);
+	glUniform2fv(s_uniformPositionOffset, 1, temp);*/
+	
+	const GLboolean dontTranspose = false;
+	const GLsizei uniformCountToSet = 1;
+	m_uniforms.calculateUniforms(i_position, i_orientation);
+	glUniformMatrix4fv(s_uniformLocalToWorld, uniformCountToSet, dontTranspose, reinterpret_cast<const GLfloat*>(&m_uniforms.g_transform_localToWorld));
+	glUniformMatrix4fv(s_uniformWorldToView, uniformCountToSet, dontTranspose, reinterpret_cast<const GLfloat*>(&m_uniforms.g_transform_worldToView));
+	glUniformMatrix4fv(s_uniformViewToScreen, uniformCountToSet, dontTranspose, reinterpret_cast<const GLfloat*>(&m_uniforms.g_transform_viewToScreen));
 	const GLenum errorCode = glGetError();
 	if(!(errorCode == GL_NO_ERROR))
 	{
@@ -705,6 +713,6 @@ void Engine::Graphics::Effect::setPositionOffset(Engine::Math::cVector i_offsetP
 		errormessage << "Unable to set the position offset";
 		WindowsUtil::Print(errormessage.str());
 	}
-	delete temp;
+	//delete temp;
 }
 

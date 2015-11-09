@@ -58,6 +58,31 @@ bool Engine::Graphics::GraphicsSystem::create()
 		}
 	}
 
+	glEnable(GL_CULL_FACE);
+	if (glGetError() != GL_NO_ERROR)
+	{
+		goto OnError;
+	}
+
+	glEnable(GL_DEPTH_TEST);
+	if (glGetError() != GL_NO_ERROR)
+	{
+		goto OnError;
+	}
+
+	glDepthMask(GL_TRUE);
+	if (glGetError() != GL_NO_ERROR)
+	{
+		goto OnError;
+	}
+
+	glDepthFunc(GL_LEQUAL);
+	if (glGetError() != GL_NO_ERROR)
+	{
+		goto OnError;
+	}
+
+
 	return true;
 
 OnError:
@@ -77,8 +102,12 @@ bool Engine::Graphics::GraphicsSystem::clear()
 		return false;
 	// In addition to the color, "depth" and "stencil" can also be cleared,
 	// but for now we only care about color
-	const GLbitfield clearColor = GL_COLOR_BUFFER_BIT;
-	glClear(clearColor);
+	glClearDepth(1.0f);
+	if (glGetError() != GL_NO_ERROR)
+		return false;
+
+	const GLbitfield clear = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+	glClear(clear);
 	if (glGetError() == GL_NO_ERROR)
 		return true;
 	
@@ -179,6 +208,7 @@ bool Engine::Graphics::CreateRenderingContext()
 					desiredPixelFormat.iPixelType = PFD_TYPE_RGBA;
 					desiredPixelFormat.cColorBits = 32;
 					desiredPixelFormat.iLayerType = PFD_MAIN_PLANE ;
+					desiredPixelFormat.cDepthBits = 16; //Enabling Depth Buffer with 16 bits
 				}
 				// Get the ID of the desired pixel format
 				int pixelFormatId;

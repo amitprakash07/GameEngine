@@ -74,27 +74,15 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 	return(SharedPointer<Scene>());
 }
 
-//void Engine::Scene::deleteAllScene()
-//{
-//	for (std::map<std::string, SharedPointer<Scene>>::iterator i = mSceneList.begin(); i != mSceneList.end(); ++i)
-//	{
-//		SharedPointer<Scene> tempScene = i->second;
-//		for (std::vector<SharedPointer<GameObject>>::iterator j = tempScene->mScene.begin(); j != tempScene->mScene.end(); ++i)
-//		{
-//			j
-//		}
-//	}
-//}
-
-
-
 
 void Engine::Scene::drawScene()
 {
 	for (std::vector<SharedPointer<Engine::GameObject>>::iterator i = mScene.begin(); i != mScene.end(); ++i)
 	{
 		(*i)->getEffect()->setShaders();
-		(*i)->getEffect()->setPositionOffset((*i)->getOffsetPosition());
+		//(*i)->getEffect()->setPositionOffset((*i)->getOffsetPosition());
+		Engine::GameObject::Transformation transformation = (*i)->getTransformation();
+		(*i)->getEffect()->setUniforms(transformation.mPositionOffset, transformation.mOrientation);
 		(*i)->getMesh()->drawMesh();
 	}
 	mTimer->updateDeltaTime();

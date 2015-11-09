@@ -26,6 +26,12 @@ Engine::Math::cMatrix_transformation Engine::Math::cMatrix_transformation::Creat
 		0.0f, 0.0f, 0.0f, 1.0f );
 }
 
+Engine::Math::cMatrix_transformation Engine::Math::cMatrix_transformation::getIdentityMatrix()
+{
+	return cMatrix_transformation();
+}
+
+
 Engine::Math::cMatrix_transformation Engine::Math::cMatrix_transformation::CreateViewToScreenTransform(
 	const float i_fieldOfView_y, const float i_aspectRatio,
 	const float i_z_nearPlane, const float i_z_farPlane )

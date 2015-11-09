@@ -107,7 +107,8 @@ bool Tools::AssetBuilder::cShaderBuilder::Build( const std::vector<std::string>&
 
 	}
 
-	std::cerr << "\nCommand for the compilation of the shader" << command;
+	//std::cerr << "\nCommand for the compilation of the shader" << command;
+	std::cerr << "\nPrint Shader Code\n" << command.c_str();
 	// Execute the command
 	{
 		DWORD exitCode;

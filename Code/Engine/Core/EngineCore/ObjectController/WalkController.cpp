@@ -6,7 +6,7 @@
 
 void Engine::WalkController::updateGameObject(GameObject &i_gameObject, Engine::typedefs::Direction i_dir)
 {
-	Engine::Math::cVector tempOffset = i_gameObject.getOffsetPosition();
+	GameObject::Transformation tempTransformation = i_gameObject.getTransformation();
 	std::stringstream errormessage;
 		switch (i_dir)
 		{
@@ -15,19 +15,19 @@ void Engine::WalkController::updateGameObject(GameObject &i_gameObject, Engine::
 		case Engine::typedefs::UP:
 			/*errormessage << Engine::Scene::getTimer()->getdeltaTime();
 			WindowsUtil::Print(errormessage.str());*/
-			tempOffset += Engine::Math::cVector(0.0f, 0.02f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
+			tempTransformation.mPositionOffset += Engine::Math::cVector(0.0f, 0.1f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
 			break;
 		case Engine::typedefs::DOWN:
-			tempOffset += Engine::Math::cVector(0.0f, -0.02f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
+			tempTransformation.mPositionOffset += Engine::Math::cVector(0.0f, -0.1f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
 			break;
 		case Engine::typedefs::LEFT:
-			tempOffset += Engine::Math::cVector(-0.02f, 0.0f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
+			tempTransformation.mPositionOffset += Engine::Math::cVector(-0.1f, 0.0f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
 			break;
 		case Engine::typedefs::RIGHT:
-			tempOffset += Engine::Math::cVector(0.02f, 0.0f, 0.0f);/** Engine::Scene::getTimer()->getdeltaTime();*/
+			tempTransformation.mPositionOffset += Engine::Math::cVector(0.1f, 0.0f, 0.0f);/** Engine::Scene::getTimer()->getdeltaTime();*/
 			break;
 		}
-		i_gameObject.setPositionOffset(tempOffset);
+		i_gameObject.setTransformation(tempTransformation.mPositionOffset);
 }
 
 //Engine::SharedPointer<Engine::IObjectController> Engine::WalkController::getObjectController()

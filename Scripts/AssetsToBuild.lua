@@ -10,6 +10,11 @@ return
 		{
 			src = "TriangleMesh.lua",
 			target = "TriangleMesh.mesh",
+		},
+		
+		{
+			src = "Box.lua",
+			target = "Box.mesh",
 		}
 	},
 

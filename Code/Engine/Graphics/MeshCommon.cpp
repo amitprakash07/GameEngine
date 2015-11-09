@@ -15,8 +15,11 @@ bool Engine::Graphics::Mesh::addToMeshList(std::string i_meshName, std::string i
 		if (!isMeshExist(i_fileName))
 		{
 			Engine::SharedPointer<Mesh> newMesh(new Mesh(i_meshName, i_fileName), "Engine::Graphics::Mesh");
-			newMesh->LoadMesh();
-			meshList[i_meshName] = newMesh;
+			if(!newMesh.isNull())
+			{
+				if(newMesh->LoadMesh() && newMesh->createBuffers())
+					meshList[i_meshName] = newMesh;
+			}			
 		}
 		return true;
 	}
@@ -97,7 +100,7 @@ bool Engine::Graphics::Mesh::LoadMesh()
 	vertexCount = *reinterpret_cast<int*> (currentPosition); //vertexCount
 	currentPosition += sizeof(int);
 
-	triangleCount = *reinterpret_cast<int*>(currentPosition); //No of triangles
+ 	triangleCount = *reinterpret_cast<int*>(currentPosition); //No of triangles
 	currentPosition += sizeof(int);
 
 	//creating vertex memmory

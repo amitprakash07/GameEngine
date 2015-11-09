@@ -5,21 +5,33 @@
 #include "../../../Graphics/Effect.h"
 #include "../../../Core/Utilities/SharedPointer.h"
 #include "../../../Core/Maths/cVector.h"
+#include "../../../Core/Maths/cQuaternion.h"
 #include "../../Utilities/IObjectController.h"
 #include "../../../Core/Utilities/IMessageHandler.h"
 
 
 namespace Engine
 {
+	
 	class GameObject : public IMessageHandler
 	{
 	public:
+		struct Transformation
+		{
+			Engine::Math::cVector mPositionOffset;
+			Engine::Math::cQuaternion mOrientation;
+			Transformation()
+			{
+				mPositionOffset = Math::cVector();
+				mOrientation = Math::cQuaternion();
+			}
+		};
 		static SharedPointer<GameObject> CreateGameObject(std::string, std::string, std::string, std::string);
 		void setGameObjectController(IObjectController *);
 		SharedPointer<Engine::Graphics::Mesh>       getMesh();
 		SharedPointer<Engine::Graphics::Effect>		getEffect();
-		void setPositionOffset(Engine::Math::cVector);
-		Engine::Math::cVector getOffsetPosition();
+		void setTransformation(Engine::Math::cVector, Engine::Math::cQuaternion = Engine::Math::cQuaternion());
+		Transformation getTransformation();	
 		bool isRenderable();
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
 		std::string getTypeInfo() override { return ""; }
@@ -32,7 +44,7 @@ namespace Engine
 		std::string									mEffectName;
 		IObjectController*							mObjectController;
 		bool										renderable;
-		Engine::Math::cVector						mPositionOffset;
+		Transformation								mTransformation;
 	};
 }
 

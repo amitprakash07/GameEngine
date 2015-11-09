@@ -14,21 +14,24 @@ namespace Engine
 	}
 }
 
+
+bool Engine::Graphics::Mesh::createBuffers()
+{
+	std::stringstream errorMessage;
+	if (createVertexBuffer() && createIndexBuffer())
+		return true;
+	
+	errorMessage << "Unable to Create the buffers\n";
+	WindowsUtil::Print(errorMessage.str().c_str());
+	return false;
+
+}
+
+
 bool Engine::Graphics::Mesh::drawMesh()
 {
 	std::stringstream errormessage;
-	if (!createVertexBuffer())
-	{
-		errormessage << "Unable to Create VertexBuffer for the Mesh.";
-		WindowsUtil::Print(errormessage.str());
-		return false;
-	}
-	if (!createIndexBuffer())
-	{
-		errormessage << "Unable to create Index Buffer for the Mesh.";
-		WindowsUtil::Print(errormessage.str());
-		return false;
-	}
+	
 	HRESULT result;
 	// Bind a specific vertex buffer to the device as a data source
 	
@@ -91,10 +94,10 @@ bool Engine::Graphics::Mesh::createVertexBuffer()
 	 Note that OpenGL uses arbitrarily assignable number IDs to do the same thing.*/
 	D3DVERTEXELEMENT9 vertexElements[] =
 	{
-			// Stream 0, POSITION( 2 floats == 8 bytes), Offset = 0
-		{ 0, 0, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
-		// COLOR0, D3DCOLOR == 4 bytes, Offset = 8(from Position)
-		{ 0, 8, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0 },
+			// Stream 0, POSITION( 3 floats == 12 bytes), Offset = 0
+		{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
+		// COLOR0, D3DCOLOR == 4 bytes, Offset = 12(from Position)
+		{ 0, 12, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0 },
 		// The following marker signals the end of the vertex declaration
 		D3DDECL_END()
 	};

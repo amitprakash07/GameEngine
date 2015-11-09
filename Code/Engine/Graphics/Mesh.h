@@ -27,6 +27,7 @@ namespace Engine
 		{
 			float X;
 			float Y;
+			float Z;
 #ifdef PLATFORM_D3D
 			uint8_t B, G, R, A;
 #elif PLATFORM_OPEN_GL
@@ -61,6 +62,7 @@ namespace Engine
 			std::string meshName;
 			static bool isMeshExist(std::string);
 			Mesh(std::string, std::string);
+			bool createBuffers();
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;
 			bool createVertexArray();

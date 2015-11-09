@@ -88,16 +88,16 @@ bool Engine::Graphics::GraphicsSystem::clear()
 	// by "clearing" the image buffer (filling it with a solid color)
 	const D3DRECT* subRectanglesToClear = nullptr;
 	const DWORD subRectangleCount = 0;
-	const DWORD clearTheRenderTarget = D3DCLEAR_TARGET;
+	const DWORD clearTheRenderTarget = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER;
 	D3DCOLOR clearColor;
 	{
 		// Black is usually used:
 		clearColor = D3DCOLOR_XRGB(0, 0, 0);
 	}
-	const float noZBuffer = 0.0f;
+	const float zBufferDepth = 1.0f;
 	const DWORD noStencilBuffer = 0;
 	HRESULT result = s_direct3dDevice->Clear(subRectangleCount, subRectanglesToClear,
-		clearTheRenderTarget, clearColor, noZBuffer, noStencilBuffer);
+		clearTheRenderTarget, clearColor, zBufferDepth, noStencilBuffer);
 
 	if (SUCCEEDED(result))
 		return true;
@@ -151,13 +151,21 @@ bool Engine::Graphics::CreateDevice()
 		presentationParameters.SwapEffect = D3DSWAPEFFECT_DISCARD;
 		presentationParameters.hDeviceWindow = s_renderingWindow;
 		presentationParameters.Windowed = TRUE;
-		presentationParameters.EnableAutoDepthStencil = FALSE;
+		presentationParameters.EnableAutoDepthStencil = TRUE; //Changing from False to enable DepthBuffer
+		presentationParameters.AutoDepthStencilFormat = D3DFMT_D16;
+
 		presentationParameters.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
 	}
 	HRESULT result = s_direct3dInterface->CreateDevice(useDefaultDevice, useHardwareRendering,
 		s_renderingWindow, useHardwareVertexProcessing, &presentationParameters, &s_direct3dDevice);
+	
+	result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+	result |= s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	result |= s_direct3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 	if (SUCCEEDED(result))
 	{
+		
+
 		return true;
 	}
 	else

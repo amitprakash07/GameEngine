@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "../../Externals/LuaHelper/LuaHelper.h"
-#include <assert.h>
+#include <iostream>
+#include <windows.h>
 
 
 bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
@@ -22,7 +23,7 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 
 
 		int counts = luaL_len(i_luaState, -1);
-		if(counts < 2 )
+		if(counts < 3 )
 		{
 			std::stringstream errormessage;
 			errormessage << "Atleast x and y coordinates are required for a vertex. found " << counts << "\n";
@@ -43,8 +44,13 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 			case 1:
 				tempVertex[i-1].Y = static_cast<float>(lua_tonumber(i_luaState, -1));
 				break;
-			/*case 3:
-				tempVertex[vertexIndex].Z = static_cast<float>(lua_tonumber(i_luaState, -1));*/
+			case 2:
+				tempVertex[i-1].Z = static_cast<float>(lua_tonumber(i_luaState, -1));
+				//std::cerr << "Printing Lua result" << tempVertex[i-1].Z << std::endl;
+				/*std::stringstream errormessage;
+				errormessage << "Z value "<<tempVertex[i - 1].Z<<std::endl;
+				MessageBox(nullptr, errormessage.str().c_str(), nullptr, MB_OK);*/
+				break;
 			}
 			lua_pop(i_luaState, 1);//Popping out the previous position value
 		}

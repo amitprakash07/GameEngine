@@ -70,6 +70,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Effect.Common.cpp" />
+    <ClCompile Include="EffectUniform.d3d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='_ENGINE_DEBUG|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="EffectUniform.gl.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='_ENGINE_DEBUG|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="MeshCommon.cpp" />
     <ClCompile Include="OpenGL\Effect.gl.cpp">

@@ -20,6 +20,7 @@ namespace Tools
 		{
 			float X;
 			float Y;
+			float Z;
 #ifdef PLATFORM_D3D
 			uint8_t B, G, R, A;
 #elif PLATFORM_OPEN_GL

@@ -2,6 +2,7 @@
 #include "../Windows/WindowsFunctions.h"
 #include "../../Engine/Core/Utilities/HashedString.h"
 #include <fstream>
+#include "../Core/Maths/Functions.h"
 
 typedef char BYTES;
 
@@ -41,19 +42,6 @@ bool Engine::Graphics::Effect::addEffectToList(std::string i_shaderName, std::st
 	return success;
 }
 
-//Engine::SharedPointer<Engine::Graphics::Effect> Engine::Graphics::Effect::getEffect(std::string i_vertexShader, std::string i_fragmentShader)
-//{
-//	if(!i_vertexShader.empty() && (!i_fragmentShader.empty()) && isEffectExist(i_vertexShader, i_fragmentShader))
-//	{
-//		for (std::map<std::string, SharedPointer<Effect>>::iterator i = mEffectList.begin(); i != mEffectList.end(); ++i)
-//		{
-//			if (i->second->vertexShader == i_vertexShader &&
-//				i->second->fragmentShader == i_fragmentShader)
-//				return i->second;
-//		}
-//	}
-//	return SharedPointer<Engine::Graphics::Effect>();
-//}
 
 Engine::SharedPointer<Engine::Graphics::Effect> Engine::Graphics::Effect::getEffect(std::string i_shaderName)
 {
@@ -114,6 +102,23 @@ bool Engine::Graphics::Effect::LoadEffect()
 	}
 	return false;		
 }
+
+void Engine::Graphics::Uniforms::calculateUniforms(Engine::Math::cVector i_position, Engine::Math::cQuaternion i_orientation)
+{
+	g_transform_localToWorld = Engine::Math::cMatrix_transformation(i_orientation, i_position);
+	Engine::Math::cVector cameraPosition = Engine::Math::cVector(0.0f, 0.0f, 10.0f);
+	g_transform_worldToView =
+		Engine::Math::cMatrix_transformation::CreateWorldToViewTransform(
+			Engine::Math::cQuaternion::getIdentityQuartenion(), cameraPosition);
+	float aspectRatio = 800 / 600;
+	float fieldOfViewInRadians = Engine::Math::ConvertDegreesToRadians(60);
+	g_transform_viewToScreen =
+		Engine::Math::cMatrix_transformation::CreateViewToScreenTransform(
+			fieldOfViewInRadians, aspectRatio);
+
+}
+
+
 
 
 

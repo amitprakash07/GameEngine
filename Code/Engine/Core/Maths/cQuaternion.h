@@ -30,6 +30,7 @@ namespace Engine
 
 		public:
 
+			static cQuaternion getIdentityQuartenion();
 			// Concatenation
 			cQuaternion operator *( const cQuaternion& i_rhs ) const;
 

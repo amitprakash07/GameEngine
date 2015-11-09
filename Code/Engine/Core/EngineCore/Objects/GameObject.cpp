@@ -36,9 +36,7 @@ Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(s
 Engine::GameObject::GameObject(std::string i_meshName, std::string i_effectName)
 {
 	renderable = true;
-	mPositionOffset.x = 0.0f;
-	mPositionOffset.y = 0.0f;
-	mPositionOffset.z = 0.0f;
+	mTransformation = Transformation();
 	mMeshName = i_meshName;
 	mEffectName = i_effectName;
 	mObjectController = nullptr;
@@ -47,12 +45,11 @@ Engine::GameObject::GameObject(std::string i_meshName, std::string i_effectName)
 Engine::GameObject::GameObject()
 {
 	renderable = true;
-	mPositionOffset.x = 0.0f;
-	mPositionOffset.y = 0.0f;
-	mPositionOffset.z = 0.0f;
 	mMeshName = "";
 	mEffectName = "";
 	mObjectController = nullptr;
+	mTransformation.mOrientation = Engine::Math::cQuaternion();
+	mTransformation.mPositionOffset = Engine::Math::cVector();
 }
 
 
@@ -78,9 +75,10 @@ bool Engine::GameObject::isRenderable()
 	return renderable;
 }
 
-void Engine::GameObject::setPositionOffset(Engine::Math::cVector i_positionOffset)
+void Engine::GameObject::setTransformation(Engine::Math::cVector i_positionOffset, Engine::Math::cQuaternion i_orientation)
 {
-	mPositionOffset = i_positionOffset;
+	mTransformation.mOrientation = i_orientation;
+	mTransformation.mPositionOffset = i_positionOffset;
 }
 
 void Engine::GameObject::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i_MessageSender, void* i_pMessageData)
@@ -115,9 +113,9 @@ void Engine::GameObject::HandleMessage(Engine::utils::StringHash& i_message, RTT
 	}
 }
 
-Engine::Math::cVector Engine::GameObject::getOffsetPosition()
+Engine::GameObject::Transformation Engine::GameObject::getTransformation()
 {
-	return mPositionOffset;
+	return mTransformation;
 }
 
 Engine::GameObject::~GameObject()

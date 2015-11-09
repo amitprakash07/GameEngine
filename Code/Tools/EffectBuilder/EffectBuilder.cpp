@@ -48,7 +48,7 @@ bool Tools::AssetBuilder::EffectBuilder::LoadEffectFile()
 
 	int luaResult = 20;
 	luaResult = luaL_loadfile(mLuaState, m_path_source);
-	std::cerr << "Printing Lua result" << luaResult << std::endl;
+	//std::cerr << "Printing Lua result" << luaResult << std::endl;
 	
 	if(luaResult != LUA_OK)
 	{

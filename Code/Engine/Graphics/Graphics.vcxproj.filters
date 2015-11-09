@@ -30,6 +30,12 @@
     </ClCompile>
     <ClCompile Include="Effect.Common.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="EffectUniform.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectUniform.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />

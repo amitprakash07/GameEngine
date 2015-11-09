@@ -75,6 +75,13 @@ Engine::Math::cQuaternion::cQuaternion()
 
 }
 
+
+Engine::Math::cQuaternion Engine::Math::cQuaternion::getIdentityQuartenion()
+{
+	return cQuaternion();
+}
+
+
 Engine::Math::cQuaternion::cQuaternion( const float i_angleInRadians, const cVector& i_axisOfRotation_normalized )
 {
 	const float theta_half = i_angleInRadians * 0.5f;

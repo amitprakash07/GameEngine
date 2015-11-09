@@ -50,7 +50,8 @@ namespace Engine
 				const cQuaternion& i_cameraOrientation, const cVector& i_cameraPosition );
 			static cMatrix_transformation CreateViewToScreenTransform(
 				const float i_fieldOfView_y, const float i_aspectRatio,
-				const float i_z_nearPlane, const float i_z_farPlane );
+				const float i_z_nearPlane = 0.1, const float i_z_farPlane = 100);
+			static cMatrix_transformation getIdentityMatrix();
 
 			// Initialization / Shut Down
 			//---------------------------
