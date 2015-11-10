@@ -9,7 +9,7 @@ namespace Engine
 	class WalkController:public IObjectController
 	{
 	public:
-		void updateGameObject(GameObject &i_gameObject, Engine::typedefs::Direction i_dir) override;
+		void updateGameObject(Object &i_gameObject, Engine::typedefs::Direction i_dir) override;
 		std::string getTypeInfo() override { return ""; }
 		bool isBothSameType(RTTI*, std::string) override { return true; }
 		WalkController(){}

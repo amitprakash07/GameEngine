@@ -6,7 +6,7 @@
 #include "../../Windows/WindowsFunctions.h"
 #include "../../Core/EngineCore/Objects/Scene.h"
 
-#pragma warning(disable :4006)
+
 
 // Static Data Initialization
 //===========================

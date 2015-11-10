@@ -65,6 +65,8 @@ namespace Engine
 			bool createBuffers();
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;
+			GLuint vertexBufferId ;
+			GLuint indexBufferId ;
 			bool createVertexArray();
 #elif PLATFORM_D3D
 			IDirect3DVertexBuffer9* s_vertexBuffer;

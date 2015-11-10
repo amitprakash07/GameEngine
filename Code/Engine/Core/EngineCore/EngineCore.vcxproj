@@ -37,15 +37,20 @@
   <ItemGroup>
     <ClInclude Include="EngineCore.h" />
     <ClInclude Include="InputController\InputController.h" />
+    <ClInclude Include="ObjectController\CameraController.h" />
     <ClInclude Include="ObjectController\WalkController.h" />
+    <ClInclude Include="Objects\Camera.h" />
     <ClInclude Include="Objects\GameObject.h" />
+    <ClInclude Include="Objects\Object.h" />
     <ClInclude Include="Objects\Scene.h" />
     <ClInclude Include="WindowingSystem\WindowsProgram.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp" />
     <ClCompile Include="InputController\InputController.cpp" />
+    <ClCompile Include="ObjectController\CameraController.cpp" />
     <ClCompile Include="ObjectController\WalkController.cpp" />
+    <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\GameObject.cpp" />
     <ClCompile Include="Objects\Scene.cpp" />
     <ClCompile Include="WindowingSystem\WindowsProgram.cpp" />

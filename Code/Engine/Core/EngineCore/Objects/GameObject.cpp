@@ -14,6 +14,15 @@ Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(s
 	if (!i_meshName.empty() && !i_meshFileName.empty() && !i_effectName.empty() && !i_effectFileName.empty())
 	{
 		std::stringstream errormessage;
+
+		if (!Engine::Graphics::Effect::addEffectToList(i_effectName, i_effectFileName))
+		{
+			errormessage << "Unable to Load Effect";
+			MessageBox(nullptr, errormessage.str().c_str(), nullptr, MB_OK);
+			tempGameObject.deleteObject();
+			return (SharedPointer<GameObject>());
+		}
+
 		if (!Engine::Graphics::Mesh::addToMeshList(i_meshName, i_meshFileName))
 		{
 			errormessage << "Unable to Load Mesh";
@@ -22,13 +31,7 @@ Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(s
 			return (SharedPointer<GameObject>());
 		}
 		
-		if(!Engine::Graphics::Effect::addEffectToList(i_effectName, i_effectFileName))
-		{
-			errormessage << "Unable to Load Effect";
-			MessageBox(nullptr, errormessage.str().c_str(), nullptr, MB_OK);
-			tempGameObject.deleteObject();
-			return (SharedPointer<GameObject>());
-		}
+		
 	}
 	return tempGameObject;
 }
@@ -113,7 +116,7 @@ void Engine::GameObject::HandleMessage(Engine::utils::StringHash& i_message, RTT
 	}
 }
 
-Engine::GameObject::Transformation Engine::GameObject::getTransformation()
+Engine::Transformation Engine::GameObject::getTransformation()
 {
 	return mTransformation;
 }

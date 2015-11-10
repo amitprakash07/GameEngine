@@ -39,7 +39,7 @@ Engine::Scene::~Scene()
 	
 }
 
-bool Engine::Scene::addToScene(SharedPointer<GameObject> & i_game_object)
+bool Engine::Scene::addGameObjectToScene(SharedPointer<GameObject> & i_game_object)
 {
 	if(!i_game_object.isNull())
 	{
@@ -49,6 +49,18 @@ bool Engine::Scene::addToScene(SharedPointer<GameObject> & i_game_object)
 	mTimer.deleteObject();
 	return false;
 }
+
+
+bool Engine::Scene::addCameraToScene(SharedPointer<Camera>& i_camera)
+{
+	if (!i_camera.isNull())
+	{
+		mCameraList.push_back(i_camera);
+		return true;
+	}
+	return false;
+}
+
 
 void Engine::Scene::renderScene(bool i_render)
 {
@@ -77,16 +89,29 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 
 void Engine::Scene::drawScene()
 {
-	for (std::vector<SharedPointer<Engine::GameObject>>::iterator i = mScene.begin(); i != mScene.end(); ++i)
-	{
-		(*i)->getEffect()->setShaders();
-		//(*i)->getEffect()->setPositionOffset((*i)->getOffsetPosition());
-		Engine::GameObject::Transformation transformation = (*i)->getTransformation();
-		(*i)->getEffect()->setUniforms(transformation.mPositionOffset, transformation.mOrientation);
-		(*i)->getMesh()->drawMesh();
+	SharedPointer<Camera> tempCamera = getActiveCamera();
+	if (!tempCamera.isNull())
+	{	Transformation cameraTransformation = tempCamera->getTransformation();
+		float fieldOfView = tempCamera->getFieldOfView();
+		float aspectRatio = tempCamera->getAspectRatio();
+		for (std::vector<SharedPointer<Engine::GameObject>>::iterator i = mScene.begin(); i != mScene.end(); ++i)
+		{
+			(*i)->getEffect()->setShaders();
+			//(*i)->getEffect()->setPositionOffset((*i)->getOffsetPosition());
+			Transformation gameObjectTransformation = (*i)->getTransformation();
+			(*i)->getEffect()->setUniforms(gameObjectTransformation, cameraTransformation, fieldOfView, aspectRatio);
+			(*i)->getMesh()->drawMesh();
+		}
+		mTimer->updateDeltaTime();
+		std::stringstream errormessage;
 	}
-	mTimer->updateDeltaTime();
-	std::stringstream errormessage;
+	else
+	{
+		std::stringstream errormessage;
+		errormessage << "Camera is not iniitalized\n";
+		WindowsUtil::Print(errormessage.str().c_str());
+		return;
+	}
 
 }
 
@@ -130,6 +155,17 @@ void Engine::Scene::deleteAllScene()
 			j->deleteObject();
 	}
 }
+
+Engine::SharedPointer<Engine::Camera> Engine::Scene::getActiveCamera()
+{
+	for (size_t i = 0; i < mCameraList.size(); ++i)
+	{
+		if (mCameraList[i]->isActive())
+			return mCameraList[i];
+	}
+	return SharedPointer<Camera>();
+}
+
 
 
 

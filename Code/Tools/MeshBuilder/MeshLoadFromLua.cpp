@@ -46,10 +46,6 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 				break;
 			case 2:
 				tempVertex[i-1].Z = static_cast<float>(lua_tonumber(i_luaState, -1));
-				//std::cerr << "Printing Lua result" << tempVertex[i-1].Z << std::endl;
-				/*std::stringstream errormessage;
-				errormessage << "Z value "<<tempVertex[i - 1].Z<<std::endl;
-				MessageBox(nullptr, errormessage.str().c_str(), nullptr, MB_OK);*/
 				break;
 			}
 			lua_pop(i_luaState, 1);//Popping out the previous position value
@@ -80,11 +76,12 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 			//traversing in the color field array by pushing the index
 			lua_pushinteger(i_luaState, j);
 			lua_gettable(i_luaState, -2);
+			float tempVal=0.0f;
+			tempVal = static_cast<float>(lua_tonumber(i_luaState, -1));
 			switch (j - 1)
 			{
 			case 0:
-				tempVertex[i-1].R = static_cast<uint8_t>(lua_tonumber(i_luaState, -1));
-				tempVertex[i - 1].R *= 255;
+				tempVertex[i - 1].R = static_cast<uint8_t> (tempVal * 255);
 #ifdef BUILD_DEBUG
 				std::cout << "Let's print loading colors\n";
 				std::cout << tempVertex[i - 1].R << std::endl;
@@ -94,21 +91,18 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 #ifdef BUILD_DEBUG
 				std::cout<<"Printing directly from lua"<< lua_tonumber(i_luaState, -1) * 255;
 #endif
-				tempVertex[i-1].G = static_cast<uint8_t>(lua_tonumber(i_luaState, -1));
-				tempVertex[i - 1].G *= 255;
+				tempVertex[i - 1].G = static_cast<uint8_t> (tempVal * 255);
 #ifdef BUILD_DEBUG
 				std::cout << tempVertex[i - 1].R << std::endl;
 #endif				
 				break;
 			case 2:
-				tempVertex[i - 1].B = static_cast<uint8_t>(lua_tonumber(i_luaState, -1));
-				tempVertex[i - 1].B *= 255;
+				tempVertex[i - 1].B = static_cast<uint8_t> (tempVal * 255);
 #ifdef BUILD_DEBUG
 				std::cout << tempVertex[i - 1].R << std::endl;
 #endif			break;
 			case 3:
-				tempVertex[i - 1].A = static_cast<uint8_t>(lua_tonumber(i_luaState, -1));
-				tempVertex[i - 1].A *= 255;
+				tempVertex[i - 1].A = static_cast<uint8_t> (tempVal * 255);
 #ifdef BUILD_DEBUG
 				std::cout << tempVertex[i - 1].R << std::endl;
 #endif				

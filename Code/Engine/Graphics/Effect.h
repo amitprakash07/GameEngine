@@ -16,6 +16,7 @@
 #include "../Core/Maths/cMatrix_transformation.h"
 #include "../Core/Maths/cVector.h"
 #include "../Core/Maths/cQuaternion.h"
+#include "../Core/EngineCore/Objects/Object.h"
 
 namespace Engine
 {
@@ -26,7 +27,7 @@ namespace Engine
 			Engine::Math::cMatrix_transformation g_transform_localToWorld;
 			Engine::Math::cMatrix_transformation g_transform_worldToView;
 			Engine::Math::cMatrix_transformation g_transform_viewToScreen;
-			void calculateUniforms(Engine::Math::cVector, Engine::Math::cQuaternion);
+			void calculateUniforms(Transformation, Transformation, float,float);
 		};
 
 		class Effect:public RTTI
@@ -41,7 +42,7 @@ namespace Engine
 			std::string getTypeInfo() override { return ""; }
 			bool isBothSameType(RTTI*, std::string) override { return true; }
 			~Effect();
-			void setUniforms(Engine::Math::cVector, Engine::Math::cQuaternion);
+			void setUniforms(Transformation, Transformation, float, float);
 		private:
 			static std::map<std::string, Engine::SharedPointer<Effect>> mEffectList;
 			std::string shaderName;

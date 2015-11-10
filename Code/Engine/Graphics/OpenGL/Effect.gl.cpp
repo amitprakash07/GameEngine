@@ -692,7 +692,10 @@ Engine::Graphics::Effect::~Effect()
 	}
 }
 
-void Engine::Graphics::Effect::setUniforms(Engine::Math::cVector i_position, Engine::Math::cQuaternion i_orientation)
+void Engine::Graphics::Effect::setUniforms(Transformation i_gameObject, 
+	Transformation i_camera, 
+	float i_fieldOfView,
+	float i_aspectRatio)
 {
 
 	/*GLfloat *temp = new GLfloat[2];
@@ -702,7 +705,7 @@ void Engine::Graphics::Effect::setUniforms(Engine::Math::cVector i_position, Eng
 	
 	const GLboolean dontTranspose = false;
 	const GLsizei uniformCountToSet = 1;
-	m_uniforms.calculateUniforms(i_position, i_orientation);
+	m_uniforms.calculateUniforms(i_gameObject, i_camera, i_fieldOfView, i_aspectRatio);
 	glUniformMatrix4fv(s_uniformLocalToWorld, uniformCountToSet, dontTranspose, reinterpret_cast<const GLfloat*>(&m_uniforms.g_transform_localToWorld));
 	glUniformMatrix4fv(s_uniformWorldToView, uniformCountToSet, dontTranspose, reinterpret_cast<const GLfloat*>(&m_uniforms.g_transform_worldToView));
 	glUniformMatrix4fv(s_uniformViewToScreen, uniformCountToSet, dontTranspose, reinterpret_cast<const GLfloat*>(&m_uniforms.g_transform_viewToScreen));

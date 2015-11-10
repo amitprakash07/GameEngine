@@ -7,6 +7,9 @@
 #include "../../Engine/Core/Utilities/SharedPointer.h"
 #include "../../Engine/Core/EngineCore/Objects/GameObject.h"
 #include "../../Engine/Core/EngineCore/ObjectController/WalkController.h"
+#include "../../Engine/Core/EngineCore/ObjectController/CameraController.h"
+#include "../../Engine/Core/EngineCore/Objects/Camera.h"
+
 
 
 
@@ -24,7 +27,17 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_comman
 		//triangleOne->setPositionOffset(Engine::Math::cVector(-0.75, -0.75, -0.25));
 		//triangleTwo->setPositionOffset(Engine::Math::cVector(0.75, 0.75, 0.25));
 		//triangleTwo->setPositionOffset(Engine::Math::cVector(-0.75, -0.75, -0.25));
-		scene->addToScene(square);
+		Engine::SharedPointer<Engine::GameObject> floor = Engine::GameObject::CreateGameObject("Floor", "data/Floor.mesh", "standard", "data/standardEffect.effect");
+		Engine::SharedPointer<Engine::Camera> mainCamera = Engine::Camera::CreateCamera("MainCamera", 
+			Engine::Math::cVector(0,0,10),
+			Engine::Math::cQuaternion());
+		mainCamera->activateCamera(true);
+		mainCamera->setAspectRatio(static_cast<float>(800 / 600));
+		mainCamera->setFieldOfView(60.0f);
+		mainCamera->setCameraController(new Engine::CameraController());
+		scene->addGameObjectToScene(square);
+		scene->addGameObjectToScene(floor);
+		scene->addCameraToScene(mainCamera);
 		//scene->addToScene(triangleOne);
 		//scene->addToScene(triangleTwo);
 		scene->renderScene(true);

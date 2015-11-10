@@ -29,29 +29,42 @@ void Engine::InputController::HandleMessage(Engine::utils::StringHash& i_message
 			if (i_pMessageData)
 			{
 				Engine::typedefs::Direction dir;
-				Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("UpdateGameObject");
+				Engine::utils::StringHash gameObjectController = Engine::EngineCore::getStringPool()->findString("UpdateGameObject");
+				Engine::utils::StringHash cameraController = Engine::EngineCore::getStringPool()->findString("MoveCamera");
 				SharedPointer<InputController> tempInputController = Engine::EngineCore::getInputController();
 				switch (reinterpret_cast<WPARAM>(i_pMessageData))
 				{
 				case VK_LEFT:
+					dir = Engine::typedefs::LEFT;
+					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &dir);
+					break;
 				case 0x41:
 					dir = Engine::typedefs::LEFT;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(temp, tempInputController.getRawPointer(), &dir);
+					Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &dir);
 					break;
 				case VK_RIGHT:
+					dir = Engine::typedefs::RIGHT;
+					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &dir);
+					break;
 				case 0x44:
 					dir = Engine::typedefs::RIGHT;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(temp, tempInputController.getRawPointer(), &dir);
+					Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &dir);
 					break;
 				case VK_DOWN:
+					dir = Engine::typedefs::DOWN;
+					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &dir);
+					break;
 				case 0x53:
 					dir = Engine::typedefs::DOWN;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(temp, tempInputController.getRawPointer(), &dir);
+					Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &dir);
 					break;
 				case VK_UP:
+					dir = Engine::typedefs::UP;
+					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &dir);
+					break;
 				case 0x57:
 					dir = Engine::typedefs::UP;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(temp, tempInputController.getRawPointer(), &dir);
+					Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &dir);
 					break;
 				}
 			}

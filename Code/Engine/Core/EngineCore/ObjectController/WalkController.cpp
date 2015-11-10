@@ -4,9 +4,9 @@
 #include "../Objects/Scene.h"
 #include "../../../Windows/WindowsFunctions.h"
 
-void Engine::WalkController::updateGameObject(GameObject &i_gameObject, Engine::typedefs::Direction i_dir)
+void Engine::WalkController::updateGameObject(Object &i_gameObject, Engine::typedefs::Direction i_dir)
 {
-	GameObject::Transformation tempTransformation = i_gameObject.getTransformation();
+	Transformation tempTransformation = i_gameObject.getTransformation();
 	std::stringstream errormessage;
 		switch (i_dir)
 		{
@@ -29,10 +29,4 @@ void Engine::WalkController::updateGameObject(GameObject &i_gameObject, Engine::
 		}
 		i_gameObject.setTransformation(tempTransformation.mPositionOffset);
 }
-
-//Engine::SharedPointer<Engine::IObjectController> Engine::WalkController::getObjectController()
-//{
-//	SharedPointer<IObjectController> temp(new WalkController());
-//	return temp;
-//}
 

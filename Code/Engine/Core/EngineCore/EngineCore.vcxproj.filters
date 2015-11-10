@@ -17,6 +17,15 @@
     <ClInclude Include="ObjectController\WalkController.h">
       <Filter>ObjectController</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\Object.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Camera.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectController\CameraController.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp" />
@@ -33,6 +42,12 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="ObjectController\WalkController.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Camera.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectController\CameraController.cpp">
       <Filter>ObjectController</Filter>
     </ClCompile>
   </ItemGroup>

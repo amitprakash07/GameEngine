@@ -4,14 +4,15 @@
 #include "SharedPointer.h"
 #include "additionaltypes.h"
 
+
 namespace Engine
 {
-	class GameObject;
+	class Object;
 	class IObjectController: public RTTI
 	{
 	public:
 		virtual ~IObjectController(){};
-		virtual void updateGameObject(Engine::GameObject &, Engine::typedefs::Direction) = 0;
+		virtual void updateGameObject(Engine::Object &, Engine::typedefs::Direction) = 0;
 		virtual std::string getTypeInfo() override { return "Engine::IObjectController"; }
 		virtual bool isBothSameType(RTTI*, std::string i_inString) override { return (i_inString == "Engine::IObjectController"); }
 		IObjectController() {}

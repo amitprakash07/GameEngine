@@ -51,9 +51,6 @@ Engine::Graphics::Effect::~Effect()
 	if (s_constantsTable)
 		s_constantsTable->Release();
 
-	//if (s_uniformPositionOffset)
-	//	delete s_uniformPositionOffset;
-
 	s_uniformLocalToWorld = nullptr;
 	s_uniformWorldToView = nullptr;
 	s_uniformViewToScreen = nullptr;
@@ -163,13 +160,16 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 }
 
 
-void Engine::Graphics::Effect::setUniforms(Engine::Math::cVector i_position, Engine::Math::cQuaternion i_orientation)
+void Engine::Graphics::Effect::setUniforms(Transformation i_gameObject,
+	Transformation i_camera,
+	float i_fieldOfView,
+	float i_aspectRatio)
 {
 	/*
 	For setting floats
 	HRESULT result = s_constantsTable->SetFloatArray(Engine::Graphics::GraphicsSystem::getDevice(), s_uniformPositionOffset, temp, 2);
 	*/
-	m_uniforms.calculateUniforms(i_position, i_orientation);
+	m_uniforms.calculateUniforms(i_gameObject, i_camera, i_fieldOfView, i_aspectRatio);
 	HRESULT result = s_constantsTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
 		s_uniformLocalToWorld,
 		reinterpret_cast<const D3DXMATRIX*>(&m_uniforms.g_transform_localToWorld));

@@ -42,7 +42,6 @@ bool Engine::Graphics::Effect::addEffectToList(std::string i_shaderName, std::st
 	return success;
 }
 
-
 Engine::SharedPointer<Engine::Graphics::Effect> Engine::Graphics::Effect::getEffect(std::string i_shaderName)
 {
 	for (std::map<std::string, Engine::SharedPointer<Engine::Graphics::Effect>>::iterator i = mEffectList.begin(); i != mEffectList.end(); ++i)
@@ -53,7 +52,6 @@ Engine::SharedPointer<Engine::Graphics::Effect> Engine::Graphics::Effect::getEff
 	return SharedPointer<Engine::Graphics::Effect>();
 }
 
-
 void Engine::Graphics::Effect::deleteAllEffect()
 {
 	for (std::map<std::string, Engine::SharedPointer<Engine::Graphics::Effect>>::iterator i = mEffectList.begin(); i != mEffectList.end(); ++i)
@@ -61,7 +59,6 @@ void Engine::Graphics::Effect::deleteAllEffect()
 		i->second.deleteObject();
 	}
 }
-
 
 bool Engine::Graphics::Effect::isEffectExist(std::string i_effectFileName)
 {
@@ -103,15 +100,14 @@ bool Engine::Graphics::Effect::LoadEffect()
 	return false;		
 }
 
-void Engine::Graphics::Uniforms::calculateUniforms(Engine::Math::cVector i_position, Engine::Math::cQuaternion i_orientation)
+void Engine::Graphics::Uniforms::calculateUniforms(Transformation i_gameObject, Transformation i_camera, float i_fieldOfView, float i_aspectRatio)
 {
-	g_transform_localToWorld = Engine::Math::cMatrix_transformation(i_orientation, i_position);
-	Engine::Math::cVector cameraPosition = Engine::Math::cVector(0.0f, 0.0f, 10.0f);
+	g_transform_localToWorld = Engine::Math::cMatrix_transformation(i_gameObject.mOrientation, i_gameObject.mPositionOffset);
 	g_transform_worldToView =
 		Engine::Math::cMatrix_transformation::CreateWorldToViewTransform(
-			Engine::Math::cQuaternion::getIdentityQuartenion(), cameraPosition);
-	float aspectRatio = 800 / 600;
-	float fieldOfViewInRadians = Engine::Math::ConvertDegreesToRadians(60);
+			i_camera.mOrientation, i_camera.mPositionOffset);
+	float aspectRatio = i_aspectRatio;
+	float fieldOfViewInRadians = i_fieldOfView;
 	g_transform_viewToScreen =
 		Engine::Math::cMatrix_transformation::CreateViewToScreenTransform(
 			fieldOfViewInRadians, aspectRatio);

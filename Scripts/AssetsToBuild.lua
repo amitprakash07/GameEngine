@@ -15,7 +15,12 @@ return
 		{
 			src = "Box.lua",
 			target = "Box.mesh",
-		}
+		},
+		
+		{
+			src = "Floor.lua",
+			target = "Floor.mesh"
+		}		
 	},
 
 

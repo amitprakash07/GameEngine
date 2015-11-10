@@ -15,22 +15,23 @@ bool Engine::Graphics::Mesh::createBuffers()
 		WindowsUtil::Print(errormessage.str());
 		return false;
 	}
-	// Bind a specific vertex buffer to the device as a data source
-	glBindVertexArray(s_vertexArrayID);
-	if (glGetError() == GL_NO_ERROR)
-		return true;
-
-	return false;
+	return true;
 }
-
 
 
 bool Engine::Graphics::Mesh::drawMesh()
 {
+	
 	// Render objects from the current streams
 	// We are using triangles as the "primitive" type,
 	// and we have defined the vertex buffer as a triangle list
 	// (meaning that every triangle is defined by three vertices)
+	
+	// Bind a specific vertex buffer to the device as a data source
+	glBindVertexArray(s_vertexArrayID);
+	if (!glGetError() == GL_NO_ERROR)
+		return false;
+	
 	const GLenum mode = GL_TRIANGLES;
 	// We'll use 32-bit indices in this class to keep things simple
 	// (i.e. every index will be a 32 bit unsigned integer)
@@ -48,8 +49,8 @@ bool Engine::Graphics::Mesh::drawMesh()
 bool Engine::Graphics::Mesh::createVertexArray()
 {
 	bool wereThereErrors = false;
-	GLuint vertexBufferId = 0;
-	GLuint indexBufferId = 0;
+	/*GLuint vertexBufferId = 0;
+	GLuint indexBufferId = 0;*/
 
 	// Create a vertex array object and make it active
 	{
@@ -66,7 +67,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to bind the vertex array: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				WindowsUtil::Print( errorMessage.str() );
+				WindowsUtil::Print(errorMessage.str());
 				goto OnExit;
 			}
 		}
@@ -76,7 +77,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to get an unused vertex array ID: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			WindowsUtil::Print( errorMessage.str() );
+			WindowsUtil::Print(errorMessage.str());
 			goto OnExit;
 		}
 	}
@@ -96,7 +97,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to bind the vertex buffer: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				WindowsUtil::Print( errorMessage.str() );
+				WindowsUtil::Print(errorMessage.str());
 				goto OnExit;
 			}
 		}
@@ -106,7 +107,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to get an unused vertex buffer ID: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			WindowsUtil::Print( errorMessage.str() );
+			WindowsUtil::Print(errorMessage.str());
 			goto OnExit;
 		}
 	}
@@ -114,15 +115,15 @@ bool Engine::Graphics::Mesh::createVertexArray()
 
 	// Assign the data to the buffer
 	{
-		vertex *vertexData = new vertex[vertexCount];
+		vertex* vertexData = new vertex[vertexCount];
 		// Fill in the data for the triangle
 		{
 			Engine::Graphics::vertex* tempVertex = getVertex();
-			memcpy(vertexData, tempVertex, sizeof(tempVertex[0]) * vertexCount); 
+			memcpy(vertexData, tempVertex, sizeof(tempVertex[0]) * vertexCount);
 		}
 		glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(vertex), reinterpret_cast<GLvoid*>(vertexData),
-			// Our code will only ever write to the buffer
-			GL_STATIC_DRAW);
+		             // Our code will only ever write to the buffer
+		             GL_STATIC_DRAW);
 		delete vertexData;
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
@@ -131,7 +132,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to allocate the vertex buffer: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			WindowsUtil::Print( errorMessage.str() );
+			WindowsUtil::Print(errorMessage.str());
 			goto OnExit;
 		}
 	}
@@ -146,7 +147,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		{
 			const GLuint vertexElementLocation = 0;
 			const GLint elementCount = 3; // for 3 floats in the position
-			const GLboolean notNormalized = GL_FALSE;	// The given floats should be used as-is
+			const GLboolean notNormalized = GL_FALSE; // The given floats should be used as-is
 			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
 			const GLenum errorCode = glGetError();
 			if (errorCode == GL_NO_ERROR)
@@ -163,7 +164,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to enable the POSITION vertex attribute: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					WindowsUtil::Print( errorMessage.str() );
+					WindowsUtil::Print(errorMessage.str());
 					goto OnExit;
 				}
 			}
@@ -173,7 +174,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to set the POSITION vertex attribute: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				WindowsUtil::Print( errorMessage.str() );
+				WindowsUtil::Print(errorMessage.str());
 				goto OnExit;
 			}
 		}
@@ -200,7 +201,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to enable the COLOR0 vertex attribute: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					WindowsUtil::Print( errorMessage.str() );
+					WindowsUtil::Print(errorMessage.str());
 					goto OnExit;
 				}
 			}
@@ -210,7 +211,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to set the COLOR0 vertex attribute: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				WindowsUtil::Print( errorMessage.str() );
+				WindowsUtil::Print(errorMessage.str());
 				goto OnExit;
 			}
 		}
@@ -231,7 +232,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 				std::stringstream errorMessage;
 				errorMessage << "OpenGL failed to bind the index buffer: " <<
 					reinterpret_cast<const char*>(gluErrorString(errorCode));
-				WindowsUtil::Print( errorMessage.str() );
+				WindowsUtil::Print(errorMessage.str());
 				goto OnExit;
 			}
 		}
@@ -241,25 +242,24 @@ bool Engine::Graphics::Mesh::createVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to get an unused index buffer ID: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			WindowsUtil::Print( errorMessage.str() );
+			WindowsUtil::Print(errorMessage.str());
 			goto OnExit;
 		}
 	}
 	// Allocate space and copy the triangle data into the index buffer
 	{
 		const unsigned int vertexCountPerTriangle = 3;
-		uint32_t *indexData = new uint32_t[triangleCount * vertexCountPerTriangle];
+		uint32_t* indexData = new uint32_t[triangleCount * vertexCountPerTriangle];
 		// Fill in the data for the triangle
 		{
-			
-			uint32_t * tempIndicesList = Engine::Graphics::Mesh::getIndices();
-			memcpy(indexData, tempIndicesList, sizeof(uint32_t) * triangleCount* vertexCountPerTriangle);
+			uint32_t* tempIndicesList = Engine::Graphics::Mesh::getIndices();
+			memcpy(indexData, tempIndicesList, sizeof(uint32_t) * triangleCount * vertexCountPerTriangle);
 		}
 
 		const GLsizeiptr bufferSize = triangleCount * vertexCountPerTriangle * sizeof(uint32_t);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, bufferSize, reinterpret_cast<const GLvoid*>(indexData),
-			// Our code will only ever write to the buffer
-			GL_STATIC_DRAW);
+		             // Our code will only ever write to the buffer
+		             GL_STATIC_DRAW);
 		delete indexData;
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
@@ -268,10 +268,9 @@ bool Engine::Graphics::Mesh::createVertexArray()
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to allocate the index buffer: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			WindowsUtil::Print( errorMessage.str() );
+			WindowsUtil::Print(errorMessage.str());
 			goto OnExit;
 		}
-
 	}
 
 OnExit:
@@ -302,7 +301,7 @@ OnExit:
 					std::stringstream errorMessage;
 					errorMessage << "OpenGL failed to delete the vertex buffer: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					WindowsUtil::Print( errorMessage.str() );
+					WindowsUtil::Print(errorMessage.str());
 				}
 				vertexBufferId = 0;
 			}
@@ -319,7 +318,7 @@ OnExit:
 					std::stringstream errorMessage;
 					errorMessage << "\nOpenGL failed to delete the index buffer: " <<
 						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					WindowsUtil::Print( errorMessage.str() );
+					WindowsUtil::Print(errorMessage.str());
 				}
 				indexBufferId = 0;
 			}
@@ -330,7 +329,7 @@ OnExit:
 			std::stringstream errorMessage;
 			errorMessage << "OpenGL failed to unbind the vertex array: " <<
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			WindowsUtil::Print( errorMessage.str() );
+			WindowsUtil::Print(errorMessage.str());
 		}
 	}
 
@@ -357,4 +356,7 @@ Engine::Graphics::Mesh::Mesh(std::string i_meshName, std::string i_fileName)
 	mWinding = Engine::Graphics::winding::RIGHT;
 	triangleCount = 0;
 	vertexCount = 0;
+	s_vertexArrayID = 0;
+	vertexBufferId = 0;
+	indexBufferId = 0;
 }

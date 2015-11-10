@@ -23,7 +23,7 @@ bool Engine::Graphics::Mesh::addToMeshList(std::string i_meshName, std::string i
 		}
 		return true;
 	}
-
+	
 	std::stringstream errormessage;
 	errormessage << "Unable to load Mesh. FileName is null. Load Mesh again";
 	WindowsUtil::Print(errormessage.str());
