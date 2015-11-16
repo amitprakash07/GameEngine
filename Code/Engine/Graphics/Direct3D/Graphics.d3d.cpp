@@ -159,13 +159,11 @@ bool Engine::Graphics::CreateDevice()
 	HRESULT result = s_direct3dInterface->CreateDevice(useDefaultDevice, useHardwareRendering,
 		s_renderingWindow, useHardwareVertexProcessing, &presentationParameters, &s_direct3dDevice);
 	
-	result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+	/*result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 	result |= s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	result |= s_direct3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+	result |= s_direct3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);*/
 	if (SUCCEEDED(result))
 	{
-		
-
 		return true;
 	}
 	else
@@ -189,6 +187,56 @@ bool Engine::Graphics::CreateInterface()
 		WindowsUtil::Print("DirectX failed to create a Direct3D9 interface");
 		return false;
 	}
+}
+
+
+bool Engine::Graphics::GraphicsSystem::setRenderState(uint8_t i_renderState)
+{
+	HRESULT result = FALSE;
+	if (i_renderState & ALPHA_BLENDING)
+	{
+		result = s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		result |= s_direct3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		result |= s_direct3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	}
+	else
+	{
+		result = s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	}
+
+	if(i_renderState & DEPTH_TESTING)
+	{
+
+		result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+		result |= s_direct3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+	}
+	else
+	{
+		result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+	}
+
+	if(i_renderState & DEPTH_WRITING)
+	{
+		result |= s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	}
+	else
+	{
+		result |= s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	}
+
+	if(i_renderState & FACE_CULLING)
+	{
+		result |= s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	}
+	else
+	{
+		result |= s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	}
+
+	if (SUCCEEDED(result))
+		return true;
+
+	return false;
 }
 
 

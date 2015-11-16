@@ -1,0 +1,29 @@
+/*
+	Fragment shader
+*/
+
+#include "shaders.inc"
+
+#if defined(PLATFORM_D3D)
+
+void main(in float4 i_color : COLOR0,out float4 o_color : COLOR0)
+
+#elif defined(PLATFORM_OPEN_GL)
+
+layout( location = 0 ) in vec4 i_color;
+
+out vec4 o_color;
+
+void main()
+
+#endif
+
+{
+	// Set the fragment to the interpolated color that originated as per-vertex data
+	// (where color is represented by 4 floats representing "RGBA" == "Red/Green/Blue/Alpha")
+	{
+		o_color = i_color;
+		o_color.a *= 0.5;
+	}
+}
+

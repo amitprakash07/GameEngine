@@ -152,13 +152,13 @@ bool LuaLoadTriangleIndex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_me
 			switch (j - 1)
 			{
 			case 0:
-				tempIndices[i - 1].first = static_cast<uint8_t>(lua_tointeger(i_luaState, -1));
+				tempIndices[i - 1].first = static_cast<uint32_t>(lua_tointeger(i_luaState, -1));
 				break;
 			case 1:
-				tempIndices[i - 1].second = static_cast<uint8_t>(lua_tointeger(i_luaState, -1));
+				tempIndices[i - 1].second = static_cast<uint32_t>(lua_tointeger(i_luaState, -1));
 				break;
 			case 2:
-				tempIndices[i - 1].third = static_cast<uint8_t>(lua_tointeger(i_luaState, -1));
+				tempIndices[i - 1].third = static_cast<uint32_t>(lua_tointeger(i_luaState, -1));
 				break;
 			}
 			

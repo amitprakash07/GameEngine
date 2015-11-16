@@ -26,6 +26,7 @@ bool Engine::Graphics::Effect::LoadShaders()
 
 bool Engine::Graphics::Effect::setShaders()
 {
+	GraphicsSystem::setRenderState(*renderState);
 	glUseProgram(s_programId);
 	if (glGetError() == GL_NO_ERROR)
 		return true;
@@ -673,6 +674,7 @@ Engine::Graphics::Effect::Effect(std::string i_shader, std::string i_effectFileN
 	s_uniformViewToScreen = 0;
 	shaderName = i_shader;
 	effectFileName = i_effectFileName;
+	renderState = new uint8_t;
 }
 
 Engine::Graphics::Effect::~Effect()
@@ -690,6 +692,7 @@ Engine::Graphics::Effect::~Effect()
 		}
 		s_programId = 0;
 	}
+	delete renderState;
 }
 
 void Engine::Graphics::Effect::setUniforms(Transformation i_gameObject, 

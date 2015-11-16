@@ -7,14 +7,24 @@ namespace Tools
 {
 	namespace AssetBuilder
 	{
+		enum __renderState
+		{
+			ALPHA_BLENDING = 1 << 0,
+			DEPTH_TESTING = 1<<1,
+			DEPTH_WRITING = 1<<2,
+			FACE_CULLING = 1<<3
+		};
+
 		class EffectBuilder: public cbBuilder
 		{
 		public:
+			EffectBuilder();
 			bool LoadEffectFile();
 			virtual bool Build(const std::vector<std::string>& i_arguments) override;
 		private:
-			std::string vertexName;
-			std::string fragmentName;
+			char* vertexName;
+			char* fragmentName;
+			uint8_t* renderSate;
 
 		};
 	}

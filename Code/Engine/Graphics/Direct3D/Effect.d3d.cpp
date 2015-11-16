@@ -10,7 +10,9 @@ bool Engine::Graphics::Effect::setShaders()
 {
 	if (s_vertexShader && s_fragmentShader)
 	{
-		HRESULT result = GraphicsSystem::getDevice()->SetVertexShader(s_vertexShader);
+		bool result = GraphicsSystem::setRenderState(*renderState);
+		assert(SUCCEEDED(result));
+		result = GraphicsSystem::getDevice()->SetVertexShader(s_vertexShader);
 		assert(SUCCEEDED(result));
 		result = GraphicsSystem::getDevice()->SetPixelShader(s_fragmentShader);
 		assert(SUCCEEDED(result));
@@ -38,6 +40,8 @@ Engine::Graphics::Effect::Effect(std::string i_shaderName, std::string i_effectF
 	s_uniformWorldToView = nullptr;
 	s_uniformViewToScreen = nullptr;
 	effectFileName = i_effectFileName;
+	renderState = new uint8_t;
+	*renderState = 0;
 }
 
 Engine::Graphics::Effect::~Effect()
@@ -57,7 +61,7 @@ Engine::Graphics::Effect::~Effect()
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
 	s_constantsTable = nullptr;
-
+	delete renderState;
 
 }
 

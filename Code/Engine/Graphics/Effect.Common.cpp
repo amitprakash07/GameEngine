@@ -93,8 +93,14 @@ bool Engine::Graphics::Effect::LoadEffect()
 
 	if(buffer)
 	{
-		vertexShader = buffer;
-		fragmentShader = buffer + strlen(buffer) + 1;
+		BYTES * tempBuffer = buffer;
+		vertexShader = tempBuffer;
+		tempBuffer += vertexShader.size() + 1;
+		fragmentShader = tempBuffer;
+		tempBuffer += fragmentShader.size() + 1;
+		memcpy(renderState, tempBuffer, sizeof(char));
+		//uint8_t a = static_cast<uint8_t>(*renderState);
+		delete buffer;
 		return true;
 	}
 	return false;		

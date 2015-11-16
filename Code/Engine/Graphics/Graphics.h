@@ -15,10 +15,19 @@
 #include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 #endif
 
+#include <stdint.h>
 namespace Engine
 {
 	namespace Graphics
 	{
+		enum __renderState
+		{
+			ALPHA_BLENDING = 1 << 0,
+			DEPTH_TESTING = 1 << 1,
+			DEPTH_WRITING = 1 << 2,
+			FACE_CULLING = 1 << 3
+		};
+
 		class GraphicsSystem
 		{
 		public:
@@ -33,6 +42,8 @@ namespace Engine
 				else
 					return nullptr;
 			}
+
+			static bool setRenderState(uint8_t);
 
 #ifdef PLATFORM_D3D
 			static IDirect3DDevice9* getDevice();

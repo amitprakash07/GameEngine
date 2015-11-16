@@ -58,7 +58,7 @@ bool Engine::Graphics::GraphicsSystem::create()
 		}
 	}
 
-	glEnable(GL_CULL_FACE);
+	/*glEnable(GL_CULL_FACE);
 	if (glGetError() != GL_NO_ERROR)
 	{
 		goto OnError;
@@ -80,7 +80,7 @@ bool Engine::Graphics::GraphicsSystem::create()
 	if (glGetError() != GL_NO_ERROR)
 	{
 		goto OnError;
-	}
+	}*/
 
 
 	return true;
@@ -252,6 +252,54 @@ bool Engine::Graphics::CreateRenderingContext()
 
 		return true;
 	}
+
+
+bool Engine::Graphics::GraphicsSystem::setRenderState(uint8_t i_renderState)
+{
+	if (i_renderState & ALPHA_BLENDING)
+	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+	else
+	{
+		glDisable(GL_BLEND);
+	}
+
+	if (i_renderState & DEPTH_TESTING)
+	{
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+	}
+	else
+	{
+		glDisable(GL_DEPTH_TEST);
+	}
+
+	if (i_renderState & DEPTH_WRITING)
+	{
+		glDepthMask(GL_TRUE);
+	}
+	else
+	{
+		glDepthMask(GL_FALSE);
+	}
+
+	if (i_renderState & FACE_CULLING)
+	{
+		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CCW);
+	}
+	else
+	{
+		glDisable(GL_CULL_FACE);
+	}
+
+	if (glGetError() == GL_NO_ERROR)
+		return true;
+	return false;
+}
+
 
 
 

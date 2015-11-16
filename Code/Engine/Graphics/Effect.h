@@ -51,6 +51,7 @@ namespace Engine
 			std::string effectName;
 			std::string effectFileName;
 			Uniforms m_uniforms;
+			uint8_t *renderState;
 			bool LoadShaders();
 			bool LoadFragmentShader();
 			bool LoadVertexShader();
