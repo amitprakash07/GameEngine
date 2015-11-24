@@ -8,24 +8,24 @@ typedef char BYTES;
 
 std::map<std::string, Engine::SharedPointer<Engine::Graphics::Effect>> Engine::Graphics::Effect::mEffectList;
 
-bool Engine::Graphics::Effect::addEffectToList(std::string i_shaderName, std::string i_effectFileName)
+bool Engine::Graphics::Effect::addEffectToList(std::string i_effectName)
 {
 	bool success = false;
 	std::stringstream errormessage;
-	if (i_effectFileName.size() > 0)
+	if (i_effectName.size() > 0)
 	{
-		if (isEffectExist(i_effectFileName))
+		if (isEffectExist(i_effectName))
 		{
 			return true;
 		}
 		else
 		{
-			Engine::SharedPointer<Engine::Graphics::Effect> effect(new Effect(i_shaderName, i_effectFileName), "Engine::Graphics::Effect");
+			Engine::SharedPointer<Engine::Graphics::Effect> effect(new Effect(i_effectName), "Engine::Graphics::Effect");
 			if (!effect.isNull())
 			{
-				if(effect->LoadEffect() && effect->LoadShaders())
+				if(effect->LoadEffect())
 				{
-					mEffectList[i_shaderName] = effect;
+					mEffectList[i_effectName] = effect;
 					success = true;
 				}
 				else
@@ -41,6 +41,39 @@ bool Engine::Graphics::Effect::addEffectToList(std::string i_shaderName, std::st
 	}
 	return success;
 }
+
+
+//void Engine::Graphics::Effect::createMaterialUniforms(size_t i_uniformCount)
+//{
+//	materialUniformCount = i_uniformCount;
+//	materialUniforms = new MaterialUniform[materialUniformCount];
+//#ifdef _DEBUG
+//	materialUniformNames = new char*[materialUniformCount];
+//#endif
+//}
+//
+//
+//Engine::Graphics::MaterialUniform* Engine::Graphics::Effect::getMaterialUniform()
+//{
+//	if (materialUniforms)
+//		return materialUniforms;
+//	return nullptr;
+//}
+//
+//void Engine::Graphics::Effect::setMaterialUniforms(MaterialUniform* i_materialUniforms)
+//{
+//	if(i_materialUniforms)
+//	{
+//		memcpy(materialUniforms, i_materialUniforms, sizeof(MaterialUniform)*materialUniformCount);
+//	}
+//}
+//
+//
+//size_t Engine::Graphics::Effect::getMaterialUniformCount()
+//{
+//	return materialUniformCount;
+//}
+
 
 Engine::SharedPointer<Engine::Graphics::Effect> Engine::Graphics::Effect::getEffect(std::string i_shaderName)
 {
@@ -60,13 +93,13 @@ void Engine::Graphics::Effect::deleteAllEffect()
 	}
 }
 
-bool Engine::Graphics::Effect::isEffectExist(std::string i_effectFileName)
+bool Engine::Graphics::Effect::isEffectExist(std::string i_effectName)
 {
-	if(!i_effectFileName.empty())
+	if(!i_effectName.empty())
 	{
 		for (std::map<std::string, SharedPointer<Effect>>::iterator i = mEffectList.begin(); i != mEffectList.end(); ++i)
 		{
-			if (Engine::utils::StringHash(i->second->effectFileName.c_str()) == Engine::utils::StringHash(i_effectFileName.c_str()))
+			if (Engine::utils::StringHash(i->first.c_str()) == Engine::utils::StringHash(i_effectName.c_str()))
 				return true;
 		}
 		return false;
@@ -80,7 +113,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 	std::ifstream readFile;
 
 	if (!readFile.is_open())
-		readFile.open(effectFileName.c_str(), std::ifstream::binary);
+		readFile.open(effectName.c_str(), std::ifstream::binary);
 
 	readFile.seekg(0, readFile.end);
 	size_t length = static_cast<size_t>(readFile.tellg());
@@ -101,12 +134,14 @@ bool Engine::Graphics::Effect::LoadEffect()
 		memcpy(renderState, tempBuffer, sizeof(char));
 		//uint8_t a = static_cast<uint8_t>(*renderState);
 		delete buffer;
-		return true;
+		if(LoadShaders())
+			return true;
+		return false;
 	}
 	return false;		
 }
 
-void Engine::Graphics::Uniforms::calculateUniforms(Transformation i_gameObject, Transformation i_camera, float i_fieldOfView, float i_aspectRatio)
+void Engine::Graphics::EngineUniforms::calculateUniforms(Transformation i_gameObject, Transformation i_camera, float i_fieldOfView, float i_aspectRatio)
 {
 	g_transform_localToWorld = Engine::Math::cMatrix_transformation(i_gameObject.mOrientation, i_gameObject.mPositionOffset);
 	g_transform_worldToView =

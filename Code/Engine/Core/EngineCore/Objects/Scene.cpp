@@ -99,7 +99,9 @@ void Engine::Scene::drawScene()
 			(*i)->getEffect()->setShaders();
 			//(*i)->getEffect()->setPositionOffset((*i)->getOffsetPosition());
 			Transformation gameObjectTransformation = (*i)->getTransformation();
-			(*i)->getEffect()->setUniforms(gameObjectTransformation, cameraTransformation, fieldOfView, aspectRatio);
+			(*i)->getEffect()->setEngineUniformValue(gameObjectTransformation, cameraTransformation, fieldOfView, aspectRatio);
+			//(*i)->getEffect()->setMaterialUniformValue();
+			(*i)->getMaterial()->setMaterialUniformParameters();
 			(*i)->getMesh()->drawMesh();
 		}
 		mTimer->updateDeltaTime();

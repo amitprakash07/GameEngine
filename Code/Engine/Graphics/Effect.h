@@ -17,12 +17,16 @@
 #include "../Core/Maths/cVector.h"
 #include "../Core/Maths/cQuaternion.h"
 #include "../Core/EngineCore/Objects/Object.h"
+#include "UniformType.h"
+
+
+
 
 namespace Engine
 {
 	namespace Graphics
 	{
-		struct Uniforms
+		struct EngineUniforms
 		{
 			Engine::Math::cMatrix_transformation g_transform_localToWorld;
 			Engine::Math::cMatrix_transformation g_transform_worldToView;
@@ -30,39 +34,60 @@ namespace Engine
 			void calculateUniforms(Transformation, Transformation, float,float);
 		};
 
+		struct MaterialUniform
+		{
+			UniformHandle Handle; //8 or 4
+			ShaderType type; //1
+			ValueType valType; //1
+			TypeCount valCount; //1
+			float values[4]; //16
+		};
+
 		class Effect:public RTTI
 		{
 		public:
-			static bool addEffectToList(std::string, std::string);
+			static bool addEffectToList(std::string);
 			//static Engine::SharedPointer<Effect> getEffect(std::string, std::string);
 			static Engine::SharedPointer<Effect> getEffect(std::string);
 			static void deleteAllEffect();
+			static bool isEffectExist(std::string);
 			bool LoadEffect();
 			bool setShaders();
+			/*void createMaterialUniforms(size_t);
+			MaterialUniform* getMaterialUniform();
+			bool setMaterialUniformHandle(char*, int);
+			void setMaterialUniforms(MaterialUniform*);
+			size_t getMaterialUniformCount();*/
 			std::string getTypeInfo() override { return ""; }
 			bool isBothSameType(RTTI*, std::string) override { return true; }
 			~Effect();
-			void setUniforms(Transformation, Transformation, float, float);
+			void setEngineUniformValue(Transformation, Transformation, float, float);
+			void setMaterialUniformValue(char*, MaterialUniform);
 		private:
 			static std::map<std::string, Engine::SharedPointer<Effect>> mEffectList;
-			std::string shaderName;
 			std::string fragmentShader;
 			std::string vertexShader;
 			std::string effectName;
-			std::string effectFileName;
-			Uniforms m_uniforms;
+			//size_t materialUniformCount;
+			//std::string effectFileName;
+			EngineUniforms m_uniforms;
+//#ifdef _DEBUG
+//			char** materialUniformNames;
+//#endif
+//			MaterialUniform materialUniform;
 			uint8_t *renderState;
 			bool LoadShaders();
 			bool LoadFragmentShader();
 			bool LoadVertexShader();
-			bool ReadUniforms();
+			bool ReadEngineUniformsHandle();
 			//void setuniforms(Engine::Math::cVector, Engine::Math::cQuaternion);
-			static bool isEffectExist(std::string);
-			Effect(std::string, std::string);
+			
+			Effect(std::string);
 #ifdef PLATFORM_D3D
 			IDirect3DVertexShader9* s_vertexShader;
 			IDirect3DPixelShader9* s_fragmentShader;
-			ID3DXConstantTable*    s_constantsTable;
+			ID3DXConstantTable*    s_vertexShaderConstantTable;
+			ID3DXConstantTable*    s_fragmentShaderConstantTable;
 			D3DXHANDLE				s_uniformLocalToWorld; //Shader Name - g_transform_localToWorld 
 			D3DXHANDLE				s_uniformWorldToView; //Shader Name - g_transform_worldToView
 			D3DXHANDLE				s_uniformViewToScreen; //Shader Name - g_transform_viewToScreen

@@ -6,16 +6,16 @@
 
 
 
-Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(std::string i_meshName, std::string i_meshFileName, std::string i_effectName, std::string i_effectFileName)
+Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(std::string i_meshFileName, std::string i_materialName)
 {
-	SharedPointer<GameObject> tempGameObject(new GameObject(i_meshName, i_effectName), "Engine::GameObject");
+	SharedPointer<GameObject> tempGameObject(new GameObject(i_meshFileName, i_materialName), "Engine::GameObject");
 	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateGameObject"));
 	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempGameObject.getRawPointer()), Engine::typedefs::HIGH);
-	if (!i_meshName.empty() && !i_meshFileName.empty() && !i_effectName.empty() && !i_effectFileName.empty())
+	if (!i_meshFileName.empty() && !i_meshFileName.empty() && !i_materialName.empty())
 	{
 		std::stringstream errormessage;
 
-		if (!Engine::Graphics::Effect::addEffectToList(i_effectName, i_effectFileName))
+		if (!Engine::Graphics::Material::addMaterialToList(i_materialName.c_str()))
 		{
 			errormessage << "Unable to Load Effect";
 			MessageBox(nullptr, errormessage.str().c_str(), nullptr, MB_OK);
@@ -23,7 +23,7 @@ Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(s
 			return (SharedPointer<GameObject>());
 		}
 
-		if (!Engine::Graphics::Mesh::addToMeshList(i_meshName, i_meshFileName))
+		if (!Engine::Graphics::Mesh::addToMeshList(i_meshFileName))
 		{
 			errormessage << "Unable to Load Mesh";
 			MessageBox(nullptr, errormessage.str().c_str(), nullptr, MB_OK);
@@ -36,12 +36,12 @@ Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(s
 	return tempGameObject;
 }
 
-Engine::GameObject::GameObject(std::string i_meshName, std::string i_effectName)
+Engine::GameObject::GameObject(std::string i_meshName, std::string i_materialName)
 {
 	renderable = true;
 	mTransformation = Transformation();
 	mMeshName = i_meshName;
-	mEffectName = i_effectName;
+	mMaterial = i_materialName;
 	mObjectController = nullptr;
 }
 
@@ -49,7 +49,7 @@ Engine::GameObject::GameObject()
 {
 	renderable = true;
 	mMeshName = "";
-	mEffectName = "";
+	mMaterial = "";
 	mObjectController = nullptr;
 	mTransformation.mOrientation = Engine::Math::cQuaternion();
 	mTransformation.mPositionOffset = Engine::Math::cVector();
@@ -70,8 +70,14 @@ Engine::SharedPointer<Engine::Graphics::Mesh> Engine::GameObject::getMesh()
 
 Engine::SharedPointer<Engine::Graphics::Effect> Engine::GameObject::getEffect()
 {
-	return Engine::Graphics::Effect::getEffect(mEffectName);
+	return Engine::Graphics::Effect::getEffect(Engine::Graphics::Material::getMaterial(mMaterial.c_str())->getEffectName());
 }
+
+Engine::SharedPointer<Engine::Graphics::Material> Engine::GameObject::getMaterial()
+{
+	return Engine::Graphics::Material::getMaterial(mMaterial.c_str());
+}
+
 
 bool Engine::GameObject::isRenderable()
 {

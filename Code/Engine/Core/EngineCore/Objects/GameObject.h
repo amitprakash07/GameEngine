@@ -2,7 +2,7 @@
 #define __GAMEOBJECT_H
 
 #include "../../../Graphics/Mesh.h"
-#include "../../../Graphics/Effect.h"
+#include "../../../Graphics/Material.h"
 #include "../../../Core/Utilities/SharedPointer.h"
 #include "../../Utilities/IObjectController.h"
 #include "../../../Core/Utilities/IMessageHandler.h"
@@ -15,10 +15,11 @@ namespace Engine
 	class GameObject : public IMessageHandler, Object
 	{
 	public:
-		static SharedPointer<GameObject> CreateGameObject(std::string, std::string, std::string, std::string);
+		static SharedPointer<GameObject> CreateGameObject(std::string, std::string);
 		void setGameObjectController(IObjectController *);
 		SharedPointer<Engine::Graphics::Mesh>       getMesh();
 		SharedPointer<Engine::Graphics::Effect>		getEffect();
+		SharedPointer<Engine::Graphics::Material>   getMaterial();
 		void setTransformation(Engine::Math::cVector, Engine::Math::cQuaternion = Engine::Math::cQuaternion()) override;
 		Transformation getTransformation() override;	
 		bool isRenderable();
@@ -30,7 +31,7 @@ namespace Engine
 	private:
 		GameObject(std::string, std::string);
 		std::string									mMeshName;
-		std::string									mEffectName;
+		std::string									mMaterial;
 		IObjectController*							mObjectController;
 		bool										renderable;
 		Transformation								mTransformation;

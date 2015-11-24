@@ -8,17 +8,17 @@ typedef char BYTES;
 
 std::map<std::string, Engine::SharedPointer<Engine::Graphics::Mesh>> Engine::Graphics::Mesh::meshList;
 
-bool Engine::Graphics::Mesh::addToMeshList(std::string i_meshName, std::string i_fileName)
+bool Engine::Graphics::Mesh::addToMeshList(std::string i_fileName)
 {
 	if (!i_fileName.empty()) 
 	{
 		if (!isMeshExist(i_fileName))
 		{
-			Engine::SharedPointer<Mesh> newMesh(new Mesh(i_meshName, i_fileName), "Engine::Graphics::Mesh");
+			Engine::SharedPointer<Mesh> newMesh(new Mesh(i_fileName), "Engine::Graphics::Mesh");
 			if(!newMesh.isNull())
 			{
 				if(newMesh->LoadMesh() && newMesh->createBuffers())
-					meshList[i_meshName] = newMesh;
+					meshList[i_fileName] = newMesh;
 			}			
 		}
 		return true;

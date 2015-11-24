@@ -38,7 +38,7 @@ namespace Engine
 		class Mesh:public RTTI
 		{
 		public:
-			static bool addToMeshList(std::string, std::string);
+			static bool addToMeshList(std::string);
 			static SharedPointer<Mesh> getMesh(std::string);
 			static void deleteAllMesh();
 			bool drawMesh();
@@ -59,9 +59,8 @@ namespace Engine
 			int triangleCount;
 			int vertexCount;
 			std::string meshFileName;
-			std::string meshName;
 			static bool isMeshExist(std::string);
-			Mesh(std::string, std::string);
+			Mesh(std::string);
 			bool createBuffers();
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;

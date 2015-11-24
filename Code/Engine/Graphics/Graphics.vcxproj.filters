@@ -36,11 +36,17 @@
     <ClCompile Include="EffectUniform.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Includes.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="typedefs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UniformType.h" />
   </ItemGroup>
 </Project>

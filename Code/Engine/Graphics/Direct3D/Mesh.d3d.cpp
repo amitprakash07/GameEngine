@@ -274,15 +274,14 @@ Engine::Graphics::Mesh::~Mesh()
 
 }
 
-Engine::Graphics::Mesh::Mesh(std::string i_meshName, std::string i_fileName)
+Engine::Graphics::Mesh::Mesh(std::string i_meshName)
 {
 	s_vertexBuffer = nullptr;
 	s_indexBuffer = nullptr;
 	s_vertexDeclaration = nullptr;
 	mVertex = nullptr;
 	mIndices = nullptr;
-	meshFileName = i_fileName;
-	meshName = i_meshName;
+	meshFileName = i_meshName;
 	triangleCount = 0;
 	vertexCount = 0;
 	mWinding = Engine::Graphics::winding::LEFT;

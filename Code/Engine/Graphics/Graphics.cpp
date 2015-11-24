@@ -20,7 +20,7 @@ bool Engine::Graphics::GraphicsSystem::ShutDown()
 void Engine::Graphics::GraphicsSystem::Render()
 {
 	clear();
-	beginScene();
+ 	beginScene();
 	Engine::Scene::getRenderableScene()->drawScene();
 	endScene();
 	showBuffer();

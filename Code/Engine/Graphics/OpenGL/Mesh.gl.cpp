@@ -347,12 +347,11 @@ Engine::Graphics::Mesh::~Mesh()
 	mIndices = nullptr;
 }
 
-Engine::Graphics::Mesh::Mesh(std::string i_meshName, std::string i_fileName)
+Engine::Graphics::Mesh::Mesh(std::string i_fileName)
 {
 	mVertex = nullptr;
 	mIndices = nullptr;
 	meshFileName = i_fileName;
-	meshName = i_meshName;
 	mWinding = Engine::Graphics::winding::RIGHT;
 	triangleCount = 0;
 	vertexCount = 0;

@@ -92,5 +92,29 @@ return
 				"shaders.inc"
 			}
 		}
+	},
+	
+	{
+		BuildTool = "MaterialBuilder.exe",
+		{
+			src = "BlueStandard.lua",
+			target = "BlueStandard.mat",
+		},
+		{
+			src = "GreenStandard.lua",
+			target = "GreenStandard.mat",
+		},
+		{
+			src = "RedTransparent.lua",
+			target = "RedTransparent.mat",
+		},
+		{
+			src = "YellowTransparent.lua",
+			target = "YellowTransparent.mat",
+		},
+		{
+			src = "standardMaterial.lua",
+			target = "standardMaterial.mat",
+		},
 	}
 }

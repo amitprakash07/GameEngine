@@ -18,28 +18,28 @@ bool Engine::Graphics::Effect::setShaders()
 		assert(SUCCEEDED(result));
 		return true;
 	}
-	else
-		return false;
+	
+	return false;
 }
 
 bool Engine::Graphics::Effect::LoadShaders()
 {
-	if (LoadVertexShader() && LoadFragmentShader())
+	if (LoadVertexShader() && LoadFragmentShader() && ReadEngineUniformsHandle())
 		return true;
 	return false;
 }
 
 
-Engine::Graphics::Effect::Effect(std::string i_shaderName, std::string i_effectFileName)
+Engine::Graphics::Effect::Effect(std::string i_effectFileName)
 {
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
-	shaderName = i_shaderName;
-	s_constantsTable = nullptr;
+	effectName = i_effectFileName;
+	/*s_constantsTable = nullptr;
 	s_uniformLocalToWorld = nullptr;
 	s_uniformWorldToView = nullptr;
 	s_uniformViewToScreen = nullptr;
-	effectFileName = i_effectFileName;
+	effectFileName = i_effectFileName;*/
 	renderState = new uint8_t;
 	*renderState = 0;
 }
@@ -52,15 +52,19 @@ Engine::Graphics::Effect::~Effect()
 	if (s_fragmentShader)
 		s_fragmentShader->Release();
 
-	if (s_constantsTable)
-		s_constantsTable->Release();
+	if (s_vertexShaderConstantTable)
+		s_vertexShaderConstantTable->Release();
 
-	s_uniformLocalToWorld = nullptr;
+	if (s_fragmentShaderConstantTable)
+		s_fragmentShaderConstantTable->Release();
+
+	/*s_uniformLocalToWorld = nullptr;
 	s_uniformWorldToView = nullptr;
-	s_uniformViewToScreen = nullptr;
+	s_uniformViewToScreen = nullptr;*/
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
-	s_constantsTable = nullptr;
+	s_vertexShaderConstantTable = nullptr;
+	s_fragmentShaderConstantTable = nullptr;
 	delete renderState;
 
 }
@@ -83,9 +87,9 @@ bool Engine::Graphics::Effect::LoadVertexShader()
 	ID3DXBuffer* errorMessages = nullptr;
 		
 
-		HRESULT result = D3DXGetShaderConstantTable(reinterpret_cast<const DWORD*>(buffer), &s_constantsTable);
+		HRESULT result = D3DXGetShaderConstantTable(reinterpret_cast<const DWORD*>(buffer), &s_vertexShaderConstantTable);
 
-		if (SUCCEEDED(result))
+		/*if (SUCCEEDED(result))
 		{
 			if(!ReadUniforms())
 			{
@@ -115,7 +119,7 @@ bool Engine::Graphics::Effect::LoadVertexShader()
 				WindowsUtil::Print(errorMessage.str());
 			}
 			return false;
-		}
+		}*/
 	
 	// Create the vertex shader object
 	bool wereThereErrors = false;
@@ -146,7 +150,9 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 		readFile.close();
 		/**************Reading the shader file**********************/
 		
-
+	{
+		HRESULT result = D3DXGetShaderConstantTable(reinterpret_cast<const DWORD*>(buffer), &s_fragmentShaderConstantTable);
+	}
 	// Create the fragment shader object
 	bool wereThereErrors = false;
 	{
@@ -164,7 +170,7 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 }
 
 
-void Engine::Graphics::Effect::setUniforms(Transformation i_gameObject,
+void Engine::Graphics::Effect::setEngineUniformValue(Transformation i_gameObject,
 	Transformation i_camera,
 	float i_fieldOfView,
 	float i_aspectRatio)
@@ -174,15 +180,15 @@ void Engine::Graphics::Effect::setUniforms(Transformation i_gameObject,
 	HRESULT result = s_constantsTable->SetFloatArray(Engine::Graphics::GraphicsSystem::getDevice(), s_uniformPositionOffset, temp, 2);
 	*/
 	m_uniforms.calculateUniforms(i_gameObject, i_camera, i_fieldOfView, i_aspectRatio);
-	HRESULT result = s_constantsTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
+	HRESULT result = s_vertexShaderConstantTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
 		s_uniformLocalToWorld,
 		reinterpret_cast<const D3DXMATRIX*>(&m_uniforms.g_transform_localToWorld));
 	
-	result |= s_constantsTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
+	result |= s_vertexShaderConstantTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
 		s_uniformWorldToView,
 		reinterpret_cast<const D3DXMATRIX*>(&m_uniforms.g_transform_worldToView));
 
-	result |= s_constantsTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
+	result |= s_vertexShaderConstantTable->SetMatrixTranspose(Engine::Graphics::GraphicsSystem::getDevice(),
 		s_uniformViewToScreen,
 		reinterpret_cast<const D3DXMATRIX*>(&m_uniforms.g_transform_viewToScreen));
 	
@@ -194,4 +200,47 @@ void Engine::Graphics::Effect::setUniforms(Transformation i_gameObject,
 	}
 	//delete temp;
 }
+
+
+void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, MaterialUniform i_material_uniform)
+{
+	HRESULT result = FALSE;
+	switch (i_material_uniform.type)
+	{
+	case Engine::Graphics::Vertex:
+		i_material_uniform.Handle = reinterpret_cast<char*>(const_cast<char*>((s_vertexShaderConstantTable->GetConstantByName(nullptr, i_uniformName))));
+		result |= s_vertexShaderConstantTable->SetFloatArray(Engine::Graphics::GraphicsSystem::getDevice(),
+			i_material_uniform.Handle, i_material_uniform.values, i_material_uniform.valCount);
+		break;
+	case Engine::Graphics::Fragment:
+		i_material_uniform.Handle = reinterpret_cast<char*>(const_cast<char*>((s_fragmentShaderConstantTable->GetConstantByName(nullptr, i_uniformName))));
+		result |= s_fragmentShaderConstantTable->SetFloatArray(Engine::Graphics::GraphicsSystem::getDevice(),
+			i_material_uniform.Handle, i_material_uniform.values, i_material_uniform.valCount);
+		break;
+	case Unknown:
+		break;
+	}
+
+	/*switch(i_material_uniform.type)
+	{
+		case Vertex:
+			
+			break;
+		case Fragment:
+			
+			break;
+		case Unknown:
+			break;
+		}
+	}*/
+
+	if (!SUCCEEDED(result))
+	{
+		std::stringstream errormessage;
+		errormessage << "Unable to set the Uniform position";
+		WindowsUtil::Print(errormessage.str());
+	}
+
+}
+
 

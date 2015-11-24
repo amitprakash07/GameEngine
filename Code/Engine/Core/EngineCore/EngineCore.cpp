@@ -5,6 +5,7 @@
 #include "..\..\Windows\WindowsFunctions.h"
 #include "Objects/Scene.h"
 #include <iostream>
+#include "../../Graphics/Material.h"
 
 
 

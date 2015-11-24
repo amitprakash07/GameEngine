@@ -122,7 +122,7 @@ bool Engine::Graphics::Effect::CreateProgram()
 					else
 					{
 						/*Program Linking finished - grabbing the uniform loacation from the shader*/
-						if(!ReadUniforms())
+						if(!ReadEngineUniformsHandle())
 						{
 							std::stringstream errormesage;
 							errormesage << "Unable to get the uniform loacation from the linked program. Please check the shader code";
@@ -666,14 +666,13 @@ OnExit:
 	return !wereThereErrors;
 }
 
-Engine::Graphics::Effect::Effect(std::string i_shader, std::string i_effectFileName)
+Engine::Graphics::Effect::Effect(std::string i_effectFileName)
 {
 	s_programId = 0;
 	s_uniformLocalToWorld = 0;
 	s_uniformWorldToView = 0;
 	s_uniformViewToScreen = 0;
-	shaderName = i_shader;
-	effectFileName = i_effectFileName;
+	effectName = i_effectFileName;
 	renderState = new uint8_t;
 }
 
@@ -695,7 +694,7 @@ Engine::Graphics::Effect::~Effect()
 	delete renderState;
 }
 
-void Engine::Graphics::Effect::setUniforms(Transformation i_gameObject, 
+void Engine::Graphics::Effect::setEngineUniformValue(Transformation i_gameObject, 
 	Transformation i_camera, 
 	float i_fieldOfView,
 	float i_aspectRatio)
@@ -721,4 +720,46 @@ void Engine::Graphics::Effect::setUniforms(Transformation i_gameObject,
 	}
 	//delete temp;
 }
+
+
+void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, MaterialUniform i_materialUniform)
+{
+	i_materialUniform.Handle = glGetUniformLocation(s_programId, i_uniformName);
+	if (i_materialUniform.Handle == -1)
+	{
+		std::stringstream errormessage;
+		errormessage << "Unable to set the Material Uniforms";
+		WindowsUtil::Print(errormessage.str());
+	}
+	else
+	{		
+		switch(i_materialUniform.valCount)
+		{
+		case One:
+			glUniform1fv(i_materialUniform.Handle,1, i_materialUniform.values);
+			break;
+		case Two:
+			glUniform2fv(i_materialUniform.Handle,1, i_materialUniform.values);
+			break;
+		case Three:
+			glUniform3fv(i_materialUniform.Handle,1, i_materialUniform.values);
+			break;
+		case Four:
+			glUniform4fv(i_materialUniform.Handle,1, i_materialUniform.values);
+			break;
+		case Zero:
+			break;
+		}
+	}
+
+	const GLenum errorCode = glGetError();
+	if (!(errorCode == GL_NO_ERROR))
+	{
+		std::stringstream errormessage;
+		errormessage << "Unable to set the position offset";
+		WindowsUtil::Print(errormessage.str());
+	}
+}
+
+
 
