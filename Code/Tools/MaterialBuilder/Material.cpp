@@ -7,7 +7,7 @@
 
 bool Tools::AssetBuilder::Material::loadMaterial()
 {
-	MessageBox(nullptr, "Hello", "Debug", MB_OK);
+	//MessageBox(nullptr, "Hello", "Debug", MB_OK);
 	lua_State *mLuaState = nullptr;
 	std::stringstream errormessage;
 	mLuaState = luaL_newstate();

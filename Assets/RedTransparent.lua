@@ -13,7 +13,7 @@ return
 			name = "g_AlphaModifier",
 			shader = "fragment",
 			valtype = "Float",
-			value = {0.8},
+			value = {0.45},
 		}
 		-- {
 		-- 	name = "g_transform_localToWorld",

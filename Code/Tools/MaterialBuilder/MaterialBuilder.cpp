@@ -16,12 +16,18 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 		m->displayMaterial();
 		std::ofstream writeToMaterialFile;
 		writeToMaterialFile.open(m_path_target, std::ofstream::binary);
+
 		/*Binary Format
 		Effect File Name
 		No of Uniforms
+		uniform names
 		Uniforms
 		{
-			name,type, valType, valueCount, values
+			Handle,
+			shadertype,
+			valType,
+			valueCount,
+			values
 		}
 		*/
 		
