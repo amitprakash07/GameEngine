@@ -8,9 +8,12 @@
 
 Engine::SharedPointer<Engine::GameObject> Engine::GameObject::CreateGameObject(std::string i_meshFileName, std::string i_materialName)
 {
+	i_meshFileName = Engine::EngineCore::getMeshFolderPath() + i_meshFileName;
+	i_materialName = Engine::EngineCore::getMaterialFolderPath() + i_materialName;
 	SharedPointer<GameObject> tempGameObject(new GameObject(i_meshFileName, i_materialName), "Engine::GameObject");
 	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateGameObject"));
 	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempGameObject.getRawPointer()), Engine::typedefs::HIGH);
+
 	if (!i_meshFileName.empty() && !i_meshFileName.empty() && !i_materialName.empty())
 	{
 		std::stringstream errormessage;

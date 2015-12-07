@@ -317,6 +317,7 @@ bool WindowsUtil::GetEnvironmentVariable( const char* const i_key, std::string& 
 	char buffer[maxCharacterCount];
 	// Ask Windows for the environment variable
 	const DWORD characterCount = ::GetEnvironmentVariable( i_key, buffer, maxCharacterCount );
+	DWORD result = GetLastError();
 	if ( characterCount > 0 )
 	{
 		if ( characterCount <= maxCharacterCount )
@@ -449,10 +450,14 @@ bool WindowsUtil::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWr
 	return true;
 }
 
-void WindowsUtil::Print(std::string i_str)
+void WindowsUtil::Print(std::string i_str, const char * i_optionalFileName)
 {
-//#if _DEBUG
-	MessageBox(nullptr, i_str.c_str(),nullptr, MB_OK);
-//#endif
-	std::cerr << i_str.c_str()<<"\n";
+	std::stringstream message;
+	message << i_str;
+	if (i_optionalFileName != nullptr)
+		message << i_optionalFileName;
+#if _DEBUG
+	MessageBox(nullptr, message.str().c_str(),nullptr, MB_OK);
+#endif
+	std::cerr << message.str().c_str() <<"\n";
 }

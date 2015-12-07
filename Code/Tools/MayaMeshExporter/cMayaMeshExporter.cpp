@@ -748,6 +748,10 @@ namespace
 					sVertex_maya temp = i_vertexBuffer[i];
 					fout << "\t\t{\n";
 					fout << "\t\t\tposition = {" << temp.x << "," << temp.y << "," << temp.z << "},\n";
+					fout << "\t\t\tnormal = {" << temp.nx << "," << temp.ny << "," << temp.nz << "},\n";
+					fout << "\t\t\ttangent = {" << temp.tx << "," << temp.ty << "," << temp.tz << "},\n";
+					fout << "\t\t\tbitangent = {" << temp.btx << "," << temp.bty << "," << temp.btz << "},\n";
+					fout << "\t\t\ttexture = {" << temp.u << "," << temp.v << "},\n";
 					fout << "\t\t\tcolor = {" << temp.r << "," << temp.g << "," << temp.b << "," << temp.a << "},\n";
 					fout << "\t\t},\n";
 				}

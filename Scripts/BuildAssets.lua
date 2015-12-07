@@ -59,8 +59,31 @@ local function BuildAsset( resourceTable, dependencies_table )
 		end
 	end
 
-	local path_source = s_AuthoredAssetDir .. i_sourceRelativePath
-	local path_target = s_BuiltAssetDir .. i_targetRelativePath
+	local subPathName,errorMessage, dependencyFolderPath
+	if(i_builderFileName == "MeshBuilder.exe") then
+		subPathName,errorMessage = GetEnvironmentVariable("MeshesDir")
+	else if(i_builderFileName == "ShaderBuilder.exe") then
+			subPathName,errorMessage = GetEnvironmentVariable("ShadersDir")
+		else if(i_builderFileName == "MaterialBuilder.exe") then
+				subPathName,errorMessage = GetEnvironmentVariable("MaterialDir")
+			 else if(i_builderFileName == "EffectBuilder.exe") then
+					subPathName,errorMessage = GetEnvironmentVariable("EffectDirName")
+				  else if(i_builderFileName == "TextureBuilder.exe") then
+						subPathName,errorMessage = GetEnvironmentVariable("TexturesDir")
+					   end
+				  end
+			 end
+		end
+	end
+	
+	
+	if not(subPathName) then
+		error(errorMessage)
+	end
+	
+	
+	local path_source = s_AuthoredAssetDir .. subPathName .. i_sourceRelativePath
+	local path_target = s_BuiltAssetDir .. subPathName .. i_targetRelativePath
 
 	-- If the source file doesn't exist then it can't be built
 	do
@@ -103,8 +126,13 @@ local function BuildAsset( resourceTable, dependencies_table )
 			if dependenciesExist then
 			--check dependency file exists or not and calculate max time for modification among all
 				local maxTimeForDependency = 0.0
+				dependencyFolderPath, errorMessage = GetEnvironmentVariable("DependenciesFolder")
+				if not dependencyFolderPath then 
+					error(errorMessage)
+				end
+				
 				for i,v in ipairs(dependencies_table) do
-					local dependencyPath = s_AuthoredAssetDir .. v
+					local dependencyPath = s_AuthoredAssetDir .. dependencyFolderPath .. v
 					print(dependencyPath)
 					local fileExists = DoesFileExist(dependencyPath)
 					if not fileExists then

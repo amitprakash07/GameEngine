@@ -47,17 +47,11 @@ namespace Engine
 		{
 		public:
 			static bool addEffectToList(std::string);
-			//static Engine::SharedPointer<Effect> getEffect(std::string, std::string);
 			static Engine::SharedPointer<Effect> getEffect(std::string);
 			static void deleteAllEffect();
 			static bool isEffectExist(std::string);
 			bool LoadEffect();
 			bool setShaders();
-			/*void createMaterialUniforms(size_t);
-			MaterialUniform* getMaterialUniform();
-			bool setMaterialUniformHandle(char*, int);
-			void setMaterialUniforms(MaterialUniform*);
-			size_t getMaterialUniformCount();*/
 			std::string getTypeInfo() override { return ""; }
 			bool isBothSameType(RTTI*, std::string) override { return true; }
 			~Effect();
@@ -68,19 +62,12 @@ namespace Engine
 			std::string fragmentShader;
 			std::string vertexShader;
 			std::string effectName;
-			//size_t materialUniformCount;
-			//std::string effectFileName;
 			EngineUniforms m_uniforms;
-//#ifdef _DEBUG
-//			char** materialUniformNames;
-//#endif
-//			MaterialUniform materialUniform;
 			uint8_t *renderState;
 			bool LoadShaders();
 			bool LoadFragmentShader();
 			bool LoadVertexShader();
 			bool ReadEngineUniformsHandle();
-			//void setuniforms(Engine::Math::cVector, Engine::Math::cQuaternion);
 			
 			Effect(std::string);
 #ifdef PLATFORM_D3D

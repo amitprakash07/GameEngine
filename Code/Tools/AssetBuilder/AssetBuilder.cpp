@@ -2,7 +2,6 @@
 //=============
 
 #include "AssetBuilder.h"
-
 #include <iostream>
 #include <string>
 #include "../../Engine/Windows/WindowsFunctions.h"

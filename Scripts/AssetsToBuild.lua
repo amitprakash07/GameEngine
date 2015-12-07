@@ -3,49 +3,22 @@ return
 	{
 		BuildTool = "MeshBuilder.exe",
 		{
-			src = "SquareMesh.lua",
-			target = "SquareMesh.mesh",
-		},
-		
+			src = "cubeOpaque.lua",
+			target = "cubeOpaque.mesh",
+		},		
 		{
-			src = "Floor_Maya.lua",
-			target = "Floor_Maya.mesh",	
-		},
-		
+			src = "CylinderOpaque.lua",
+			target = "CylinderOpaque.mesh",	
+		},		
 		{
-			src = "Sphere_Maya.lua",
-			target = "Sphere_Maya.mesh",	
+			src = "HelixOpaque.lua",
+			target = "HelixOpaque.mesh",	
 		},
 
 		{
-			src = "TriangleMesh.lua",
-			target = "TriangleMesh.mesh",
-		},
-		
-		{
-			src = "Cube_Maya.lua",
-			target = "Cube_Maya.mesh",
-		},
-		
-		{
-			src = "Floor.lua",
-			target = "Floor.mesh"
-		},
-		
-		{
-			src = "Helix.lua",
-			target = "Helix.mesh",
-		},
-		
-		{
-			src = "Room.lua",
-			target = "Room.mesh",		
+			src = "PlaneOpaque.lua",
+			target = "PlaneOpaque.mesh",
 		},		
-		
-		{
-			src = "TraansSphere_Maya.lua",
-			target = "TraansSphere_Maya.mesh",
-		},
 	},
 
 	{
@@ -115,6 +88,29 @@ return
 		{
 			src = "standardMaterial.lua",
 			target = "standardMaterial.mat",
+		},
+	},
+	
+	{
+		BuildTool = "TextureBuilder.exe",
+		{
+			src = "alpha.png",
+			target = "alpha.png",
+		},
+		
+		{
+			src = "bricks.png",
+			target = "bricks.png",
+		},
+		
+		{
+			src = "clouds.png",
+			target = "clouds.png",
+		},
+		
+		{
+			src = "eae6320.png",
+			target = "eae6320.png",
 		},
 	}
 }

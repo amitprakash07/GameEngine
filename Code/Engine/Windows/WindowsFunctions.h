@@ -27,7 +27,7 @@ namespace WindowsUtil
 	std::string GetFormattedWindowsError( const DWORD i_errorCode );
 	std::string GetLastWindowsError( DWORD* o_optionalErrorCode = nullptr);
 	bool GetLastWriteTime( const char* const i_path, uint64_t& o_lastWriteTime, std::string* o_errorMessage = nullptr);
-	void Print(std::string);
+	void Print(std::string, const char* i_optionalFileName = nullptr);
 }
 
 #endif	//Windows Util

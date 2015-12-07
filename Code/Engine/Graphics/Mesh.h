@@ -11,29 +11,13 @@
 #include <vector>
 #include <map>
 #include "../Core/Utilities/SharedPointer.h"
+#include "typedefs.h"
 
 namespace Engine
 {
 	namespace Graphics
 	{
-		enum indiceWinding
-		{
-			RIGHT = 0,
-			LEFT = 1
-		};
-		typedef indiceWinding winding;
 		
-		struct vertex
-		{
-			float X;
-			float Y;
-			float Z;
-#ifdef PLATFORM_D3D
-			uint8_t B, G, R, A;
-#elif PLATFORM_OPEN_GL
-			uint8_t R, G, B, A;
-#endif
-		};
 				
 		class Mesh:public RTTI
 		{

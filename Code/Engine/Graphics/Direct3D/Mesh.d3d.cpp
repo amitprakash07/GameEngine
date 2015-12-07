@@ -90,12 +90,29 @@ bool Engine::Graphics::Mesh::createVertexBuffer()
 	 (by using D3DDECLUSAGE enums here and semantics in the shader,
 	 so that, for example, D3DDECLUSAGE_POSITION here matches with POSITION in shader code).
 	 Note that OpenGL uses arbitrarily assignable number IDs to do the same thing.*/
+	 // Position
+	/*float X, Y, Z; 12 Bytes
+	//Normal
+	float nx, ny, nz; 12 Bytes
+	// Tangent
+	float tx, ty, tz; 12 Bytes
+	// Bitangent
+	float btx, bty, btz; 12 Bytes
+	// Texture coordinates
+	float u, v; 8 Bytes
+	//Color 
+	r,g,b,a unsigned Byte-4byte
+	*/ 
+
 	D3DVERTEXELEMENT9 vertexElements[] =
 	{
-			// Stream 0, POSITION( 3 floats == 12 bytes), Offset = 0
-		{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
-		// COLOR0, D3DCOLOR == 4 bytes, Offset = 12(from Position)
-		{ 0, 12, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0 },
+		// Stream 0, POSITION( 3 floats == 12 bytes), Offset = 0
+		{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 }, //Position
+		{ 0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0 }, //Normals
+		{ 0, 24, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT, 0 }, //Tangent
+		{ 0, 36, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BINORMAL, 0 }, //BiTangent
+		{ 0, 48, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 }, //Texture
+		{ 0, 56, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0 }, //Color
 		// The following marker signals the end of the vertex declaration
 		D3DDECL_END()
 	};

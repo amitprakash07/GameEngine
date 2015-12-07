@@ -1,18 +1,27 @@
 #include "EngineCore.h"
+#include "..\..\Windows\WindowsFunctions.h"
 #include "..\..\Graphics\Graphics.h"
 #include "..\..\Graphics/Effect.h"
 #include "..\..\Graphics/Mesh.h"
-#include "..\..\Windows\WindowsFunctions.h"
 #include "Objects/Scene.h"
 #include <iostream>
 #include "../../Graphics/Material.h"
 
 
 
-Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::mMessagingSystem = Engine::MessagingSystem::getMessagingSystem();
-Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::mStringPool = Engine::StringPool::getStringPool();
-Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::mEngineWindowingSystem = Engine::Windows::WindowingSystem::getWindowingSystem();
-Engine::SharedPointer<Engine::InputController> Engine::EngineCore::mInputController = Engine::InputController::getInputController();
+Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::mMessagingSystem = 
+						Engine::MessagingSystem::getMessagingSystem();
+Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::mStringPool = 
+						Engine::StringPool::getStringPool();
+Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::mEngineWindowingSystem = 
+						Engine::Windows::WindowingSystem::getWindowingSystem();
+Engine::SharedPointer<Engine::InputController> Engine::EngineCore::mInputController = 
+						Engine::InputController::getInputController();
+std::string Engine::EngineCore::materialFolderPath;
+std::string Engine::EngineCore::shaderFolderName;
+std::string Engine::EngineCore::effectFolderName;
+std::string Engine::EngineCore::meshFolderName;
+
 
 
 void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
@@ -28,13 +37,47 @@ void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 			
 		}
 	}
+
+	std::string other;
+	const char* envName = "MeshDir";
+	//WindowsUtil::GetEnvironmentVariable("MeshDir", meshFolderName);
+	/*WindowsUtil::GetEnvironmentVariable("ShadersDir", shaderFolderName);
+	WindowsUtil::GetEnvironmentVariable("MaterialDir", materialFolderPath);
+	WindowsUtil::GetEnvironmentVariable("EffectDirName", effectFolderName);*/
+	meshFolderName = "data/Meshes/";
+	shaderFolderName = "data/Shaders/";
+	materialFolderPath = "data/Materials/";
+	effectFolderName = "data/Effects/";
 }
+
+std::string Engine::EngineCore::getEffectFolderPath()
+{
+	return effectFolderName;
+}
+
+std::string Engine::EngineCore::getMaterialFolderPath()
+{
+	return materialFolderPath;
+}
+
+std::string Engine::EngineCore::getMeshFolderPath()
+{
+	return meshFolderName;
+}
+
+std::string Engine::EngineCore::getShaderFolderPath()
+{
+	return shaderFolderName;
+}
+
 
 
 Engine::EngineCore::EngineCore()
 {
-
+	
 }
+
+
 
 Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::getWindowingSystem()
 {

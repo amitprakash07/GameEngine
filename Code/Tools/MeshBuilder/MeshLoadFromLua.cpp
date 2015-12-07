@@ -17,43 +17,211 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 		lua_pushinteger(i_luaState, i);
 		lua_gettable(i_luaState, -2);
 
-		//Retrieving the positions of the vertex
-		lua_pushstring(i_luaState, "position");
-		lua_gettable(i_luaState, -2); //Lua Stack contains position table at -2
-
-
-		int counts = luaL_len(i_luaState, -1);
-		if(counts < 3 )
+		//Position
 		{
-			std::stringstream errormessage;
-			errormessage << "Atleast x and y coordinates are required for a vertex. found " << counts << "\n";
-			LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
-			return false;
-		}
+			//Retrieving the positions of the vertex
+			lua_pushstring(i_luaState, "position");
+			lua_gettable(i_luaState, -2); //Lua Stack contains position table at -2
 
-		for (int j = 1; j <= counts; j++)
-		{
-			//traversing in the position array by pushing index
-			lua_pushinteger(i_luaState, j);
-			lua_gettable(i_luaState, -2);
-			switch (j - 1)
+
+			int counts = luaL_len(i_luaState, -1);
+			if (counts < 3)
 			{
-			case 0:
-				tempVertex[i-1].X = static_cast<float>(lua_tonumber(i_luaState, -1));
-				break;
-			case 1:
-				tempVertex[i-1].Y = static_cast<float>(lua_tonumber(i_luaState, -1));
-				break;
-			case 2:
-				tempVertex[i-1].Z = static_cast<float>(lua_tonumber(i_luaState, -1));
-				break;
+				std::stringstream errormessage;
+				errormessage << "Atleast x and y coordinates are required for a vertex. found " << counts << "\n";
+				LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
+				return false;
 			}
-			lua_pop(i_luaState, 1);//Popping out the previous position value
-		}
 
-		lua_pop(i_luaState, 1); //Popping out the position table
+			for (int j = 1; j <= counts; j++)
+			{
+				//traversing in the position array by pushing index
+				lua_pushinteger(i_luaState, j);
+				lua_gettable(i_luaState, -2);
+				switch (j - 1)
+				{
+				case 0:
+					tempVertex[i - 1].X = static_cast<float>(lua_tonumber(i_luaState, -1));
+					break;
+				case 1:
+					tempVertex[i - 1].Y = static_cast<float>(lua_tonumber(i_luaState, -1));
+					break;
+				case 2:
+#ifdef PLATFORM_OPEN_GL
+					tempVertex[i - 1].Z = static_cast<float>(lua_tonumber(i_luaState, -1));
+#elif PLATFORM_D3D
+					tempVertex[i - 1].Z = 1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
+#endif
+					break;
+				}
+				lua_pop(i_luaState, 1);//Popping out the previous position value
+			}
 
+			lua_pop(i_luaState, 1); //Popping out the position table
+		}//Position
+		
+		 //Normals
+		{			
+			lua_pushstring(i_luaState, "normal");
+			lua_gettable(i_luaState, -2);
+			int normalCount = luaL_len(i_luaState, -1);
+			if(normalCount < 3)
+			{
+				std::stringstream errormessage;
+				errormessage << "Insufficient data for the normals. Need three; Found " << normalCount << "\n";
+				LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
+				return false;
+			}
 
+			for (int j = 1; j <= normalCount; j++)
+			{
+				//traversing in the normals array by pushing index
+				lua_pushinteger(i_luaState, j);
+				lua_gettable(i_luaState, -2);
+				switch (j - 1)
+				{
+				case 0:
+					tempVertex[i - 1].nx = static_cast<float>(lua_tonumber(i_luaState, -1));
+					break;
+				case 1:
+					tempVertex[i - 1].ny = static_cast<float>(lua_tonumber(i_luaState, -1));
+					break;
+				case 2:
+#ifdef PLATFORM_OPEN_GL
+					tempVertex[i - 1].nz = static_cast<float>(lua_tonumber(i_luaState, -1));
+#elif PLATFORM_D3D
+					tempVertex[i - 1].nz = -1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
+#endif
+					break;
+				}
+				lua_pop(i_luaState, 1);//Popping out the previous normal value
+			}
+
+			lua_pop(i_luaState, 1); //Popping out the normal table			
+		}//Normal
+		
+		//Tagents
+		{
+			lua_pushstring(i_luaState, "tangent");
+			lua_gettable(i_luaState, -2);
+			int tangentCount = luaL_len(i_luaState, -1);
+			if (tangentCount < 3)
+			{
+				std::stringstream errormessage;
+				errormessage << "Insufficient data for the tangent. Need three; Found " << tangentCount << "\n";
+				LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
+				return false;
+			}
+
+			for (int j = 1; j <= tangentCount; j++)
+			{
+				//traversing in the normals array by pushing index
+				lua_pushinteger(i_luaState, j);
+				lua_gettable(i_luaState, -2);
+				switch (j - 1)
+				{
+				case 0:
+					tempVertex[i - 1].tx = static_cast<float>(lua_tonumber(i_luaState, -1));
+					break;
+				case 1:
+					tempVertex[i - 1].ty = static_cast<float>(lua_tonumber(i_luaState, -1));
+					break;
+				case 2:
+#ifdef PLATFORM_OPEN_GL
+					tempVertex[i - 1].tz = static_cast<float>(lua_tonumber(i_luaState, -1));
+#elif PLATFORM_D3D
+					tempVertex[i - 1].tz = -1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
+#endif
+					break;
+				}
+				lua_pop(i_luaState, 1);//Popping out the previous tangent value
+			}
+
+			lua_pop(i_luaState, 1); //Popping out the tangent table
+		}//Tangent
+		
+		 //BiTangent
+		{
+			lua_pushstring(i_luaState, "bitangent");
+			lua_gettable(i_luaState, -2);
+			int biTangentCount = luaL_len(i_luaState, -1);
+			if (biTangentCount < 3)
+			{
+				std::stringstream errormessage;
+				errormessage << "Insufficient data for the normals. Need three; Found " << biTangentCount << "\n";
+				LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
+				return false;
+			}
+
+			for (int j = 1; j <= biTangentCount; j++)
+			{
+				//traversing in the normals array by pushing index
+				lua_pushinteger(i_luaState, j);
+				lua_gettable(i_luaState, -2);
+				switch (j - 1)
+				{
+				case 0:
+#ifdef PLATFORM_OPEN_GL
+					tempVertex[i - 1].btx = static_cast<float>(lua_tonumber(i_luaState, -1));
+#elif PLATFORM_D3D
+					tempVertex[i - 1].btx = -1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
+#endif
+					break;
+				case 1:
+#ifdef PLATFORM_OPEN_GL
+					tempVertex[i - 1].bty = static_cast<float>(lua_tonumber(i_luaState, -1));
+#elif PLATFORM_D3D
+					tempVertex[i - 1].bty = -1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
+#endif
+					break;
+				case 2:
+					tempVertex[i - 1].btz = static_cast<float>(lua_tonumber(i_luaState, -1));
+					break;
+				}
+				lua_pop(i_luaState, 1);//Popping out the previous bitangent value
+			}
+
+			lua_pop(i_luaState, 1); //Popping out the bitangent table			
+		}//BiTangent
+		
+		//Texture
+		{
+			lua_pushstring(i_luaState, "texture");
+			lua_gettable(i_luaState, -2);
+			int textureCount = luaL_len(i_luaState, -1);
+			if (textureCount < 2)
+			{
+				std::stringstream errormessage;
+				errormessage << "Insufficient data for the texture. Need three; Found " << textureCount << "\n";
+				LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
+				return false;
+			}
+
+			for (int j = 1; j <= textureCount; j++)
+			{
+				//traversing in the normals array by pushing index
+				lua_pushinteger(i_luaState, j);
+				lua_gettable(i_luaState, -2);
+				switch (j - 1)
+				{
+				case 0:
+					tempVertex[i - 1].u = static_cast<float>(lua_tonumber(i_luaState, -1));					
+					break;
+				case 1:
+#ifdef PLATFORM_OPEN_GL
+					tempVertex[i - 1].v = static_cast<float>(lua_tonumber(i_luaState, -1));
+#elif PLATFORM_D3D
+					tempVertex[i - 1].v = 1 - (static_cast<float>(lua_tonumber(i_luaState, -1)));
+#endif
+					break;				
+				}
+				lua_pop(i_luaState, 1);//Popping out the previous texture value
+			}
+
+			lua_pop(i_luaState, 1); //Popping out the texture table	
+		}//Texture
+
+		
 		//Retrieving the color of the vertex
 		lua_pushstring(i_luaState, "color");
 		lua_gettable(i_luaState, -2);
@@ -117,6 +285,7 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 	}
 	return true;
 }
+
 bool LuaLoadTriangleIndex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 {
 	int indicesCount;

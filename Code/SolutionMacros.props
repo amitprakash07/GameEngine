@@ -10,6 +10,12 @@
     <AuthoredAssetDir>$(SolutionDir)Assets\</AuthoredAssetDir>
     <BuiltAssetDir>$(GameDir)data\</BuiltAssetDir>
     <ScriptDir>$(SolutionDir)Scripts\</ScriptDir>
+    <EffectDirName>Effects\</EffectDirName>
+    <MaterialDir>Materials\</MaterialDir>
+    <MeshesDir>Meshes\</MeshesDir>
+    <ShadersDir>Shaders\</ShadersDir>
+    <DependenciesFolder>Dependencies\</DependenciesFolder>
+    <TexturesDir>Textures\</TexturesDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Lib />
@@ -45,6 +51,30 @@
     </BuildMacro>
     <BuildMacro Include="ScriptDir">
       <Value>$(ScriptDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="EffectDirName">
+      <Value>$(EffectDirName)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="MaterialDir">
+      <Value>$(MaterialDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="MeshesDir">
+      <Value>$(MeshesDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="ShadersDir">
+      <Value>$(ShadersDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="DependenciesFolder">
+      <Value>$(DependenciesFolder)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="TexturesDir">
+      <Value>$(TexturesDir)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>

@@ -40,32 +40,32 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_comman
 		scene->addGameObjectToScene(cube);*/
 
 		Engine::SharedPointer<Engine::GameObject> sphereOpaqueOne =
-			Engine::GameObject::CreateGameObject("data/Sphere_Maya.mesh", "data/BlueStandard.mat");
+			Engine::GameObject::CreateGameObject("cubeOpaque.mesh", "standardMaterial.mat");
 		sphereOpaqueOne->setTransformation(Engine::Math::cVector(-3.5, 0, -5), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(sphereOpaqueOne);
 
 		Engine::SharedPointer<Engine::GameObject> sphereOpaqueTwo =
-			Engine::GameObject::CreateGameObject("data/Sphere_Maya.mesh", "data/GreenStandard.mat");
+			Engine::GameObject::CreateGameObject("CylinderOpaque.mesh", "standardMaterial.mat");
 		sphereOpaqueTwo->setTransformation(Engine::Math::cVector(-1.5, 0, -5), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(sphereOpaqueTwo);
 
 		Engine::SharedPointer<Engine::GameObject> sphereTranparentOne =
-			Engine::GameObject::CreateGameObject("data/Sphere_Maya.mesh", "data/RedTransparent.mat");
+			Engine::GameObject::CreateGameObject("CylinderOpaque.mesh", "standardMaterial.mat");
 		sphereTranparentOne->setTransformation(Engine::Math::cVector(0.5, 0, -5), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(sphereTranparentOne);
 
 		Engine::SharedPointer<Engine::GameObject> sphereTranparentTwo =
-			Engine::GameObject::CreateGameObject("data/Sphere_Maya.mesh", "data/YellowTransparent.mat");
+			Engine::GameObject::CreateGameObject("CylinderOpaque.mesh", "standardMaterial.mat");
 		sphereTranparentTwo->setTransformation(Engine::Math::cVector(2.5, 0, -5), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(sphereTranparentTwo);
 		
 		Engine::SharedPointer<Engine::GameObject> floor =
-			Engine::GameObject::CreateGameObject("data/Floor_Maya.mesh", "data/standardMaterial.mat");
-		floor->setTransformation(Engine::Math::cVector(0, -2, -12), Engine::Math::cQuaternion());
+			Engine::GameObject::CreateGameObject("PlaneOpaque.mesh", "standardMaterial.mat");
+		floor->setTransformation(Engine::Math::cVector(0, -3, -12), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(floor);
 		
 		Engine::SharedPointer<Engine::GameObject> helix =
-		Engine::GameObject::CreateGameObject("data/Helix.mesh", "data/standardMaterial.mat");
+		Engine::GameObject::CreateGameObject("HelixOpaque.mesh", "standardMaterial.mat");
 		helix->setTransformation(Engine::Math::cVector(2.5,0,-10), Engine::Math::cQuaternion());
 		helix->setGameObjectController(new Engine::WalkController());
 		scene->addGameObjectToScene(helix);

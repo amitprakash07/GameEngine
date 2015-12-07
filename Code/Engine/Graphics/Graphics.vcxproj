@@ -69,6 +69,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Direct3D\Texture.d3d.cpp" />
     <ClCompile Include="Effect.Common.cpp" />
     <ClCompile Include="EffectUniform.d3d.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|Win32'">true</ExcludedFromBuild>
@@ -113,6 +114,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="OpenGL\Texture.gl.cpp" />
+    <ClCompile Include="TextureCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Effect.h" />
@@ -120,6 +123,7 @@
     <ClInclude Include="Includes.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="typedefs.h" />
   </ItemGroup>
   <ItemGroup>

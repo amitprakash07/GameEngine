@@ -5,6 +5,16 @@
 #include <Windows.h>
 
 
+Tools::AssetBuilder::Map* Tools::AssetBuilder::Material::getMap()
+{
+	return maps;
+}
+
+int Tools::AssetBuilder::Material::getMapCount()
+{
+	return mapCount;
+}
+
 bool Tools::AssetBuilder::Material::loadMaterial()
 {
 	//MessageBox(nullptr, "Hello", "Debug", MB_OK);
@@ -71,6 +81,77 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 		effectFile[length] = '\0';
 		lua_pop(mLuaState, 1); //Popping ou the effect file name
 		
+	}
+	/********************************************************************/
+
+	/****************************Maps**********************************/
+	{
+		lua_pushstring(mLuaState, "map");
+		lua_gettable(mLuaState, -2);
+		mapCount = luaL_len(mLuaState, -1);
+		if(mapCount > 0)
+		{
+			maps = new Map[mapCount];
+			for (int i = 1; i <= mapCount; ++i)
+			{
+				lua_pushinteger(mLuaState, i);
+				lua_gettable(mLuaState, -2);
+				{
+					{
+						lua_pushstring(mLuaState, "path");
+						lua_gettable(mLuaState, -2);
+						const char* path = lua_tostring(mLuaState, -1);
+						size_t pathLength = strlen(path);
+						maps[i-1].file = new char[pathLength];
+						memcpy(maps[i-1].file, path, pathLength);
+						maps[i-1].file[pathLength] = '\0';
+						lua_pop(mLuaState, 1); //Popping path
+					}
+
+					{
+						lua_pushstring(mLuaState, "uniformName");
+						lua_gettable(mLuaState, -2);
+						const char* uniformName = lua_tostring(mLuaState, -1);
+						size_t uniformLength = strlen(uniformName);
+						maps[i - 1].uniform = new char[uniformLength];
+						memcpy(maps[i - 1].uniform, uniformName, uniformLength);
+						maps[i - 1].uniform[uniformLength] = '\0';
+						lua_pop(mLuaState, 1); //Popping path
+					}
+					
+					{
+						lua_pushstring(mLuaState, "shader");
+						lua_gettable(mLuaState, -2);
+						const char* shaderType = lua_tostring(mLuaState, -1);
+						if (strcmp(shaderType,"Fragment")==0)
+							maps[i - 1].shaderType = Fragment;
+						else
+							maps[i - 1].shaderType = Vertex;
+						lua_pop(mLuaState, 1);
+					}
+					
+					{
+						lua_pushstring(mLuaState, "mapType");
+						lua_gettable(mLuaState, -2);
+						const char* mapType = lua_tostring(mLuaState, -1);
+						if (strcmp(mapType, "albedo") == 0)
+							maps[i - 1].mapType = ALBEDO;
+						if(strcmp(mapType, "normal") == 0)
+							maps[i - 1].mapType = NORMAL;
+						if (strcmp(mapType, "specular") == 0)
+							maps[i - 1].mapType = SPECULAR;
+						if (strcmp(mapType, "bump") == 0)
+							maps[i - 1].mapType = BUMP;
+						if (strcmp(mapType, "shadow") == 0)
+							maps[i - 1].mapType = SHADOW;
+
+						lua_pop(mLuaState, 1);
+					}
+				}
+				lua_pop(mLuaState, 1); //popping index
+			}
+		}
+		lua_pop(mLuaState, 1); //popping "Map"
 	}
 	/********************************************************************/
 	
@@ -182,6 +263,10 @@ Tools::AssetBuilder::Material::Material()
 	effectFile = nullptr;
 	materialUniforms = nullptr;
 	materialName = nullptr;
+	materialUniforms = nullptr;
+	materialUniformNames = nullptr;
+	maps = nullptr;
+	mapCount = Zero;
 	uniformCount = Zero;
 }
 
@@ -189,6 +274,9 @@ Tools::AssetBuilder::Material::Material(char* i_materialName)
 {
 	effectFile = nullptr;
 	materialUniforms = nullptr;
+	materialUniformNames = nullptr;
+	maps = nullptr;
+	mapCount = Zero;
 	uniformCount = Zero;
 	size_t length = strlen(i_materialName);
 	materialName = new char[length + 1];
@@ -252,7 +340,15 @@ void Tools::AssetBuilder::Material::displayMaterial()
 {
 	std::cerr << "Material Name is " << materialName << std::endl;
 	std::cerr << "Effect File Name for the Material is " << effectFile << std::endl;
-	for (size_t i = 0; i < uniformCount; ++i)
+	std::cerr << "Printing Map Values\n";
+	for (int i = 0; i < mapCount; ++i)
+	{
+		std::cerr << "File Name = " << maps[i].file << std::endl;
+		std::cerr << "Uniform Name = " << maps[i].uniform << std::endl;
+		std::cerr << "Shader Type = " << maps[i].shaderType << std::endl;
+		std::cerr << "Map Type = " << maps[i].mapType << std::endl;
+	}
+	for (int i = 0; i < uniformCount; ++i)
 	{
 		std::cerr << "Information about " << i << "th uniform is as below\n";
 		std::cerr << "Uniform name is" << materialUniformNames[i] << std::endl;
@@ -261,7 +357,7 @@ void Tools::AssetBuilder::Material::displayMaterial()
 		if (materialUniforms[i].valCount > 0)
 		{
 			std::cerr << "Values are";
-			for (size_t j = 0; j < materialUniforms[i].valCount; ++j)
+			for (int j = 0; j < materialUniforms[i].valCount; ++j)
 			{
 				std::cerr << "(" << materialUniforms[i].values[j] << ",";
 			}

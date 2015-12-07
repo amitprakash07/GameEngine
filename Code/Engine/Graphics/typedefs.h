@@ -22,6 +22,33 @@ namespace Engine
 			GLint
 #endif
 			UniformHandle;
+		
+		
+		enum indiceWinding
+		{
+			RIGHT = 0,
+			LEFT = 1
+		};
+		typedef indiceWinding winding;
+
+		struct vertex
+		{
+			// Position
+		float X, Y, Z;
+		// Normal
+		float nx, ny, nz;
+		// Tangent
+		float tx, ty, tz;
+		// Bitangent
+		float btx, bty, btz;
+		// Texture coordinates
+		float u, v;
+#ifdef PLATFORM_D3D
+			uint8_t B, G, R, A;
+#elif PLATFORM_OPEN_GL
+			uint8_t R, G, B, A;
+#endif
+		};
 
 
 #ifdef PLATFORM_D3D

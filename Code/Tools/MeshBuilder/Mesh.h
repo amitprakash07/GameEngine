@@ -18,9 +18,18 @@ namespace Tools
 		
 		struct vertex
 		{
-			float X;
+			/*float X;
 			float Y;
-			float Z;
+			float Z;*/
+			float X, Y, Z;
+			// Normal
+			float nx, ny, nz;
+			// Tangent
+			float tx, ty, tz;
+			// Bitangent
+			float btx, bty, btz;
+			// Texture coordinates
+			float u, v;
 #ifdef PLATFORM_D3D
 			uint8_t B, G, R, A;
 #elif PLATFORM_OPEN_GL

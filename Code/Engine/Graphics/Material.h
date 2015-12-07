@@ -17,16 +17,7 @@ namespace Engine
 			void setMaterialName(const char*);
 			const char *getMaterialName();
 			const char* getEffectName();
-			/*MaterialUniform* getMaterialUniform();
-			void setMaterialUniforms(MaterialUniform*);
-			void createMaterialUniforms(size_t);
-			bool setMaterialUniformHandle(char*, int);
-			void setMaterialUniformValue();*/
 			void setMaterialUniformParameters();
-			/*void setuniformCount(int);
-			size_t getUniformCount();
-			Uniform* getAllMaterialUniform();
-			void displayMaterial();*/
 			~Material();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Material>> mMaterialList;
@@ -37,10 +28,7 @@ namespace Engine
 			MaterialUniform * materialUniforms;
 			Material();
 			Material(char*);
-			bool loadMaterial();
-			
-			/*size_t uniformCount;
-			Uniform* materialUniforms;*/
+			bool loadMaterial();			
 		};
 	}
 }

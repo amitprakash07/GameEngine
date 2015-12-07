@@ -22,6 +22,10 @@ namespace Engine
 		static SharedPointer<Engine::StringPool> getStringPool();
 		static SharedPointer<Engine::Windows::WindowingSystem> getWindowingSystem();
 		static SharedPointer<Engine::InputController> getInputController();
+		static std::string getMeshFolderPath();
+		static std::string getMaterialFolderPath();
+		static std::string getEffectFolderPath();
+		static std::string getShaderFolderPath();
 	private:
 		EngineCore();
 		//static SharedPointer<EngineCore> mEngineInstance;
@@ -29,6 +33,10 @@ namespace Engine
 		static SharedPointer<Engine::StringPool> mStringPool;
 		static SharedPointer<Engine::Windows::WindowingSystem> mEngineWindowingSystem;
 		static SharedPointer<Engine::InputController> mInputController;
+		static std::string materialFolderPath;
+		static std::string shaderFolderName;
+		static std::string effectFolderName;
+		static std::string meshFolderName;
 	};
 }
 

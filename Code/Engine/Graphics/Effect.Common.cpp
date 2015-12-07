@@ -2,7 +2,7 @@
 #include "../Windows/WindowsFunctions.h"
 #include "../../Engine/Core/Utilities/HashedString.h"
 #include <fstream>
-#include "../Core/Maths/Functions.h"
+#include "../Core/EngineCore/EngineCore.h"
 
 typedef char BYTES;
 
@@ -127,10 +127,15 @@ bool Engine::Graphics::Effect::LoadEffect()
 	if(buffer)
 	{
 		BYTES * tempBuffer = buffer;
-		vertexShader = tempBuffer;
-		tempBuffer += vertexShader.size() + 1;
-		fragmentShader = tempBuffer;
-		tempBuffer += fragmentShader.size() + 1;
+		vertexShader = Engine::EngineCore::getShaderFolderPath();
+		std::string tempEffectVal = tempBuffer;
+		vertexShader += tempEffectVal;
+		tempBuffer += tempEffectVal.size() + 1;
+
+		fragmentShader = Engine::EngineCore::getShaderFolderPath();
+		std::string tempFragment = tempBuffer;
+		fragmentShader += tempFragment;
+		tempBuffer += tempFragment.size() + 1;
 		memcpy(renderState, tempBuffer, sizeof(char));
 		//uint8_t a = static_cast<uint8_t>(*renderState);
 		delete buffer;

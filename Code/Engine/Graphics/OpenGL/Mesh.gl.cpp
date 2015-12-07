@@ -142,7 +142,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		GLvoid* offset = 0;
 
 		// Position (0)
-		// 2 floats == 8 bytes
+		// 3 floats == 12 bytes
 		// Offset = 0
 		{
 			const GLuint vertexElementLocation = 0;
@@ -178,9 +178,165 @@ bool Engine::Graphics::Mesh::createVertexArray()
 				goto OnExit;
 			}
 		}
-		// Color (1)
+
+
+		//Normals(1)
+		//3 floats == 12 Bytes
+		//offset == 12
+		{
+			const GLuint vertexElementLocation = 1;
+			const GLint elementCount = 3; // for 3 floats in the normal
+			const GLboolean notNormalized = GL_FALSE; // The given floats should be used as-is
+			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
+			GLenum errorCode = glGetError();
+			if (errorCode == GL_NO_ERROR)
+			{
+				glEnableVertexAttribArray(vertexElementLocation);
+				errorCode = glGetError();
+				if (errorCode == GL_NO_ERROR)
+				{
+					offset = reinterpret_cast<GLvoid*>(reinterpret_cast<uint8_t*>(offset) + (elementCount * sizeof(float)));
+				}
+				else
+				{
+					wereThereErrors = true;
+					std::stringstream errorMessage;
+					errorMessage << "OpenGL failed to enable the Normal attribute: " <<
+						reinterpret_cast<const char*>(gluErrorString(errorCode));
+					WindowsUtil::Print(errorMessage.str());
+					goto OnExit;
+				}
+			}
+			else
+			{
+				wereThereErrors = true;
+				std::stringstream errorMessage;
+				errorMessage << "OpenGL failed to set the Normal attribute: " <<
+					reinterpret_cast<const char*>(gluErrorString(errorCode));
+				WindowsUtil::Print(errorMessage.str());
+				goto OnExit;
+			}
+		}
+
+
+		//Tangent(2)
+		//3 floats == 12 Bytes
+		//offset == 24
+		{
+			const GLuint vertexElementLocation = 2;
+			const GLint elementCount = 3; // for 3 floats in the tangent
+			const GLboolean notNormalized = GL_FALSE; // The given floats should be used as-is
+			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
+			GLenum errorCode = glGetError();
+			if (errorCode == GL_NO_ERROR)
+			{
+				glEnableVertexAttribArray(vertexElementLocation);
+				errorCode = glGetError();
+				if (errorCode == GL_NO_ERROR)
+				{
+					offset = reinterpret_cast<GLvoid*>(reinterpret_cast<uint8_t*>(offset) + (elementCount * sizeof(float)));
+				}
+				else
+				{
+					wereThereErrors = true;
+					std::stringstream errorMessage;
+					errorMessage << "OpenGL failed to enable the Tangent attribute: " <<
+						reinterpret_cast<const char*>(gluErrorString(errorCode));
+					WindowsUtil::Print(errorMessage.str());
+					goto OnExit;
+				}
+			}
+			else
+			{
+				wereThereErrors = true;
+				std::stringstream errorMessage;
+				errorMessage << "OpenGL failed to set the Tangent attribute: " <<
+					reinterpret_cast<const char*>(gluErrorString(errorCode));
+				WindowsUtil::Print(errorMessage.str());
+				goto OnExit;
+			}
+		}
+
+
+		//Bitangent(3)
+		// 3 floats == 12 bytes
+		//offset == 36
+		{
+			const GLuint vertexElementLocation = 3;
+			const GLint elementCount = 3; // for 3 floats in the bitangent
+			const GLboolean notNormalized = GL_FALSE; // The given floats should be used as-is
+			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
+			GLenum errorCode = glGetError();
+			if (errorCode == GL_NO_ERROR)
+			{
+				glEnableVertexAttribArray(vertexElementLocation);
+				errorCode = glGetError();
+				if (errorCode == GL_NO_ERROR)
+				{
+					offset = reinterpret_cast<GLvoid*>(reinterpret_cast<uint8_t*>(offset) + (elementCount * sizeof(float)));
+				}
+				else
+				{
+					wereThereErrors = true;
+					std::stringstream errorMessage;
+					errorMessage << "OpenGL failed to enable the bitangent attribute: " <<
+						reinterpret_cast<const char*>(gluErrorString(errorCode));
+					WindowsUtil::Print(errorMessage.str());
+					goto OnExit;
+				}
+			}
+			else
+			{
+				wereThereErrors = true;
+				std::stringstream errorMessage;
+				errorMessage << "OpenGL failed to set the bitangent attribute: " <<
+					reinterpret_cast<const char*>(gluErrorString(errorCode));
+				WindowsUtil::Print(errorMessage.str());
+				goto OnExit;
+			}
+		}
+
+		//Textures(4)
+		// 2 floats = 8 bytes
+		// offset 48
+		{
+			const GLuint vertexElementLocation = 4;
+			const GLint elementCount = 2; // for 2 floats in the textures
+			const GLboolean notNormalized = GL_FALSE; // The given floats should be used as-is
+			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
+			GLenum errorCode = glGetError();
+			if (errorCode == GL_NO_ERROR)
+			{
+				glEnableVertexAttribArray(vertexElementLocation);
+				errorCode = glGetError();
+				if (errorCode == GL_NO_ERROR)
+				{
+					offset = reinterpret_cast<GLvoid*>(reinterpret_cast<uint8_t*>(offset) + (elementCount * sizeof(float)));
+				}
+				else
+				{
+					wereThereErrors = true;
+					std::stringstream errorMessage;
+					errorMessage << "OpenGL failed to enable the texture attribute: " <<
+						reinterpret_cast<const char*>(gluErrorString(errorCode));
+					WindowsUtil::Print(errorMessage.str());
+					goto OnExit;
+				}
+			}
+			else
+			{
+				wereThereErrors = true;
+				std::stringstream errorMessage;
+				errorMessage << "OpenGL failed to set the texture attribute: " <<
+					reinterpret_cast<const char*>(gluErrorString(errorCode));
+				WindowsUtil::Print(errorMessage.str());
+				goto OnExit;
+			}
+		}
+
+		// Color (5)
 		// 4 uint8_ts == 4 bytes
-		// Offset = 8
+		// Offset = 56
 		{
 			const GLuint vertexElementLocation = 1;
 			const GLint elementCount = 4;

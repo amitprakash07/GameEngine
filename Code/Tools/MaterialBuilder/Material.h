@@ -18,19 +18,20 @@ typedef	char* uniformHandle;
 #endif
 
 #define GARBAGE 0xCDED
+
 namespace Tools
 {
 	namespace AssetBuilder
 	{
 
-		enum ValueType
+		enum ValueType:uint8_t
 		{
 			UNKOWN = 0,
 			FLOAT = 1,
 			MATRIX = 2,
 		};
 
-		enum TypeCount
+		enum TypeCount:uint8_t
 		{
 			Zero = 0,
 			One = 1,
@@ -39,12 +40,30 @@ namespace Tools
 			Four = 4
 		};
 
-		enum ShaderType
+		enum ShaderType:uint8_t
 		{
 			Unknown = 0,
 			Vertex = 1,
 			Fragment = 2
 		};
+
+		enum MapType:uint8_t
+		{
+			ALBEDO =0,
+			NORMAL = 1,
+			SPECULAR = 2,
+			BUMP = 3,
+			SHADOW = 4
+		};
+
+		struct Map
+		{
+			char *file;
+			char *uniform;
+			ShaderType shaderType;
+			MapType mapType;
+		};
+
 
 		struct MaterialUniform
 		{
@@ -118,6 +137,8 @@ namespace Tools
 			char *getMaterialName();
 			void setuniformCount(int);
 			int getUniformCount();
+			int getMapCount();
+			Map* getMap();
 			char** getAllUniformName();
 			MaterialUniform* getAllMaterialUniform();
 			void displayMaterial();
@@ -125,6 +146,8 @@ namespace Tools
 		private:
 			char * materialName;
 			char *effectFile;
+			Map *maps;
+			int mapCount;
 			int uniformCount;
 			char** materialUniformNames;
 			MaterialUniform* materialUniforms;

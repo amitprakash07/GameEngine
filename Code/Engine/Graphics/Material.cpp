@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include "../Windows/WindowsFunctions.h"
+#include "../../Engine/Core/EngineCore/EngineCore.h"
 
 typedef char BYTES;
 
@@ -72,13 +73,18 @@ bool Engine::Graphics::Material::loadMaterial()
 	BYTES* currentPosition = buffer;
 	{		
 		size_t tempSize = strlen(currentPosition);
-		effectFile = new char[tempSize];
-		memcpy(effectFile, currentPosition, tempSize);
-		effectFile[tempSize] = '\0';
-		currentPosition += strlen(effectFile) + 1;
+		std::string tempName = Engine::EngineCore::getEffectFolderPath();
+		char* effectFolderName = const_cast<char*>(tempName.c_str());
+		size_t folderLength = strlen(effectFolderName);
+		effectFile = new char[tempSize + folderLength];
+		memcpy(effectFile, effectFolderName, folderLength);
+		memcpy(effectFile+folderLength, currentPosition, tempSize);
+		effectFile[tempSize+folderLength] = '\0';
+		currentPosition += tempSize + 1;
 	}	
 
 	//Loading Effect
+	
 	if(!Effect::addEffectToList(effectFile))
 	{
 		std::stringstream errorMessage;
