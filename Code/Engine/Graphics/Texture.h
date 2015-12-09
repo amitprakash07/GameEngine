@@ -26,12 +26,14 @@ namespace Engine
 			static void deleteAll();
 			void setTextureName(const char*);
 			const char* getTextureName();
-			bool LoadTexture();
+			bool loadTexture();
 			std::string getTypeInfo() override { return ""; }
 			bool isBothSameType(RTTI*, std::string) override { return true; }
 		private:
 			static std::map<std::string, Engine::SharedPointer<Texture>> mTextureList;
-			const char* textureName;
+			char* textureName;
+			Texture(char*);
+			Texture();
 #ifdef PLATFORM_D3D
 			IDirect3DTexture9* textureHandle;
 #elif PLATFORM_OPEN_GL
