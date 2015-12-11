@@ -228,6 +228,17 @@ void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, Mate
 
 }
 
+void Engine::Graphics::Effect::setTextureUniform(TextureResource i_textureResource, 
+	SamplerID i_textureSamplerID, int i_textureUnit)
+{
+	HRESULT result = Engine::Graphics::GraphicsSystem::getDevice()->SetTexture(i_textureSamplerID, i_textureResource);
+	if(!SUCCEEDED(result))
+	{
+		WindowsUtil::Print("Unable to set the Texture");
+	}
+}
+
+
 
 Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName, ShaderType i_shaderType)
 {

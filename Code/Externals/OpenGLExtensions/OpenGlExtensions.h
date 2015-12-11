@@ -54,6 +54,7 @@ extern PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv;
 extern PFNGLUSEPROGRAMPROC glUseProgram;
 extern PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
 extern PFNGLCOMPRESSEDTEXIMAGE2DPROC glCompressedTexImage2D;
+extern PFNGLUNIFORM1IPROC glUniform1i;
 
 // Initialization
 //---------------

@@ -302,8 +302,8 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		{
 			const GLuint vertexElementLocation = 4;
 			const GLint elementCount = 2; // for 2 floats in the textures
-			const GLboolean notNormalized = GL_FALSE; // The given floats should be used as-is
-			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
+			const GLboolean Normalized = GL_FALSE; // The given floats should be used as-is
+			glVertexAttribPointer(vertexElementLocation, elementCount, GL_UNSIGNED_BYTE, Normalized, stride, offset);
 			GLenum errorCode = glGetError();
 			if (errorCode == GL_NO_ERROR)
 			{

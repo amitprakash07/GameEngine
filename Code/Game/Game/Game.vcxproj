@@ -194,38 +194,48 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='_ENGINE_DEBUG|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='_ENGINE_DEBUG|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <OutDir>$(GameDir)</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

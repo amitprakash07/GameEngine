@@ -88,4 +88,11 @@ void Engine::Graphics::Texture::deleteAll()
 }
 
 
+Engine::Graphics::TextureResource Engine::Graphics::Texture::getTextureResource()
+{
+	return texture;
+}
+
+
+
 

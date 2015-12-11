@@ -752,7 +752,6 @@ void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, Mate
 }
 
 
-
 Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName, ShaderType)
 {
 	UniformHandle handle = glGetUniformLocation(s_programId, i_uniformName);
@@ -766,12 +765,20 @@ Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char*
 	return handle;
 }
 
-
 Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle i_uniformHandle, ShaderType)
 {
 	SamplerID sampleId = i_uniformHandle;
 	return sampleId;
 }
+
+void Engine::Graphics::Effect::setTextureUniform(TextureResource i_textureResource,
+	SamplerID i_TextureSamplerID, int i_textureUnit)
+{
+	glActiveTexture(GL_TEXTURE0 + i_textureUnit);
+	glBindTexture(GL_TEXTURE_2D, i_textureResource);
+	glUniform1i(i_TextureSamplerID, i_textureUnit);
+}
+
 
 
 

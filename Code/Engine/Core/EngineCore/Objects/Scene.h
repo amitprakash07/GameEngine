@@ -33,6 +33,9 @@ namespace Engine
 		SharedPointer<Camera> getActiveCamera();
 		static void deactivateAllSceneToRender();
 		SharedPointer<Engine::Time::FrameTime> mTimer;
+		void applyPaintersAlgorithmForTransparency();
+		static bool sortingFunc(SharedPointer<GameObject>, 
+			SharedPointer<GameObject>);
 		std::string sceneName;
 		bool render;
 	};

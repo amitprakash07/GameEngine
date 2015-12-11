@@ -215,6 +215,18 @@ void Engine::Graphics::Material::setMaterialUniformParameters()
 }
 
 
+void Engine::Graphics::Material::setTextureUniform()
+{
+	std::string effectFileName = effectFile;
+	SharedPointer<Engine::Graphics::Effect> tempEffect = Engine::Graphics::Effect::getEffect(effectFileName);
+	for (int i = 0; i < mapCount; ++i)
+	{
+		TextureResource temp = Engine::Graphics::Texture::getTexture(mTextureMaps[i].file)->getTextureResource();
+		tempEffect->setTextureUniform(temp, mTextureMaps[i].textureID,i);
+	}
+}
+
+
 Engine::Graphics::Material::Material(char* i_materialName)
 {
 	size_t length = strlen(i_materialName);

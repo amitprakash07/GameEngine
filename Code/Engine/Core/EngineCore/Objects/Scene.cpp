@@ -2,6 +2,7 @@
 #include "../../../Graphics/Effect.h"
 #include "../../../Graphics/Mesh.h"
 #include "../../../Windows/WindowsFunctions.h"
+#include <algorithm>
 
 std::map<std::string, Engine::SharedPointer<Engine::Scene>> Engine::Scene::mSceneList;
 
@@ -90,6 +91,7 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 void Engine::Scene::drawScene()
 {
 	SharedPointer<Camera> tempCamera = getActiveCamera();
+	applyPaintersAlgorithmForTransparency();
 	if (!tempCamera.isNull())
 	{	Transformation cameraTransformation = tempCamera->getTransformation();
 		float fieldOfView = tempCamera->getFieldOfView();
@@ -97,11 +99,10 @@ void Engine::Scene::drawScene()
 		for (std::vector<SharedPointer<Engine::GameObject>>::iterator i = mScene.begin(); i != mScene.end(); ++i)
 		{
 			(*i)->getEffect()->setShaders();
-			//(*i)->getEffect()->setPositionOffset((*i)->getOffsetPosition());
 			Transformation gameObjectTransformation = (*i)->getTransformation();
 			(*i)->getEffect()->setEngineUniformValue(gameObjectTransformation, cameraTransformation, fieldOfView, aspectRatio);
-			//(*i)->getEffect()->setMaterialUniformValue();
 			(*i)->getMaterial()->setMaterialUniformParameters();
+			(*i)->getMaterial()->setTextureUniform();
 			(*i)->getMesh()->drawMesh();
 		}
 		mTimer->updateDeltaTime();
@@ -115,6 +116,21 @@ void Engine::Scene::drawScene()
 		return;
 	}
 
+}
+
+void Engine::Scene::applyPaintersAlgorithmForTransparency()
+{
+	std::sort(mScene.begin(), mScene.end(), sortingFunc);
+}
+
+
+bool Engine::Scene::sortingFunc(SharedPointer<GameObject> i_gameObjectOne, 
+	SharedPointer<GameObject> i_gameObjectTwo)
+{
+	if (i_gameObjectOne->getTransformation().mPositionOffset.z <
+		i_gameObjectTwo->getTransformation().mPositionOffset.z)
+		return true;
+	return false;
 }
 
 
