@@ -208,32 +208,17 @@ void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, Mate
 	switch (i_material_uniform.type)
 	{
 	case Engine::Graphics::Vertex:
-		i_material_uniform.Handle = reinterpret_cast<char*>(const_cast<char*>((s_vertexShaderConstantTable->GetConstantByName(nullptr, i_uniformName))));
 		result |= s_vertexShaderConstantTable->SetFloatArray(Engine::Graphics::GraphicsSystem::getDevice(),
 			i_material_uniform.Handle, i_material_uniform.values, i_material_uniform.valCount);
 		break;
 	case Engine::Graphics::Fragment:
-		i_material_uniform.Handle = reinterpret_cast<char*>(const_cast<char*>((s_fragmentShaderConstantTable->GetConstantByName(nullptr, i_uniformName))));
 		result |= s_fragmentShaderConstantTable->SetFloatArray(Engine::Graphics::GraphicsSystem::getDevice(),
 			i_material_uniform.Handle, i_material_uniform.values, i_material_uniform.valCount);
 		break;
 	case Unknown:
 		break;
 	}
-
-	/*switch(i_material_uniform.type)
-	{
-		case Vertex:
-			
-			break;
-		case Fragment:
-			
-			break;
-		case Unknown:
-			break;
-		}
-	}*/
-
+	
 	if (!SUCCEEDED(result))
 	{
 		std::stringstream errormessage;
@@ -242,5 +227,58 @@ void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, Mate
 	}
 
 }
+
+
+Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName, ShaderType i_shaderType)
+{
+	UniformHandle handle = nullptr;
+	switch (i_shaderType)
+	{
+	case Engine::Graphics::Vertex:
+		handle = reinterpret_cast<char*>(const_cast<char*>((s_vertexShaderConstantTable->GetConstantByName(nullptr, i_uniformName))));
+		break;
+	case Engine::Graphics::Fragment:
+		handle = reinterpret_cast<char*>(const_cast<char*>((s_fragmentShaderConstantTable->GetConstantByName(nullptr, i_uniformName))));
+		break;
+	case Unknown:
+		break;
+	}
+
+	if(!handle)
+	{
+		WindowsUtil::Print("\nUnable to get the handle\n");
+	}
+	return handle;
+}
+
+
+Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle i_handle, ShaderType i_shaderType)
+{
+	SamplerID sampleID = 0xFFFF;
+	switch (i_shaderType)
+	{
+	case Engine::Graphics::Vertex:
+		sampleID = static_cast<DWORD>(s_vertexShaderConstantTable->GetSamplerIndex(i_handle));
+		break;
+	case Engine::Graphics::Fragment:
+		sampleID = static_cast<DWORD>(s_fragmentShaderConstantTable->GetSamplerIndex(i_handle));
+		break;
+	case Unknown:
+		break;
+	}
+
+	if (sampleID == 0xFFFF)
+		WindowsUtil::Print("D3D is unable to get the sampler Id for the texture");
+
+	return sampleID;
+}
+
+
+
+
+
+
+
+
 
 

@@ -35,5 +35,15 @@ namespace Engine
 			SHADOW = 4
 		};
 
+		struct Map
+		{
+			char *file; //Texture File Name
+			char *uniform; //Uniform Name
+			UniformHandle mapHandle;
+			SamplerID textureID;
+			ShaderType shaderType;
+			MapType mapType;
+		};
+
 	}
 }

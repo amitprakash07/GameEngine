@@ -17,12 +17,19 @@ namespace Engine
 	{
 		typedef
 #ifdef PLATFORM_D3D 
-			char*
+			D3DXHANDLE
 #elif PLATFORM_OPEN_GL
 			GLint
 #endif
 			UniformHandle;
 		
+		typedef
+#ifdef PLATFORM_D3D
+			DWORD
+#elif PLATFORM_OPEN_GL
+			GLint
+#endif
+			SamplerID;
 		
 		enum indiceWinding
 		{
@@ -58,10 +65,6 @@ namespace Engine
 #define INITIAL_VAL 0
 #define DELETE_HANDLE(X) (X = 0)
 #endif
-
-
-
-
 		
 	}
 }

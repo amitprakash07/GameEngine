@@ -26,6 +26,7 @@ namespace Engine
 		static std::string getMaterialFolderPath();
 		static std::string getEffectFolderPath();
 		static std::string getShaderFolderPath();
+		static std::string getTextureFolderPath();
 	private:
 		EngineCore();
 		//static SharedPointer<EngineCore> mEngineInstance;
@@ -37,6 +38,7 @@ namespace Engine
 		static std::string shaderFolderName;
 		static std::string effectFolderName;
 		static std::string meshFolderName;
+		static std::string textureFolderName;
 	};
 }
 

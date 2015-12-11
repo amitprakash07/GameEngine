@@ -724,32 +724,22 @@ void Engine::Graphics::Effect::setEngineUniformValue(Transformation i_gameObject
 
 void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, MaterialUniform i_materialUniform)
 {
-	i_materialUniform.Handle = glGetUniformLocation(s_programId, i_uniformName);
-	if (i_materialUniform.Handle == -1)
+	switch(i_materialUniform.valCount)
 	{
-		std::stringstream errormessage;
-		errormessage << "Unable to set the Material Uniforms";
-		WindowsUtil::Print(errormessage.str());
-	}
-	else
-	{		
-		switch(i_materialUniform.valCount)
-		{
-		case One:
-			glUniform1fv(i_materialUniform.Handle,1, i_materialUniform.values);
-			break;
-		case Two:
-			glUniform2fv(i_materialUniform.Handle,1, i_materialUniform.values);
-			break;
-		case Three:
-			glUniform3fv(i_materialUniform.Handle,1, i_materialUniform.values);
-			break;
-		case Four:
-			glUniform4fv(i_materialUniform.Handle,1, i_materialUniform.values);
-			break;
-		case Zero:
-			break;
-		}
+	case One:
+		glUniform1fv(i_materialUniform.Handle,1, i_materialUniform.values);
+		break;
+	case Two:
+		glUniform2fv(i_materialUniform.Handle,1, i_materialUniform.values);
+		break;
+	case Three:
+		glUniform3fv(i_materialUniform.Handle,1, i_materialUniform.values);
+		break;
+	case Four:
+		glUniform4fv(i_materialUniform.Handle,1, i_materialUniform.values);
+		break;
+	case Zero:
+		break;
 	}
 
 	const GLenum errorCode = glGetError();
@@ -760,6 +750,30 @@ void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, Mate
 		WindowsUtil::Print(errormessage.str());
 	}
 }
+
+
+
+Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName, ShaderType)
+{
+	UniformHandle handle = glGetUniformLocation(s_programId, i_uniformName);
+	if (handle == -1)
+	{
+		std::stringstream errormessage;
+		errormessage << "Unable to set the Material Uniforms";
+		WindowsUtil::Print(errormessage.str());
+	}
+
+	return handle;
+}
+
+
+Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle i_uniformHandle, ShaderType)
+{
+	SamplerID sampleId = i_uniformHandle;
+	return sampleId;
+}
+
+
 
 
 

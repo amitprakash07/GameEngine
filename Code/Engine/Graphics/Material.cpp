@@ -1,5 +1,5 @@
 #include "Material.h"
-#include <iostream>
+#include "Texture.h"
 #include <fstream>
 #include <sstream>
 #include "../Windows/WindowsFunctions.h"
@@ -62,25 +62,40 @@ bool Engine::Graphics::Material::loadMaterial()
 	readFile.close();//Closing the file Pointer
 
 	/*Binary Format
-	Effect File Name
-	No of Uniforms
-	Uniforms
-	{
-		handle,type, valType, valueCount, values
-	}
-	*/
+		Effect File Name
+		no of maps
+		for each map - read one by one
+		{
+			 pathName\0
+			 uniformName\0
+			 shaderType
+			 mapType
+		}
+		No of Uniforms
+		uniform names
+		foreach uniform
+		Uniforms
+		{
+			 Handle,
+			 shadertype,
+			 valType,
+			 valueCount,
+			 values
+		}*/
 
 	BYTES* currentPosition = buffer;
 	{		
 		size_t tempSize = strlen(currentPosition);
 		std::string tempName = Engine::EngineCore::getEffectFolderPath();
-		char* effectFolderName = const_cast<char*>(tempName.c_str());
-		size_t folderLength = strlen(effectFolderName);
+		size_t folderLength = tempName.size();
+		char* effectFolderName = new char[folderLength];
+		memcpy(effectFolderName, tempName.c_str(), folderLength);
 		effectFile = new char[tempSize + folderLength];
 		memcpy(effectFile, effectFolderName, folderLength);
 		memcpy(effectFile+folderLength, currentPosition, tempSize);
 		effectFile[tempSize+folderLength] = '\0';
 		currentPosition += tempSize + 1;
+		delete effectFolderName;
 	}	
 
 	//Loading Effect
@@ -94,8 +109,60 @@ bool Engine::Graphics::Material::loadMaterial()
 	}
 
 	SharedPointer<Effect> tempEffect = Effect::getEffect(effectFile);
+
+	//Loading Maps
+	int tempMapCount = *reinterpret_cast<int*>(currentPosition);
+	currentPosition += sizeof(int);
+	mapCount = tempMapCount;
+	mTextureMaps = new Map[mapCount];
+
+	for (int i = 0; i < mapCount; ++i)
+	{
+		//Texture Path and Load Texture
+		{
+			size_t  texturePathLength = strlen(currentPosition);
+			std::string textureFolder = EngineCore::getTextureFolderPath();
+			size_t textureFolderLength = textureFolder.size();
+			char* textureFolderName = new char[textureFolderLength];
+			memcpy(textureFolderName, textureFolder.c_str(), textureFolderLength);
+			mTextureMaps[i].file = new char[texturePathLength + textureFolderLength];
+			memcpy(mTextureMaps[i].file, textureFolderName, textureFolderLength);
+			memcpy(mTextureMaps[i].file + textureFolderLength, currentPosition, texturePathLength);
+			mTextureMaps[i].file[textureFolderLength+texturePathLength] = '\0';
+			currentPosition += texturePathLength + 1;
+			Texture::addTextureToList(mTextureMaps[i].file);
+			delete textureFolderName;
+		}
+
+		//Texture Uniform Name
+		{
+			size_t uniformNameLength = strlen(currentPosition);
+			mTextureMaps[i].uniform = new char[uniformNameLength];
+			memcpy(mTextureMaps[i].uniform, currentPosition, uniformNameLength);
+			mTextureMaps[i].uniform[uniformNameLength] = '\0';
+			currentPosition += uniformNameLength + 1;
+		}
+
+		//ShaderType
+		{
+			mTextureMaps[i].shaderType = *reinterpret_cast<ShaderType*>(currentPosition);
+			currentPosition += sizeof(ShaderType);
+		}
+
+		//MapType
+		{
+			mTextureMaps[i].mapType = *reinterpret_cast<MapType*>(currentPosition);
+			currentPosition += sizeof(MapType);
+		}
+
+		mTextureMaps[i].mapHandle = tempEffect->getUniformHandle(mTextureMaps[i].uniform, Fragment);
+		mTextureMaps[i].textureID = tempEffect->getSamplerID(mTextureMaps[i].mapHandle, Fragment);
+
+	}
+
+
 	
-	
+		
 	int uniformCount = *reinterpret_cast<int*>(currentPosition);
 	currentPosition += sizeof(int);
 	//tempEffect->createMaterialUniforms(uniformCount);
@@ -111,20 +178,14 @@ bool Engine::Graphics::Material::loadMaterial()
 		materialUniformNames[i][nameSize] = '\0';
 		currentPosition += strlen(materialUniformNames[i]) + 1;
 	}
-
-	/*MaterialUniform* test = reinterpret_cast<MaterialUniform*>(currentPosition);*/
+		
 	size_t uniform_length = sizeof(MaterialUniform);
 	memcpy(materialUniforms, currentPosition, sizeof(MaterialUniform)*materialUniformCount);
-	/*currentPosition += sizeof(MaterialUniform);
-	if(materialUniformCount>1)
-		memcpy(materialUniforms+1, currentPosition, sizeof(MaterialUniform));*/
-	//tempEffect->setMaterialUniforms(reinterpret_cast<MaterialUniform*>(currentPosition));
 	
-	/*for(int i = 0; i < uniformCount; ++i)
+	for(int i = 0; i < uniformCount; ++i)
 	{
-		if (!tempEffect->setMaterialUniformHandle(uniformNames[i], i))
-			return false;
-	}*/
+		materialUniforms[i].Handle = tempEffect->getUniformHandle(materialUniformNames[i], materialUniforms[i].type);
+	}
 	
 	delete buffer;
 	currentPosition = nullptr;
@@ -136,6 +197,11 @@ Engine::Graphics::Material::Material()
 {
 	effectFile = nullptr;
 	materialName = nullptr;
+	materialUniformCount = 0;
+	materialUniforms = nullptr;
+	materialUniformNames = nullptr;
+	mapCount = 0;
+	mTextureMaps = nullptr;
 }
 
 void Engine::Graphics::Material::setMaterialUniformParameters()
@@ -156,6 +222,11 @@ Engine::Graphics::Material::Material(char* i_materialName)
 	memcpy(materialName, i_materialName, sizeof(char)* length);
 	materialName[length + 1] = '\0';
 	effectFile = nullptr;
+	materialUniformCount = 0;
+	materialUniforms = nullptr;
+	materialUniformNames = nullptr;
+	mapCount = 0;
+	mTextureMaps = nullptr;
 }
 
 const char* Engine::Graphics::Material::getMaterialName()
@@ -180,8 +251,26 @@ Engine::Graphics::Material::~Material()
 	if (materialName)
 		delete materialName;
 
-	effectFile = nullptr;
-	materialName = nullptr;
+	if(effectFile)
+		effectFile = nullptr;
+
+	if(materialName)
+		materialName = nullptr;
+
+	if(materialUniforms)
+		delete materialUniforms;
+
+	if(materialUniformNames)
+	{
+		for (int i = 0; i < materialUniformCount; i++)
+		{
+			delete materialUniformNames[i];
+		}
+		delete materialUniformNames;
+	}
+	
+	if (mTextureMaps)
+		delete mTextureMaps;
 }
 
 

@@ -29,15 +29,17 @@ namespace Engine
 			bool loadTexture();
 			std::string getTypeInfo() override { return ""; }
 			bool isBothSameType(RTTI*, std::string) override { return true; }
+			//bool setTexture();
+			~Texture();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Texture>> mTextureList;
 			char* textureName;
 			Texture(char*);
 			Texture();
 #ifdef PLATFORM_D3D
-			IDirect3DTexture9* textureHandle;
+			IDirect3DTexture9* texture;			
 #elif PLATFORM_OPEN_GL
-			GLuint textureHandle;
+			GLuint texture;
 #endif
 		};
 	}

@@ -43,14 +43,6 @@ bool Engine::Graphics::Texture::addTextureToList(const char* i_TextureName)
 }
 
 
-Engine::Graphics::Texture::Texture(char* i_TextureName)
-{
-	size_t length = strlen(i_TextureName);
-	textureName = new char[length + 1];
-	memcpy(textureName, i_TextureName, sizeof(char)* length);
-	textureName[length + 1] = '\0';	
-}
-
 const char* Engine::Graphics::Texture::getTextureName()
 {
 	return textureName;

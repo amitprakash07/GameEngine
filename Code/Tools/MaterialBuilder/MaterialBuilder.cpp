@@ -20,7 +20,7 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 		/*Binary Format
 		Effect File Name
 		no of maps
-		for each map
+		for each map - wrote one by one
 		{
 			pathName\0
 			uniformName\0

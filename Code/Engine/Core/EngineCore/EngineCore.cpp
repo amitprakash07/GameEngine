@@ -21,6 +21,7 @@ std::string Engine::EngineCore::materialFolderPath;
 std::string Engine::EngineCore::shaderFolderName;
 std::string Engine::EngineCore::effectFolderName;
 std::string Engine::EngineCore::meshFolderName;
+std::string Engine::EngineCore::textureFolderName;
 
 
 
@@ -48,6 +49,7 @@ void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 	shaderFolderName = "data/Shaders/";
 	materialFolderPath = "data/Materials/";
 	effectFolderName = "data/Effects/";
+	textureFolderName = "data/Textures/";
 }
 
 std::string Engine::EngineCore::getEffectFolderPath()
@@ -70,6 +72,10 @@ std::string Engine::EngineCore::getShaderFolderPath()
 	return shaderFolderName;
 }
 
+std::string Engine::EngineCore::getTextureFolderPath()
+{
+	return textureFolderName;
+}
 
 
 Engine::EngineCore::EngineCore()

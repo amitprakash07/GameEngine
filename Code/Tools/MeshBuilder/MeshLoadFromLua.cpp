@@ -90,7 +90,7 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 #ifdef PLATFORM_OPEN_GL
 					tempVertex[i - 1].nz = static_cast<float>(lua_tonumber(i_luaState, -1));
 #elif PLATFORM_D3D
-					tempVertex[i - 1].nz = -1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
+					tempVertex[i - 1].nz = 1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
 #endif
 					break;
 				}
@@ -130,7 +130,7 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 #ifdef PLATFORM_OPEN_GL
 					tempVertex[i - 1].tz = static_cast<float>(lua_tonumber(i_luaState, -1));
 #elif PLATFORM_D3D
-					tempVertex[i - 1].tz = -1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
+					tempVertex[i - 1].tz = 1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
 #endif
 					break;
 				}
@@ -164,14 +164,14 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 #ifdef PLATFORM_OPEN_GL
 					tempVertex[i - 1].btx = static_cast<float>(lua_tonumber(i_luaState, -1));
 #elif PLATFORM_D3D
-					tempVertex[i - 1].btx = -1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
+					tempVertex[i - 1].btx = 1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
 #endif
 					break;
 				case 1:
 #ifdef PLATFORM_OPEN_GL
 					tempVertex[i - 1].bty = static_cast<float>(lua_tonumber(i_luaState, -1));
 #elif PLATFORM_D3D
-					tempVertex[i - 1].bty = -1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
+					tempVertex[i - 1].bty = 1.0f * (static_cast<float>(lua_tonumber(i_luaState, -1)));
 #endif
 					break;
 				case 2:
@@ -209,7 +209,7 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 					break;
 				case 1:
 #ifdef PLATFORM_OPEN_GL
-					tempVertex[i - 1].v = static_cast<float>(lua_tonumber(i_luaState, -1));
+					tempVertex[i - 1].v = 1 - static_cast<float>(lua_tonumber(i_luaState, -1));
 #elif PLATFORM_D3D
 					tempVertex[i - 1].v = 1 - (static_cast<float>(lua_tonumber(i_luaState, -1)));
 #endif

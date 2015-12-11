@@ -26,6 +26,8 @@ namespace Engine
 			size_t materialUniformCount;
 			char** materialUniformNames;
 			MaterialUniform * materialUniforms;
+			size_t mapCount;
+			Map* mTextureMaps;
 			Material();
 			Material(char*);
 			bool loadMaterial();			

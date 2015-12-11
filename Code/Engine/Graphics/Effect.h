@@ -57,6 +57,8 @@ namespace Engine
 			~Effect();
 			void setEngineUniformValue(Transformation, Transformation, float, float);
 			void setMaterialUniformValue(char*, MaterialUniform);
+			UniformHandle getUniformHandle(char *, ShaderType);
+			SamplerID getSamplerID(UniformHandle, ShaderType);
 		private:
 			static std::map<std::string, Engine::SharedPointer<Effect>> mEffectList;
 			std::string fragmentShader;
@@ -68,13 +70,12 @@ namespace Engine
 			bool LoadFragmentShader();
 			bool LoadVertexShader();
 			bool ReadEngineUniformsHandle();
-			
 			Effect(std::string);
 #ifdef PLATFORM_D3D
 			IDirect3DVertexShader9* s_vertexShader;
-			IDirect3DPixelShader9* s_fragmentShader;
-			ID3DXConstantTable*    s_vertexShaderConstantTable;
-			ID3DXConstantTable*    s_fragmentShaderConstantTable;
+			IDirect3DPixelShader9*  s_fragmentShader;
+			ID3DXConstantTable*     s_vertexShaderConstantTable;
+			ID3DXConstantTable*     s_fragmentShaderConstantTable;
 			D3DXHANDLE				s_uniformLocalToWorld; //Shader Name - g_transform_localToWorld 
 			D3DXHANDLE				s_uniformWorldToView; //Shader Name - g_transform_worldToView
 			D3DXHANDLE				s_uniformViewToScreen; //Shader Name - g_transform_viewToScreen
