@@ -52,13 +52,3 @@ Engine::Graphics::Texture::~Texture()
 		texture->Release();
 }
 
-//bool Engine::Graphics::Texture::setTexture()
-//{
-//	HRESULT result = Engine::Graphics::GraphicsSystem::getDevice()->SetTexture(textureHandle, texture);
-//	return (SUCCEEDED(result));
-//}
-
-
-
-
-;
