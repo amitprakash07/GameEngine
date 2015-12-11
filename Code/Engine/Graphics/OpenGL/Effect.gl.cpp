@@ -775,8 +775,35 @@ void Engine::Graphics::Effect::setTextureUniform(TextureResource i_textureResour
 	SamplerID i_TextureSamplerID, int i_textureUnit)
 {
 	glActiveTexture(GL_TEXTURE0 + i_textureUnit);
-	glBindTexture(GL_TEXTURE_2D, i_textureResource);
-	glUniform1i(i_TextureSamplerID, i_textureUnit);
+	GLenum errorCode = glGetError();
+	if ((errorCode == GL_NO_ERROR))
+	{
+		glBindTexture(GL_TEXTURE_2D, i_textureResource); 
+		errorCode = glGetError();
+		if ((errorCode == GL_NO_ERROR))
+		{
+			glUniform1i(i_TextureSamplerID, i_textureUnit); 
+			errorCode = glGetError();
+			if(!errorCode == GL_NO_ERROR)
+			{
+				std::stringstream errormessage;
+				errormessage << "Unable to set the texture Uniform";
+				WindowsUtil::Print(errormessage.str());
+			}
+		}
+		else
+		{
+			std::stringstream errormessage;
+			errormessage << "Unable to bind the texture";
+			WindowsUtil::Print(errormessage.str());
+		}
+	}
+	else
+	{
+		std::stringstream errormessage;
+		errormessage << "Unable to active texture Uniform";
+		WindowsUtil::Print(errormessage.str());
+	}	
 }
 
 
