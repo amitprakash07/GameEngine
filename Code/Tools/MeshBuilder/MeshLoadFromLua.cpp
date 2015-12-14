@@ -211,7 +211,7 @@ bool LuaLoadVertex(lua_State* i_luaState, Tools::AssetBuilder::Mesh* i_mesh)
 #ifdef PLATFORM_OPEN_GL
 					tempVertex[i - 1].v = 1 - static_cast<float>(lua_tonumber(i_luaState, -1));
 #elif PLATFORM_D3D
-					tempVertex[i - 1].v = 1 - (static_cast<float>(lua_tonumber(i_luaState, -1)));
+					tempVertex[i - 1].v = 1- (static_cast<float>(lua_tonumber(i_luaState, -1)));
 #endif
 					break;				
 				}

@@ -40,22 +40,22 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_comman
 		scene->addGameObjectToScene(cube);*/
 
 		Engine::SharedPointer<Engine::GameObject> sphereOpaqueOne =
-			Engine::GameObject::CreateGameObject("cubeOpaque.mesh", "YellowTransparent.mat");
+			Engine::GameObject::CreateGameObject("cubeOpaque.mesh", "standardMaterial.mat");
 		sphereOpaqueOne->setTransformation(Engine::Math::cVector(-3.5, 0, -5), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(sphereOpaqueOne);
 
 		Engine::SharedPointer<Engine::GameObject> sphereOpaqueTwo =
-			Engine::GameObject::CreateGameObject("CylinderOpaque.mesh", "YellowTransparent.mat");
+			Engine::GameObject::CreateGameObject("CylinderOpaque.mesh", "standardMaterial.mat");
 		sphereOpaqueTwo->setTransformation(Engine::Math::cVector(-1.5, 0, -5), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(sphereOpaqueTwo);
 
 		Engine::SharedPointer<Engine::GameObject> sphereTranparentOne =
-			Engine::GameObject::CreateGameObject("CylinderOpaque.mesh", "YellowTransparent.mat");
+			Engine::GameObject::CreateGameObject("CylinderOpaque.mesh", "standardMaterial.mat");
 		sphereTranparentOne->setTransformation(Engine::Math::cVector(0.5, 0, -5), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(sphereTranparentOne);
 
 		Engine::SharedPointer<Engine::GameObject> sphereTranparentTwo =
-			Engine::GameObject::CreateGameObject("CylinderOpaque.mesh", "YellowTransparent.mat");
+			Engine::GameObject::CreateGameObject("CylinderOpaque.mesh", "standardMaterial.mat");
 		sphereTranparentTwo->setTransformation(Engine::Math::cVector(2.5, 0, -5), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(sphereTranparentTwo);
 		

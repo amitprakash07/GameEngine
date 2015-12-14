@@ -35,11 +35,11 @@ Engine::Graphics::Effect::Effect(std::string i_effectFileName)
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
 	effectName = i_effectFileName;
-	/*s_constantsTable = nullptr;
+	s_vertexShaderConstantTable = nullptr;
+	s_fragmentShaderConstantTable = nullptr;
 	s_uniformLocalToWorld = nullptr;
 	s_uniformWorldToView = nullptr;
 	s_uniformViewToScreen = nullptr;
-	effectFileName = i_effectFileName;*/
 	renderState = new uint8_t;
 	*renderState = 0;
 }
@@ -58,9 +58,6 @@ Engine::Graphics::Effect::~Effect()
 	if (s_fragmentShaderConstantTable)
 		s_fragmentShaderConstantTable->Release();
 
-	/*s_uniformLocalToWorld = nullptr;
-	s_uniformWorldToView = nullptr;
-	s_uniformViewToScreen = nullptr;*/
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
 	s_vertexShaderConstantTable = nullptr;
