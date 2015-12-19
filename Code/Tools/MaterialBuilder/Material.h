@@ -88,10 +88,10 @@ namespace Tools
 				/*if (name)
 					delete name;
 				name = nullptr;*/
-				values[0] = GARBAGE;
+				/*values[0] = GARBAGE;
 				values[1] = GARBAGE;
 				values[2] = GARBAGE;
-				values[3] = GARBAGE;
+				values[3] = GARBAGE;*/
 			}
 
 			void setValCount(int i_count)

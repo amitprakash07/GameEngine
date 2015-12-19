@@ -21,7 +21,6 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 	lua_State *mLuaState = nullptr;
 	std::stringstream errormessage;
 	mLuaState = luaL_newstate();
-
 	//Creating Lua State
 	if (!mLuaState)
 	{
@@ -42,7 +41,6 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 
 	
 	int luaResult = luaL_loadfile(mLuaState, materialName);
-	//std::cerr << "Successfully Loaded";
 	//Checking the load was successful or not
 	if (luaResult != LUA_OK)
 	{
@@ -80,6 +78,7 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 		memcpy(effectFile, tempEffect, sizeof(char)*length);
 		effectFile[length] = '\0';
 		lua_pop(mLuaState, 1); //Popping ou the effect file name
+		
 		
 	}
 	/********************************************************************/
@@ -145,7 +144,7 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 						if (strcmp(mapType, "shadow") == 0)
 							maps[i - 1].mapType = SHADOW;
 
-						lua_pop(mLuaState, 1);
+						lua_pop(mLuaState, 1); //Popping MapType
 					}
 				}
 				lua_pop(mLuaState, 1); //popping index
@@ -160,7 +159,7 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 		lua_pushstring(mLuaState, "uniforms");
 		lua_gettable(mLuaState, -2);
 		size_t count = luaL_len(mLuaState, -1);
-		std::cerr << "\nVAl Count is " << count << std::endl;
+		//std::cerr << "\nVAl Count is " << count << std::endl;
 		if (count > 0)
 		{
 			setuniformCount(static_cast<int>(count));
@@ -180,7 +179,7 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 					materialUniformNames[i - 1][length] = '\0';
 					//std::cerr << "\nUniform Count is = " << count << std::endl;
 					lua_pop(mLuaState, 1); //Popping out the uniform name
-					std::cerr << "\nname is " << tempString << std::endl;
+					//std::cerr << "\nname is " << tempString << std::endl;
 				}
 
 				{
@@ -193,7 +192,7 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 					else if (strcmp(tempString, "vertex") == 0)
 						materialUniforms[i - 1].type = ShaderType::Vertex;
 					lua_pop(mLuaState, 1); //Popping out the shader type
-					std::cerr << "\nshader Type is " << tempString << std::endl;
+					//std::cerr << "\nshader Type is " << tempString << std::endl;
 				}
 					
 				{
@@ -279,9 +278,9 @@ Tools::AssetBuilder::Material::Material(char* i_materialName)
 	mapCount = Zero;
 	uniformCount = Zero;
 	size_t length = strlen(i_materialName);
-	materialName = new char[length + 1];
+	materialName = new char[length];
 	memcpy(materialName, i_materialName, sizeof(char)* length);
-	materialName[length + 1] = '\0';
+	materialName[length] = '\0';
 }
 
 char* Tools::AssetBuilder::Material::getMaterialName()
@@ -296,21 +295,32 @@ void Tools::AssetBuilder::Material::setMaterialName(const char* i_materialName)
 	materialName = new char[length];
 	memcpy(materialName, i_materialName, sizeof(char)* length);
 	materialName[length] = '\0';
+	
 }
 
 
 Tools::AssetBuilder::Material::~Material()
 {
-	if (effectFile)
+	/*if (effectFile)
 		delete effectFile;
 	if (materialUniforms)
 		delete materialUniforms;
 	if (materialName)
 		delete materialName;
+	if (maps)
+		delete maps;
+	if(materialUniformNames)
+	{
+		for (int i = 0; i < uniformCount; ++i)
+			delete materialUniformNames[i];
+	}
+	delete materialUniformNames;
 	
 	effectFile = nullptr;
 	materialUniforms = nullptr;
 	materialName = nullptr;
+	maps = nullptr;
+	materialUniformNames = nullptr;*/
 }
 
 

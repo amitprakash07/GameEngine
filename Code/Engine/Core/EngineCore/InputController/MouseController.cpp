@@ -1,0 +1,107 @@
+#include "MouseController.h"
+#include "../EngineCore.h"
+#include <iostream>
+
+Engine::SharedPointer<Engine::MouseController> Engine::MouseController::mMouseInputController;
+
+std::string Engine::MouseController::getTypeInfo()
+{
+	return mTypeName;
+}
+
+bool Engine::MouseController::isBothSameType(RTTI* i_first, std::string i_second)
+{
+	if (i_first->getTypeInfo() == i_second)
+		return true;
+	return false;
+}
+
+Engine::MouseController::MouseController()
+{
+	mTypeName = "Engine::InputController";
+	mMouseCurrentStateAndPosition.mMouseStates.leftButtonPressed = false;
+	mMouseCurrentStateAndPosition.mMouseStates.middleButtonPressed = false;
+	mMouseCurrentStateAndPosition.mMouseStates.rightButtonPressed = false;
+	mMouseCurrentStateAndPosition.x = 0;
+	mMouseCurrentStateAndPosition.y = 0;
+	
+	mMousePreviousStateAndPosition.mMouseStates.leftButtonPressed = false;
+	mMousePreviousStateAndPosition.mMouseStates.middleButtonPressed = false;
+	mMousePreviousStateAndPosition.mMouseStates.rightButtonPressed = false;
+	mMousePreviousStateAndPosition.x = 0;
+	mMousePreviousStateAndPosition.y = 0;
+	
+}
+
+Engine::SharedPointer<Engine::MouseController> Engine::MouseController::getMouseController()
+{
+	if (mMouseInputController.isNull())
+	{
+		SharedPointer<MouseController> tempInputController(Engine::SharedPointer<MouseController>(new MouseController(), Engine::EngineCore::getStringPool()->findString("Engine::InputController")));
+		mMouseInputController = tempInputController;
+		Engine::utils::StringHash temp = Engine::utils::StringHash(Engine::EngineCore::getStringPool()->findString("MouseEvent"));
+		Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempInputController.getRawPointer()), Engine::typedefs::HIGH);
+	}
+	return mMouseInputController;
+}
+
+
+void Engine::MouseController::HandleMessage(Engine::utils::StringHash&, RTTI*, void* i_pMessageData)
+{
+	WindowsParam tempWindowsParameter = *reinterpret_cast<WindowsParam*>(i_pMessageData);
+	Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("RotateCamera");
+	SharedPointer<MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
+	Engine::EngineCore::getMessagingSystem()->sendMessage(temp, tempMouseController.getRawPointer(), i_pMessageData);
+}
+
+MouseEventAndPosition Engine::MouseController::getCurrentMouseState()
+{
+	return mMouseCurrentStateAndPosition;
+}
+
+void Engine::MouseController::leftButtonPressed(bool i_state)
+{
+	mMousePreviousStateAndPosition.mMouseStates.leftButtonPressed
+		= mMouseCurrentStateAndPosition.mMouseStates.leftButtonPressed;
+	mMouseCurrentStateAndPosition.mMouseStates.leftButtonPressed = i_state;
+}
+
+void Engine::MouseController::rightButtonPressed(bool i_state)
+{
+	mMousePreviousStateAndPosition.mMouseStates.rightButtonPressed
+		= mMouseCurrentStateAndPosition.mMouseStates.rightButtonPressed;
+	mMouseCurrentStateAndPosition.mMouseStates.rightButtonPressed = i_state;
+}
+
+void Engine::MouseController::middleButtonPressed(bool i_state)
+{
+	mMousePreviousStateAndPosition.mMouseStates.middleButtonPressed
+		= mMouseCurrentStateAndPosition.mMouseStates.middleButtonPressed;
+	mMouseCurrentStateAndPosition.mMouseStates.middleButtonPressed = i_state;
+}
+
+void Engine::MouseController::mouseMoving(bool i_state)
+{
+	mMousePreviousStateAndPosition.mMouseStates.mouseMoving
+		= mMouseCurrentStateAndPosition.mMouseStates.mouseMoving;
+	mMouseCurrentStateAndPosition.mMouseStates.mouseMoving = i_state;
+}
+
+
+void Engine::MouseController::setMousePosition(int i_x, int i_y, POINTS i_point)
+{
+	mMousePreviousStateAndPosition.x = mMouseCurrentStateAndPosition.x;
+	mMousePreviousStateAndPosition.y = mMouseCurrentStateAndPosition.y;
+	mMousePreviousStateAndPosition.P = mMouseCurrentStateAndPosition.P;
+
+	mMouseCurrentStateAndPosition.x = i_x;
+	mMouseCurrentStateAndPosition.y = i_y;
+	mMouseCurrentStateAndPosition.P = i_point;
+
+}
+
+
+
+
+
+

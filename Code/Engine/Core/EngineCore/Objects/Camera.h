@@ -5,6 +5,7 @@
 #include "../../../Core/Utilities/SharedPointer.h"
 #include "../../Utilities/IObjectController.h"
 #include "Object.h"
+#include "../EngineTypdefs.h"
 
 namespace Engine
 {
@@ -34,6 +35,8 @@ namespace Engine
 		float fieldOfView;
 		float aspectRatio;
 		bool active;
+		MouseEventAndPosition mMouseCurrentStateAndPosition;
+		MouseEventAndPosition mMousePreviousStateAndPosition;
 		Camera(std::string, Math::cVector, Math::cQuaternion,
 			float ,
 			float );

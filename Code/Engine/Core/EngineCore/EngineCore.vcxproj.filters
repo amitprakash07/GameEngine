@@ -26,6 +26,10 @@
     <ClInclude Include="ObjectController\CameraController.h">
       <Filter>ObjectController</Filter>
     </ClInclude>
+    <ClInclude Include="InputController\MouseController.h">
+      <Filter>InputController</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineTypdefs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp" />
@@ -49,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="ObjectController\CameraController.cpp">
       <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="InputController\MouseController.cpp">
+      <Filter>InputController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@
 
 	// Initialize Windows
 	#include <Windows.h>
+	#include <Windowsx.h>
 
 #undef NOMINMAX
 #undef WIN32_LEAN_AND_MEAN

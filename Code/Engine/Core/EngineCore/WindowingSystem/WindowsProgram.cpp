@@ -154,8 +154,8 @@ HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle( const HINSTANCE i
 	{
 		// In a real game these values would come from an external source
 		// rather than be hard-coded
-		const int desiredWidth = 800;
-		const int desiredHeight = 600;
+		const int desiredWidth = 1600;
+		const int desiredHeight = 900;
 
 		// Calculate how much of the window is coming from the "non-client area"
 		// (the borders and title bar)
@@ -255,8 +255,6 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		SharedPointer<WindowingSystem> tempWindowingSystem = Engine::EngineCore::getWindowingSystem();
 		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, reinterpret_cast<IMessageHandler*>(tempWindowingSystem.getRawPointer()), reinterpret_cast<void*>(i_wParam));
 		break;
-		
-		break;
 	}
 	case WM_KEYDOWN:
 	{
@@ -265,6 +263,46 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, reinterpret_cast<IMessageHandler*>(tempWindowingSystem.getRawPointer()), reinterpret_cast<void*>(i_wParam));
 		break;
 	}
+	case WM_LBUTTONDOWN:
+	{
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseEvent");
+		SharedPointer<Engine::MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
+		WindowsParam windowsParameter;
+		windowsParameter.windowsMessage = i_message;
+		windowsParameter.wParam = i_wParam;
+		windowsParameter.lParam = i_lParam;
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp,
+			reinterpret_cast<IMessageHandler*>(tempMouseController.getRawPointer()),
+			reinterpret_cast<void*>(&windowsParameter));
+		break;
+	}
+	case WM_MOUSEMOVE:
+	{
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseEvent");
+		SharedPointer<Engine::MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
+		WindowsParam windowsParameter;
+		windowsParameter.windowsMessage = i_message;
+		windowsParameter.wParam = i_wParam;
+		windowsParameter.lParam = i_lParam;
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp,
+			reinterpret_cast<IMessageHandler*>(tempMouseController.getRawPointer()),
+			reinterpret_cast<void*>(&windowsParameter));
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseEvent");
+		SharedPointer<Engine::MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
+		WindowsParam windowsParameter;
+		windowsParameter.windowsMessage = i_message;
+		windowsParameter.wParam = i_wParam;
+		windowsParameter.lParam = i_lParam;
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp,
+			reinterpret_cast<IMessageHandler*>(tempMouseController.getRawPointer()),
+			reinterpret_cast<void*>(&windowsParameter));
+		break;
+	}
+	
 	// The window's nonclient area is being destroyed
 	case WM_NCDESTROY:
 	{

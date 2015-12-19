@@ -3,7 +3,6 @@
 
 #include "../../Utilities/IObjectController.h"
 
-
 namespace Engine
 {
 	class CameraController :public IObjectController
@@ -15,6 +14,7 @@ namespace Engine
 		CameraController() {}
 		~CameraController() {}
 	private:
+		
 
 	};
 }

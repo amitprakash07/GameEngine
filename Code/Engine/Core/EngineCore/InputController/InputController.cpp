@@ -30,7 +30,7 @@ void Engine::InputController::HandleMessage(Engine::utils::StringHash& i_message
 			{
 				Engine::typedefs::Direction dir;
 				Engine::utils::StringHash gameObjectController = Engine::EngineCore::getStringPool()->findString("UpdateGameObject");
-				Engine::utils::StringHash cameraController = Engine::EngineCore::getStringPool()->findString("MoveCamera");
+				Engine::utils::StringHash cameraController = Engine::EngineCore::getStringPool()->findString("rotateCamera");
 				SharedPointer<InputController> tempInputController = Engine::EngineCore::getInputController();
 				switch (reinterpret_cast<WPARAM>(i_pMessageData))
 				{

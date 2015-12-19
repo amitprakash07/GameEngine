@@ -116,7 +116,7 @@ bool Engine::Graphics::Material::loadMaterial()
 	mapCount = tempMapCount;
 	mTextureMaps = new Map[mapCount];
 
-	for (int i = 0; i < mapCount; ++i)
+	for (size_t i = 0; i < mapCount; ++i)
 	{
 		//Texture Path and Load Texture
 		{
@@ -208,7 +208,7 @@ void Engine::Graphics::Material::setMaterialUniformParameters()
 {
 	std::string effectFileName = effectFile;
 	SharedPointer<Engine::Graphics::Effect> tempEffect = Engine::Graphics::Effect::getEffect(effectFileName);
-	for (int i = 0; i < materialUniformCount; ++i)
+	for (size_t i = 0; i < materialUniformCount; ++i)
 	{
 		tempEffect->setMaterialUniformValue(materialUniformNames[i], materialUniforms[i]);
 	}
@@ -274,7 +274,7 @@ Engine::Graphics::Material::~Material()
 
 	if(materialUniformNames)
 	{
-		for (int i = 0; i < materialUniformCount; i++)
+		for (size_t i = 0; i < materialUniformCount; i++)
 		{
 			delete materialUniformNames[i];
 		}
