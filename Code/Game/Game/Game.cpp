@@ -28,7 +28,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_comman
 		
 		
 
-		Engine::SharedPointer<Engine::GameObject> sphereOne =
+		/*Engine::SharedPointer<Engine::GameObject> sphereOne =
 			Engine::GameObject::CreateGameObject("Sphere.mesh", "BrickMaterial_opaque.mat");
 		sphereOne->setTransformation(Engine::Math::cVector(-4, -3, -7), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(sphereOne);
@@ -69,12 +69,12 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_comman
 		Engine::SharedPointer<Engine::GameObject> verticalPlaneTransparent=
 			Engine::GameObject::CreateGameObject("Plane.mesh", "verticalPlaneTransparent.mat");
 		verticalPlaneTransparent->setTransformation(Engine::Math::cVector(-2, 0, -10), Engine::Math::cQuaternion());
-		scene->addGameObjectToScene(verticalPlaneTransparent);
+		scene->addGameObjectToScene(verticalPlaneTransparent);*/
 
 
 
 
-		/*Engine::SharedPointer<Engine::GameObject> backDoor =
+		Engine::SharedPointer<Engine::GameObject> backDoor =
 		Engine::GameObject::CreateGameObject("RoomMeshes/AdditionalFloorFrames.mesh", "Room/FloorCrossSection.mat");
 		backDoor->setTransformation(Engine::Math::cVector(0, 0, 0), Engine::Math::cQuaternion());
 		scene->addGameObjectToScene(backDoor);
@@ -134,23 +134,23 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,HINSTANCE,char* i_comman
 		Engine::SharedPointer<Engine::GameObject> Shelves =
 			Engine::GameObject::CreateGameObject("RoomMeshes/Shelves.mesh", "Room/Shelves.mat");
 		Shelves->setTransformation(Engine::Math::cVector(0, 0, 0), Engine::Math::cQuaternion());
-		scene->addGameObjectToScene(Shelves);*/
+		scene->addGameObjectToScene(Shelves);
 
 		
 
 
 		//Camera
-		/*Engine::SharedPointer<Engine::Camera> mainCamera =
+		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
 				Engine::Math::cVector(0, 5, 45.85),
 				Engine::Math::cQuaternion(Engine::Math::ConvertDegreesToRadians(0),
-					Engine::Math::cVector(0,1,0)));*/
+					Engine::Math::cVector(0,1,0)));
 
-		Engine::SharedPointer<Engine::Camera> mainCamera =
+		/*Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
 				Engine::Math::cVector(0, 0,5),
 				Engine::Math::cQuaternion(Engine::Math::ConvertDegreesToRadians(0),
-					Engine::Math::cVector(0, 1, 0)));
+					Engine::Math::cVector(0, 1, 0)));*/
 
 		mainCamera->activateCamera(true);
 		mainCamera->setAspectRatio(static_cast<float>(1600 / 900));
