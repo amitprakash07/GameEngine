@@ -302,8 +302,8 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		{
 			const GLuint vertexElementLocation = 4;
 			const GLint elementCount = 2; // for 2 floats in the textures
-			const GLboolean Normalized = GL_FALSE; // The given floats should be used as-is
-			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, Normalized, stride, offset);
+			const GLboolean notNormalized = GL_FALSE; // The given floats should be used as-is
+			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
 			GLenum errorCode = glGetError();
 			if (errorCode == GL_NO_ERROR)
 			{
@@ -338,7 +338,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		// 4 uint8_ts == 4 bytes
 		// Offset = 56
 		{
-			const GLuint vertexElementLocation = 5;
+			const GLuint vertexElementLocation = 1;
 			const GLint elementCount = 4;
 			const GLboolean normalized = GL_TRUE;
 			glVertexAttribPointer(vertexElementLocation, elementCount, GL_UNSIGNED_BYTE, normalized, stride, offset);

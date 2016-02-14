@@ -11,10 +11,8 @@ Engine::SharedPointer<Engine::Camera> Engine::Camera::CreateCamera(std::string i
 	float i_aspectRatio)
 {
 	SharedPointer<Engine::Camera> tempCamera(new Engine::Camera(i_name, i_position, i_orientation, i_fieldofView, i_aspectRatio), "Engine::Camera");
-	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateGameObject"));
-	Engine::utils::StringHash tempOne(Engine::EngineCore::getStringPool()->findString("rotateCamera"));
+	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("MoveCamera"));
 	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempCamera.getRawPointer()), Engine::typedefs::HIGH);
-	Engine::EngineCore::getMessagingSystem()->addMessageHandler(tempOne, reinterpret_cast<IMessageHandler*>(tempCamera.getRawPointer()), Engine::typedefs::HIGH);
 	return tempCamera;
 }
 
@@ -102,29 +100,7 @@ void Engine::Camera::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i
 {
 	if (i_MessageSender != nullptr)
 	{
-		if (Engine::utils::StringHash("rotateCamera") == i_message)
-		{
-			//Engine::SharedPointer<Engine::GameObject> temp= SharedPointer<GameObject>(this); //Need to think about this
-			switch (*(reinterpret_cast<Engine::typedefs::Direction*>(i_pMessageData)))
-			{
-			case Engine::typedefs::NONE:
-				break;
-			case Engine::typedefs::UP:
-				mTransformation.mOrientation = mTransformation.mOrientation.operator*(Engine::Math::cQuaternion(0.01f, Engine::Math::cVector(1, 0, 0))) ;
-				break;
-			case Engine::typedefs::DOWN:
-				mTransformation.mOrientation = mTransformation.mOrientation.operator*(Engine::Math::cQuaternion(-0.01f, Engine::Math::cVector(1, 0, 0)));
-				break;
-			case Engine::typedefs::LEFT:
-				mTransformation.mOrientation = mTransformation.mOrientation.operator*(Engine::Math::cQuaternion(0.01f, Engine::Math::cVector(0, 1, 0)));
-				break;
-			case Engine::typedefs::RIGHT:
-				mTransformation.mOrientation = mTransformation.mOrientation.operator*(Engine::Math::cQuaternion(-0.01f, Engine::Math::cVector(0, 1, 0)));
-				break;
-			}
-		}
-
-		if (Engine::utils::StringHash("UpdateGameObject") == i_message)
+		if (Engine::utils::StringHash("MoveCamera") == i_message)
 		{
 			//Engine::SharedPointer<Engine::GameObject> temp= SharedPointer<GameObject>(this); //Need to think about this
 			switch (*(reinterpret_cast<Engine::typedefs::Direction*>(i_pMessageData)))
@@ -133,19 +109,19 @@ void Engine::Camera::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i
 				break;
 			case Engine::typedefs::UP:
 				if (mObjectController)
-				mObjectController->updateGameObject(*this, Engine::typedefs::UP);
+					mObjectController->updateGameObject(*this, Engine::typedefs::UP);
 				break;
 			case Engine::typedefs::DOWN:
 				if (mObjectController)
-				mObjectController->updateGameObject(*this, Engine::typedefs::DOWN);
+					mObjectController->updateGameObject(*this, Engine::typedefs::DOWN);
 				break;
 			case Engine::typedefs::LEFT:
 				if (mObjectController)
-				mObjectController->updateGameObject(*this, Engine::typedefs::LEFT);
+					mObjectController->updateGameObject(*this, Engine::typedefs::LEFT);
 				break;
 			case Engine::typedefs::RIGHT:
 				if (mObjectController)
-				mObjectController->updateGameObject(*this, Engine::typedefs::RIGHT);
+					mObjectController->updateGameObject(*this, Engine::typedefs::RIGHT);
 				break;
 			}
 		}

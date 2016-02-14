@@ -17,8 +17,7 @@ namespace Engine
 			void setMaterialName(const char*);
 			const char *getMaterialName();
 			const char* getEffectName();
-			void setMaterialUniformParameters(); 
-			void setTextureUniform();
+			void setMaterialUniformParameters();
 			~Material();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Material>> mMaterialList;

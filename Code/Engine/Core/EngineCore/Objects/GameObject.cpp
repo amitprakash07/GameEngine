@@ -132,8 +132,7 @@ Engine::Transformation Engine::GameObject::getTransformation()
 
 Engine::GameObject::~GameObject()
 {
-	if(mObjectController)
-		delete mObjectController;
+	delete mObjectController;
 }
 
 

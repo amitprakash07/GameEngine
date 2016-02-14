@@ -22,12 +22,12 @@ void Engine::CameraController::updateGameObject(Object &i_Object, Engine::typede
 		tempTransformation.mPositionOffset += Engine::Math::cVector(0.0f, 0.0f, 0.1f);// *Engine::Scene::getTimer()->getdeltaTime();
 		break;
 	case Engine::typedefs::LEFT:
-		tempTransformation.mPositionOffset += Engine::Math::cVector(-0.1f, 0.0f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
+		tempTransformation.mPositionOffset += Engine::Math::cVector(0.1f, 0.0f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
 		break;
 	case Engine::typedefs::RIGHT:
-		tempTransformation.mPositionOffset += Engine::Math::cVector(0.1f, 0.0f, 0.0f);/** Engine::Scene::getTimer()->getdeltaTime();*/
+		tempTransformation.mPositionOffset += Engine::Math::cVector(-0.1f, 0.0f, 0.0f);/** Engine::Scene::getTimer()->getdeltaTime();*/
 		break;
 	}
-	i_Object.setTransformation(tempTransformation.mPositionOffset, tempTransformation.mOrientation);
+	i_Object.setTransformation(tempTransformation.mPositionOffset);
 }
 

@@ -15,16 +15,16 @@ void Engine::WalkController::updateGameObject(Object &i_gameObject, Engine::type
 		case Engine::typedefs::UP:
 			/*errormessage << Engine::Scene::getTimer()->getdeltaTime();
 			WindowsUtil::Print(errormessage.str());*/
-			tempTransformation.mPositionOffset += Engine::Math::cVector(0.0f, 0.0001f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
+			tempTransformation.mPositionOffset += Engine::Math::cVector(0.0f, 0.1f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
 			break;
 		case Engine::typedefs::DOWN:
-			tempTransformation.mPositionOffset += Engine::Math::cVector(0.0f, -0.0001f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
+			tempTransformation.mPositionOffset += Engine::Math::cVector(0.0f, -0.1f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
 			break;
 		case Engine::typedefs::LEFT:
-			tempTransformation.mPositionOffset += Engine::Math::cVector(-0.0001f, 0.0f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
+			tempTransformation.mPositionOffset += Engine::Math::cVector(-0.1f, 0.0f, 0.0f);// *Engine::Scene::getTimer()->getdeltaTime();
 			break;
 		case Engine::typedefs::RIGHT:
-			tempTransformation.mPositionOffset += Engine::Math::cVector(0.0001f, 0.0f, 0.0f);/** Engine::Scene::getTimer()->getdeltaTime();*/
+			tempTransformation.mPositionOffset += Engine::Math::cVector(0.1f, 0.0f, 0.0f);/** Engine::Scene::getTimer()->getdeltaTime();*/
 			break;
 		}
 		i_gameObject.setTransformation(tempTransformation.mPositionOffset);

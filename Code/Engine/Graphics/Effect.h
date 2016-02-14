@@ -57,7 +57,6 @@ namespace Engine
 			~Effect();
 			void setEngineUniformValue(Transformation, Transformation, float, float);
 			void setMaterialUniformValue(char*, MaterialUniform);
-			void setTextureUniform(TextureResource, SamplerID, int i_textureUnit=0);
 			UniformHandle getUniformHandle(char *, ShaderType);
 			SamplerID getSamplerID(UniformHandle, ShaderType);
 		private:

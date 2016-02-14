@@ -30,16 +30,6 @@ namespace Engine
 			GLint
 #endif
 			SamplerID;
-
-		typedef
-#ifdef PLATFORM_D3D
-			IDirect3DTexture9*
-#elif PLATFORM_OPEN_GL
-			GLuint
-#endif
-			TextureResource;
-
-
 		
 		enum indiceWinding
 		{

@@ -35,11 +35,11 @@ Engine::Graphics::Effect::Effect(std::string i_effectFileName)
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
 	effectName = i_effectFileName;
-	s_vertexShaderConstantTable = nullptr;
-	s_fragmentShaderConstantTable = nullptr;
+	/*s_constantsTable = nullptr;
 	s_uniformLocalToWorld = nullptr;
 	s_uniformWorldToView = nullptr;
 	s_uniformViewToScreen = nullptr;
+	effectFileName = i_effectFileName;*/
 	renderState = new uint8_t;
 	*renderState = 0;
 }
@@ -58,6 +58,9 @@ Engine::Graphics::Effect::~Effect()
 	if (s_fragmentShaderConstantTable)
 		s_fragmentShaderConstantTable->Release();
 
+	/*s_uniformLocalToWorld = nullptr;
+	s_uniformWorldToView = nullptr;
+	s_uniformViewToScreen = nullptr;*/
 	s_vertexShader = nullptr;
 	s_fragmentShader = nullptr;
 	s_vertexShaderConstantTable = nullptr;
@@ -224,17 +227,6 @@ void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, Mate
 	}
 
 }
-
-void Engine::Graphics::Effect::setTextureUniform(TextureResource i_textureResource, 
-	SamplerID i_textureSamplerID, int i_textureUnit)
-{
-	HRESULT result = Engine::Graphics::GraphicsSystem::getDevice()->SetTexture(i_textureSamplerID, i_textureResource);
-	if(!SUCCEEDED(result))
-	{
-		WindowsUtil::Print("Unable to set the Texture");
-	}
-}
-
 
 
 Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName, ShaderType i_shaderType)

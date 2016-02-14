@@ -116,7 +116,7 @@ bool Engine::Graphics::Material::loadMaterial()
 	mapCount = tempMapCount;
 	mTextureMaps = new Map[mapCount];
 
-	for (size_t i = 0; i < mapCount; ++i)
+	for (int i = 0; i < mapCount; ++i)
 	{
 		//Texture Path and Load Texture
 		{
@@ -208,21 +208,9 @@ void Engine::Graphics::Material::setMaterialUniformParameters()
 {
 	std::string effectFileName = effectFile;
 	SharedPointer<Engine::Graphics::Effect> tempEffect = Engine::Graphics::Effect::getEffect(effectFileName);
-	for (size_t i = 0; i < materialUniformCount; ++i)
+	for (int i = 0; i < materialUniformCount; ++i)
 	{
 		tempEffect->setMaterialUniformValue(materialUniformNames[i], materialUniforms[i]);
-	}
-}
-
-
-void Engine::Graphics::Material::setTextureUniform()
-{
-	std::string effectFileName = effectFile;
-	SharedPointer<Engine::Graphics::Effect> tempEffect = Engine::Graphics::Effect::getEffect(effectFileName);
-	for (int i = 0; i < mapCount; ++i)
-	{
-		TextureResource temp = Engine::Graphics::Texture::getTexture(mTextureMaps[i].file)->getTextureResource();
-		tempEffect->setTextureUniform(temp, mTextureMaps[i].textureID,i);
 	}
 }
 
@@ -274,7 +262,7 @@ Engine::Graphics::Material::~Material()
 
 	if(materialUniformNames)
 	{
-		for (size_t i = 0; i < materialUniformCount; i++)
+		for (int i = 0; i < materialUniformCount; i++)
 		{
 			delete materialUniformNames[i];
 		}

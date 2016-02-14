@@ -752,6 +752,7 @@ void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, Mate
 }
 
 
+
 Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName, ShaderType)
 {
 	UniformHandle handle = glGetUniformLocation(s_programId, i_uniformName);
@@ -765,47 +766,12 @@ Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char*
 	return handle;
 }
 
+
 Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle i_uniformHandle, ShaderType)
 {
 	SamplerID sampleId = i_uniformHandle;
 	return sampleId;
 }
-
-void Engine::Graphics::Effect::setTextureUniform(TextureResource i_textureResource,
-	SamplerID i_TextureSamplerID, int i_textureUnit)
-{
-	glActiveTexture(GL_TEXTURE0 + i_textureUnit);
-	GLenum errorCode = glGetError();
-	if ((errorCode == GL_NO_ERROR))
-	{
-		glBindTexture(GL_TEXTURE_2D, i_textureResource); 
-		errorCode = glGetError();
-		if ((errorCode == GL_NO_ERROR))
-		{
-			glUniform1i(i_TextureSamplerID, i_textureUnit); 
-			errorCode = glGetError();
-			if(!errorCode == GL_NO_ERROR)
-			{
-				std::stringstream errormessage;
-				errormessage << "Unable to set the texture Uniform";
-				WindowsUtil::Print(errormessage.str());
-			}
-		}
-		else
-		{
-			std::stringstream errormessage;
-			errormessage << "Unable to bind the texture";
-			WindowsUtil::Print(errormessage.str());
-		}
-	}
-	else
-	{
-		std::stringstream errormessage;
-		errormessage << "Unable to active texture Uniform";
-		WindowsUtil::Print(errormessage.str());
-	}	
-}
-
 
 
 

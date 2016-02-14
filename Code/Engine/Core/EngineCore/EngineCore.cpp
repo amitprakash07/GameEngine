@@ -17,10 +17,6 @@ Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::mEng
 						Engine::Windows::WindowingSystem::getWindowingSystem();
 Engine::SharedPointer<Engine::InputController> Engine::EngineCore::mInputController = 
 						Engine::InputController::getInputController();
-Engine::SharedPointer<Engine::MouseController> Engine::EngineCore::mMouseController =
-						Engine::MouseController::getMouseController();
-						
-
 std::string Engine::EngineCore::materialFolderPath;
 std::string Engine::EngineCore::shaderFolderName;
 std::string Engine::EngineCore::effectFolderName;
@@ -108,12 +104,6 @@ Engine::SharedPointer<Engine::InputController> Engine::EngineCore::getInputContr
 {
 	return mInputController;
 }
-
-Engine::SharedPointer<Engine::MouseController> Engine::EngineCore::getMouseInputController()
-{
-	return mMouseController;
-}
-
 
 void Engine::EngineCore::onNewFrame()
 {

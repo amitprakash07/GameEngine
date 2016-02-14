@@ -8,17 +8,15 @@ typedef char BYTES;
 
 bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&)
 {
-	
 	Material *m = new Material();
 	//std::cerr << std::endl<< m_path_source << " And length is " << strlen(m_path_source)<<std::endl;
 	m->setMaterialName(m_path_source);
 	if (m->loadMaterial())
 	{
-		
-		//m->displayMaterial();
+		m->displayMaterial();
 		std::ofstream writeToMaterialFile;
 		writeToMaterialFile.open(m_path_target, std::ofstream::binary);
-		
+
 		/*Binary Format
 		Effect File Name
 		no of maps
@@ -52,7 +50,6 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 			writeToMaterialFile.write(byte, sizeof(char)*length);
 			writeToMaterialFile.write("\0", sizeof(char));
 			delete byte;
-			
 		}//effectName
 
 		//Let's write map one by one
@@ -67,7 +64,6 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 					memcpy(byte, mapCount, sizeof(int));
 					writeToMaterialFile.write(byte, sizeof(int));
 					delete byte;
-					
 				}
 
 				{//Writing Maps
@@ -81,7 +77,6 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 								writeToMaterialFile.write(byte, sizeof(char)*length);
 								writeToMaterialFile.write("\0", sizeof(char));
 								delete byte;
-								
 							}//map Path Name
 
 							{//UniformName
@@ -91,33 +86,29 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 								writeToMaterialFile.write(byte, sizeof(char)*length);
 								writeToMaterialFile.write("\0", sizeof(char));
 								delete byte;
-								
-								
 							}//UniformName
 							
 							{//shaderType
 								ShaderType *tempShaderType = new ShaderType;
 								*tempShaderType = tempMap[i].shaderType;
-								//std::cerr << "\nShaderType is " << *tempShaderType << std::endl;
+								std::cerr << "\nShaderType is " << *tempShaderType << std::endl;
 								byte = new BYTES[sizeof(ShaderType)];
 								memcpy(byte, tempShaderType, sizeof(ShaderType));
 								writeToMaterialFile.write(byte, sizeof(ShaderType));
 								delete tempShaderType;
 								delete byte;
-								
 							}//shaderType
 							
 							{//MapType
 								
 								MapType *tempMapType = new MapType;
 								*tempMapType = tempMap[i].mapType;
-								//std::cerr << "\nMapType is " << *tempMapType << std::endl;
+								std::cerr << "\nMapType is " << *tempMapType << std::endl;
 								byte = new BYTES[sizeof(MapType)];
 								memcpy(byte, tempMapType, sizeof(MapType));
 								writeToMaterialFile.write(byte, sizeof(MapType));
 								delete tempMapType;
 								delete byte;
-								
 							}//MapType
 					}//for
 				}//Maps
@@ -128,22 +119,18 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 		{
 			int* uniformCount = new int;
 			*uniformCount = m->getUniformCount();
-			//std::cerr << "Uniform Count " << m->getUniformCount();
+			std::cerr << "Uniform Count " << m->getUniformCount();
 			byte = new BYTES[sizeof(int)];
 			memcpy(byte, uniformCount, sizeof(int));
 			writeToMaterialFile.write(byte, sizeof(int));
 			delete byte;
-			delete uniformCount;
-			
-			
 		}
 
 		{
 			//std::stringstream uniformNames;
 			MaterialUniform* mTemp = m->getAllMaterialUniform();
 			char** uniformNames = m->getAllUniformName();
-			
-			for (int i = 0; i < m->getUniformCount(); ++i)
+			for (size_t i = 0; i < m->getUniformCount(); ++i)
 			{
 				size_t length = strlen(uniformNames[i]);
 				byte = new BYTES[length];
@@ -157,13 +144,11 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 			byte = new BYTES[sizeof(MaterialUniform)*m->getUniformCount()];
 			memcpy(byte, m->getAllMaterialUniform(), sizeof(MaterialUniform)*m->getUniformCount());
 			writeToMaterialFile.write(byte, sizeof(MaterialUniform)*m->getUniformCount());
-			
 
 			
 		}
-		std::cerr << "I am good here\n";
+				
 		writeToMaterialFile.close();
-		delete m;
 		return true;
 	}
 	return false;
