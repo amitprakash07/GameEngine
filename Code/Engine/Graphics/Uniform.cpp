@@ -7,12 +7,26 @@ Engine::Graphics::Uniform::Uniform()
 	mUniform.uniformName = nullptr;
 }
 
-Engine::SharedPointer<Engine::Graphics::Uniform> Engine::Graphics::Uniform::createUniform()
+
+Engine::SharedPointer<Engine::Graphics::Uniform> 
+Engine::Graphics::Uniform::addUniform(
+	std::string iUniformName,
+	std::string effectFileName, 
+	ShaderType iShaderType)
 {
-	return(SharedPointer<Uniform>(new Uniform, "Engine::Graphics::Uniform"));
+	SharedPointer<Uniform> tempUniform =
+		SharedPointer<Uniform>(new Uniform(),"Engine::Graphics::Uniform");
+	char * tempUniformName = new char[iUniformName.size()];
+	strcpy(tempUniformName, iUniformName.c_str());
+	tempUniform->setName(tempUniformName);
+	tempUniform->effectName = effectFileName;
+	tempUniform->setShaderType(iShaderType);
+	mUniformListInSystem[tempUniform->prefixUniformName()] = tempUniform;
+	return tempUniform;
 }
 
-void Engine::Graphics::Uniform::setUniformValue(UniformValues iinitialValue)
+
+void Engine::Graphics::Uniform::setUniformValue(UniformValues& iinitialValue)
 {
 	switch (mUniform.valType)
 	{
@@ -66,7 +80,6 @@ void Engine::Graphics::Uniform::setUniformValue(UniformValues iinitialValue)
 	}
 }
 
-
 void Engine::Graphics::Uniform::setName(char* iUniformName)
 {
 	if (iUniformName != nullptr)
@@ -97,7 +110,6 @@ void Engine::Graphics::Uniform::setMatrixType(Transform_Matrix_Type iMatrixType)
 	}
 }
 
-
 void Engine::Graphics::Uniform::setHandle(UniformHandle iHandle)
 {
 	mUniform.handle = iHandle;
@@ -113,12 +125,10 @@ void Engine::Graphics::Uniform::setValCount(uint8_t iCount)
 	mUniform.valCount = iCount;
 }
 
-
 void Engine::Graphics::Uniform::setValType(UniformDataType iDataType)
 {
 	mUniform.valType = iDataType;
 }
-
 
 Engine::Graphics::Uniform::~Uniform()
 {
@@ -142,7 +152,6 @@ Engine::Graphics::Uniform::~Uniform()
 		break;
 	}
 }
-
 
 char* Engine::Graphics::Uniform::prefixUniformName() const
 {
@@ -181,3 +190,59 @@ char* Engine::Graphics::Uniform::prefixUniformName() const
 	prefixedName[uniformNameLength + 1] = '\0';
 	return prefixedName;
 }
+
+Engine::Graphics::UniformHandle Engine::Graphics::Uniform::getHandle() const
+{
+	return mUniform.handle;
+}
+
+Engine::Graphics::Transform_Matrix_Type Engine::Graphics::Uniform::getMatrixType() const
+{
+	return mUniform.value.matrixValue.Type;
+}
+
+Engine::Graphics::ShaderType Engine::Graphics::Uniform::getShaderType() const
+{
+	return mUniform.shaderType;
+}
+
+Engine::SharedPointer<Engine::Graphics::Uniform> Engine::Graphics::Uniform::getUniform(
+	std::string uniformName,
+	std::string effectFileName,
+	ShaderType iShaderType)
+{
+	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = mUniformListInSystem.begin();
+	i!=mUniformListInSystem.end(); ++i)
+	{
+		
+	}
+}
+
+Engine::Graphics::UniformDataType Engine::Graphics::Uniform::getUniformDataType() const
+{
+	return mUniform.valType;
+}
+
+const char* Engine::Graphics::Uniform::getUniformName() const
+{
+	return mUniform.uniformName;
+}
+
+Engine::Graphics::UniformValues Engine::Graphics::Uniform::getUniformValues() const
+{
+	return mUniform.value;
+}
+
+uint8_t Engine::Graphics::Uniform::getValueCount() const
+{
+	return mUniform.valCount;
+}
+
+
+
+
+
+
+
+
+

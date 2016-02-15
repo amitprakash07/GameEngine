@@ -13,7 +13,9 @@ namespace Engine
 		class Uniform
 		{
 		public:
-			static void addUniform(std::string effectFileName, ShaderType iShaderType);
+			static SharedPointer<Uniform> addUniform(std::string iUniformName,
+				std::string effectFileName, 
+				ShaderType iShaderType);
 			static SharedPointer<Uniform> getUniform(std::string uniformName,
 				std::string effectFileName, ShaderType iShaderType);
 			static void setAllUniformToShaderObjects();
@@ -24,17 +26,13 @@ namespace Engine
 			void setMatrixType(Transform_Matrix_Type iMatrixType);
 			void setValCount(uint8_t iCount = 1);
 			void setHandle(UniformHandle iHandle);
-			char* getUniformName();
-			ShaderType getShaderType();
-			UniformDataType getUniformDataType();
-			uint8_t getValueCount();
-			UniformHandle getHandle();
-			Transform_Matrix_Type getMatrixType();
-			UniformValues getUniformValues();
-			/*UniformData getUniformData() const
-			{
-			return mUniform;
-			}*/
+			const char* getUniformName()const;
+			ShaderType getShaderType() const;
+			UniformDataType getUniformDataType() const;
+			uint8_t getValueCount() const;
+			UniformHandle getHandle() const;
+			Transform_Matrix_Type getMatrixType() const;
+			UniformValues getUniformValues() const;			
 #ifdef PLATFORM_D3D
 			void setValueInShaderObject(ID3DXConstantTable* constantTable) const;
 #elif PLATFORM_OPEN_GL
@@ -43,8 +41,9 @@ namespace Engine
 			char* prefixUniformName() const;
 			~Uniform();
 		private:
-			std::map<std::string, SharedPointer<UniformData>> mUniformListInSystem;
+			static std::map<std::string, SharedPointer<Uniform>> mUniformListInSystem;
 			Uniform();
+			std::string effectName;
 			UniformData mUniform;
 		};
 	}

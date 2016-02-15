@@ -1,10 +1,10 @@
 #include "WalkController.h"
 #include "../../Maths/cVector.h"
-#include "../Objects/GameObject.h"
+#include "../Objects/MeshObject.h"
 #include "../Objects/Scene.h"
 #include "../../../Windows/WindowsFunctions.h"
 
-void Engine::WalkController::updateGameObject(Object &i_gameObject, Engine::typedefs::Direction i_dir)
+void Engine::WalkController::updateObject(Object &i_gameObject, Engine::typedefs::Direction i_dir)
 {
 	Transformation tempTransformation = i_gameObject.getTransformation();
 	std::stringstream errormessage;

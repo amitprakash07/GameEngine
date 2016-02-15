@@ -21,7 +21,7 @@ namespace Engine
 		{
 		public:
 			static SharedPointer<WindowingSystem> getWindowingSystem(bool fullScreen = false, int width = 1600, int height = 900);
-			HWND getMainWindow();
+			HWND getMainWindow()const;
 			bool CreateMainWindow(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState);
 			static bool OnMainWindowClosed(const HINSTANCE i_thisInstanceOfTheProgram);
 			std::string getTypeInfo() const override;
@@ -36,9 +36,9 @@ namespace Engine
 			HWND s_mainWindow;
 			const char* s_mainWindowClassName;
 			HWND CreateMainWindowHandle(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState);
-			ATOM RegisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram);
+			ATOM RegisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)const;
 			static LRESULT CALLBACK OnMessageReceived(HWND i_window, UINT i_message, WPARAM i_wParam, LPARAM i_lParam);
-			bool UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram);
+			bool UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram) const;
 			bool CleanupMainWindow();
 			WindowingSystem();
 			void AssignFullResolutionWindow();

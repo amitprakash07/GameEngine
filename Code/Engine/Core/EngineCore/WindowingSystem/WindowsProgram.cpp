@@ -40,7 +40,7 @@ bool Engine::Windows::WindowingSystem::CreateMainWindow(const HINSTANCE i_thisIn
 	return false;
 }
 
-ATOM Engine::Windows::WindowingSystem::RegisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)
+ATOM Engine::Windows::WindowingSystem::RegisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram) const
 {
 	WNDCLASSEX wndClassEx = { 0 };
 	wndClassEx.cbSize = sizeof(WNDCLASSEX);
@@ -332,7 +332,8 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 	return DefWindowProc(i_window, i_message, i_wParam, i_lParam);
 }
 
-bool Engine::Windows::WindowingSystem::UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)
+bool Engine::Windows::WindowingSystem::UnregisterMainWindowClass(
+	const HINSTANCE i_thisInstanceOfTheProgram) const
 {
 	if (UnregisterClass(s_mainWindowClassName, i_thisInstanceOfTheProgram) != FALSE)
 		return true;
@@ -346,7 +347,7 @@ bool Engine::Windows::WindowingSystem::UnregisterMainWindowClass(const HINSTANCE
 	}
 }
 
-HWND Engine::Windows::WindowingSystem::getMainWindow()
+HWND Engine::Windows::WindowingSystem::getMainWindow() const
 {
 	if (s_mainWindow)
 		return s_mainWindow;

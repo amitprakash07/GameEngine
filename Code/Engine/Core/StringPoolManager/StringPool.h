@@ -14,8 +14,8 @@ namespace Engine
 	public:
 		static SharedPointer<StringPool>			getStringPool();
 		char*										findString(char*);
-		std::string getTypeInfo() override { return ""; }
-		bool isBothSameType(RTTI*, std::string) override { return true; }
+		std::string getTypeInfo() const override { return ""; }
+		bool isBothSameType(RTTI*, std::string)const  override { return true; }
 				~StringPool();
 	private:
 		static SharedPointer<StringPool>			mStringPool;

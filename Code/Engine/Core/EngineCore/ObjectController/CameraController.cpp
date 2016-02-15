@@ -5,7 +5,7 @@
 #include "CameraController.h"
 
 
-void Engine::CameraController::updateGameObject(Object &i_Object, Engine::typedefs::Direction i_dir)
+void Engine::CameraController::updateObject(Object &i_Object, Engine::typedefs::Direction i_dir)
 {
 	Transformation tempTransformation = i_Object.getTransformation();
 	std::stringstream errormessage;

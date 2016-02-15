@@ -1,4 +1,4 @@
-#include "GameObject.h"
+#include "MeshObject.h"
 #include "../../../Core/Utilities/HashedString.h"
 #include "../../../Windows/WindowsFunctions.h"
 #include "../../../Core/EngineCore/EngineCore.h"

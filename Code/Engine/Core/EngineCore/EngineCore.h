@@ -7,6 +7,7 @@
 #include "../MessagingSystem/MessagingSystem.h"
 #include "InputController/InputController.h"
 #include "../Utilities/SharedPointer.h"
+#include "InputController/MouseController.h"
 
 
 namespace Engine
@@ -22,6 +23,7 @@ namespace Engine
 		static SharedPointer<Engine::StringPool> getStringPool();
 		static SharedPointer<Engine::Windows::WindowingSystem> getWindowingSystem();
 		static SharedPointer<Engine::InputController> getInputController();
+		static SharedPointer<Engine::MouseController> getMouseInputController();
 		static std::string getMeshFolderPath();
 		static std::string getMaterialFolderPath();
 		static std::string getEffectFolderPath();
@@ -34,6 +36,7 @@ namespace Engine
 		static SharedPointer<Engine::StringPool> mStringPool;
 		static SharedPointer<Engine::Windows::WindowingSystem> mEngineWindowingSystem;
 		static SharedPointer<Engine::InputController> mInputController;
+		static SharedPointer<Engine::MouseController> mMouseController;
 		static std::string materialFolderPath;
 		static std::string shaderFolderName;
 		static std::string effectFolderName;

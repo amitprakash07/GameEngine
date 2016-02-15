@@ -21,8 +21,8 @@ namespace Engine
 		
 		//template<typename T>
 		void sendMessage(Engine::utils::StringHash&, RTTI* , void* message_data = nullptr);
-		std::string getTypeInfo() override { return ""; }
-		bool isBothSameType(RTTI*, std::string) override { return true; }
+		std::string getTypeInfo() const override { return ""; }
+		bool isBothSameType(RTTI*, std::string)const  override { return true; }
 	private:
 		static SharedPointer<MessagingSystem> mMessagingSystem;
 		std::map<Engine::utils::StringHash, std::vector<Engine::MessageHandle>>  m_MessageHandlers;

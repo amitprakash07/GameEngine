@@ -12,9 +12,9 @@ namespace Engine
 	{
 	public:
 		virtual ~IObjectController(){};
-		virtual void updateGameObject(Engine::Object &, Engine::typedefs::Direction) = 0;
-		virtual std::string getTypeInfo() override { return "Engine::IObjectController"; }
-		virtual bool isBothSameType(RTTI*, std::string i_inString) override { return (i_inString == "Engine::IObjectController"); }
+		virtual void updateObject(Engine::Object &, Engine::typedefs::Direction) = 0;
+		virtual std::string getTypeInfo() const override { return "Engine::IObjectController"; }
+		virtual bool isBothSameType(RTTI*, std::string i_inString) const override { return (i_inString == "Engine::IObjectController"); }
 		IObjectController() {}
 		};
 }
