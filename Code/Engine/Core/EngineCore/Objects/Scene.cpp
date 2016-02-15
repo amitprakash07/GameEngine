@@ -9,9 +9,12 @@ std::map<std::string, Engine::SharedPointer<Engine::Scene>> Engine::Scene::mScen
 Engine::Scene::Scene(std::string i_sceneName) :
 	mTimer(Engine::Time::FrameTime::getFrameTimeController())
 {
-	mScene.reserve(20);
+	mMeshObjectInSceneList.reserve(20);
+	mLineListInScene.reserve(20);
+	mSpriteListInScene.reserve(20);
 	sceneName = i_sceneName;
 	render = false;
+	renderDebug = true;
 }
 
 Engine::SharedPointer<Engine::Scene> Engine::Scene::CreateNewScene(std::string i_sceneName)
@@ -35,19 +38,51 @@ Engine::SharedPointer<Engine::Time::FrameTime> Engine::Scene::getTimer()
 
 Engine::Scene::~Scene()
 {
-	for (std::vector<SharedPointer<MeshObject>>::iterator i = mScene.begin(); i != mScene.end(); ++i)
+	for (std::vector<SharedPointer<MeshObject>>::iterator i = mMeshObjectInSceneList.begin();
+	i != mMeshObjectInSceneList.end(); ++i)
 		i->deleteObject();
 
 }
 
-bool Engine::Scene::addGameObjectToScene(SharedPointer<MeshObject> & i_game_object)
+template<typename T>
+bool Engine::Scene::addObjectToScene(SharedPointer<T> & i_game_object)
 {
-	if (!i_game_object.isNull())
+	return false;
+}
+
+template<>
+bool Engine::Scene::addObjectToScene<Engine::MeshObject>(
+	SharedPointer<MeshObject> & iMeshObject)
+{
+	if (!iMeshObject.isNull())
 	{
-		mScene.push_back(i_game_object);
+		mMeshObjectInSceneList.push_back(iMeshObject);
 		return true;
 	}
-	mTimer.deleteObject();
+	return false;
+}
+
+template<>
+bool Engine::Scene::addObjectToScene<Engine::Graphics::Line>(
+	SharedPointer<Engine::Graphics::Line> & iLine)
+{
+	if (!iLine.isNull())
+	{
+		mLineListInScene.push_back(iLine);
+		return true;
+	}
+	return false;
+}
+
+template<>
+bool Engine::Scene::addObjectToScene<Engine::Graphics::Sprite>(
+	SharedPointer<Engine::Graphics::Sprite> & iSprite)
+{
+	if (!iSprite.isNull())
+	{
+		mSpriteListInScene.push_back(iSprite);
+		return true;
+	}
 	return false;
 }
 
@@ -88,19 +123,24 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 }
 
 
-void Engine::Scene::drawScene()
+void Engine::Scene::drawScene(bool withDebug)
 {
-	for (std::vector<SharedPointer<Engine::MeshObject>>::iterator i = mScene.begin(); i != mScene.end(); ++i)
-	{
-		(*i)->draw();
-	}
+	for (int i = 0; i < mMeshObjectInSceneList.size(); i++)
+		mMeshObjectInSceneList[i]->draw(withDebug);
+
+	for (int i = 0; i < mSpriteListInScene.size(); i++)
+		mSpriteListInScene[i]->draw(withDebug);
+
+	if (Engine::Graphics::Line::containsDebugLine())
+		Engine::Graphics::Line::drawLines(withDebug);
+
 	mTimer->updateDeltaTime();
 }
 
 void Engine::Scene::applyPaintersAlgorithmForTransparency()
 {
 	SharedPointer<Scene> activeScene = getRenderableScene();
-	std::sort(activeScene->mScene.begin(), activeScene->mScene.end(), sortingFunc);
+	std::sort(activeScene->mMeshObjectInSceneList.begin(), activeScene->mMeshObjectInSceneList.end(), sortingFunc);
 }
 
 
@@ -149,7 +189,11 @@ void Engine::Scene::deleteAllScene()
 {
 	for (std::map<std::string, SharedPointer<Scene>>::iterator i = mSceneList.begin(); i != mSceneList.end(); ++i)
 	{
-		for (std::vector<SharedPointer<MeshObject>>::iterator j = i->second->mScene.begin(); j != i->second->mScene.end(); ++j)
+		for (std::vector<SharedPointer<MeshObject>>::iterator j = i->second->mMeshObjectInSceneList.begin();
+		j != i->second->mMeshObjectInSceneList.end(); ++j)
+			j->deleteObject();
+		for (std::vector<SharedPointer<Graphics::Sprite>>::iterator j = i->second->mSpriteListInScene.begin();
+		j != i->second->mSpriteListInScene.end(); ++j)
 			j->deleteObject();
 	}
 }

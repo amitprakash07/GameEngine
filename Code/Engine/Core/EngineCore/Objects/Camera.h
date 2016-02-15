@@ -18,7 +18,7 @@ namespace Engine
 		Transformation getTransformation() override;
 		void setTransformation(Engine::Math::cVector,
 			Engine::Math::cQuaternion = Engine::Math::cQuaternion()) override;
-		void draw() override {}
+		void draw(bool) override {}
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
 		void setCameraController(IObjectController*);
 		void setFieldOfView(float);
@@ -34,6 +34,8 @@ namespace Engine
 		float getNearPlane() const;
 		float getFarPlane() const;
 		std::string getCameraName() const;
+		bool isRenderable() const override { return false; }
+		bool isDebugObject() const override { return false; }
 	private:
 		Engine::Transformation mTransformation;
 		std::string mCameraName;
@@ -49,7 +51,7 @@ namespace Engine
 			float,
 			float,
 			float i_nearPlane = 0.1f,
-			float u_farPlane = 100.0f);
+			float u_farPlane = 10000.0f);
 		Camera();
 	};
 }

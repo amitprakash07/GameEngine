@@ -9,12 +9,20 @@
 
 Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::Windows::WindowingSystem::mWindowingSystem;
 
-Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::Windows::WindowingSystem::getWindowingSystem()
+Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::Windows::WindowingSystem::getWindowingSystem(
+	bool fullScreen, int width, int height)
 {
 	if (mWindowingSystem.isNull())
 	{
 		SharedPointer<Engine::Windows::WindowingSystem> temp(new WindowingSystem(), "Engine::Windows::WindowingSystem");
 		mWindowingSystem = temp;
+		if (!fullScreen)
+		{
+			mWindowingSystem->width = width;
+			mWindowingSystem->height = height;
+		}
+		else
+			mWindowingSystem->AssignFullResolutionWindow();
 	}
 	return mWindowingSystem;
 }
@@ -53,7 +61,7 @@ ATOM Engine::Windows::WindowingSystem::RegisterMainWindowClass(const HINSTANCE i
 	wndClassEx.hIcon = LoadIcon(i_thisInstanceOfTheProgram, MAKEINTRESOURCE(IDI_BIG));
 	wndClassEx.hIconSm = LoadIcon(i_thisInstanceOfTheProgram, MAKEINTRESOURCE(IDI_SMALL));
 	// The cursor that should display when the mouse pointer is over windows of this class
-	wndClassEx.hCursor = LoadCursor(nullptr , IDC_ARROW);
+	wndClassEx.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	// The "brush" that windows of this class should use as a background
 	// (Setting this is a bit confusing but not important,
 	// so don't be alarmed if the next line looks scary)
@@ -77,7 +85,7 @@ ATOM Engine::Windows::WindowingSystem::RegisterMainWindowClass(const HINSTANCE i
 	return mainWindowClass;
 }
 
-HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle( const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState )
+HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState)
 {
 	// Create the main window
 	HWND mainWindow;
@@ -137,15 +145,15 @@ HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle( const HINSTANCE i
 		// Ask Windows to create the specified window.
 		// CreateWindowEx() will return a handle to the window,
 		// which is what we'll use to communicate with Windows about this window
-		mainWindow = CreateWindowEx( windowStyle_extended, s_mainWindowClassName, windowCaptionString.c_str(), windowStyle,
+		mainWindow = CreateWindowEx(windowStyle_extended, s_mainWindowClassName, windowCaptionString.c_str(), windowStyle,
 			position_x, position_y, width, height,
-			hParent, hMenu, hProgram, userData );
-		if ( mainWindow == nullptr )
+			hParent, hMenu, hProgram, userData);
+		if (mainWindow == nullptr)
 		{
 			const char* errorCaption = "No Main Window";
-			std::string errorMessage( "Windows failed to create the main window: " );
+			std::string errorMessage("Windows failed to create the main window: ");
 			errorMessage += WindowsUtil::GetLastWindowsError();
-			MessageBox( nullptr, errorMessage.c_str(), errorCaption, MB_OK | MB_ICONERROR );
+			MessageBox(nullptr, errorMessage.c_str(), errorCaption, MB_OK | MB_ICONERROR);
 			return nullptr;
 		}
 	}
@@ -154,8 +162,8 @@ HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle( const HINSTANCE i
 	{
 		// In a real game these values would come from an external source
 		// rather than be hard-coded
-		const int desiredWidth = 800;
-		const int desiredHeight = 600;
+		const int desiredWidth = width;
+		const int desiredHeight = height;
 
 		// Calculate how much of the window is coming from the "non-client area"
 		// (the borders and title bar)
@@ -167,43 +175,43 @@ HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle( const HINSTANCE i
 		} nonClientAreaSize;
 		{
 			// Get the coordinates of the entire window
-			if ( GetWindowRect( mainWindow, &windowCoordinates ) == FALSE )
+			if (GetWindowRect(mainWindow, &windowCoordinates) == FALSE)
 			{
-				std::string errorMessage( "Windows failed to get the coordinates of the main window: " );
+				std::string errorMessage("Windows failed to get the coordinates of the main window: ");
 				errorMessage += WindowsUtil::GetLastWindowsError();
-				MessageBox(nullptr, errorMessage.c_str(), nullptr, MB_OK | MB_ICONERROR );
+				MessageBox(nullptr, errorMessage.c_str(), nullptr, MB_OK | MB_ICONERROR);
 				return nullptr;
 			}
 			// Get the dimensions of the client area
 			RECT clientDimensions;
-			if ( GetClientRect( mainWindow, &clientDimensions ) == FALSE )
+			if (GetClientRect(mainWindow, &clientDimensions) == FALSE)
 			{
-				std::string errorMessage( "Windows failed to get the dimensions of the main window's client area: " );
+				std::string errorMessage("Windows failed to get the dimensions of the main window's client area: ");
 				errorMessage += WindowsUtil::GetLastWindowsError();
-				MessageBox(nullptr, errorMessage.c_str(), nullptr, MB_OK | MB_ICONERROR );
+				MessageBox(nullptr, errorMessage.c_str(), nullptr, MB_OK | MB_ICONERROR);
 				return nullptr;
 			}
 			// Get the difference between them
-			nonClientAreaSize.width = ( windowCoordinates.right - windowCoordinates.left ) - clientDimensions.right;
-			nonClientAreaSize.height = ( windowCoordinates.bottom - windowCoordinates.top ) - clientDimensions.bottom;
+			nonClientAreaSize.width = (windowCoordinates.right - windowCoordinates.left) - clientDimensions.right;
+			nonClientAreaSize.height = (windowCoordinates.bottom - windowCoordinates.top) - clientDimensions.bottom;
 		}
 		// Resize the window
 		{
 			BOOL shouldTheResizedWindowBeRedrawn = TRUE;
-			if ( MoveWindow( mainWindow, windowCoordinates.left, windowCoordinates.top,
+			if (MoveWindow(mainWindow, windowCoordinates.left, windowCoordinates.top,
 				desiredWidth + nonClientAreaSize.width, desiredHeight + nonClientAreaSize.height,
-				shouldTheResizedWindowBeRedrawn ) == FALSE )
+				shouldTheResizedWindowBeRedrawn) == FALSE)
 			{
-				std::string errorMessage( "Windows failed to resize the main window: " );
+				std::string errorMessage("Windows failed to resize the main window: ");
 				errorMessage += WindowsUtil::GetLastWindowsError();
-				MessageBox(nullptr, errorMessage.c_str(), nullptr, MB_OK | MB_ICONERROR );
+				MessageBox(nullptr, errorMessage.c_str(), nullptr, MB_OK | MB_ICONERROR);
 				return nullptr;
 			}
 		}
 	}
 
 	// Display the window in the initial state that Windows requested
-	ShowWindow( mainWindow, i_initialWindowDisplayState );
+	ShowWindow(mainWindow, i_initialWindowDisplayState);
 	return mainWindow;
 }
 
@@ -255,8 +263,6 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		SharedPointer<WindowingSystem> tempWindowingSystem = Engine::EngineCore::getWindowingSystem();
 		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, reinterpret_cast<IMessageHandler*>(tempWindowingSystem.getRawPointer()), reinterpret_cast<void*>(i_wParam));
 		break;
-		
-		break;
 	}
 	case WM_KEYDOWN:
 	{
@@ -265,6 +271,46 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, reinterpret_cast<IMessageHandler*>(tempWindowingSystem.getRawPointer()), reinterpret_cast<void*>(i_wParam));
 		break;
 	}
+	case WM_LBUTTONDOWN:
+	{
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseEvent");
+		SharedPointer<Engine::MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
+		WindowsParam windowsParameter;
+		windowsParameter.windowsMessage = i_message;
+		windowsParameter.wParam = i_wParam;
+		windowsParameter.lParam = i_lParam;
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp,
+			reinterpret_cast<IMessageHandler*>(tempMouseController.getRawPointer()),
+			reinterpret_cast<void*>(&windowsParameter));
+		break;
+	}
+	case WM_MOUSEMOVE:
+	{
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseEvent");
+		SharedPointer<Engine::MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
+		WindowsParam windowsParameter;
+		windowsParameter.windowsMessage = i_message;
+		windowsParameter.wParam = i_wParam;
+		windowsParameter.lParam = i_lParam;
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp,
+			reinterpret_cast<IMessageHandler*>(tempMouseController.getRawPointer()),
+			reinterpret_cast<void*>(&windowsParameter));
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseEvent");
+		SharedPointer<Engine::MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
+		WindowsParam windowsParameter;
+		windowsParameter.windowsMessage = i_message;
+		windowsParameter.wParam = i_wParam;
+		windowsParameter.lParam = i_lParam;
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp,
+			reinterpret_cast<IMessageHandler*>(tempMouseController.getRawPointer()),
+			reinterpret_cast<void*>(&windowsParameter));
+		break;
+	}
+
 	// The window's nonclient area is being destroyed
 	case WM_NCDESTROY:
 	{
@@ -278,11 +324,11 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		int exitCode = 0;			// Arbitrary de facto success code
 		PostQuitMessage(exitCode);	// This sends a WM_QUIT message
 									// For WM_NCDESTROY messages, return 0 to indicate that it was processed
-		
+
 		return 0;
 	}
 	}//Switch 
-	// Pass any messages that weren't handled on to Windows
+	 // Pass any messages that weren't handled on to Windows
 	return DefWindowProc(i_window, i_message, i_wParam, i_lParam);
 }
 
@@ -309,32 +355,32 @@ HWND Engine::Windows::WindowingSystem::getMainWindow()
 
 bool Engine::Windows::WindowingSystem::CleanupMainWindow()
 {
-	if ( s_mainWindow != nullptr )
+	if (s_mainWindow != nullptr)
 	{
-		if ( DestroyWindow( s_mainWindow ) != FALSE )
+		if (DestroyWindow(s_mainWindow) != FALSE)
 		{
 			s_mainWindow = nullptr;
 		}
 		else
 		{
 			const char* errorCaption = "Couldn't Destroy Main Window";
-			std::string errorMessage( "Windows failed to destroy the main window: " );
+			std::string errorMessage("Windows failed to destroy the main window: ");
 			errorMessage += WindowsUtil::GetLastWindowsError();
-			MessageBox( nullptr, errorMessage.c_str(), errorCaption, MB_OK | MB_ICONERROR );
+			MessageBox(nullptr, errorMessage.c_str(), errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 	}
 	return true;
 }
 
-bool Engine::Windows::WindowingSystem::OnMainWindowClosed( const HINSTANCE i_thisInstanceOfTheProgram )
+bool Engine::Windows::WindowingSystem::OnMainWindowClosed(const HINSTANCE i_thisInstanceOfTheProgram)
 {
 	bool wereThereErrors = false;
-	if ( !EngineCore::getWindowingSystem()->CleanupMainWindow() )
+	if (!EngineCore::getWindowingSystem()->CleanupMainWindow())
 		wereThereErrors = true;
-	if ( !EngineCore::getWindowingSystem()->UnregisterMainWindowClass( i_thisInstanceOfTheProgram ) )
+	if (!EngineCore::getWindowingSystem()->UnregisterMainWindowClass(i_thisInstanceOfTheProgram))
 		wereThereErrors = true;
-	
+
 	return !wereThereErrors;
 }
 
@@ -350,15 +396,38 @@ Engine::Windows::WindowingSystem::~WindowingSystem()
 	s_mainWindow = nullptr;*/
 }
 
-bool Engine::Windows::WindowingSystem::isBothSameType(RTTI*, std::string)
+bool Engine::Windows::WindowingSystem::isBothSameType(RTTI*, std::string) const
 {
 	return true;
 }
 
-std::string Engine::Windows::WindowingSystem::getTypeInfo()
+std::string Engine::Windows::WindowingSystem::getTypeInfo() const
 {
 	return "";
 }
+
+
+void Engine::Windows::WindowingSystem::AssignFullResolutionWindow()
+{
+	HWND desktopResolution = GetDesktopWindow();
+	RECT fullResolution;
+	GetWindowRect(desktopResolution, &fullResolution);
+	width = fullResolution.right;
+	height = fullResolution.bottom;
+}
+
+int Engine::Windows::WindowingSystem::getWindowHeight() const
+{
+	return height;
+}
+
+int Engine::Windows::WindowingSystem::getWindowWidth() const
+{
+	return width;
+}
+
+
+
 
 
 

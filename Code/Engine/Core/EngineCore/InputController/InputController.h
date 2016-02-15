@@ -7,13 +7,13 @@
 
 namespace Engine
 {
-	class InputController: public IMessageHandler
+	class InputController : public IMessageHandler
 	{
 	public:
 		static SharedPointer<InputController> getInputController();
 		void HandleMessage(Engine::utils::StringHash &, RTTI*, void* i_pMessageData) override;
-		std::string getTypeInfo() override;
-		bool isBothSameType(RTTI*, std::string) override;
+		std::string getTypeInfo() const override;
+		bool isBothSameType(RTTI*, std::string) const override;
 	private:
 		static SharedPointer<InputController> mInputController;
 		std::string mTypeName;

@@ -57,6 +57,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Direct3D\Line.d3d.cpp" />
     <ClCompile Include="Direct3D\Mesh.d3d.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='_ENGINE_DEBUG|x64'">false</ExcludedFromBuild>
@@ -79,13 +80,6 @@
     </ClCompile>
     <ClCompile Include="Direct3D\Uniform.d3d.cpp" />
     <ClCompile Include="Effect.Common.cpp" />
-    <ClCompile Include="EffectUniform.d3d.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='_ENGINE_DEBUG|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="EffectUniform.gl.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -94,6 +88,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="LineCommon.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MeshCommon.cpp" />
     <ClCompile Include="OpenGL\Effect.gl.cpp">
@@ -129,21 +124,29 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="OpenGL\Uniform.gl.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='BUILD_DEBUG|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='_ENGINE_DEBUG|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RELEASE_DEBUG|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="TextureCommon.cpp" />
+    <ClCompile Include="Uniform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Includes.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="typedefs.h" />
     <ClInclude Include="Uniform.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UniformType.h" />
+    <ClInclude Include="uniformdefs.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1A97BFDF-D891-474A-86B1-6E76E89ABC73}</ProjectGuid>

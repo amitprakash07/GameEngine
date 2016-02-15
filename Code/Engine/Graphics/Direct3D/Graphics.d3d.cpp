@@ -253,116 +253,109 @@ bool Engine::Graphics::GraphicsSystem::setRenderState(uint8_t i_renderState)
 
 void Engine::Graphics::GraphicsSystem::EnableWireFrame(bool iRequest)
 {
-	DWORD status;
+	/*DWORD status;
 	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_FILLMODE, &status);
-	assert(result == D3D_OK);
+	assert(result == D3D_OK);*/
 	switch (iRequest)
 	{
 	case true:
-		if (status == FALSE)
-			assert(s_direct3dDevice->SetRenderState(D3DRS_FILLMODE, TRUE) == D3D_OK);
+		//if(status == FALSE)
+		assert(s_direct3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME) == D3D_OK);
 		break;
 	case false:
-		if (status == TRUE)
-			assert(s_direct3dDevice->SetRenderState(D3DRS_FILLMODE, FALSE) == D3D_OK);
+		//if(status == TRUE)
+		assert(s_direct3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID) == D3D_OK);
 		break;
 	}
 }
 
 void Engine::Graphics::GraphicsSystem::EnableAlphaBlending(bool iRequest)
 {
-	DWORD status;
+	/*DWORD status;
 	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_ALPHABLENDENABLE, &status);
-	assert(result == D3D_OK);
+	assert(result == D3D_OK);*/
+	HRESULT result;
 	switch (iRequest)
 	{
 	case true:
-		if (status == FALSE)
-		{
-			result = s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-			result |= s_direct3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-			result |= s_direct3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-			assert(result == D3D_OK);
-		}
+		/*if (status == FALSE)
+		{*/
+		result = s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		result |= s_direct3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		result |= s_direct3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		assert(result == D3D_OK);
+		//}
 		break;
 	case false:
-		if (status == TRUE)
-			assert(s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE) == D3D_OK);
+		//if (status == TRUE)
+		assert(s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE) == D3D_OK);
 		break;
 	}
 }
 
 void Engine::Graphics::GraphicsSystem::EnableDepthTesting(bool iRequest)
 {
-	DWORD status;
+	/*DWORD status;
 	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_ZENABLE, &status);
-	assert(result == D3D_OK);
+	assert(result == D3D_OK);*/
+	HRESULT result;
 	switch (iRequest)
 	{
 	case true:
-		if (status == FALSE)
-		{
-			result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-			result |= s_direct3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-			assert(result == D3D_OK);
-		}
+		/*if (status == FALSE)
+		{*/
+		result = s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+		result |= s_direct3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+		assert(result == D3D_OK);
+		//}
 		break;
 	case false:
-		if (status == TRUE)
-			assert(s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE) == D3D_OK);
+		//if (status == TRUE)
+		assert(s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE) == D3D_OK);
 		break;
 	}
 }
 
 void Engine::Graphics::GraphicsSystem::EnableDepthWriting(bool iRequest)
 {
-	DWORD status;
+	/*DWORD status;
 	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_ZWRITEENABLE, &status);
-	assert(result == D3D_OK);
+	assert(result == D3D_OK);*/
+	HRESULT result;
 	switch (iRequest)
 	{
 	case true:
-		if (status == FALSE)
-		{
-			s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-			assert(result == D3D_OK);
-		}
+		/*if (status == FALSE)
+		{*/
+		result = s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+		assert(result == D3D_OK);
+		//}
 		break;
 	case false:
-		if (status == TRUE)
-			assert(s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE) == D3D_OK);
+		//if (status == TRUE)
+		assert(s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE) == D3D_OK);
 		break;
 	}
 }
 
 void Engine::Graphics::GraphicsSystem::EnableFaceCulling(bool iRequest, DWORD cullingMode)
 {
-	DWORD status;
+	/*DWORD status;
 	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_CULLMODE, &status);
-	assert(result == D3D_OK);
+	assert(result == D3D_OK);*/
+	HRESULT result;
 	switch (iRequest)
 	{
 	case true:
-		if (status == FALSE)
-		{
-			s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, cullingMode);
-			assert(result == D3D_OK);
-		}
+		/*if (status == FALSE)
+		{*/
+		result = s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, cullingMode);
+		assert(result == D3D_OK);
+		//}
 		break;
 	case false:
-		if (status == TRUE)
-			assert(s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE) == D3D_OK);
+		//if (status == TRUE)
+		assert(s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE) == D3D_OK);
 		break;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

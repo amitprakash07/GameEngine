@@ -55,7 +55,7 @@ bool Tools::AssetBuilder::cShaderBuilder::Build(const std::vector<std::string>& 
 		std::string path_sdk;
 		{
 			std::string othererrormessage;
-			if (!WindowsUtil::GetEnvironmentVariable("DXSDK_DIR", path_sdk, &othererrormessage))
+			if (!WindowsUtil::GetVSEnvironmentVariable("DXSDK_DIR", path_sdk, &othererrormessage))
 			{
 				std::stringstream decoratedErrorMessage;
 				decoratedErrorMessage << "Windows failed to get the path to the DirectX SDK: " << othererrormessage << __FILE__;
@@ -84,6 +84,8 @@ bool Tools::AssetBuilder::cShaderBuilder::Build(const std::vector<std::string>& 
 			break;
 		case Engine::Graphics::ShaderType::Fragment:
 			commandToBuild << " /Tps_3_0";
+			break;
+		default:
 			break;
 		}
 		// Entry point

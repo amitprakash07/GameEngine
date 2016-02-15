@@ -115,19 +115,23 @@ bool Engine::Graphics::Effect::LoadEffect()
 		if (!LoadShaders())
 			return false;
 		/*
+		/*
 		File Format
 		vertexShaderFileName
 		fragmentShaderFileName
 		renderStates
 
 		noOfEngineUniforms
-		for each uniform
+		for each unifrom
 		{
 		UniformName
 		shaderType
 		valType
+		MatrixType-optional
+		valCount
 		}
 		*/
+
 		if (uniformCount>0)
 		{
 			//m_uniforms = new ShaderUniform[uniformCount];
@@ -160,15 +164,23 @@ bool Engine::Graphics::Effect::LoadEffect()
 					Transform_Matrix_Type tempMatrixType;
 					memcpy(&tempMatrixType, reinterpret_cast<Transform_Matrix_Type*>(tempBuffer), sizeof(Transform_Matrix_Type));
 					tempBuffer += sizeof(Transform_Matrix_Type);
+
+					//ValCount
+					uint8_t dataCount;
+					memcpy(&dataCount, reinterpret_cast<uint8_t*>(tempBuffer), sizeof(uint8_t));
+					tempBuffer += sizeof(uint8_t);
+					tempUniform->setValCount(dataCount);
 					tempUniform->setMatrixType(tempMatrixType);
 					setTransformMatrixExistenceFlag(tempMatrixType);
 				}
-
-				//ValCount
-				uint8_t dataCount;
-				memcpy(&dataCount, reinterpret_cast<uint8_t*>(tempBuffer), sizeof(uint8_t));
-				tempBuffer += sizeof(uint8_t);
-				tempUniform->setValCount(dataCount);
+				else
+				{
+					//ValCount
+					uint8_t dataCount;
+					memcpy(&dataCount, reinterpret_cast<uint8_t*>(tempBuffer), sizeof(uint8_t));
+					tempBuffer += sizeof(uint8_t);
+					tempUniform->setValCount(dataCount);
+				}
 
 
 				//Handle
@@ -181,10 +193,10 @@ bool Engine::Graphics::Effect::LoadEffect()
 		}
 
 		delete buffer;
+		return true;
 	}
 	return false;
 }
-
 
 void Engine::Graphics::Effect::setTransformMatrixExistenceFlag(Transform_Matrix_Type iMatrixType)
 {
@@ -215,6 +227,7 @@ void Engine::Graphics::Effect::setLocalToWorldMatrrixTransformValue(Transformati
 		{
 			UniformValues tempValue;
 			tempValue.matrixValue.matrix = tempLocal;
+			tempValue.matrixValue.Type = LocalToWorld;
 			localToWorld->setUniformValue(tempValue);
 		}
 	}
@@ -222,7 +235,7 @@ void Engine::Graphics::Effect::setLocalToWorldMatrrixTransformValue(Transformati
 
 void Engine::Graphics::Effect::setWorldToViewTransformationValue(Transformation cameraTransformation)
 {
-	if (isLocalToWorldTransformExist)
+	if (isWorldToViewTransformExist)
 	{
 		Engine::Math::cMatrix_transformation tempLocal =
 			Math::cMatrix_transformation::CreateWorldToViewTransform(cameraTransformation.mOrientation,
@@ -232,6 +245,7 @@ void Engine::Graphics::Effect::setWorldToViewTransformationValue(Transformation 
 		{
 			UniformValues tempValue;
 			tempValue.matrixValue.matrix = tempLocal;
+			tempValue.matrixValue.Type = WorldToView;
 			worldToView->setUniformValue(tempValue);
 		}
 	}
@@ -239,7 +253,7 @@ void Engine::Graphics::Effect::setWorldToViewTransformationValue(Transformation 
 
 void Engine::Graphics::Effect::setViewToScreenTransformationValue(float fieldOfView, float aspectRatio, float nearPlane, float farPlane)
 {
-	if (isLocalToWorldTransformExist)
+	if (isViewToScreenTransformExist)
 	{
 		Engine::Math::cMatrix_transformation tempLocal =
 			Math::cMatrix_transformation::CreateViewToScreenTransform(
@@ -249,11 +263,11 @@ void Engine::Graphics::Effect::setViewToScreenTransformationValue(float fieldOfV
 		{
 			UniformValues tempValue;
 			tempValue.matrixValue.matrix = tempLocal;
+			tempValue.matrixValue.Type = ViewToScreen;
 			viewToScreen->setUniformValue(tempValue);
 		}
 	}
 }
-
 
 Engine::SharedPointer<Engine::Graphics::Uniform> Engine::Graphics::Effect::getTransformationMatrix(Transform_Matrix_Type iMatrixType)
 {
@@ -288,14 +302,12 @@ Engine::SharedPointer<Engine::Graphics::Uniform> Engine::Graphics::Effect::getTr
 	return SharedPointer<Uniform>();
 }
 
-
 void Engine::Graphics::Effect::setUniformValue(std::string iUniformName, UniformValues iValues)
 {
 	SharedPointer<Uniform> tempUniform = getUniform(iUniformName);
 	if (!tempUniform.isNull())
 		tempUniform->setUniformValue(iValues);
 }
-
 
 Engine::SharedPointer<Engine::Graphics::Uniform> Engine::Graphics::Effect::getUniform(std::string iUniformName)
 {
@@ -307,7 +319,6 @@ Engine::SharedPointer<Engine::Graphics::Uniform> Engine::Graphics::Effect::getUn
 	}
 	return SharedPointer<Uniform>();
 }
-
 
 bool Engine::Graphics::Effect::isUniformExist(std::string iUniformName)
 {

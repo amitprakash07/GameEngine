@@ -1,18 +1,64 @@
 #ifndef __TYPEDEFS_H
 #define __TYPEDEFS_H
 
+#include <stdint.h>
+
 #include "../Windows/WindowsIncludes.h"
 #ifdef PLATFORM_D3D
 #include <d3dx9shader.h>
 #elif PLATFORM_OPEN_GL
-#include "../Graphics/Graphics.h"
 #include <gl/GLU.h>
 #endif
 
-#include <stdint.h>
+
 
 namespace Engine
 {
+	namespace Maths
+	{
+		struct Point2
+		{
+			float x;
+			float y;
+		};
+
+		struct Point3
+		{
+			float x;
+			float y;
+			float z;
+
+			Point3()
+			{
+				x = y = z = 0.0f;
+			}
+			Point3(Point3& i_point3)
+			{
+				x = i_point3.x;
+				y = i_point3.y;
+				z = i_point3.z;
+			}
+
+			Point3(float i_x, float i_y, float i_z)
+			{
+				x = i_x;
+				y = i_y;
+				z = i_z;
+			}
+
+			bool operator == (const Point3 &i_point2) const
+			{
+				if ((x == i_point2.x)
+					&& (y == i_point2.y)
+					&& (z == i_point2.z))
+					return true;
+				return false;
+			}
+		};
+	}
+
+
+
 	namespace Graphics
 	{
 		typedef
@@ -48,6 +94,13 @@ namespace Engine
 			ConstantTable;
 
 
+		typedef
+#ifdef PLATFORM_D3D
+			DWORD
+#elif PLATFORM_OPEN_GL
+			GLenum
+#endif
+			CullingMode;
 
 
 		enum indiceWinding
@@ -90,6 +143,47 @@ namespace Engine
 			SCREEN_COORDINATE = 0,
 			VIEWPORT_COORDINATE = 1,
 			TEXTURE_COORDINATE = 2
+		};
+
+		struct RGBColor
+		{
+			float r;
+			float g;
+			float b;
+
+			RGBColor()
+			{
+				r = g = b = 0.0f;
+			}
+
+			RGBColor(float iR, float iG, float iB)
+			{
+				r = iR;
+				g = iG;
+				b = iB;
+			}
+		};
+
+		struct RGBAColor
+		{
+			float r;
+			float g;
+			float b;
+			float a;
+
+			RGBAColor()
+			{
+				r = g = b = 0.0f;
+				a = 1.0f;
+			}
+
+			RGBAColor(float iR, float iG, float iB, float iA)
+			{
+				r = iR;
+				g = iG;
+				b = iB;
+				a = iA;
+			}
 		};
 
 	}

@@ -2,20 +2,24 @@
 #define __EFFECT_BUILDER_H
 
 #include "../BuilderHelper/cbBuilder.h"
+#include "../../Engine/Graphics/uniformdefs.h"
+
+
 
 namespace Tools
 {
 	namespace AssetBuilder
 	{
-		enum __renderState
+		struct ShaderUniformDef
 		{
-			ALPHA_BLENDING = 1 << 0,
-			DEPTH_TESTING = 1<<1,
-			DEPTH_WRITING = 1<<2,
-			FACE_CULLING = 1<<3
+			char * uniformName;
+			Engine::Graphics::ShaderType shaderType;
+			Engine::Graphics::UniformDataType uniformValType;
+			Engine::Graphics::Transform_Matrix_Type matrixType;
+			uint8_t valCount;
 		};
 
-		class EffectBuilder: public cbBuilder
+		class EffectBuilder : public cbBuilder
 		{
 		public:
 			EffectBuilder();
@@ -25,7 +29,8 @@ namespace Tools
 			char* vertexName;
 			char* fragmentName;
 			uint8_t* renderSate;
-
+			uint8_t uniformCount;
+			ShaderUniformDef* uniforms;
 		};
 	}
 }

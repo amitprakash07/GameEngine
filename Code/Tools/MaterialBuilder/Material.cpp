@@ -21,7 +21,6 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 	lua_State *mLuaState = nullptr;
 	std::stringstream errormessage;
 	mLuaState = luaL_newstate();
-
 	//Creating Lua State
 	if (!mLuaState)
 	{
@@ -40,9 +39,8 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 		return false;
 	}
 
-	
+
 	int luaResult = luaL_loadfile(mLuaState, materialName);
-	//std::cerr << "Successfully Loaded";
 	//Checking the load was successful or not
 	if (luaResult != LUA_OK)
 	{
@@ -80,7 +78,8 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 		memcpy(effectFile, tempEffect, sizeof(char)*length);
 		effectFile[length] = '\0';
 		lua_pop(mLuaState, 1); //Popping ou the effect file name
-		
+
+
 	}
 	/********************************************************************/
 
@@ -88,160 +87,158 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 	{
 		lua_pushstring(mLuaState, "map");
 		lua_gettable(mLuaState, -2);
-		mapCount = luaL_len(mLuaState, -1);
-		if(mapCount > 0)
+		if (LuaHelper::isTable(mLuaState))
 		{
-			maps = new Map[mapCount];
-			for (int i = 1; i <= mapCount; ++i)
+			mapCount = luaL_len(mLuaState, -1);
+			if (mapCount > 0)
 			{
-				lua_pushinteger(mLuaState, i);
-				lua_gettable(mLuaState, -2);
+				maps = new Map[mapCount];
+				for (int i = 1; i <= mapCount; ++i)
 				{
+					lua_pushinteger(mLuaState, i);
+					lua_gettable(mLuaState, -2);
 					{
-						lua_pushstring(mLuaState, "path");
-						lua_gettable(mLuaState, -2);
-						const char* path = lua_tostring(mLuaState, -1);
-						size_t pathLength = strlen(path);
-						maps[i-1].file = new char[pathLength];
-						memcpy(maps[i-1].file, path, pathLength);
-						maps[i-1].file[pathLength] = '\0';
-						lua_pop(mLuaState, 1); //Popping path
-					}
+						{
+							lua_pushstring(mLuaState, "path");
+							lua_gettable(mLuaState, -2);
+							const char* path = lua_tostring(mLuaState, -1);
+							size_t pathLength = strlen(path);
+							maps[i - 1].file = new char[pathLength];
+							memcpy(maps[i - 1].file, path, pathLength);
+							maps[i - 1].file[pathLength] = '\0';
+							lua_pop(mLuaState, 1); //Popping path
+						}
 
-					{
-						lua_pushstring(mLuaState, "uniformName");
-						lua_gettable(mLuaState, -2);
-						const char* uniformName = lua_tostring(mLuaState, -1);
-						size_t uniformLength = strlen(uniformName);
-						maps[i - 1].uniform = new char[uniformLength];
-						memcpy(maps[i - 1].uniform, uniformName, uniformLength);
-						maps[i - 1].uniform[uniformLength] = '\0';
-						lua_pop(mLuaState, 1); //Popping path
-					}
-					
-					{
-						lua_pushstring(mLuaState, "shader");
-						lua_gettable(mLuaState, -2);
-						const char* shaderType = lua_tostring(mLuaState, -1);
-						if (strcmp(shaderType,"Fragment")==0)
-							maps[i - 1].shaderType = Fragment;
-						else
-							maps[i - 1].shaderType = Vertex;
-						lua_pop(mLuaState, 1);
-					}
-					
-					{
-						lua_pushstring(mLuaState, "mapType");
-						lua_gettable(mLuaState, -2);
-						const char* mapType = lua_tostring(mLuaState, -1);
-						if (strcmp(mapType, "albedo") == 0)
-							maps[i - 1].mapType = ALBEDO;
-						if(strcmp(mapType, "normal") == 0)
-							maps[i - 1].mapType = NORMAL;
-						if (strcmp(mapType, "specular") == 0)
-							maps[i - 1].mapType = SPECULAR;
-						if (strcmp(mapType, "bump") == 0)
-							maps[i - 1].mapType = BUMP;
-						if (strcmp(mapType, "shadow") == 0)
-							maps[i - 1].mapType = SHADOW;
+						{
+							lua_pushstring(mLuaState, "uniformName");
+							lua_gettable(mLuaState, -2);
+							const char* uniformName = lua_tostring(mLuaState, -1);
+							size_t uniformLength = strlen(uniformName);
+							maps[i - 1].uniform = new char[uniformLength];
+							memcpy(maps[i - 1].uniform, uniformName, uniformLength);
+							maps[i - 1].uniform[uniformLength] = '\0';
+							lua_pop(mLuaState, 1); //Popping path
+						}
 
-						lua_pop(mLuaState, 1);
+						{
+							lua_pushstring(mLuaState, "shader");
+							lua_gettable(mLuaState, -2);
+							const char* shaderType = lua_tostring(mLuaState, -1);
+							if (strcmp(shaderType, "Fragment") == 0)
+								maps[i - 1].shaderType = Fragment;
+							else
+								maps[i - 1].shaderType = Vertex;
+							lua_pop(mLuaState, 1);
+						}
+
+						{
+							lua_pushstring(mLuaState, "mapType");
+							lua_gettable(mLuaState, -2);
+							const char* mapType = lua_tostring(mLuaState, -1);
+							if (strcmp(mapType, "albedo") == 0)
+								maps[i - 1].mapType = ALBEDO;
+							if (strcmp(mapType, "normal") == 0)
+								maps[i - 1].mapType = NORMAL;
+							if (strcmp(mapType, "specular") == 0)
+								maps[i - 1].mapType = SPECULAR;
+							if (strcmp(mapType, "bump") == 0)
+								maps[i - 1].mapType = BUMP;
+							if (strcmp(mapType, "shadow") == 0)
+								maps[i - 1].mapType = SHADOW;
+
+							lua_pop(mLuaState, 1); //Popping MapType
+						}
 					}
+					lua_pop(mLuaState, 1); //popping index
 				}
-				lua_pop(mLuaState, 1); //popping index
 			}
 		}
 		lua_pop(mLuaState, 1); //popping "Map"
 	}
 	/********************************************************************/
-	
+
 	/*****************************Uniforms******************************/
 	{
 		lua_pushstring(mLuaState, "uniforms");
 		lua_gettable(mLuaState, -2);
-		size_t count = luaL_len(mLuaState, -1);
-		std::cerr << "\nVAl Count is " << count << std::endl;
-		if (count > 0)
+		if (LuaHelper::isTable(mLuaState))
 		{
-			setuniformCount(static_cast<int>(count));
-			materialUniforms = new MaterialUniform[count];
-			materialUniformNames = new char*[count];
-			for (size_t i = 1; i <= count; ++i)
+			size_t count = luaL_len(mLuaState, -1);
+			//std::cerr << "\nVAl Count is " << count << std::endl;
+			if (count > 0)
 			{
-				lua_pushinteger(mLuaState, i);
-				lua_gettable(mLuaState, -2);
+				setuniformCount(static_cast<int>(count));
+				materialUniforms = new MaterialUniform[count];
+				materialUniformNames = new char*[count];
+				for (size_t i = 1; i <= count; ++i)
 				{
-					lua_pushstring(mLuaState, "name");
+					lua_pushinteger(mLuaState, i);
 					lua_gettable(mLuaState, -2);
-					const char *tempString = lua_tostring(mLuaState, -1);
-					size_t length = strlen(tempString);
-					materialUniformNames[i - 1] = new char[length];
-					memcpy(materialUniformNames[i - 1], tempString, sizeof(char)*length);
-					materialUniformNames[i - 1][length] = '\0';
-					//std::cerr << "\nUniform Count is = " << count << std::endl;
-					lua_pop(mLuaState, 1); //Popping out the uniform name
-					std::cerr << "\nname is " << tempString << std::endl;
-				}
-
-				{
-					lua_pushstring(mLuaState, "shader");
-					lua_gettable(mLuaState, -2);
-					const char *tempString = lua_tostring(mLuaState, -1);
-					size_t length = strlen(tempString);
-					if (strcmp(tempString, "fragment") == 0)
-						materialUniforms[i - 1].type = ShaderType::Fragment;
-					else if (strcmp(tempString, "vertex") == 0)
-						materialUniforms[i - 1].type = ShaderType::Vertex;
-					lua_pop(mLuaState, 1); //Popping out the shader type
-					std::cerr << "\nshader Type is " << tempString << std::endl;
-				}
-					
-				{
-					lua_pushstring(mLuaState, "valtype");
-					lua_gettable(mLuaState, -2);
-					if (strcmp(lua_tostring(mLuaState, -1), "Matrix") == 0)
-						materialUniforms[i - 1].valType = MATRIX;
-					else
-						materialUniforms[i - 1].valType = FLOAT;						
-					lua_pop(mLuaState, 1);
-				}
-
-					
-				{
-					lua_pushstring(mLuaState, "value");
-					lua_gettable(mLuaState, -2);
-					/*std::cerr << "value type" << luaL_typename(mLuaState, -1) << std::endl;*/
-					if (lua_istable(mLuaState,-1))
 					{
-						//std::cerr << "value type" << luaL_typename(mLuaState, -1)<<std::endl;
-						size_t valCount = luaL_len(mLuaState, -1);
-						//std::cerr << "\nVAl Count is " << valCount << std::endl;
-						materialUniforms[i - 1].setValCount(static_cast<int>(valCount));
-						//materialUniforms[i - 1].values = new float[valCount];
-						for (size_t k = 1; k <= valCount; ++k)
-						{
-							lua_pushinteger(mLuaState, k);
-							lua_gettable(mLuaState, -2);
-							materialUniforms[i - 1].values[k - 1] = static_cast<float>(lua_tonumber(mLuaState, -1));
-							lua_pop(mLuaState, 1); //Popping out the index of the uniform values
-						}							
+						lua_pushstring(mLuaState, "name");
+						lua_gettable(mLuaState, -2);
+						const char *tempString = lua_tostring(mLuaState, -1);
+						size_t length = strlen(tempString);
+						materialUniformNames[i - 1] = new char[length];
+						memcpy(materialUniformNames[i - 1], tempString, sizeof(char)*length);
+						materialUniformNames[i - 1][length] = '\0';
+						//std::cerr << "\nUniform Count is = " << count << std::endl;
+						lua_pop(mLuaState, 1); //Popping out the uniform name
+											   //std::cerr << "\nname is " << tempString << std::endl;
 					}
-					else
-						materialUniforms[i - 1].setValCount(0);
 
-					lua_pop(mLuaState, 1);//Popping out the values						
+					{
+						lua_pushstring(mLuaState, "shader");
+						lua_gettable(mLuaState, -2);
+						const char *tempString = lua_tostring(mLuaState, -1);
+						size_t length = strlen(tempString);
+						if (strcmp(tempString, "fragment") == 0)
+							materialUniforms[i - 1].type = ShaderType::Fragment;
+						else if (strcmp(tempString, "vertex") == 0)
+							materialUniforms[i - 1].type = ShaderType::Vertex;
+						lua_pop(mLuaState, 1); //Popping out the shader type
+											   //std::cerr << "\nshader Type is " << tempString << std::endl;
+					}
+
+					{
+						lua_pushstring(mLuaState, "valtype");
+						lua_gettable(mLuaState, -2);
+						if (strcmp(lua_tostring(mLuaState, -1), "Matrix") == 0)
+							materialUniforms[i - 1].valType = MATRIX;
+						else
+							materialUniforms[i - 1].valType = FLOAT;
+						lua_pop(mLuaState, 1);
+					}
+
+
+					{
+						lua_pushstring(mLuaState, "value");
+						lua_gettable(mLuaState, -2);
+						/*std::cerr << "value type" << luaL_typename(mLuaState, -1) << std::endl;*/
+						if (lua_istable(mLuaState, -1))
+						{
+							//std::cerr << "value type" << luaL_typename(mLuaState, -1)<<std::endl;
+							size_t valCount = luaL_len(mLuaState, -1);
+							//std::cerr << "\nVAl Count is " << valCount << std::endl;
+							materialUniforms[i - 1].setValCount(static_cast<int>(valCount));
+							//materialUniforms[i - 1].values = new float[valCount];
+							for (size_t k = 1; k <= valCount; ++k)
+							{
+								lua_pushinteger(mLuaState, k);
+								lua_gettable(mLuaState, -2);
+								materialUniforms[i - 1].values[k - 1] = static_cast<float>(lua_tonumber(mLuaState, -1));
+								lua_pop(mLuaState, 1); //Popping out the index of the uniform values
+							}
+						}
+						else
+							materialUniforms[i - 1].setValCount(0);
+
+						lua_pop(mLuaState, 1);//Popping out the values						
+					}
+					lua_pop(mLuaState, 1); //Popping out the uniform index
 				}
-				lua_pop(mLuaState, 1); //Popping out the uniform index
 			}
 		}
-		else
-		{
-			errormessage << "No Uniform in the Lua file \n.";
-			LuaHelper::OutputErrorMessage(errormessage.str().c_str(), __FILE__);
-			LuaHelper::exitAndShutdownLua(mLuaState);
-			return false;
-		}
-
 		lua_pop(mLuaState, 1); //Popping out the uniform Table
 	}
 	/*******************************************************************/
@@ -266,8 +263,8 @@ Tools::AssetBuilder::Material::Material()
 	materialUniforms = nullptr;
 	materialUniformNames = nullptr;
 	maps = nullptr;
-	mapCount = Zero;
-	uniformCount = Zero;
+	mapCount = 0;
+	uniformCount = 0;
 }
 
 Tools::AssetBuilder::Material::Material(char* i_materialName)
@@ -276,12 +273,12 @@ Tools::AssetBuilder::Material::Material(char* i_materialName)
 	materialUniforms = nullptr;
 	materialUniformNames = nullptr;
 	maps = nullptr;
-	mapCount = Zero;
-	uniformCount = Zero;
+	mapCount = 0;
+	uniformCount = 0;
 	size_t length = strlen(i_materialName);
-	materialName = new char[length + 1];
+	materialName = new char[length];
 	memcpy(materialName, i_materialName, sizeof(char)* length);
-	materialName[length + 1] = '\0';
+	materialName[length] = '\0';
 }
 
 char* Tools::AssetBuilder::Material::getMaterialName()
@@ -296,21 +293,32 @@ void Tools::AssetBuilder::Material::setMaterialName(const char* i_materialName)
 	materialName = new char[length];
 	memcpy(materialName, i_materialName, sizeof(char)* length);
 	materialName[length] = '\0';
+
 }
 
 
 Tools::AssetBuilder::Material::~Material()
 {
-	if (effectFile)
-		delete effectFile;
+	/*if (effectFile)
+	delete effectFile;
 	if (materialUniforms)
-		delete materialUniforms;
+	delete materialUniforms;
 	if (materialName)
-		delete materialName;
-	
+	delete materialName;
+	if (maps)
+	delete maps;
+	if(materialUniformNames)
+	{
+	for (int i = 0; i < uniformCount; ++i)
+	delete materialUniformNames[i];
+	}
+	delete materialUniformNames;
+
 	effectFile = nullptr;
 	materialUniforms = nullptr;
 	materialName = nullptr;
+	maps = nullptr;
+	materialUniformNames = nullptr;*/
 }
 
 
@@ -363,7 +371,7 @@ void Tools::AssetBuilder::Material::displayMaterial()
 			}
 			std::cerr << ")\n\n\n";
 		}
-		
+
 	}
 }
 

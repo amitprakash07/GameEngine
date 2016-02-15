@@ -12,6 +12,7 @@
 #include <map>
 #include "../Core/Utilities/SharedPointer.h"
 #include "typedefs.h"
+#include "../Graphics/Uniform.h"
 
 namespace Engine
 {
@@ -32,9 +33,14 @@ namespace Engine
 			std::string getMeshFileName() const;
 			std::string getTypeInfo() const override { return ""; }
 			bool isBothSameType(RTTI*, std::string) const override { return true; }
+			void addUniform(std::string iUniformName, ShaderType iShaderType);
+			void setUniformHandle(std::string uniformName, std::string effectName);
+			void updateUniformValue(UniformValues iValue);
+			void setAllUniformValuesToShader();
 			~Mesh();
 		private:
 			static std::map<std::string, SharedPointer<Mesh>> meshList;
+			std::map<std::string, SharedPointer<Engine::Graphics::Uniform>> uniformNames;
 			vertex *mVertex;
 			uint32_t *mIndices;
 			winding mWinding;

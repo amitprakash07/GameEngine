@@ -1,5 +1,5 @@
 /*
-	This file contains math-related functions
+This file contains math-related functions
 */
 
 #ifndef _MATH_FUNCTIONS_H
@@ -14,7 +14,14 @@ namespace Engine
 
 		extern const float Pi;
 
-		float ConvertDegreesToRadians( const float i_degrees );
+		float ConvertDegreesToRadians(const float i_degrees);
+		bool InRange(float valToCheck, float min, float max,
+			bool minInclusive = true, bool maxInclusive = true);
+		float scaleAndBias(float valueToConvert,
+			float oldRangeMin,
+			float oldRangeMax,
+			float newRangeMin,
+			float newRangeMax);
 	}
 }
 

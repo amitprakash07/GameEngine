@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 
+
 bool Tools::AssetBuilder::EffectBuilder::Build(const std::vector<std::string>& i_arguments)
 {
 	if (LoadEffectFile())

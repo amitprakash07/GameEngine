@@ -11,7 +11,7 @@ do
 	do
 		local key = "AuthoredAssetDir"
 		local errorMessage
-		s_AuthoredAssetDir, errorMessage = GetEnvironmentVariable( key )
+		s_AuthoredAssetDir, errorMessage = GetVSEnvironmentVariable( key )
 		if not s_AuthoredAssetDir then
 			error( errorMessage )
 		end
@@ -20,7 +20,7 @@ do
 	do
 		local key = "BuiltAssetDir"
 		local errorMessage
-		s_BuiltAssetDir, errorMessage = GetEnvironmentVariable( key )
+		s_BuiltAssetDir, errorMessage = GetVSEnvironmentVariable( key )
 		if not s_BuiltAssetDir then
 			error( errorMessage )
 		end
@@ -30,7 +30,7 @@ do
 	do
 		local key = "BinDir"
 		local errorMessage
-		s_BinDir, errorMessage = GetEnvironmentVariable( key )
+		s_BinDir, errorMessage = GetVSEnvironmentVariable( key )
 		if not s_BinDir then
 			error( errorMessage )
 		end
@@ -61,15 +61,15 @@ local function BuildAsset( resourceTable, dependencies_table )
 
 	local subPathName,errorMessage, dependencyFolderPath
 	if(i_builderFileName == "MeshBuilder.exe") then
-		subPathName,errorMessage = GetEnvironmentVariable("MeshesDir")
+		subPathName,errorMessage = GetVSEnvironmentVariable("MeshesDir")
 	else if(i_builderFileName == "ShaderBuilder.exe") then
-			subPathName,errorMessage = GetEnvironmentVariable("ShadersDir")
+			subPathName,errorMessage = GetVSEnvironmentVariable("ShadersDir")
 		else if(i_builderFileName == "MaterialBuilder.exe") then
-				subPathName,errorMessage = GetEnvironmentVariable("MaterialDir")
+				subPathName,errorMessage = GetVSEnvironmentVariable("MaterialDir")
 			 else if(i_builderFileName == "EffectBuilder.exe") then
-					subPathName,errorMessage = GetEnvironmentVariable("EffectDirName")
+					subPathName,errorMessage = GetVSEnvironmentVariable("EffectDirName")
 				  else if(i_builderFileName == "TextureBuilder.exe") then
-						subPathName,errorMessage = GetEnvironmentVariable("TexturesDir")
+						subPathName,errorMessage = GetVSEnvironmentVariable("TexturesDir")
 					   end
 				  end
 			 end
@@ -126,7 +126,7 @@ local function BuildAsset( resourceTable, dependencies_table )
 			if dependenciesExist then
 			--check dependency file exists or not and calculate max time for modification among all
 				local maxTimeForDependency = 0.0
-				dependencyFolderPath, errorMessage = GetEnvironmentVariable("DependenciesFolder")
+				dependencyFolderPath, errorMessage = GetVSEnvironmentVariable("DependenciesFolder")
 				if not dependencyFolderPath then 
 					error(errorMessage)
 				end

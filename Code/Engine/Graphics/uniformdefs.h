@@ -42,7 +42,7 @@ namespace Engine
 			Compute = 5
 		};
 
-		enum Transform_Matrix_Type
+		enum Transform_Matrix_Type :uint8_t
 		{
 			Unspecified = 0,
 			LocalToWorld = 1,
@@ -83,6 +83,21 @@ namespace Engine
 				vectorValue = { 0.0f,0.0f,0.0f,0.0f };
 				vectorArray = nullptr;
 			}
+
+			/*UniformValues(UniformValues &iUniformValues)
+			{
+			boolValue = iUniformValues.boolValue;
+			boolArray = iUniformValues.boolArray;
+			intValue = iUniformValues.intValue;
+			intArray = iUniformValues.intArray;
+			floatValue = iUniformValues.floatValue;
+			floatArray = iUniformValues.floatArray;
+			matrixValue.matrix = iUniformValues.matrixValue.matrix;
+			matrixValue.Type = iUniformValues.matrixValue.Type;
+			matrixArray = iUniformValues.matrixArray;
+			vectorValue = iUniformValues.vectorValue;
+			vectorArray = iUniformValues.vectorArray;
+			}*/
 		};
 
 		struct UniformData
@@ -94,6 +109,7 @@ namespace Engine
 			ShaderType shaderType;
 			UniformValues value;
 			UniformData();
+			//UniformData(UniformData &iUniformData);
 		};
 
 		enum __renderState

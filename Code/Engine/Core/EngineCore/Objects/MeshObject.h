@@ -21,13 +21,13 @@ namespace Engine
 		SharedPointer<Engine::Graphics::Material>   getMaterial() const;
 		void setTransformation(Engine::Math::cVector, Engine::Math::cQuaternion = Engine::Math::cQuaternion()) override;
 		Transformation getTransformation() override;
-		bool isRenderable() const;
+		bool isRenderable() const override;
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
-		void draw() override;
+		void draw(bool drawDebugObject) override;
 		std::string getTypeInfo() const override { return ""; }
 		bool isBothSameType(RTTI*, std::string) const override { return true; }
 		void EnableDebugging(bool enable = false);
-		bool iSDebugEnabled() const;
+		bool isDebugObject() const override;
 		MeshObject();
 		~MeshObject();
 	private:
@@ -37,7 +37,7 @@ namespace Engine
 		IObjectController*							mObjectController;
 		bool										renderable;
 		Transformation								mTransformation;
-		bool										debugEnabled;
+		bool										debugObject;
 	};
 }
 

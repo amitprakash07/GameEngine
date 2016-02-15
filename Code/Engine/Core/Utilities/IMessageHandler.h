@@ -8,16 +8,16 @@
 
 
 namespace Engine
-{	
-	class IMessageHandler: public RTTI
+{
+	class IMessageHandler : public RTTI
 	{
-	public: 
-		virtual void HandleMessage(Engine::utils::StringHash &,  RTTI* i_MessageSender, void* i_pMessageData)=0; //Do not delete i_messageSenderPointer
-		virtual std::string getTypeInfo() override = 0;
-		virtual bool isBothSameType(RTTI*, std::string) override = 0;
-		virtual  ~IMessageHandler(){};
-		IMessageHandler(){};
-		
+	public:
+		virtual void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) = 0; //Do not delete i_messageSenderPointer
+		virtual std::string getTypeInfo() const override = 0;
+		virtual bool isBothSameType(RTTI*, std::string) const override = 0;
+		virtual  ~IMessageHandler() {};
+		IMessageHandler() {};
+
 	};
 
 	struct _IMessageHandle
@@ -32,7 +32,7 @@ namespace Engine
 			mMessagePriority = i_priority;
 		}
 
-		bool operator<(_IMessageHandle i_other)
+		bool operator<(_IMessageHandle i_other) const
 		{
 			return(mMessagePriority < i_other.mMessagePriority ? true : false);
 		}

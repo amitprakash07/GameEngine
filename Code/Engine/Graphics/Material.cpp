@@ -165,7 +165,6 @@ bool Engine::Graphics::Material::loadMaterial()
 
 	int uniformCount = *reinterpret_cast<int*>(currentPosition);
 	currentPosition += sizeof(int);
-	//tempEffect->createMaterialUniforms(uniformCount);
 	materialUniformCount = uniformCount;
 	materialUniforms = new MaterialUniform[materialUniformCount];
 	materialUniformNames = new char*[materialUniformCount];
@@ -211,6 +210,20 @@ void Engine::Graphics::Material::setMaterialUniformParameters() const
 	for (size_t i = 0; i < materialUniformCount; ++i)
 	{
 		tempEffect->setMaterialUniformValue(materialUniformNames[i], materialUniforms[i]);
+	}
+}
+
+void Engine::Graphics::Material::changeMaterialColor(float i_R, float i_G, float i_B, float i_A) const
+{
+	for (size_t i = 0; i < materialUniformCount; ++i)
+	{
+		if (strcmp(materialUniformNames[i], "g_vertexColorModifier") == 0)
+		{
+			materialUniforms[i].values[0] = i_R;
+			materialUniforms[i].values[1] = i_G;
+			materialUniforms[i].values[2] = i_B;
+			materialUniforms[i].values[3] = i_A;
+		}
 	}
 }
 
@@ -322,6 +335,9 @@ void Engine::Graphics::Material::deleteAll()
 		i->second.deleteObject();
 	}
 }
+
+
+
 
 
 

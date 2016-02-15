@@ -1,8 +1,9 @@
-#include "MeshObject.h"
+#include "GameObject.h"
 #include "../../../Core/Utilities/HashedString.h"
 #include "../../../Windows/WindowsFunctions.h"
 #include "../../../Core/EngineCore/EngineCore.h"
 #include "Scene.h"
+#include  "../../../Graphics/Graphics.h"
 
 
 
@@ -47,7 +48,7 @@ Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialNam
 	mMeshName = i_meshName;
 	mMaterial = i_materialName;
 	mObjectController = nullptr;
-	debugEnabled = false;
+	debugObject = false;
 }
 
 Engine::MeshObject::MeshObject()
@@ -58,17 +59,17 @@ Engine::MeshObject::MeshObject()
 	mObjectController = nullptr;
 	mTransformation.mOrientation = Engine::Math::cQuaternion();
 	mTransformation.mPositionOffset = Engine::Math::cVector();
-	debugEnabled = false;
+	debugObject = false;
 }
 
 void Engine::MeshObject::EnableDebugging(bool enable)
 {
-	debugEnabled = enable;
+	debugObject = enable;
 }
 
-bool Engine::MeshObject::iSDebugEnabled() const
+bool Engine::MeshObject::isDebugObject() const
 {
-	return debugEnabled;
+	return debugObject;
 }
 
 void Engine::MeshObject::setObjectController(IObjectController* i_objectController)
@@ -146,44 +147,42 @@ Engine::MeshObject::~MeshObject()
 		delete mObjectController;
 }
 
-void Engine::MeshObject::draw()
+void Engine::MeshObject::draw(bool drawDebugObject)
 {
-	SharedPointer<Scene> activeScene = Scene::getRenderableScene();
-	SharedPointer<Camera> tempCamera = activeScene->getActiveCamera();
-	Scene::applyPaintersAlgorithmForTransparency();
-	if (!tempCamera.isNull())
+	if (drawDebugObject && debugObject || !debugObject)
 	{
-		Transformation cameraTransformation = tempCamera->getTransformation();
-		float fieldOfView = tempCamera->getFieldOfView();
-		float aspectRatio = tempCamera->getAspectRatio();
-		float nearPlane = tempCamera->getNearPlane();
-		float farPlane = tempCamera->getFarPlane();
-		getEffect()->setShaders();
-		Transformation gameObjectTransformation = getTransformation();
-		getEffect()->setLocalToWorldMatrrixTransformValue(gameObjectTransformation);
-		getEffect()->setWorldToViewTransformationValue(cameraTransformation);
-		getEffect()->setViewToScreenTransformationValue(fieldOfView,
-			aspectRatio, nearPlane, farPlane);
-		getMaterial()->setMaterialUniformParameters();
-		getMaterial()->setTextureUniform();
-		getMesh()->drawMesh();
-	}
-	else
-	{
-		std::stringstream errormessage;
-		errormessage << "Camera is not iniitalized\n";
-		WindowsUtil::Print(errormessage.str().c_str());
-		return;
+		SharedPointer<Scene> activeScene = Scene::getRenderableScene();
+		SharedPointer<Camera> tempCamera = activeScene->getActiveCamera();
+		Scene::applyPaintersAlgorithmForTransparency();
+		if (!tempCamera.isNull())
+		{
+			Transformation cameraTransformation = tempCamera->getTransformation();
+			float fieldOfView = tempCamera->getFieldOfView();
+			float aspectRatio = tempCamera->getAspectRatio();
+			float nearPlane = tempCamera->getNearPlane();
+			float farPlane = tempCamera->getFarPlane();
+			if (debugObject)
+				Engine::Graphics::GraphicsSystem::EnableWireFrame(true);
+			getEffect()->setShaders();
+			Transformation gameObjectTransformation = getTransformation();
+			SharedPointer<Engine::Graphics::Effect> tempEffect = getEffect();
+			tempEffect->setLocalToWorldMatrrixTransformValue(gameObjectTransformation);
+			getEffect()->setWorldToViewTransformationValue(cameraTransformation);
+			getEffect()->setViewToScreenTransformationValue(fieldOfView,
+				aspectRatio, nearPlane, farPlane);
+			getEffect()->setAllUniformToShader();
+			getMaterial()->setMaterialUniformParameters();
+			getMaterial()->setTextureUniform();
+			getMesh()->drawMesh();
+			if (debugObject)
+				Engine::Graphics::GraphicsSystem::EnableWireFrame(false);
+		}
+		else
+		{
+			std::stringstream errormessage;
+			errormessage << "Camera is not iniitalized\n";
+			WindowsUtil::Print(errormessage.str().c_str());
+			return;
+		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

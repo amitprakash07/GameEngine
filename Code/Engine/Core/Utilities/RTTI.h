@@ -9,10 +9,10 @@ namespace Engine
 	class RTTI
 	{
 	public:
-		virtual std::string getTypeInfo() = 0;
-		virtual bool isBothSameType(RTTI*, std::string) =0;
-		virtual ~RTTI(){};
-		RTTI(){};	
+		virtual std::string getTypeInfo() const = 0;
+		virtual bool isBothSameType(RTTI*, std::string) const = 0;
+		virtual ~RTTI() {};
+		RTTI() {};
 	};
 }
 #endif

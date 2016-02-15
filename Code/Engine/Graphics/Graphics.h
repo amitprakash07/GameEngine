@@ -16,6 +16,8 @@ This file contains the function declarations for graphics
 #endif
 
 #include <stdint.h>
+#include "typedefs.h"
+
 namespace Engine
 {
 	namespace Graphics
@@ -40,7 +42,14 @@ namespace Engine
 			static void EnableAlphaBlending(bool);
 			static void EnableDepthTesting(bool);
 			static void EnableDepthWriting(bool);
-			static void EnableFaceCulling(bool, DWORD cullingMode = D3DCULL_CCW);
+			static void EnableFaceCulling(bool, Engine::Graphics::CullingMode cullingMode =
+#ifdef PLATFORM_D3D
+				D3DCULL_CCW
+#elif PLATFORM_OPEN_GL
+				GL_CCW
+#endif
+				);
+
 
 #ifdef PLATFORM_D3D
 			static IDirect3DDevice9* getDevice();

@@ -13,7 +13,7 @@
 #include <map>
 #include "../Core/Utilities/SharedPointer.h"
 #include "Uniform.h"
-#include <vector>
+
 
 namespace Engine
 {
@@ -32,9 +32,10 @@ namespace Engine
 			bool isBothSameType(RTTI*, std::string) const  override { return true; }
 			void setLocalToWorldMatrrixTransformValue(Transformation iObject);
 			void setWorldToViewTransformationValue(Transformation cameraTransformation);
-			void setViewToScreenTransformationValue(float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
+			void setViewToScreenTransformationValue(float fieldOfView,
+				float aspectRatio, float nearPlane, float farPlane);
 			void setUniformValue(std::string, UniformValues);
-			void setAllUniforms();
+			void setAllUniformToShader();
 			void setMaterialUniformValue(char*, MaterialUniform) const;
 			void setTextureUniform(TextureResource, SamplerID, int i_textureUnit = 0);
 			UniformHandle getUniformHandle(char *, ShaderType) const;
@@ -46,11 +47,13 @@ namespace Engine
 			std::map<ShaderType, std::string> shaderNames;
 			std::map<std::string, SharedPointer<Engine::Graphics::Uniform>> uniformNames;
 			std::string effectName;
+			bool lightInVertex;
 			int uniformCount;
 			uint8_t *renderState;
 			bool LoadShaders();
 			bool LoadFragmentShader();
 			bool LoadVertexShader();
+			bool lightingInFragment;
 			bool isLocalToWorldTransformExist;
 			bool isWorldToViewTransformExist;
 			bool isViewToScreenTransformExist;

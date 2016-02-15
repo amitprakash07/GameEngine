@@ -7,7 +7,7 @@ namespace Engine
 {
 	namespace utils
 	{
-		class StringHash:public RTTI
+		class StringHash :public RTTI
 		{
 		public:
 			StringHash();
@@ -22,8 +22,8 @@ namespace Engine
 			static unsigned __int32					Hash(const char *);
 			static unsigned __int32					Hash(const void *, size_t);
 			bool									isNil() const;
-			std::string getTypeInfo() override { return ""; }
-			bool isBothSameType(RTTI*, std::string) override { return true; }
+			std::string getTypeInfo() const override { return ""; }
+			bool isBothSameType(RTTI*, std::string) const override { return true; }
 
 		private:
 			unsigned __int32 mHash;

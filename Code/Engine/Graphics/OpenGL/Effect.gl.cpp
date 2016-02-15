@@ -7,7 +7,7 @@ namespace Engine
 	namespace Graphics
 	{
 		bool LoadAndAllocateShaderProgram(const char* i_path, void*& o_shader, size_t& o_size, std::string* o_errorMessage);
-		
+
 		struct sLogInfo
 		{
 			GLchar* memory;
@@ -24,7 +24,7 @@ bool Engine::Graphics::Effect::LoadShaders()
 	return false;
 }
 
-bool Engine::Graphics::Effect::setShaders()
+bool Engine::Graphics::Effect::setShaders() const
 {
 	GraphicsSystem::setRenderState(*renderState);
 	glUseProgram(s_programId);
@@ -119,16 +119,16 @@ bool Engine::Graphics::Effect::CreateProgram()
 						WindowsUtil::Print(errorMessage.str());
 						return false;
 					}
-					else
-					{
-						/*Program Linking finished - grabbing the uniform loacation from the shader*/
-						if(!ReadEngineUniformsHandle())
-						{
-							std::stringstream errormesage;
-							errormesage << "Unable to get the uniform loacation from the linked program. Please check the shader code";
-							WindowsUtil::Print(errormesage.str());
-						}
-					}
+					//else
+					//{
+					//	/*Program Linking finished - grabbing the uniform loacation from the shader*/
+					//	if(!ReadEngineUniformsHandle())
+					//	{
+					//		std::stringstream errormesage;
+					//		errormesage << "Unable to get the uniform loacation from the linked program. Please check the shader code";
+					//		WindowsUtil::Print(errormesage.str());
+					//	}
+					//}
 				}
 				else
 				{
@@ -290,7 +290,7 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 		// Load the shader source code
 		size_t fileSize;
 		{
-			const char* sourceCodeFileName = fragmentShader.c_str(); //@Amit -TO-DO Need to change the file name
+			const char* sourceCodeFileName = shaderNames[Fragment].c_str(); //@Amit -TO-DO Need to change the file name
 			std::string errorMessage;
 			if (!LoadAndAllocateShaderProgram(sourceCodeFileName, shaderSource, fileSize, &errorMessage))
 			{
@@ -299,6 +299,7 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 				goto OnExit;
 			}
 		}
+
 		// Generate a shader
 		fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 		{
@@ -324,13 +325,13 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 			const GLsizei shaderSourceCount = 1; //@Amit - Changed to 2 from 1 - seems to refer to that shader in in the secon section in the file
 			const GLchar* shaderSources[] =
 			{
-				 reinterpret_cast<GLchar*>(shaderSource)
+				reinterpret_cast<GLchar*>(shaderSource)
 			};
 
 			const GLint* sourcesAreNullTerminated = nullptr;
 			//const GLint length = static_cast<GLuint>(fileSize);
 
-			glShaderSource(fragmentShaderId, shaderSourceCount, shaderSources, sourcesAreNullTerminated); //@Amit - changed here in teh last parameter(from length to sourcesAreNullTerminated)
+			glShaderSource(fragmentShaderId, shaderSourceCount, shaderSources, sourcesAreNullTerminated);
 			const GLenum errorCode = glGetError();
 			if (errorCode != GL_NO_ERROR)
 			{
@@ -343,6 +344,8 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 			}
 		}
 	}
+
+
 	// Compile the shader source code
 	{
 		glCompileShader(fragmentShaderId);
@@ -387,6 +390,7 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 					goto OnExit;
 				}
 			}
+
 			// Check to see if there were compilation errors
 			GLint didCompilationSucceed;
 			{
@@ -424,6 +428,7 @@ bool Engine::Graphics::Effect::LoadFragmentShader()
 			goto OnExit;
 		}
 	}
+
 	// Attach the shader to the program
 	{
 		glAttachShader(s_programId, fragmentShaderId);
@@ -489,7 +494,7 @@ bool Engine::Graphics::Effect::LoadVertexShader()
 		// Load the shader source code
 		size_t fileSize;
 		{
-			const char* sourceCodeFileName = vertexShader.c_str();  //@Amit To do - Need to change the file name
+			const char* sourceCodeFileName = shaderNames[Vertex].c_str();
 			std::string errorMessage;
 			if (!LoadAndAllocateShaderProgram(sourceCodeFileName, shaderSource, fileSize, &errorMessage))
 			{
@@ -668,12 +673,14 @@ OnExit:
 
 Engine::Graphics::Effect::Effect(std::string i_effectFileName)
 {
-	s_programId = 0;
-	s_uniformLocalToWorld = 0;
-	s_uniformWorldToView = 0;
-	s_uniformViewToScreen = 0;
 	effectName = i_effectFileName;
+	uniformCount = 0;
 	renderState = new uint8_t;
+	*renderState = 0;
+	isLocalToWorldTransformExist = false;
+	isWorldToViewTransformExist = false;
+	isViewToScreenTransformExist = false;
+	s_programId = 0;
 }
 
 Engine::Graphics::Effect::~Effect()
@@ -694,51 +701,35 @@ Engine::Graphics::Effect::~Effect()
 	delete renderState;
 }
 
-void Engine::Graphics::Effect::setEngineUniformValue(Transformation i_gameObject, 
-	Transformation i_camera, 
-	float i_fieldOfView,
-	float i_aspectRatio)
+void Engine::Graphics::Effect::setAllUniformToShader()
 {
-
-	/*GLfloat *temp = new GLfloat[2];
-	temp[0] = i_offsetPosition.x;
-	temp[1] = i_offsetPosition.y;
-	glUniform2fv(s_uniformPositionOffset, 1, temp);*/
-	
-	const GLboolean dontTranspose = false;
-	const GLsizei uniformCountToSet = 1;
-	m_uniforms.calculateUniforms(i_gameObject, i_camera, i_fieldOfView, i_aspectRatio);
-	glUniformMatrix4fv(s_uniformLocalToWorld, uniformCountToSet, dontTranspose, reinterpret_cast<const GLfloat*>(&m_uniforms.g_transform_localToWorld));
-	glUniformMatrix4fv(s_uniformWorldToView, uniformCountToSet, dontTranspose, reinterpret_cast<const GLfloat*>(&m_uniforms.g_transform_worldToView));
-	glUniformMatrix4fv(s_uniformViewToScreen, uniformCountToSet, dontTranspose, reinterpret_cast<const GLfloat*>(&m_uniforms.g_transform_viewToScreen));
-	const GLenum errorCode = glGetError();
-	if(!(errorCode == GL_NO_ERROR))
+	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = uniformNames.begin();
+	i != uniformNames.end(); ++i)
 	{
-		std::stringstream errormessage;
-		errormessage << "Unable to set the position offset";
-		WindowsUtil::Print(errormessage.str());
+		i->second->setValueInShaderObject();
 	}
-	//delete temp;
 }
 
 
-void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, MaterialUniform i_materialUniform)
+
+void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName,
+	MaterialUniform i_materialUniform) const
 {
-	switch(i_materialUniform.valCount)
+	switch (i_materialUniform.valCount)
 	{
-	case One:
-		glUniform1fv(i_materialUniform.Handle,1, i_materialUniform.values);
+	case 1:
+		glUniform1fv(i_materialUniform.Handle, 1, i_materialUniform.values);
 		break;
-	case Two:
-		glUniform2fv(i_materialUniform.Handle,1, i_materialUniform.values);
+	case 2:
+		glUniform2fv(i_materialUniform.Handle, 1, i_materialUniform.values);
 		break;
-	case Three:
-		glUniform3fv(i_materialUniform.Handle,1, i_materialUniform.values);
+	case 3:
+		glUniform3fv(i_materialUniform.Handle, 1, i_materialUniform.values);
 		break;
-	case Four:
-		glUniform4fv(i_materialUniform.Handle,1, i_materialUniform.values);
+	case 4:
+		glUniform4fv(i_materialUniform.Handle, 1, i_materialUniform.values);
 		break;
-	case Zero:
+	default:
 		break;
 	}
 
@@ -752,8 +743,8 @@ void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName, Mate
 }
 
 
-
-Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName, ShaderType)
+Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName,
+	ShaderType) const
 {
 	UniformHandle handle = glGetUniformLocation(s_programId, i_uniformName);
 	if (handle == -1)
@@ -766,12 +757,48 @@ Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char*
 	return handle;
 }
 
-
 Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle i_uniformHandle, ShaderType)
 {
 	SamplerID sampleId = i_uniformHandle;
 	return sampleId;
 }
+
+
+void Engine::Graphics::Effect::setTextureUniform(TextureResource i_textureResource,
+	SamplerID i_TextureSamplerID, int i_textureUnit)
+{
+	glActiveTexture(GL_TEXTURE0 + i_textureUnit);
+	GLenum errorCode = glGetError();
+	if ((errorCode == GL_NO_ERROR))
+	{
+		glBindTexture(GL_TEXTURE_2D, i_textureResource);
+		errorCode = glGetError();
+		if ((errorCode == GL_NO_ERROR))
+		{
+			glUniform1i(i_TextureSamplerID, i_textureUnit);
+			errorCode = glGetError();
+			if (!errorCode == GL_NO_ERROR)
+			{
+				std::stringstream errormessage;
+				errormessage << "Unable to set the texture Uniform";
+				WindowsUtil::Print(errormessage.str());
+			}
+		}
+		else
+		{
+			std::stringstream errormessage;
+			errormessage << "Unable to bind the texture";
+			WindowsUtil::Print(errormessage.str());
+		}
+	}
+	else
+	{
+		std::stringstream errormessage;
+		errormessage << "Unable to active texture Uniform";
+		WindowsUtil::Print(errormessage.str());
+	}
+}
+
 
 
 

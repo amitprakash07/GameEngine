@@ -1,5 +1,5 @@
 #include "../../Maths/cVector.h"
-#include "../Objects/GameObject.h"
+#include "../Objects/MeshObject.h"
 #include "../Objects/Scene.h"
 #include "../../../Windows/WindowsFunctions.h"
 #include "CameraController.h"

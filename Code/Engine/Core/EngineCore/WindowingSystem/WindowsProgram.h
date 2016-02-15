@@ -1,5 +1,5 @@
 /*
-	This file contains all of the function declarations for this example program
+This file contains all of the function declarations for this example program
 */
 
 #ifndef __WINDOWSPROGRAM_H
@@ -17,18 +17,22 @@ namespace Engine
 {
 	namespace Windows
 	{
-		class WindowingSystem: public Engine::RTTI
+		class WindowingSystem : public Engine::RTTI
 		{
 		public:
-			static SharedPointer<WindowingSystem> getWindowingSystem();
+			static SharedPointer<WindowingSystem> getWindowingSystem(bool fullScreen = false, int width = 1600, int height = 900);
 			HWND getMainWindow();
 			bool CreateMainWindow(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState);
 			static bool OnMainWindowClosed(const HINSTANCE i_thisInstanceOfTheProgram);
-			std::string getTypeInfo() override;
-			bool isBothSameType(RTTI*, std::string) override;
+			std::string getTypeInfo() const override;
+			bool isBothSameType(RTTI*, std::string) const override;
+			int getWindowHeight() const;
+			int getWindowWidth() const;
 			~WindowingSystem();
 		private:
 			static SharedPointer<WindowingSystem> mWindowingSystem;
+			int width;
+			int height;
 			HWND s_mainWindow;
 			const char* s_mainWindowClassName;
 			HWND CreateMainWindowHandle(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState);
@@ -37,6 +41,7 @@ namespace Engine
 			bool UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram);
 			bool CleanupMainWindow();
 			WindowingSystem();
+			void AssignFullResolutionWindow();
 		};
 	}
 }

@@ -5,7 +5,6 @@
 #include "../Core/Utilities/SharedPointer.h"
 #include "typedefs.h"
 
-
 #ifdef PLATFORM_OPEN_GL
 #include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 #elif PLATFORM_D3D
@@ -31,7 +30,9 @@ namespace Engine
 			void setTransformation(Engine::Math::cVector,
 				Engine::Math::cQuaternion = Engine::Math::cQuaternion()) override;
 			void changeSpriteMaterial(std::string);
-			void draw() override;
+			void draw(bool) override;
+			bool isRenderable() const override { return true; }
+			bool isDebugObject() const override { return false; }
 			~Sprite();
 		private:
 			Sprite(std::string spriteName,

@@ -26,6 +26,10 @@
     <ClInclude Include="Objects\MeshObject.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="enginedefs.h" />
+    <ClInclude Include="InputController\MouseController.h">
+      <Filter>InputController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp" />
@@ -49,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="Objects\MeshObject.cpp">
       <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="InputController\MouseController.cpp">
+      <Filter>InputController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

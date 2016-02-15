@@ -15,13 +15,13 @@ namespace Engine
 		SharedPointer(const SharedPointer<T> &);
 		SharedPointer<T>& operator=(SharedPointer<T> &);
 		//bool isBothSameType(RTTI* i_ptr);
-		bool isEqual(SharedPointer<T> &);
+		bool isEqual(const SharedPointer<T> &) const;
 		//SharedPointer(SharedPointer<T> *);
 		T& operator*();
-		T* operator->();
+		T* operator->() const;
 		~SharedPointer();
-		bool isNull();
-		RTTI* getRawPointer();
+		bool isNull() const;
+		RTTI* getRawPointer() const;
 
 	private:
 		T*				m_WrappingObject;

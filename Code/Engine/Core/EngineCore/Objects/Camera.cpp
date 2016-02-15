@@ -4,15 +4,17 @@
 #include "../../Maths/Functions.h"
 
 
-Engine::SharedPointer<Engine::Camera> Engine::Camera::CreateCamera(std::string i_name, 
-	Math::cVector i_position, 
-	Math::cQuaternion i_orientation, 
+Engine::SharedPointer<Engine::Camera> Engine::Camera::CreateCamera(std::string i_name,
+	Math::cVector i_position,
+	Math::cQuaternion i_orientation,
 	float i_fieldofView,
 	float i_aspectRatio)
 {
 	SharedPointer<Engine::Camera> tempCamera(new Engine::Camera(i_name, i_position, i_orientation, i_fieldofView, i_aspectRatio), "Engine::Camera");
-	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("MoveCamera"));
+	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateGameObject"));
+	Engine::utils::StringHash tempOne(Engine::EngineCore::getStringPool()->findString("rotateCamera"));
 	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempCamera.getRawPointer()), Engine::typedefs::HIGH);
+	Engine::EngineCore::getMessagingSystem()->addMessageHandler(tempOne, reinterpret_cast<IMessageHandler*>(tempCamera.getRawPointer()), Engine::typedefs::HIGH);
 	return tempCamera;
 }
 
@@ -29,10 +31,13 @@ Engine::Camera::Camera()
 }
 
 
-Engine::Camera::Camera(std::string i_name, Math::cVector i_position, 
+Engine::Camera::Camera(std::string i_name, Math::cVector i_position,
 	Math::cQuaternion i_orientation,
 	float i_fieldOfView,
-	float i_aspectRatio)
+	float i_aspectRatio,
+	float i_nearPlane,
+	float i_farPlane
+	)
 {
 	mObjectController = nullptr;
 	mTransformation = Transformation();
@@ -42,6 +47,8 @@ Engine::Camera::Camera(std::string i_name, Math::cVector i_position,
 	fieldOfView = Engine::Math::ConvertDegreesToRadians(i_fieldOfView);
 	aspectRatio = i_aspectRatio;
 	active = false;
+	nearPlane = i_nearPlane;
+	farPlane = i_farPlane;
 }
 
 void Engine::Camera::setFieldOfView(float i_fieldOfView)
@@ -49,7 +56,7 @@ void Engine::Camera::setFieldOfView(float i_fieldOfView)
 	fieldOfView = Engine::Math::ConvertDegreesToRadians(i_fieldOfView);
 }
 
-float Engine::Camera::getFieldOfView()
+float Engine::Camera::getFieldOfView() const
 {
 	return fieldOfView;
 }
@@ -61,7 +68,7 @@ void Engine::Camera::setAspectRatio(float i_aspectRatio)
 }
 
 
-float Engine::Camera::getAspectRatio()
+float Engine::Camera::getAspectRatio() const
 {
 	return aspectRatio;
 }
@@ -72,7 +79,7 @@ void Engine::Camera::activateCamera(bool i_activate)
 	active = i_activate;
 }
 
-bool Engine::Camera::isActive()
+bool Engine::Camera::isActive() const
 {
 	return active;
 }
@@ -83,7 +90,8 @@ Engine::Transformation Engine::Camera::getTransformation()
 	return mTransformation;
 }
 
-void Engine::Camera::setTransformation(Engine::Math::cVector i_positionOffset, Engine::Math::cQuaternion i_orientation)
+void Engine::Camera::setTransformation(Engine::Math::cVector i_positionOffset,
+	Engine::Math::cQuaternion i_orientation)
 {
 	mTransformation.mOrientation = i_orientation;
 	mTransformation.mPositionOffset = i_positionOffset;
@@ -95,12 +103,65 @@ void Engine::Camera::setCameraController(IObjectController* i_objectController)
 	mObjectController = i_objectController;
 }
 
+float Engine::Camera::getNearPlane() const
+{
+	return nearPlane;
+}
+
+float Engine::Camera::getFarPlane() const
+{
+	return farPlane;
+}
+
+
+std::string Engine::Camera::getCameraName() const
+{
+	return mCameraName;
+}
+
+
+
+void Engine::Camera::setFarPlane(float i_farPlane)
+{
+	farPlane = i_farPlane;
+}
+
+
+void Engine::Camera::setNearPlane(float i_nearPlane)
+{
+	nearPlane = i_nearPlane;
+}
+
+
+
 
 void Engine::Camera::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i_MessageSender, void* i_pMessageData)
 {
 	if (i_MessageSender != nullptr)
 	{
-		if (Engine::utils::StringHash("MoveCamera") == i_message)
+		if (Engine::utils::StringHash("rotateCamera") == i_message)
+		{
+			//Engine::SharedPointer<Engine::GameObject> temp= SharedPointer<GameObject>(this); //Need to think about this
+			switch (*(reinterpret_cast<Engine::typedefs::Direction*>(i_pMessageData)))
+			{
+			case Engine::typedefs::NONE:
+				break;
+			case Engine::typedefs::UP:
+				mTransformation.mOrientation = mTransformation.mOrientation.operator*(Engine::Math::cQuaternion(0.01f, Engine::Math::cVector(1, 0, 0)));
+				break;
+			case Engine::typedefs::DOWN:
+				mTransformation.mOrientation = mTransformation.mOrientation.operator*(Engine::Math::cQuaternion(-0.01f, Engine::Math::cVector(1, 0, 0)));
+				break;
+			case Engine::typedefs::LEFT:
+				mTransformation.mOrientation = mTransformation.mOrientation.operator*(Engine::Math::cQuaternion(0.01f, Engine::Math::cVector(0, 1, 0)));
+				break;
+			case Engine::typedefs::RIGHT:
+				mTransformation.mOrientation = mTransformation.mOrientation.operator*(Engine::Math::cQuaternion(-0.01f, Engine::Math::cVector(0, 1, 0)));
+				break;
+			}
+		}
+
+		if (Engine::utils::StringHash("UpdateGameObject") == i_message)
 		{
 			//Engine::SharedPointer<Engine::GameObject> temp= SharedPointer<GameObject>(this); //Need to think about this
 			switch (*(reinterpret_cast<Engine::typedefs::Direction*>(i_pMessageData)))
@@ -109,19 +170,19 @@ void Engine::Camera::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i
 				break;
 			case Engine::typedefs::UP:
 				if (mObjectController)
-					mObjectController->updateGameObject(*this, Engine::typedefs::UP);
+					mObjectController->updateObject(*this, Engine::typedefs::UP);
 				break;
 			case Engine::typedefs::DOWN:
 				if (mObjectController)
-					mObjectController->updateGameObject(*this, Engine::typedefs::DOWN);
+					mObjectController->updateObject(*this, Engine::typedefs::DOWN);
 				break;
 			case Engine::typedefs::LEFT:
 				if (mObjectController)
-					mObjectController->updateGameObject(*this, Engine::typedefs::LEFT);
+					mObjectController->updateObject(*this, Engine::typedefs::LEFT);
 				break;
 			case Engine::typedefs::RIGHT:
 				if (mObjectController)
-					mObjectController->updateGameObject(*this, Engine::typedefs::RIGHT);
+					mObjectController->updateObject(*this, Engine::typedefs::RIGHT);
 				break;
 			}
 		}

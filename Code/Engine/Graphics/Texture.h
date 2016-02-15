@@ -12,12 +12,13 @@
 
 #include "../Core/Utilities/SharedPointer.h"
 #include <map>
+#include "typedefs.h"
 
 namespace Engine
 {
 	namespace Graphics
 	{
-		class Texture:public RTTI
+		class Texture :public RTTI
 		{
 		public:
 			static bool addTextureToList(const char*);
@@ -27,20 +28,16 @@ namespace Engine
 			void setTextureName(const char*);
 			const char* getTextureName();
 			bool loadTexture();
-			std::string getTypeInfo() override { return ""; }
-			bool isBothSameType(RTTI*, std::string) override { return true; }
-			//bool setTexture();
+			std::string getTypeInfo() const override { return ""; }
+			bool isBothSameType(RTTI*, std::string) const override { return true; }
+			TextureResource getTextureResource() const;
 			~Texture();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Texture>> mTextureList;
 			char* textureName;
 			Texture(char*);
 			Texture();
-#ifdef PLATFORM_D3D
-			IDirect3DTexture9* texture;			
-#elif PLATFORM_OPEN_GL
-			GLuint texture;
-#endif
+			TextureResource texture;
 		};
 	}
 

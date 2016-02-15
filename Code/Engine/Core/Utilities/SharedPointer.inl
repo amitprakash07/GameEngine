@@ -117,7 +117,7 @@ namespace Engine
 	}
 
 	template<typename T>
-	inline Engine::RTTI* SharedPointer<T>::getRawPointer()
+	inline Engine::RTTI* SharedPointer<T>::getRawPointer() const
 	{
 		return(reinterpret_cast<RTTI*>(m_WrappingObject));
 	}

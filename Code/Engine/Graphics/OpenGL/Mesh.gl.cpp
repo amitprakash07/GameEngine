@@ -2,7 +2,6 @@
 
 #include "../Mesh.h"
 #include <assert.h>
-#include <gl/GLU.h>
 #include "../../Windows/WindowsFunctions.h"
 
 
@@ -19,19 +18,19 @@ bool Engine::Graphics::Mesh::createBuffers()
 }
 
 
-bool Engine::Graphics::Mesh::drawMesh()
+bool Engine::Graphics::Mesh::drawMesh(bool)
 {
-	
+
 	// Render objects from the current streams
 	// We are using triangles as the "primitive" type,
 	// and we have defined the vertex buffer as a triangle list
 	// (meaning that every triangle is defined by three vertices)
-	
+
 	// Bind a specific vertex buffer to the device as a data source
 	glBindVertexArray(s_vertexArrayID);
 	if (!glGetError() == GL_NO_ERROR)
 		return false;
-	
+
 	const GLenum mode = GL_TRIANGLES;
 	// We'll use 32-bit indices in this class to keep things simple
 	// (i.e. every index will be a 32 bit unsigned integer)
@@ -122,8 +121,8 @@ bool Engine::Graphics::Mesh::createVertexArray()
 			memcpy(vertexData, tempVertex, sizeof(tempVertex[0]) * vertexCount);
 		}
 		glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(vertex), reinterpret_cast<GLvoid*>(vertexData),
-		             // Our code will only ever write to the buffer
-		             GL_STATIC_DRAW);
+			// Our code will only ever write to the buffer
+			GL_STATIC_DRAW);
 		delete vertexData;
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
@@ -302,8 +301,8 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		{
 			const GLuint vertexElementLocation = 4;
 			const GLint elementCount = 2; // for 2 floats in the textures
-			const GLboolean notNormalized = GL_FALSE; // The given floats should be used as-is
-			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
+			const GLboolean Normalized = GL_FALSE; // The given floats should be used as-is
+			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, Normalized, stride, offset);
 			GLenum errorCode = glGetError();
 			if (errorCode == GL_NO_ERROR)
 			{
@@ -338,7 +337,7 @@ bool Engine::Graphics::Mesh::createVertexArray()
 		// 4 uint8_ts == 4 bytes
 		// Offset = 56
 		{
-			const GLuint vertexElementLocation = 1;
+			const GLuint vertexElementLocation = 5;
 			const GLint elementCount = 4;
 			const GLboolean normalized = GL_TRUE;
 			glVertexAttribPointer(vertexElementLocation, elementCount, GL_UNSIGNED_BYTE, normalized, stride, offset);
@@ -414,8 +413,8 @@ bool Engine::Graphics::Mesh::createVertexArray()
 
 		const GLsizeiptr bufferSize = triangleCount * vertexCountPerTriangle * sizeof(uint32_t);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, bufferSize, reinterpret_cast<const GLvoid*>(indexData),
-		             // Our code will only ever write to the buffer
-		             GL_STATIC_DRAW);
+			// Our code will only ever write to the buffer
+			GL_STATIC_DRAW);
 		delete indexData;
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)

@@ -25,8 +25,7 @@ namespace Engine
 		//=============================
 
 		bool CreateRenderingContext();
-		
-		
+
 		// This helper struct exists to be able to dynamically allocate memory to get "log info"
 		// which will automatically be freed when the struct goes out of scope
 		struct sLogInfo
@@ -53,7 +52,7 @@ bool Engine::Graphics::GraphicsSystem::create()
 		std::string errorMessage;
 		if (!OpenGlExtensions::Load(&errorMessage))
 		{
-			WindowsUtil::Print( errorMessage );
+			WindowsUtil::Print(errorMessage);
 			goto OnError;
 		}
 	}
@@ -61,25 +60,25 @@ bool Engine::Graphics::GraphicsSystem::create()
 	/*glEnable(GL_CULL_FACE);
 	if (glGetError() != GL_NO_ERROR)
 	{
-		goto OnError;
+	goto OnError;
 	}
 
 	glEnable(GL_DEPTH_TEST);
 	if (glGetError() != GL_NO_ERROR)
 	{
-		goto OnError;
+	goto OnError;
 	}
 
 	glDepthMask(GL_TRUE);
 	if (glGetError() != GL_NO_ERROR)
 	{
-		goto OnError;
+	goto OnError;
 	}
 
 	glDepthFunc(GL_LEQUAL);
 	if (glGetError() != GL_NO_ERROR)
 	{
-		goto OnError;
+	goto OnError;
 	}*/
 
 
@@ -89,7 +88,6 @@ OnError:
 	ShutDown();
 	return false;
 }
-
 
 bool Engine::Graphics::GraphicsSystem::clear()
 {
@@ -110,10 +108,9 @@ bool Engine::Graphics::GraphicsSystem::clear()
 	glClear(clear);
 	if (glGetError() == GL_NO_ERROR)
 		return true;
-	
+
 	return false;
 }
-
 
 void Engine::Graphics::GraphicsSystem::beginScene()
 {
@@ -125,9 +122,6 @@ void Engine::Graphics::GraphicsSystem::endScene()
 	//Works like a stub - does nothing
 }
 
-
-	
-	
 void Engine::Graphics::GraphicsSystem::showBuffer()
 {
 	// Everything has been drawn to the "back buffer", which is just an image in memory.
@@ -137,10 +131,8 @@ void Engine::Graphics::GraphicsSystem::showBuffer()
 	{
 		BOOL result = SwapBuffers(s_deviceContext);
 		assert(result != FALSE);
-	}	
+	}
 }
-
-
 
 bool Engine::Graphics::GraphicsSystem::destroy()
 {
@@ -154,14 +146,14 @@ bool Engine::Graphics::GraphicsSystem::destroy()
 			{
 				std::stringstream errorMessage;
 				errorMessage << "Windows failed to delete the OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-				WindowsUtil::Print( errorMessage.str() );
+				WindowsUtil::Print(errorMessage.str());
 			}
 		}
 		else
 		{
 			std::stringstream errorMessage;
 			errorMessage << "Windows failed to unset the current OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-			WindowsUtil::Print( errorMessage.str() );
+			WindowsUtil::Print(errorMessage.str());
 		}
 		s_openGlRenderingContext = nullptr;
 	}
@@ -178,81 +170,76 @@ bool Engine::Graphics::GraphicsSystem::destroy()
 	return !wereThereErrors;
 }
 
-
-
-
 // Helper Function Declarations
 //=============================
 
-
 bool Engine::Graphics::CreateRenderingContext()
+{
+	// A "device context" can be thought of an abstraction that Windows uses
+	// to represent the graphics adaptor used to display a given window
+	s_deviceContext = GetDC(Engine::Graphics::GraphicsSystem::getRenderingWindow());
+	if (s_deviceContext == nullptr)
 	{
-		// A "device context" can be thought of an abstraction that Windows uses
-		// to represent the graphics adaptor used to display a given window
-		s_deviceContext = GetDC( Engine::Graphics::GraphicsSystem::getRenderingWindow() );
-		if ( s_deviceContext == nullptr )
+		WindowsUtil::Print("Windows failed to get the device context");
+		return false;
+	}
+	// Windows requires that an OpenGL "render context" is made for the window we want to use to render into
+	{
+		// Set the pixel format of the rendering window
 		{
-			WindowsUtil::Print( "Windows failed to get the device context" );
-			return false;
-		}
-		// Windows requires that an OpenGL "render context" is made for the window we want to use to render into
-		{
-			// Set the pixel format of the rendering window
+			PIXELFORMATDESCRIPTOR desiredPixelFormat = { 0 };
 			{
-				PIXELFORMATDESCRIPTOR desiredPixelFormat = { 0 };
-				{
-					desiredPixelFormat.nSize = sizeof( PIXELFORMATDESCRIPTOR );
-					desiredPixelFormat.nVersion = 1;
+				desiredPixelFormat.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+				desiredPixelFormat.nVersion = 1;
 
-					desiredPixelFormat.dwFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
-					desiredPixelFormat.iPixelType = PFD_TYPE_RGBA;
-					desiredPixelFormat.cColorBits = 32;
-					desiredPixelFormat.iLayerType = PFD_MAIN_PLANE ;
-					desiredPixelFormat.cDepthBits = 16; //Enabling Depth Buffer with 16 bits
-				}
-				// Get the ID of the desired pixel format
-				int pixelFormatId;
-				{
-					pixelFormatId = ChoosePixelFormat( s_deviceContext, &desiredPixelFormat );
-					if ( pixelFormatId == 0 )
-					{
-						std::stringstream errorMessage;
-						errorMessage << "Windows couldn't choose the closest pixel format: " << WindowsUtil::GetLastWindowsError();
-						WindowsUtil::Print( errorMessage.str() );
-						return false;
-					}
-				}
-				// Set it
-				if ( SetPixelFormat( s_deviceContext, pixelFormatId, &desiredPixelFormat ) == FALSE )
+				desiredPixelFormat.dwFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
+				desiredPixelFormat.iPixelType = PFD_TYPE_RGBA;
+				desiredPixelFormat.cColorBits = 32;
+				desiredPixelFormat.iLayerType = PFD_MAIN_PLANE;
+				desiredPixelFormat.cDepthBits = 16; //Enabling Depth Buffer with 16 bits
+			}
+			// Get the ID of the desired pixel format
+			int pixelFormatId;
+			{
+				pixelFormatId = ChoosePixelFormat(s_deviceContext, &desiredPixelFormat);
+				if (pixelFormatId == 0)
 				{
 					std::stringstream errorMessage;
-					errorMessage << "Windows couldn't set the desired pixel format: " << WindowsUtil::GetLastWindowsError();
-					WindowsUtil::Print( errorMessage.str() );
+					errorMessage << "Windows couldn't choose the closest pixel format: " << WindowsUtil::GetLastWindowsError();
+					WindowsUtil::Print(errorMessage.str());
 					return false;
 				}
 			}
-			// Create the OpenGL rendering context
-			s_openGlRenderingContext = wglCreateContext( s_deviceContext );
-			if ( s_openGlRenderingContext == NULL )
+			// Set it
+			if (SetPixelFormat(s_deviceContext, pixelFormatId, &desiredPixelFormat) == FALSE)
 			{
 				std::stringstream errorMessage;
-				errorMessage << "Windows failed to create an OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-				WindowsUtil::Print( errorMessage.str() );
-				return false;
-			}
-			// Set it as the rendering context of this thread
-			if ( wglMakeCurrent( s_deviceContext, s_openGlRenderingContext ) == FALSE )
-			{
-				std::stringstream errorMessage;
-				errorMessage << "Windows failed to set the current OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
-				WindowsUtil::Print( errorMessage.str() );
+				errorMessage << "Windows couldn't set the desired pixel format: " << WindowsUtil::GetLastWindowsError();
+				WindowsUtil::Print(errorMessage.str());
 				return false;
 			}
 		}
-
-		return true;
+		// Create the OpenGL rendering context
+		s_openGlRenderingContext = wglCreateContext(s_deviceContext);
+		if (s_openGlRenderingContext == NULL)
+		{
+			std::stringstream errorMessage;
+			errorMessage << "Windows failed to create an OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
+			WindowsUtil::Print(errorMessage.str());
+			return false;
+		}
+		// Set it as the rendering context of this thread
+		if (wglMakeCurrent(s_deviceContext, s_openGlRenderingContext) == FALSE)
+		{
+			std::stringstream errorMessage;
+			errorMessage << "Windows failed to set the current OpenGL rendering context: " << WindowsUtil::GetLastWindowsError();
+			WindowsUtil::Print(errorMessage.str());
+			return false;
+		}
 	}
 
+	return true;
+}
 
 bool Engine::Graphics::GraphicsSystem::setRenderState(uint8_t i_renderState)
 {
@@ -299,6 +286,36 @@ bool Engine::Graphics::GraphicsSystem::setRenderState(uint8_t i_renderState)
 		return true;
 	return false;
 }
+
+void Engine::Graphics::GraphicsSystem::EnableAlphaBlending(bool)
+{
+
+}
+
+
+void Engine::Graphics::GraphicsSystem::EnableDepthWriting(bool)
+{
+
+}
+
+void Engine::Graphics::GraphicsSystem::EnableFaceCulling(bool, Engine::Graphics::CullingMode cullingMode)
+{
+
+}
+
+void Engine::Graphics::GraphicsSystem::EnableDepthTesting(bool)
+{
+
+}
+
+void Engine::Graphics::GraphicsSystem::EnableWireFrame(bool)
+{
+
+}
+
+
+
+
 
 
 

@@ -12,7 +12,7 @@
 
 namespace
 {
-	void* GetGlFunctionAddress( const char* i_functionName, std::string* o_errorMessage = NULL );
+	void* GetGlFunctionAddress(const char* i_functionName, std::string* o_errorMessage = NULL);
 }
 
 // Interface
@@ -43,26 +43,56 @@ PFNGLGETSHADERIVPROC glGetShaderiv = NULL;
 PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = NULL;
 PFNGLLINKPROGRAMPROC glLinkProgram = NULL;
 PFNGLSHADERSOURCEPROC glShaderSource = NULL;
-PFNGLUSEPROGRAMPROC glUseProgram = NULL;
-PFNGLUNIFORM1FVPROC glUniform1fv = NULL;
-PFNGLUNIFORM2FVPROC glUniform2fv = NULL;
-PFNGLUNIFORM3FVPROC glUniform3fv = NULL;
-PFNGLUNIFORM4FVPROC glUniform4fv = NULL;
-PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv = NULL;
+PFNGLUSEPROGRAMPROC glUseProgram = nullptr;
 PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = NULL;
 PFNGLCOMPRESSEDTEXIMAGE2DPROC glCompressedTexImage2D = nullptr;
+
+//Uniform  Setting Functions
+PFNGLUNIFORM1FPROC glUniform1f = nullptr;
+PFNGLUNIFORM2FPROC glUniform2f = nullptr;
+PFNGLUNIFORM3FPROC glUniform3f = nullptr;
+PFNGLUNIFORM4FPROC glUniform4f = nullptr;
+
+PFNGLUNIFORM1IPROC glUniform1i = nullptr;
+PFNGLUNIFORM2IPROC glUniform2i = nullptr;
+PFNGLUNIFORM3IPROC glUniform3i = nullptr;
+PFNGLUNIFORM4IPROC glUniform4i = nullptr;
+
+PFNGLUNIFORM1UIPROC glUniform1ui = nullptr;
+PFNGLUNIFORM2UIPROC glUniform2ui = nullptr;
+PFNGLUNIFORM3UIPROC glUniform3ui = nullptr;
+PFNGLUNIFORM4UIPROC glUniform4ui = nullptr;
+
+PFNGLUNIFORM1FVPROC glUniform1fv = nullptr;
+PFNGLUNIFORM2FVPROC glUniform2fv = nullptr;
+PFNGLUNIFORM3FVPROC glUniform3fv = nullptr;
+PFNGLUNIFORM4FVPROC glUniform4fv = nullptr;
+
+PFNGLUNIFORM1IVPROC glUniform1iv = nullptr;
+PFNGLUNIFORM2IVPROC glUniform2iv = nullptr;
+PFNGLUNIFORM3IVPROC glUniform3iv = nullptr;
+PFNGLUNIFORM4IVPROC glUniform4iv = nullptr;
+
+PFNGLUNIFORM1UIVPROC glUniform1uiv = nullptr;
+PFNGLUNIFORM2UIVPROC glUniform2uiv = nullptr;
+PFNGLUNIFORM3UIVPROC glUniform3uiv = nullptr;
+PFNGLUNIFORM4UIVPROC glUnifrom4uiv = nullptr;
+
+PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv = nullptr;
+
+
 
 // Initialization
 //---------------
 
-bool OpenGlExtensions::Load( std::string* o_errorMessage )
+bool OpenGlExtensions::Load(std::string* o_errorMessage)
 {
 	// A current OpenGL context must exist before extensions can be loaded
 	{
 		const HGLRC currentContext = wglGetCurrentContext();
-		if ( currentContext == NULL )
+		if (currentContext == NULL)
 		{
-			if ( o_errorMessage )
+			if (o_errorMessage)
 			{
 				*o_errorMessage = "OpenGL extensions can't be loaded without a current OpenGL context";
 			}
@@ -70,43 +100,78 @@ bool OpenGlExtensions::Load( std::string* o_errorMessage )
 		}
 	}
 
-#define EAE6320_LOADGLFUNCTION( i_functionName, i_functionType )														\
+#define LOADGLFUNCTION( i_functionName, i_functionType )														\
 		i_functionName = reinterpret_cast<i_functionType>( GetGlFunctionAddress( #i_functionName, o_errorMessage ) );	\
 		if ( !i_functionName )																							\
 			return false;
 
-	EAE6320_LOADGLFUNCTION( glActiveTexture, PFNGLACTIVETEXTUREPROC );
-	EAE6320_LOADGLFUNCTION( glAttachShader, PFNGLATTACHSHADERPROC );
-	EAE6320_LOADGLFUNCTION( glBindBuffer, PFNGLBINDBUFFERPROC );
-	EAE6320_LOADGLFUNCTION( glBindVertexArray, PFNGLBINDVERTEXARRAYPROC );
-	EAE6320_LOADGLFUNCTION( glBufferData, PFNGLBUFFERDATAPROC );
-	EAE6320_LOADGLFUNCTION( glCompileShader, PFNGLCOMPILESHADERPROC );
-	EAE6320_LOADGLFUNCTION( glCreateProgram, PFNGLCREATEPROGRAMPROC );
-	EAE6320_LOADGLFUNCTION( glCreateShader, PFNGLCREATESHADERPROC );
-	EAE6320_LOADGLFUNCTION( glDeleteBuffers, PFNGLDELETEBUFFERSPROC );
-	EAE6320_LOADGLFUNCTION( glDeleteProgram, PFNGLDELETEPROGRAMPROC );
-	EAE6320_LOADGLFUNCTION( glDeleteVertexArrays, PFNGLDELETEVERTEXARRAYSPROC );
-	EAE6320_LOADGLFUNCTION( glDeleteShader, PFNGLDELETESHADERPROC );
-	EAE6320_LOADGLFUNCTION( glEnableVertexAttribArray, PFNGLENABLEVERTEXATTRIBARRAYARBPROC );
-	EAE6320_LOADGLFUNCTION( glGenBuffers, PFNGLGENBUFFERSPROC );
-	EAE6320_LOADGLFUNCTION( glGenVertexArrays, PFNGLGENVERTEXARRAYSPROC );
-	EAE6320_LOADGLFUNCTION( glGetProgramInfoLog, PFNGLGETPROGRAMINFOLOGPROC );
-	EAE6320_LOADGLFUNCTION( glGetProgramiv, PFNGLGETPROGRAMIVPROC );
-	EAE6320_LOADGLFUNCTION( glGetShaderInfoLog, PFNGLGETSHADERINFOLOGPROC );
-	EAE6320_LOADGLFUNCTION( glGetShaderiv, PFNGLGETSHADERIVPROC );
-	EAE6320_LOADGLFUNCTION( glGetUniformLocation, PFNGLGETUNIFORMLOCATIONPROC );
-	EAE6320_LOADGLFUNCTION( glLinkProgram, PFNGLLINKPROGRAMPROC );
-	EAE6320_LOADGLFUNCTION( glShaderSource, PFNGLSHADERSOURCEPROC );
-	EAE6320_LOADGLFUNCTION( glUniform1fv, PFNGLUNIFORM1FVPROC );
-	EAE6320_LOADGLFUNCTION( glUniform2fv, PFNGLUNIFORM2FVPROC );
-	EAE6320_LOADGLFUNCTION( glUniform3fv, PFNGLUNIFORM3FVPROC );
-	EAE6320_LOADGLFUNCTION( glUniform4fv, PFNGLUNIFORM4FVPROC );
-	EAE6320_LOADGLFUNCTION( glUniformMatrix4fv, PFNGLUNIFORMMATRIX4FVPROC );
-	EAE6320_LOADGLFUNCTION( glUseProgram, PFNGLUSEPROGRAMPROC );
-	EAE6320_LOADGLFUNCTION( glVertexAttribPointer, PFNGLVERTEXATTRIBPOINTERPROC );
-	EAE6320_LOADGLFUNCTION( glCompressedTexImage2D, PFNGLCOMPRESSEDTEXIMAGE2DPROC );
+	LOADGLFUNCTION(glActiveTexture, PFNGLACTIVETEXTUREPROC);
+	LOADGLFUNCTION(glAttachShader, PFNGLATTACHSHADERPROC);
+	LOADGLFUNCTION(glBindBuffer, PFNGLBINDBUFFERPROC);
+	LOADGLFUNCTION(glBindVertexArray, PFNGLBINDVERTEXARRAYPROC);
+	LOADGLFUNCTION(glBufferData, PFNGLBUFFERDATAPROC);
+	LOADGLFUNCTION(glCompileShader, PFNGLCOMPILESHADERPROC);
+	LOADGLFUNCTION(glCreateProgram, PFNGLCREATEPROGRAMPROC);
+	LOADGLFUNCTION(glCreateShader, PFNGLCREATESHADERPROC);
+	LOADGLFUNCTION(glDeleteBuffers, PFNGLDELETEBUFFERSPROC);
+	LOADGLFUNCTION(glDeleteProgram, PFNGLDELETEPROGRAMPROC);
+	LOADGLFUNCTION(glDeleteVertexArrays, PFNGLDELETEVERTEXARRAYSPROC);
+	LOADGLFUNCTION(glDeleteShader, PFNGLDELETESHADERPROC);
+	LOADGLFUNCTION(glEnableVertexAttribArray, PFNGLENABLEVERTEXATTRIBARRAYARBPROC);
+	LOADGLFUNCTION(glGenBuffers, PFNGLGENBUFFERSPROC);
+	LOADGLFUNCTION(glGenVertexArrays, PFNGLGENVERTEXARRAYSPROC);
+	LOADGLFUNCTION(glGetProgramInfoLog, PFNGLGETPROGRAMINFOLOGPROC);
+	LOADGLFUNCTION(glGetProgramiv, PFNGLGETPROGRAMIVPROC);
+	LOADGLFUNCTION(glGetShaderInfoLog, PFNGLGETSHADERINFOLOGPROC);
+	LOADGLFUNCTION(glGetShaderiv, PFNGLGETSHADERIVPROC);
+	LOADGLFUNCTION(glGetUniformLocation, PFNGLGETUNIFORMLOCATIONPROC);
+	LOADGLFUNCTION(glLinkProgram, PFNGLLINKPROGRAMPROC);
+	LOADGLFUNCTION(glShaderSource, PFNGLSHADERSOURCEPROC);
+	LOADGLFUNCTION(glUniform1fv, PFNGLUNIFORM1FVPROC);
+	LOADGLFUNCTION(glUniform2fv, PFNGLUNIFORM2FVPROC);
+	LOADGLFUNCTION(glUniform3fv, PFNGLUNIFORM3FVPROC);
+	LOADGLFUNCTION(glUniform4fv, PFNGLUNIFORM4FVPROC);
+	LOADGLFUNCTION(glUseProgram, PFNGLUSEPROGRAMPROC);
+	LOADGLFUNCTION(glVertexAttribPointer, PFNGLVERTEXATTRIBPOINTERPROC);
+	LOADGLFUNCTION(glCompressedTexImage2D, PFNGLCOMPRESSEDTEXIMAGE2DPROC);
 
-#undef EAE6320_LOADGLFUNCTION
+	LOADGLFUNCTION(glUniform1f, PFNGLUNIFORM1FPROC);
+	LOADGLFUNCTION(glUniform2f, PFNGLUNIFORM2FPROC);
+	LOADGLFUNCTION(glUniform3f, PFNGLUNIFORM3FPROC);
+	LOADGLFUNCTION(glUniform4f, PFNGLUNIFORM4FPROC);
+
+	LOADGLFUNCTION(glUniform1i, PFNGLUNIFORM1IPROC);
+	LOADGLFUNCTION(glUniform2i, PFNGLUNIFORM2IPROC);
+	LOADGLFUNCTION(glUniform3i, PFNGLUNIFORM3IPROC);
+	LOADGLFUNCTION(glUniform4i, PFNGLUNIFORM4IPROC);
+
+	LOADGLFUNCTION(glUniform1ui, PFNGLUNIFORM1UIPROC);
+	LOADGLFUNCTION(glUniform2ui, PFNGLUNIFORM2UIPROC);
+	LOADGLFUNCTION(glUniform3ui, PFNGLUNIFORM3UIPROC);
+	LOADGLFUNCTION(glUniform4ui, PFNGLUNIFORM4UIPROC);
+
+	LOADGLFUNCTION(glUniform1fv, PFNGLUNIFORM1FVPROC);
+	LOADGLFUNCTION(glUniform2fv, PFNGLUNIFORM2FVPROC);
+	LOADGLFUNCTION(glUniform3fv, PFNGLUNIFORM3FVPROC);
+	LOADGLFUNCTION(glUniform4fv, PFNGLUNIFORM4FVPROC);
+
+	LOADGLFUNCTION(glUniform1iv, PFNGLUNIFORM1IVPROC);
+	LOADGLFUNCTION(glUniform2iv, PFNGLUNIFORM2IVPROC);
+	LOADGLFUNCTION(glUniform3iv, PFNGLUNIFORM3IVPROC);
+	LOADGLFUNCTION(glUniform4iv, PFNGLUNIFORM4IVPROC);
+
+	LOADGLFUNCTION(glUniform1uiv, PFNGLUNIFORM1UIVPROC);
+	LOADGLFUNCTION(glUniform2uiv, PFNGLUNIFORM2UIVPROC);
+	LOADGLFUNCTION(glUniform3uiv, PFNGLUNIFORM3UIVPROC);
+	//LOADGLFUNCTION(glUnifrom4uiv, PFNGLUNIFORM4UIVPROC );
+
+	LOADGLFUNCTION(glUniformMatrix4fv, PFNGLUNIFORMMATRIX4FVPROC);
+
+
+
+
+
+#undef LOADGLFUNCTION
 
 	return true;
 }
@@ -116,20 +181,20 @@ bool OpenGlExtensions::Load( std::string* o_errorMessage )
 
 namespace
 {
-	void* GetGlFunctionAddress( const char* i_functionName, std::string* o_errorMessage )
+	void* GetGlFunctionAddress(const char* i_functionName, std::string* o_errorMessage)
 	{
-		void* address = reinterpret_cast<void*>( wglGetProcAddress( i_functionName ) );
+		void* address = reinterpret_cast<void*>(wglGetProcAddress(i_functionName));
 		// The documentation says that NULL will be returned if the function isn't found,
 		// but according to https://www.opengl.org/wiki/Load_OpenGL_Functions
 		// other values can be returned by some implementations
-		if ( ( address != NULL )
-			&& ( address != reinterpret_cast<void*>( 1 ) ) && ( address != reinterpret_cast<void*>( 2 ) )
-			&& ( address != reinterpret_cast<void*>( 3 ) ) && ( address != reinterpret_cast<void*>( -1 ) ) )
+		if ((address != NULL)
+			&& (address != reinterpret_cast<void*>(1)) && (address != reinterpret_cast<void*>(2))
+			&& (address != reinterpret_cast<void*>(3)) && (address != reinterpret_cast<void*>(-1)))
 		{
 			return address;
 		}
 		std::string wglErrorMessage;
-		if ( address == NULL )
+		if (address == NULL)
 		{
 			wglErrorMessage = WindowsUtil::GetLastWindowsError();
 		}
@@ -140,15 +205,15 @@ namespace
 		{
 			// This library should already be loaded,
 			// and so this function will just retrieve a handle to it
-			HMODULE glLibrary = LoadLibrary( "Opengl32.dll" );
-			if ( glLibrary != NULL )
+			HMODULE glLibrary = LoadLibrary("Opengl32.dll");
+			if (glLibrary != NULL)
 			{
 				// Look for an old OpenGL function
-				void* address = reinterpret_cast<void*>( GetProcAddress( glLibrary, i_functionName ) );
+				void* address = reinterpret_cast<void*>(GetProcAddress(glLibrary, i_functionName));
 				// Decrement the library's reference count
-				FreeLibrary( glLibrary );
+				FreeLibrary(glLibrary);
 				// Return an address if it was found
-				if ( address != NULL )
+				if (address != NULL)
 				{
 					return address;
 				}
@@ -156,11 +221,11 @@ namespace
 		}
 
 		// If this code is reached the OpenGL function wasn't found
-		if ( o_errorMessage )
+		if (o_errorMessage)
 		{
 			std::stringstream errorMessage;
 			errorMessage << "Windows failed to find the address of the OpenGL function \"" << i_functionName << "\"";
-			if ( !wglErrorMessage.empty() )
+			if (!wglErrorMessage.empty())
 			{
 				errorMessage << ": " << wglErrorMessage;
 			}

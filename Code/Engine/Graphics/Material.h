@@ -15,9 +15,11 @@ namespace Engine
 			static bool isMaterialExist(const char*);
 			static void deleteAll();
 			void setMaterialName(const char*);
-			const char *getMaterialName();
-			const char* getEffectName();
-			void setMaterialUniformParameters();
+			const char *getMaterialName() const;
+			const char* getEffectName() const;
+			void setMaterialUniformParameters() const;
+			void changeMaterialColor(float i_R, float i_G, float i_b, float i_A = 1.0f) const;
+			void setTextureUniform() const;
 			~Material();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Material>> mMaterialList;
@@ -30,7 +32,7 @@ namespace Engine
 			Map* mTextureMaps;
 			Material();
 			Material(char*);
-			bool loadMaterial();			
+			bool loadMaterial();
 		};
 	}
 }

@@ -6,16 +6,16 @@
 
 namespace Engine
 {
-	class WalkController:public IObjectController
+	class WalkController :public IObjectController
 	{
 	public:
-		void updateGameObject(Object &i_gameObject, Engine::typedefs::Direction i_dir) override;
-		std::string getTypeInfo() override { return ""; }
-		bool isBothSameType(RTTI*, std::string) override { return true; }
-		WalkController(){}
-		~WalkController(){}
+		void updateObject(Object &i_gameObject, Engine::typedefs::Direction i_dir) override;
+		std::string getTypeInfo() const override { return ""; }
+		bool isBothSameType(RTTI*, std::string) const override { return true; }
+		WalkController() {}
+		~WalkController() {}
 	private:
-		
+
 	};
 }
 

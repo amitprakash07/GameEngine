@@ -8,7 +8,7 @@
 #include "../../Externals/Lua/Includes.h"
 
 
-		//int luaCopyFile(lua_State * i_lua_state);
+//int luaCopyFile(lua_State * i_lua_state);
 lua_State* Tools::AssetBuilder::AssetBuilderUsingLua::mLuaState = nullptr;
 
 bool Tools::AssetBuilder::AssetBuilderUsingLua::Initialize()
@@ -31,7 +31,7 @@ bool Tools::AssetBuilder::AssetBuilderUsingLua::Initialize()
 	lua_register(mLuaState, "CopyFile", luaCopyFile);
 	lua_register(mLuaState, "CreateDirectoryIfNecessary", luaCreateDirectoryIfNecessary);
 	lua_register(mLuaState, "DoesFileExist", luaDoesFileExist);
-	lua_register(mLuaState, "GetEnvironmentVariable", luaGetEnvironmentVariable);
+	lua_register(mLuaState, "GetVSEnvironmentVariable", luaGetEnvironmentVariable);
 	lua_register(mLuaState, "GetLastWriteTime", luaGetLastWriteTime);
 	lua_register(mLuaState, "OutputErrorMessage", luaOutputErrorMessage);
 
@@ -45,7 +45,7 @@ bool Tools::AssetBuilder::AssetBuilderUsingLua::BuildAssets()
 	std::string errormessage;
 	std::string scriptDir;
 	//Getting ScriptDir path
-	if(!WindowsUtil::GetEnvironmentVariableA("ScriptDir", scriptDir, &errormessage))
+	if (!WindowsUtil::GetVSEnvironmentVariable("ScriptDir", scriptDir, &errormessage))
 	{
 		wereThereErrors = true;
 		OutputErrorMessage(errormessage.c_str(), __FILE__);
@@ -56,16 +56,20 @@ bool Tools::AssetBuilder::AssetBuilderUsingLua::BuildAssets()
 	const std::string buildScript = scriptDir + "BuildAssets.lua";
 	const int loadResult = luaL_loadfile(mLuaState, buildScript.c_str());
 
-	if(loadResult == LUA_OK)
+	if (loadResult == LUA_OK)
 	{
 		const int argumentCount = 1;
-		const std::string assetToBuildListPath = scriptDir + "AssetsToBuild.lua";
+		std::string assetFileName;
+		WindowsUtil::Assert(WindowsUtil::GetVSEnvironmentVariable("AssetFile", assetFileName),
+			"No AssetFile - Nothing to Build");
+
+		const std::string assetToBuildListPath = scriptDir + assetFileName;
 		const int returnValueCount = 1;
 		const int noMessagehandler = 0;
 		lua_pushstring(mLuaState, assetToBuildListPath.c_str());
 		const int buildAssetResult = lua_pcall(mLuaState, argumentCount, returnValueCount, noMessagehandler);
-		
-		if(buildAssetResult == LUA_OK)
+
+		if (buildAssetResult == LUA_OK)
 		{
 			wereThereErrors = !lua_toboolean(mLuaState, -1);
 			lua_pop(mLuaState, returnValueCount);
@@ -88,7 +92,7 @@ bool Tools::AssetBuilder::AssetBuilderUsingLua::BuildAssets()
 	}
 	return !wereThereErrors;
 }
-		
+
 bool Tools::AssetBuilder::AssetBuilderUsingLua::ShutDown()
 {
 	bool wereThereErrors = false;
@@ -100,8 +104,8 @@ bool Tools::AssetBuilder::AssetBuilderUsingLua::ShutDown()
 	return !wereThereErrors;
 }
 
-		// Helper Function Definitions
-		//============================
+// Helper Function Definitions
+//============================
 
 void Tools::AssetBuilder::AssetBuilderUsingLua::OutputErrorMessage(const char* const i_errorMessage, const char* const i_optionalFileName)
 {
@@ -112,19 +116,19 @@ void Tools::AssetBuilder::AssetBuilderUsingLua::OutputErrorMessage(const char* c
 	WindowsUtil::Print(errormessage.str());
 }
 
-		// Lua Wrapper Functions
-		//----------------------
+// Lua Wrapper Functions
+//----------------------
 
 int Tools::AssetBuilder::AssetBuilderUsingLua::luaCopyFile(lua_State * i_luaState)
 {
 	// Argument #1: The source path
 	const char* i_path_source = lua_tostring(i_luaState, 1);
 	//EAE6320_TODO	// How do you get the source path from the Lua state?
-					// Argument #2: The target path
+	// Argument #2: The target path
 	const char* i_path_target = lua_tostring(i_luaState, 2);
 	//EAE6320_TODO	// How do you get the target path from the Lua state?
 
-					// Copy the file
+	// Copy the file
 	std::string errorMessage;
 	// There are many reasons that a source should be rebuilt,
 	// and so even if the target already exists it should just be written over
@@ -219,7 +223,7 @@ int Tools::AssetBuilder::AssetBuilderUsingLua::luaGetEnvironmentVariable(lua_Sta
 	// How do you get the key from the Lua state?
 	std::string value;
 	std::string errorMessage;
-	if (WindowsUtil::GetEnvironmentVariable(i_key, value))
+	if (WindowsUtil::GetVSEnvironmentVariable(i_key, value))
 	{
 		lua_pushstring(i_luaState, value.c_str());
 		lua_pushstring(i_luaState, errorMessage.c_str());
@@ -252,7 +256,7 @@ int Tools::AssetBuilder::AssetBuilderUsingLua::luaGetLastWriteTime(lua_State * i
 	{
 		lua_pushnumber(i_luaState, 1);
 		lua_pushstring(i_luaState, errorMessage.c_str());
-		return 2; 
+		return 2;
 	}
 
 }

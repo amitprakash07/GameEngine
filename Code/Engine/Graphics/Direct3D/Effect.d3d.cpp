@@ -214,7 +214,7 @@ Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle
 	return sampleID;
 }
 
-void Engine::Graphics::Effect::setAllUniforms()
+void Engine::Graphics::Effect::setAllUniformToShader()
 {
 	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = uniformNames.begin();
 	i != uniformNames.end(); ++i)

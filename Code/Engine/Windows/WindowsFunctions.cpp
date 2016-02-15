@@ -10,22 +10,22 @@
 // Interface
 //==========
 
-bool WindowsUtil::CopyFile( const char* const i_path_source, const char* const i_path_target,
+bool WindowsUtil::CopyFile(const char* const i_path_source, const char* const i_path_target,
 	const bool i_shouldFunctionFailIfTargetAlreadyExists, const bool i_shouldTargetFileTimeBeModified,
-	std::string* o_errorMessage )
+	std::string* o_errorMessage)
 {
-	if ( ::CopyFile( i_path_source, i_path_target, i_shouldFunctionFailIfTargetAlreadyExists ) != FALSE )
+	if (::CopyFile(i_path_source, i_path_target, i_shouldFunctionFailIfTargetAlreadyExists) != FALSE)
 	{
-		if ( i_shouldTargetFileTimeBeModified )
+		if (i_shouldTargetFileTimeBeModified)
 		{
 			// Get the current system time
 			FILETIME fileTime;
 			{
 				SYSTEMTIME systemTime;
-				GetSystemTime( &systemTime );
-				if ( SystemTimeToFileTime( &systemTime, &fileTime ) == FALSE )
+				GetSystemTime(&systemTime);
+				if (SystemTimeToFileTime(&systemTime, &fileTime) == FALSE)
 				{
-					if ( o_errorMessage )
+					if (o_errorMessage)
 					{
 						*o_errorMessage = GetLastWindowsError();
 					}
@@ -44,12 +44,12 @@ bool WindowsUtil::CopyFile( const char* const i_path_source, const char* const i
 					const DWORD onlySucceedIfFileExists = OPEN_EXISTING;
 					const DWORD useDefaultAttributes = FILE_ATTRIBUTE_NORMAL;
 					const HANDLE dontUseTemplateFile = NULL;
-					fileHandle = CreateFile( i_path_target, desiredAccess, otherProgramsCanStillReadTheFile,
-						useDefaultSecurity, onlySucceedIfFileExists, useDefaultAttributes, dontUseTemplateFile );
-					if ( fileHandle == INVALID_HANDLE_VALUE )
+					fileHandle = CreateFile(i_path_target, desiredAccess, otherProgramsCanStillReadTheFile,
+						useDefaultSecurity, onlySucceedIfFileExists, useDefaultAttributes, dontUseTemplateFile);
+					if (fileHandle == INVALID_HANDLE_VALUE)
 					{
 						wereThereErrors = true;
-						if ( o_errorMessage )
+						if (o_errorMessage)
 						{
 							*o_errorMessage = GetLastWindowsError();
 						}
@@ -57,10 +57,10 @@ bool WindowsUtil::CopyFile( const char* const i_path_source, const char* const i
 					}
 				}
 				FILETIME* const onlyChangeLastWriteTime = NULL;
-				if ( SetFileTime( fileHandle, onlyChangeLastWriteTime, onlyChangeLastWriteTime, &fileTime ) == FALSE )
+				if (SetFileTime(fileHandle, onlyChangeLastWriteTime, onlyChangeLastWriteTime, &fileTime) == FALSE)
 				{
 					wereThereErrors = true;
-					if ( o_errorMessage )
+					if (o_errorMessage)
 					{
 						*o_errorMessage = GetLastWindowsError();
 					}
@@ -69,12 +69,12 @@ bool WindowsUtil::CopyFile( const char* const i_path_source, const char* const i
 
 			OnDoneChangingTime:
 
-				if ( fileHandle != INVALID_HANDLE_VALUE )
+				if (fileHandle != INVALID_HANDLE_VALUE)
 				{
-					if ( CloseHandle( fileHandle ) == FALSE )
+					if (CloseHandle(fileHandle) == FALSE)
 					{
 						wereThereErrors = true;
-						if ( o_errorMessage )
+						if (o_errorMessage)
 						{
 							*o_errorMessage += "\n";
 							*o_errorMessage += GetLastWindowsError();
@@ -82,7 +82,7 @@ bool WindowsUtil::CopyFile( const char* const i_path_source, const char* const i
 					}
 					fileHandle = INVALID_HANDLE_VALUE;
 				}
-				if ( wereThereErrors )
+				if (wereThereErrors)
 				{
 					return false;
 				}
@@ -92,7 +92,7 @@ bool WindowsUtil::CopyFile( const char* const i_path_source, const char* const i
 	}
 	else
 	{
-		if ( o_errorMessage )
+		if (o_errorMessage)
 		{
 			*o_errorMessage = GetLastWindowsError();
 		}
@@ -100,15 +100,16 @@ bool WindowsUtil::CopyFile( const char* const i_path_source, const char* const i
 	}
 }
 
-bool WindowsUtil::CreateDirectoryIfNecessary( const std::string& i_path, std::string* o_errorMessage )
+bool WindowsUtil::CreateDirectoryIfNecessary(const std::string& i_path,
+	std::string* o_errorMessage)
 {
 	// If the path is to a file (likely), remove it so that only the directory remains
 	std::string directory;
 	{
-		size_t pos_slash = i_path.find_last_of( "\\/" );
-		if ( pos_slash != std::string::npos )
+		size_t pos_slash = i_path.find_last_of("\\/");
+		if (pos_slash != std::string::npos)
 		{
-			directory = i_path.substr( 0, pos_slash );
+			directory = i_path.substr(0, pos_slash);
 		}
 		else
 		{
@@ -123,32 +124,32 @@ bool WindowsUtil::CreateDirectoryIfNecessary( const std::string& i_path, std::st
 	char buffer[maxCharacterCount];
 	{
 		char** pathIsDirectory = NULL;
-		DWORD characterCount = GetFullPathName( directory.c_str(), maxCharacterCount, buffer, pathIsDirectory );
-		if ( characterCount > 0 )
+		DWORD characterCount = GetFullPathName(directory.c_str(), maxCharacterCount, buffer, pathIsDirectory);
+		if (characterCount > 0)
 		{
-			if ( characterCount <= maxCharacterCount )
+			if (characterCount <= maxCharacterCount)
 			{
 				// Create the directory
 				int result;
 				{
 					HWND noWindowIsDisplayed = NULL;
 					const SECURITY_ATTRIBUTES* useDefaultSecurityAttributes = NULL;
-					result = SHCreateDirectoryEx( noWindowIsDisplayed, buffer, useDefaultSecurityAttributes );
+					result = SHCreateDirectoryEx(noWindowIsDisplayed, buffer, useDefaultSecurityAttributes);
 				}
-				if ( result == ERROR_SUCCESS )
+				if (result == ERROR_SUCCESS)
 				{
 					std::cout << "Created directory " << buffer << "\n";
 					return true;
 				}
-				else if ( ( result == ERROR_FILE_EXISTS ) || ( result== ERROR_ALREADY_EXISTS ) )
+				else if ((result == ERROR_FILE_EXISTS) || (result == ERROR_ALREADY_EXISTS))
 				{
 					return true;
 				}
 				else
 				{
-					if ( o_errorMessage )
+					if (o_errorMessage)
 					{
-						*o_errorMessage = WindowsUtil::GetFormattedWindowsError( result );
+						*o_errorMessage = WindowsUtil::GetFormattedWindowsError(result);
 					}
 					return false;
 				}
@@ -156,7 +157,7 @@ bool WindowsUtil::CreateDirectoryIfNecessary( const std::string& i_path, std::st
 			else
 			{
 				// If you're seeing this error you will need to increase maxCharacterCount
-				if ( o_errorMessage )
+				if (o_errorMessage)
 				{
 					std::stringstream errorMessage;
 					errorMessage << "The full path of \"" << directory << "\" requires " << characterCount <<
@@ -168,7 +169,7 @@ bool WindowsUtil::CreateDirectoryIfNecessary( const std::string& i_path, std::st
 		}
 		else
 		{
-			if ( o_errorMessage )
+			if (o_errorMessage)
 			{
 				*o_errorMessage = WindowsUtil::GetLastWindowsError();
 			}
@@ -177,53 +178,60 @@ bool WindowsUtil::CreateDirectoryIfNecessary( const std::string& i_path, std::st
 	}
 }
 
-bool WindowsUtil::DoesFileExist( const char* const i_path, std::string* o_errorMessage, DWORD* o_errorCode )
+bool WindowsUtil::DoesFileExist(const char* const i_path,
+	std::string* o_errorMessage,
+	DWORD* o_errorCode)
 {
 	// Try to get information about the file
 	WIN32_FIND_DATA fileData;
-	HANDLE file = FindFirstFile( i_path, &fileData );
-	if ( file != INVALID_HANDLE_VALUE )
+	HANDLE file = FindFirstFile(i_path, &fileData);
+	if (file != INVALID_HANDLE_VALUE)
 	{
-		if ( FindClose( file ) == FALSE )
+		if (FindClose(file) == FALSE)
 		{
 			std::stringstream errorMessage;
 			errorMessage << "Windows failed to close the file handle to \"" << i_path << "\": " << GetLastWindowsError();
-			MessageBox( NULL, errorMessage.str().c_str(), "Error Closing File Handle", MB_OK | MB_ICONERROR );
+			MessageBox(NULL, errorMessage.str().c_str(), "Error Closing File Handle", MB_OK | MB_ICONERROR);
 		}
 		return true;
 	}
 	else
 	{
-		if ( o_errorMessage )
+		if (o_errorMessage)
 		{
-			*o_errorMessage = WindowsUtil::GetLastWindowsError( o_errorCode );
+			*o_errorMessage = WindowsUtil::GetLastWindowsError(o_errorCode);
 		}
 		return false;
 	}
 }
 
-bool WindowsUtil::ExecuteCommand( const char* const i_command, DWORD* o_exitCode, std::string* o_errorMessage )
+bool WindowsUtil::ExecuteCommand(const char* const i_command,
+	DWORD* o_exitCode,
+	std::string* o_errorMessage)
 {
-	return ExecuteCommand( NULL, i_command, o_exitCode, o_errorMessage );
+	return ExecuteCommand(NULL, i_command, o_exitCode, o_errorMessage);
 }
 
-bool WindowsUtil::ExecuteCommand( const char* const i_command, const char* const i_optionalArguments, DWORD* o_exitCode, std::string* o_errorMessage )
+bool WindowsUtil::ExecuteCommand(const char* const i_command,
+	const char* const i_optionalArguments,
+	DWORD* o_exitCode,
+	std::string* o_errorMessage)
 {
 	bool wereThereErrors = false;
 
 	// Copy the const arguments into a non-const buffer
 	const DWORD bufferSize = 512;
 	char arguments[bufferSize] = { 0 };
-	if ( i_optionalArguments )
+	if (i_optionalArguments)
 	{
-		size_t argumentLength = strlen( i_optionalArguments );
-		if ( bufferSize > argumentLength )
+		size_t argumentLength = strlen(i_optionalArguments);
+		if (bufferSize > argumentLength)
 		{
-			strcpy_s( arguments, bufferSize, i_optionalArguments );
+			strcpy_s(arguments, bufferSize, i_optionalArguments);
 		}
 		else
 		{
-			if ( o_errorMessage )
+			if (o_errorMessage)
 			{
 				std::ostringstream errorMessage;
 				errorMessage << "Couldn't copy the command (of length " << argumentLength
@@ -241,23 +249,23 @@ bool WindowsUtil::ExecuteCommand( const char* const i_command, const char* const
 	const char* useCallingProcessCurrentDirectory = NULL;
 	STARTUPINFO startupInfo = { 0 };
 	{
-		startupInfo.cb = sizeof( startupInfo );
+		startupInfo.cb = sizeof(startupInfo);
 	}
 	PROCESS_INFORMATION processInformation = { 0 };
-	if ( CreateProcess( i_command, arguments, useDefaultAttributes, useDefaultAttributes,
+	if (CreateProcess(i_command, arguments, useDefaultAttributes, useDefaultAttributes,
 		dontInheritHandles, createDefaultProcess, useCallingProcessEnvironment, useCallingProcessCurrentDirectory,
-		&startupInfo, &processInformation ) != FALSE )
+		&startupInfo, &processInformation) != FALSE)
 	{
 		// Wait for the process to finish
-		if ( WaitForSingleObject( processInformation.hProcess, INFINITE ) != WAIT_FAILED )
+		if (WaitForSingleObject(processInformation.hProcess, INFINITE) != WAIT_FAILED)
 		{
 			// Get the exit code
-			if ( o_exitCode )
+			if (o_exitCode)
 			{
-				if ( GetExitCodeProcess( processInformation.hProcess, o_exitCode ) == FALSE )
+				if (GetExitCodeProcess(processInformation.hProcess, o_exitCode) == FALSE)
 				{
 					wereThereErrors = true;
-					if ( o_errorMessage )
+					if (o_errorMessage)
 					{
 						std::stringstream errorMessage;
 						errorMessage << "Windows failed to get the exit code of the process \"" << i_command <<
@@ -270,7 +278,7 @@ bool WindowsUtil::ExecuteCommand( const char* const i_command, const char* const
 		else
 		{
 			wereThereErrors = true;
-			if ( o_errorMessage )
+			if (o_errorMessage)
 			{
 				std::stringstream errorMessage;
 				errorMessage << "Windows failed to wait for the process \"" << i_command <<
@@ -279,26 +287,26 @@ bool WindowsUtil::ExecuteCommand( const char* const i_command, const char* const
 			}
 		}
 		// Close the process handles
-		if ( CloseHandle( processInformation.hProcess ) == FALSE )
+		if (CloseHandle(processInformation.hProcess) == FALSE)
 		{
 			std::stringstream errorMessage;
 			errorMessage << "Windows failed to close the handle to the process \"" << i_command <<
 				"\": " << GetLastWindowsError();
-			MessageBox( NULL, errorMessage.str().c_str(), "Error Closing Process Handle", MB_OK | MB_ICONERROR );
+			MessageBox(NULL, errorMessage.str().c_str(), "Error Closing Process Handle", MB_OK | MB_ICONERROR);
 		}
-		if ( CloseHandle( processInformation.hThread ) == FALSE )
+		if (CloseHandle(processInformation.hThread) == FALSE)
 		{
 			std::stringstream errorMessage;
 			errorMessage << "Windows failed to close the handle to the process \"" << i_command <<
 				"\" thread: " << GetLastWindowsError();
-			MessageBox( NULL, errorMessage.str().c_str(), "Error Closing Process Thread Handle", MB_OK | MB_ICONERROR );
+			MessageBox(NULL, errorMessage.str().c_str(), "Error Closing Process Thread Handle", MB_OK | MB_ICONERROR);
 		}
 
 		return !wereThereErrors;
 	}
 	else
 	{
-		if ( o_errorMessage )
+		if (o_errorMessage)
 		{
 			std::stringstream errorMessage;
 			errorMessage << "Windows failed to start the process \"" << i_command << "\": " << GetLastWindowsError();
@@ -308,7 +316,9 @@ bool WindowsUtil::ExecuteCommand( const char* const i_command, const char* const
 	}
 }
 
-bool WindowsUtil::GetEnvironmentVariable( const char* const i_key, std::string& o_value, std::string* o_errorMessage )
+bool WindowsUtil::GetVSEnvironmentVariable(const char* const i_key,
+	std::string& o_value,
+	std::string* o_errorMessage)
 {
 	// Windows requires a character buffer
 	// to copy the environment variable into.
@@ -316,11 +326,11 @@ bool WindowsUtil::GetEnvironmentVariable( const char* const i_key, std::string& 
 	const DWORD maxCharacterCount = MAX_PATH;
 	char buffer[maxCharacterCount];
 	// Ask Windows for the environment variable
-	const DWORD characterCount = ::GetEnvironmentVariable( i_key, buffer, maxCharacterCount );
+	const DWORD characterCount = ::GetEnvironmentVariable(i_key, buffer, maxCharacterCount);
 	DWORD result = GetLastError();
-	if ( characterCount > 0 )
+	if (characterCount > 0)
 	{
-		if ( characterCount <= maxCharacterCount )
+		if (characterCount <= maxCharacterCount)
 		{
 			o_value = buffer;
 			return true;
@@ -328,7 +338,7 @@ bool WindowsUtil::GetEnvironmentVariable( const char* const i_key, std::string& 
 		else
 		{
 			// If you're seeing this error you will need to increase maxCharacterCount
-			if ( o_errorMessage )
+			if (o_errorMessage)
 			{
 				std::stringstream errorMessage;
 				errorMessage << "The environment variable \"" << i_key << "\" requires " << characterCount <<
@@ -340,11 +350,11 @@ bool WindowsUtil::GetEnvironmentVariable( const char* const i_key, std::string& 
 	}
 	else
 	{
-		if ( o_errorMessage )
+		if (o_errorMessage)
 		{
 			DWORD errorCode;
-			std::string errorString = GetLastWindowsError( &errorCode );
-			if ( errorCode == ERROR_ENVVAR_NOT_FOUND )
+			std::string errorString = GetLastWindowsError(&errorCode);
+			if (errorCode == ERROR_ENVVAR_NOT_FOUND)
 			{
 				// If you're seeing this error and the environment variable is spelled correctly
 				// it _probably_ means that you are debugging and haven't set up the environment.
@@ -367,7 +377,7 @@ bool WindowsUtil::GetEnvironmentVariable( const char* const i_key, std::string& 
 	}
 }
 
-std::string WindowsUtil::GetFormattedWindowsError( const DWORD i_errorCode )
+std::string WindowsUtil::GetFormattedWindowsError(const DWORD i_errorCode)
 {
 	std::string errorMessage;
 	{
@@ -384,9 +394,9 @@ std::string WindowsUtil::GetFormattedWindowsError( const DWORD i_errorCode )
 		char* messageBuffer = NULL;
 		const DWORD minimumCharacterCountToAllocate = 1;
 		va_list* insertsAreIgnored = NULL;
-		const DWORD storedCharacterCount = FormatMessage( formattingOptions, messageIsFromWindows, i_errorCode,
-			useTheDefaultLanguage, reinterpret_cast<LPSTR>( &messageBuffer ), minimumCharacterCountToAllocate, insertsAreIgnored );
-		if ( storedCharacterCount != 0 )
+		const DWORD storedCharacterCount = FormatMessage(formattingOptions, messageIsFromWindows, i_errorCode,
+			useTheDefaultLanguage, reinterpret_cast<LPSTR>(&messageBuffer), minimumCharacterCountToAllocate, insertsAreIgnored);
+		if (storedCharacterCount != 0)
 		{
 			errorMessage = messageBuffer;
 		}
@@ -398,35 +408,37 @@ std::string WindowsUtil::GetFormattedWindowsError( const DWORD i_errorCode )
 		}
 		// Try to free the memory regardless of whether formatting worked or not,
 		// and ignore any error messages
-		LocalFree( messageBuffer );
+		LocalFree(messageBuffer);
 	}
 	return errorMessage;
 }
 
-std::string WindowsUtil::GetLastWindowsError( DWORD* o_optionalErrorCode )
+std::string WindowsUtil::GetLastWindowsError(DWORD* o_optionalErrorCode)
 {
 	// Windows stores the error as a code
 	const DWORD errorCode = GetLastError();
-	if ( o_optionalErrorCode )
+	if (o_optionalErrorCode)
 	{
 		*o_optionalErrorCode = errorCode;
 	}
-	return GetFormattedWindowsError( errorCode );
+	return GetFormattedWindowsError(errorCode);
 }
 
-bool WindowsUtil::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWriteTime, std::string* o_errorMessage )
+bool WindowsUtil::GetLastWriteTime(const char* const i_path,
+	uint64_t& o_lastWriteTime,
+	std::string* o_errorMessage)
 {
 	// Get the last time that the file was written to
 	ULARGE_INTEGER lastWriteTime;
 	{
 		WIN32_FIND_DATA fileData;
 		{
-			HANDLE file = FindFirstFile( i_path, &fileData );
-			if ( file != INVALID_HANDLE_VALUE )
+			HANDLE file = FindFirstFile(i_path, &fileData);
+			if (file != INVALID_HANDLE_VALUE)
 			{
-				if ( FindClose( file ) == FALSE )
+				if (FindClose(file) == FALSE)
 				{
-					if ( o_errorMessage )
+					if (o_errorMessage)
 					{
 						*o_errorMessage = GetLastWindowsError();
 					}
@@ -435,7 +447,7 @@ bool WindowsUtil::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWr
 			}
 			else
 			{
-				if ( o_errorMessage )
+				if (o_errorMessage)
 				{
 					*o_errorMessage = GetLastWindowsError();
 				}
@@ -446,26 +458,35 @@ bool WindowsUtil::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWr
 		lastWriteTime.HighPart = fileTime.dwHighDateTime;
 		lastWriteTime.LowPart = fileTime.dwLowDateTime;
 	}
-	o_lastWriteTime = static_cast<uint64_t>( lastWriteTime.QuadPart );
+	o_lastWriteTime = static_cast<uint64_t>(lastWriteTime.QuadPart);
 	return true;
 }
 
-void WindowsUtil::Print(std::string i_str, const char * i_optionalFileName)
+void WindowsUtil::Print(std::string i_str,
+	const char * i_optionalFileName)
 {
 	std::stringstream message;
 	message << i_str;
 	if (i_optionalFileName != nullptr)
 		message << i_optionalFileName;
 #if _DEBUG
-	MessageBox(nullptr, message.str().c_str(),nullptr, MB_OK);
+	MessageBox(nullptr, message.str().c_str(), nullptr, MB_OK);
 #endif
-	std::cerr << message.str().c_str() <<"\n";
+	std::cerr << message.str().c_str() << "\n";
 }
 
-
-void WindowsUtil::Assert(bool evaluatedBool, std::string message)
+void WindowsUtil::Assert(bool evaluatedBool,
+	std::string message)
 {
 	if (!evaluatedBool)
 		Print(message);
 	assert(evaluatedBool);
 }
+
+bool WindowsUtil::setVSEnvironmentVariableValue(const char* variableName,
+	const char* value)
+{
+	Assert(variableName, "Null VAriable name");
+	return(::SetEnvironmentVariable(variableName, value));
+}
+
