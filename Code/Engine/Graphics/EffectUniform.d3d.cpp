@@ -1,26 +1,26 @@
 #include "Effect.h"
 
-bool Engine::Graphics::Effect::ReadEngineUniformsHandle()
-{
-
-	/*
-	s_uniformLocalToWorld - g_transform_localToWorld 
-	s_uniformWorldToView - g_transform_worldToView
-	s_uniformViewToScreen -g_transform_viewToScreen
-	*/
-
-	if (s_vertexShaderConstantTable)
-	{
-		s_uniformLocalToWorld = s_vertexShaderConstantTable->GetConstantByName(nullptr, "g_transform_localToWorld");
-		s_uniformWorldToView = s_vertexShaderConstantTable->GetConstantByName(nullptr, "g_transform_worldToView");
-		s_uniformViewToScreen = s_vertexShaderConstantTable->GetConstantByName(nullptr, "g_transform_viewToScreen");
-
-		if (s_uniformLocalToWorld != nullptr && s_uniformWorldToView != nullptr && s_uniformViewToScreen != nullptr)
-			return true;
-	}
-
-	return false;
-}
+//bool Engine::Graphics::Effect::ReadEngineUniformsHandle()
+//{
+//
+//	/*
+//	s_uniformLocalToWorld - g_transform_localToWorld 
+//	s_uniformWorldToView - g_transform_worldToView
+//	s_uniformViewToScreen -g_transform_viewToScreen
+//	*/
+//
+//	if (s_vertexShaderConstantTable)
+//	{
+//		s_uniformLocalToWorld = s_vertexShaderConstantTable->GetConstantByName(nullptr, "g_transform_localToWorld");
+//		s_uniformWorldToView = s_vertexShaderConstantTable->GetConstantByName(nullptr, "g_transform_worldToView");
+//		s_uniformViewToScreen = s_vertexShaderConstantTable->GetConstantByName(nullptr, "g_transform_viewToScreen");
+//
+//		if (s_uniformLocalToWorld != nullptr && s_uniformWorldToView != nullptr && s_uniformViewToScreen != nullptr)
+//			return true;
+//	}
+//
+//	return false;
+//}
 
 
 //bool Engine::Graphics::Effect::setMaterialUniformHandle(char* i_uniformName, int i_index)

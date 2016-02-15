@@ -3,9 +3,9 @@
 
 #include "../cShaderBuilder.h"
 #include <sstream>
-#include "../../../Engine/Graphics/Includes.h"
 #include "../../../Engine/Windows/WindowsFunctions.h"
 #include <iostream>
+#include "../../../Engine/Graphics/uniformdefs.h"
 
 
 // Interface
@@ -14,28 +14,28 @@
 // Build
 //------
 
-bool Tools::AssetBuilder::cShaderBuilder::Build( const std::vector<std::string>& i_arguments )
+bool Tools::AssetBuilder::cShaderBuilder::Build(const std::vector<std::string>& i_arguments)
 {
 	// Decide which kind of shader program to compile
 	std::stringstream errorMessage;
 	Engine::Graphics::ShaderType shaderType = Engine::Graphics::ShaderType::Unknown;
 	{
-		if ( i_arguments.size() >= 1 )
+		if (i_arguments.size() >= 1)
 		{
-			
+
 			const std::string& argument = i_arguments[0];
-			
-			if ( argument == "vertex" )
+
+			if (argument == "vertex")
 			{
 				shaderType = Engine::Graphics::ShaderType::Vertex;
 			}
-			else if ( argument == "fragment" )
+			else if (argument == "fragment")
 			{
 				shaderType = Engine::Graphics::ShaderType::Fragment;
 			}
 			else
 			{
-				errorMessage << "\"" << argument << "\" is not a valid shader program type "<< m_path_source;
+				errorMessage << "\"" << argument << "\" is not a valid shader program type " << m_path_source;
 				WindowsUtil::Print(errorMessage.str().c_str());
 				return false;
 			}
@@ -43,7 +43,7 @@ bool Tools::AssetBuilder::cShaderBuilder::Build( const std::vector<std::string>&
 		else
 		{
 			errorMessage << "A Shader must be built with an argument defining which "
-				<<"type of shader program (e.g. \"vertex\" or \"fragment\") to compile " << m_path_source;
+				<< "type of shader program (e.g. \"vertex\" or \"fragment\") to compile " << m_path_source;
 			WindowsUtil::Print(errorMessage.str().c_str());
 			return false;
 		}
@@ -55,10 +55,10 @@ bool Tools::AssetBuilder::cShaderBuilder::Build( const std::vector<std::string>&
 		std::string path_sdk;
 		{
 			std::string othererrormessage;
-			if ( !WindowsUtil::GetEnvironmentVariable( "DXSDK_DIR", path_sdk, &othererrormessage) )
+			if (!WindowsUtil::GetEnvironmentVariable("DXSDK_DIR", path_sdk, &othererrormessage))
 			{
 				std::stringstream decoratedErrorMessage;
-				decoratedErrorMessage << "Windows failed to get the path to the DirectX SDK: " << othererrormessage << __FILE__ ;
+				decoratedErrorMessage << "Windows failed to get the path to the DirectX SDK: " << othererrormessage << __FILE__;
 				WindowsUtil::Print(decoratedErrorMessage.str().c_str());
 				return false;
 			}
@@ -77,7 +77,7 @@ bool Tools::AssetBuilder::cShaderBuilder::Build( const std::vector<std::string>&
 		std::stringstream commandToBuild;
 		commandToBuild << "\"" << path_fxc << "\"";
 		// Target profile
-		switch ( shaderType )
+		switch (shaderType)
 		{
 		case Engine::Graphics::ShaderType::Vertex:
 			commandToBuild << " /Tvs_3_0";
@@ -102,7 +102,7 @@ bool Tools::AssetBuilder::cShaderBuilder::Build( const std::vector<std::string>&
 			<< " /nologo"
 			// Source file
 			<< " \"" << m_path_source << "\""
-		;
+			;
 		command = commandToBuild.str();
 
 	}
@@ -113,14 +113,14 @@ bool Tools::AssetBuilder::cShaderBuilder::Build( const std::vector<std::string>&
 	{
 		DWORD exitCode;
 		std::string othererrorMessage;
-		if ( WindowsUtil::ExecuteCommand( command.c_str(), &exitCode, &othererrorMessage) )
+		if (WindowsUtil::ExecuteCommand(command.c_str(), &exitCode, &othererrorMessage))
 		{
 			return exitCode == EXIT_SUCCESS;
 		}
 		else
 		{
 			errorMessage << othererrorMessage << m_path_source;
-			WindowsUtil::Print( errorMessage.str().c_str());
+			WindowsUtil::Print(errorMessage.str().c_str());
 			return false;
 		}
 	}

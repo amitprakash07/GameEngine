@@ -17,23 +17,21 @@ namespace Engine
 {
 	namespace Graphics
 	{
-		
-				
-		class Mesh:public RTTI
+		class Mesh :public RTTI
 		{
 		public:
 			static bool addToMeshList(std::string);
 			static SharedPointer<Mesh> getMesh(std::string);
 			static void deleteAllMesh();
-			bool drawMesh();
+			bool drawMesh(bool wireFrame = false);
 			bool LoadMesh();
-			vertex* getVertex();
-			uint32_t* getIndices();
+			vertex* getVertex() const;
+			uint32_t* getIndices() const;
 			void setWinding(winding);
-			winding getWinding();
-			std::string getMeshFileName();
-			std::string getTypeInfo() override { return ""; }
-			bool isBothSameType(RTTI*, std::string) override { return true; }
+			winding getWinding() const;
+			std::string getMeshFileName() const;
+			std::string getTypeInfo() const override { return ""; }
+			bool isBothSameType(RTTI*, std::string) const override { return true; }
 			~Mesh();
 		private:
 			static std::map<std::string, SharedPointer<Mesh>> meshList;
@@ -48,8 +46,8 @@ namespace Engine
 			bool createBuffers();
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;
-			GLuint vertexBufferId ;
-			GLuint indexBufferId ;
+			GLuint vertexBufferId;
+			GLuint indexBufferId;
 			bool createVertexArray();
 #elif PLATFORM_D3D
 			IDirect3DVertexBuffer9* s_vertexBuffer;
@@ -58,7 +56,7 @@ namespace Engine
 			bool createVertexBuffer();
 			bool createIndexBuffer();
 #endif
-			
+
 		};
 	}
 }

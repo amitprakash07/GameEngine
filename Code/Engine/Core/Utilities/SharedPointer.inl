@@ -40,9 +40,9 @@ namespace Engine
 	/*template<typename T>
 	inline SharedPointer<T>::SharedPointer(SharedPointer<T> * i_other)
 	{
-		m_WrappingObject = i_other.m_WrappingObject;
-		m_referenceCount = i_other.m_referenceCount;
-		(*(m_referenceCount))++;
+	m_WrappingObject = i_other.m_WrappingObject;
+	m_referenceCount = i_other.m_referenceCount;
+	(*(m_referenceCount))++;
 	}*/
 
 	template<typename T>
@@ -61,7 +61,7 @@ namespace Engine
 	}
 
 	template<typename T>
-	inline bool SharedPointer<T>::isEqual(SharedPointer<T> &i_other)
+	inline bool SharedPointer<T>::isEqual(const SharedPointer<T> &i_other) const
 	{
 		if (m_WrappingObject == i_other.m_WrappingObject)
 			return true;
@@ -77,7 +77,7 @@ namespace Engine
 	}
 
 	template<typename T>
-	inline T* SharedPointer<T>::operator->()
+	inline T* SharedPointer<T>::operator->() const
 	{
 		assert(m_WrappingObject);
 		if (!this->isNull())
@@ -109,7 +109,7 @@ namespace Engine
 	}
 
 	template<typename T>
-	inline bool SharedPointer<T>::isNull()
+	inline bool SharedPointer<T>::isNull() const
 	{
 		if (m_WrappingObject == nullptr)//|| m_WrappingObject == null)
 			return true;

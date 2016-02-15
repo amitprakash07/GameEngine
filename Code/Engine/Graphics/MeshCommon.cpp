@@ -10,20 +10,20 @@ std::map<std::string, Engine::SharedPointer<Engine::Graphics::Mesh>> Engine::Gra
 
 bool Engine::Graphics::Mesh::addToMeshList(std::string i_fileName)
 {
-	if (!i_fileName.empty()) 
+	if (!i_fileName.empty())
 	{
 		if (!isMeshExist(i_fileName))
 		{
 			Engine::SharedPointer<Mesh> newMesh(new Mesh(i_fileName), "Engine::Graphics::Mesh");
-			if(!newMesh.isNull())
+			if (!newMesh.isNull())
 			{
-				if(newMesh->LoadMesh() && newMesh->createBuffers())
+				if (newMesh->LoadMesh() && newMesh->createBuffers())
 					meshList[i_fileName] = newMesh;
-			}			
+			}
 		}
 		return true;
 	}
-	
+
 	std::stringstream errormessage;
 	errormessage << "Unable to load Mesh. FileName is null. Load Mesh again";
 	WindowsUtil::Print(errormessage.str());
@@ -32,21 +32,21 @@ bool Engine::Graphics::Mesh::addToMeshList(std::string i_fileName)
 
 Engine::SharedPointer<Engine::Graphics::Mesh> Engine::Graphics::Mesh::getMesh(std::string i_fileName)
 {
-	if(!i_fileName.empty())
+	if (!i_fileName.empty())
 	{
 		return (meshList[i_fileName]);
 	}
 	return (Engine::SharedPointer<Engine::Graphics::Mesh>());
 }
 
-Engine::Graphics::vertex* Engine::Graphics::Mesh::getVertex()
+Engine::Graphics::vertex* Engine::Graphics::Mesh::getVertex() const
 {
 	if (mVertex)
 		return mVertex;
 	return nullptr;
 }
 
-uint32_t* Engine::Graphics::Mesh::getIndices()
+uint32_t* Engine::Graphics::Mesh::getIndices() const
 {
 	if (mIndices)
 	{
@@ -55,7 +55,7 @@ uint32_t* Engine::Graphics::Mesh::getIndices()
 	return nullptr;
 }
 
-std::string Engine::Graphics::Mesh::getMeshFileName()
+std::string Engine::Graphics::Mesh::getMeshFileName() const
 {
 	if (!meshFileName.empty())
 		return meshFileName;
@@ -67,7 +67,7 @@ void Engine::Graphics::Mesh::setWinding(winding i_winding)
 	mWinding = i_winding;
 }
 
-Engine::Graphics::winding Engine::Graphics::Mesh::getWinding()
+Engine::Graphics::winding Engine::Graphics::Mesh::getWinding() const
 {
 	return mWinding;
 }
@@ -78,9 +78,9 @@ bool Engine::Graphics::Mesh::LoadMesh()
 
 	std::ifstream readFile;
 
-	if(!readFile.is_open())
+	if (!readFile.is_open())
 		readFile.open(meshFileName.c_str(), std::ifstream::binary);
-	
+
 	readFile.seekg(0, readFile.end);
 	size_t length = static_cast<size_t>(readFile.tellg());
 	readFile.seekg(0, readFile.beg);
@@ -88,7 +88,7 @@ bool Engine::Graphics::Mesh::LoadMesh()
 	BYTES * buffer = new BYTES[length];
 	//Lets read evrything from asset binary file
 	readFile.read(buffer, length);
-	
+
 	readFile.close();//Closing the file Pointer
 
 	BYTES * currentPosition = buffer;
@@ -100,7 +100,7 @@ bool Engine::Graphics::Mesh::LoadMesh()
 	vertexCount = *reinterpret_cast<int*> (currentPosition); //vertexCount
 	currentPosition += sizeof(int);
 
- 	triangleCount = *reinterpret_cast<int*>(currentPosition); //No of triangles
+	triangleCount = *reinterpret_cast<int*>(currentPosition); //No of triangles
 	currentPosition += sizeof(int);
 
 	//creating vertex memmory
@@ -115,10 +115,10 @@ bool Engine::Graphics::Mesh::LoadMesh()
 		mIndices = new uint32_t[triangleCount * 3];
 	//copying indices data from the memory
 	memcpy(mIndices, reinterpret_cast<uint32_t*>(currentPosition), sizeof(uint32_t) * 3 * triangleCount); //Indices
-	
-	//Freeing memory
+
+																										  //Freeing memory
 	currentPosition = nullptr;
-	delete buffer;	
+	delete buffer;
 
 	return true;
 }
@@ -131,9 +131,9 @@ void Engine::Graphics::Mesh::deleteAllMesh()
 
 bool Engine::Graphics::Mesh::isMeshExist(std::string i_fileName)
 {
-	if(!i_fileName.empty())
+	if (!i_fileName.empty())
 	{
-		for (std::map<std::string, SharedPointer<Mesh>>::iterator i = meshList.begin(); i !=meshList.end(); ++i)
+		for (std::map<std::string, SharedPointer<Mesh>>::iterator i = meshList.begin(); i != meshList.end(); ++i)
 		{
 			if (Engine::utils::StringHash(i->first.c_str()) == Engine::utils::StringHash(i_fileName.c_str()))
 				return true;

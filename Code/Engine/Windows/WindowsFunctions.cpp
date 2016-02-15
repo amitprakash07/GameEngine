@@ -461,3 +461,11 @@ void WindowsUtil::Print(std::string i_str, const char * i_optionalFileName)
 #endif
 	std::cerr << message.str().c_str() <<"\n";
 }
+
+
+void WindowsUtil::Assert(bool evaluatedBool, std::string message)
+{
+	if (!evaluatedBool)
+		Print(message);
+	assert(evaluatedBool);
+}

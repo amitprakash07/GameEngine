@@ -44,6 +44,12 @@
       <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="TextureCommon.cpp" />
+    <ClCompile Include="Direct3D\Uniform.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct3D\Sprite.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
@@ -53,6 +59,8 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="typedefs.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Uniform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UniformType.h" />

@@ -8,9 +8,6 @@
     <ClInclude Include="WindowingSystem\WindowsProgram.h">
       <Filter>WindowingSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\GameObject.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\Scene.h">
       <Filter>Objects</Filter>
     </ClInclude>
@@ -26,6 +23,9 @@
     <ClInclude Include="ObjectController\CameraController.h">
       <Filter>ObjectController</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\MeshObject.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp" />
@@ -34,9 +34,6 @@
     </ClCompile>
     <ClCompile Include="WindowingSystem\WindowsProgram.cpp">
       <Filter>WindowingSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\GameObject.cpp">
-      <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Scene.cpp">
       <Filter>Objects</Filter>
@@ -49,6 +46,9 @@
     </ClCompile>
     <ClCompile Include="ObjectController\CameraController.cpp">
       <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\MeshObject.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

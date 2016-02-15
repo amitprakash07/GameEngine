@@ -7,12 +7,12 @@
 
 Engine::SharedPointer<Engine::InputController> Engine::InputController::mInputController;
 
-std::string Engine::InputController::getTypeInfo()
+std::string Engine::InputController::getTypeInfo() const
 {
 	return mTypeName;
 }
 
-bool Engine::InputController::isBothSameType(RTTI* i_first, std::string i_second)
+bool Engine::InputController::isBothSameType(RTTI* i_first, std::string i_second) const
 {
 	if (i_first->getTypeInfo() == i_second)
 		return true;
@@ -22,7 +22,7 @@ bool Engine::InputController::isBothSameType(RTTI* i_first, std::string i_second
 void Engine::InputController::HandleMessage(Engine::utils::StringHash& i_message, Engine::RTTI* i_MessageSender, void* i_pMessageData)
 {
 	//SharedPointer<void> temp(*i_MessageSender);
-	if(i_MessageSender != nullptr)
+	if (i_MessageSender != nullptr)
 	{
 		if (/*isBothSameType(i_MessageSender, Engine::EngineCore::getWindowingSystem()->getTypeInfo()) && (*/Engine::utils::StringHash("KeyDown") == i_message)//)
 		{
@@ -30,7 +30,7 @@ void Engine::InputController::HandleMessage(Engine::utils::StringHash& i_message
 			{
 				Engine::typedefs::Direction dir;
 				Engine::utils::StringHash gameObjectController = Engine::EngineCore::getStringPool()->findString("UpdateGameObject");
-				Engine::utils::StringHash cameraController = Engine::EngineCore::getStringPool()->findString("MoveCamera");
+				Engine::utils::StringHash cameraController = Engine::EngineCore::getStringPool()->findString("rotateCamera");
 				SharedPointer<InputController> tempInputController = Engine::EngineCore::getInputController();
 				switch (reinterpret_cast<WPARAM>(i_pMessageData))
 				{

@@ -35,19 +35,37 @@ namespace Engine
 	}
 }
 
+
+HRESULT Engine::Graphics::GetVertexProcessingUsage(DWORD& o_usage)
+{
+	D3DDEVICE_CREATION_PARAMETERS deviceCreationParameters;
+	const HRESULT result = Engine::Graphics::GraphicsSystem::getDevice()->GetCreationParameters(&deviceCreationParameters);
+	if (SUCCEEDED(result))
+	{
+		DWORD vertexProcessingType = deviceCreationParameters.BehaviorFlags &
+			(D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MIXED_VERTEXPROCESSING | D3DCREATE_SOFTWARE_VERTEXPROCESSING);
+		o_usage = (vertexProcessingType != D3DCREATE_SOFTWARE_VERTEXPROCESSING) ? 0 : D3DUSAGE_SOFTWAREPROCESSING;
+	}
+	else
+	{
+		WindowsUtil::Print("Direct3D failed to get the device's creation parameters");
+	}
+	return result;
+}
+
 bool Engine::Graphics::GraphicsSystem::create()
 {
 	// Initialize the interface to the Direct3D9 library
-	if ( !CreateInterface() )
+	if (!CreateInterface())
 	{
 		return false;
 	}
 	// Create an interface to a Direct3D device
-	if ( !CreateDevice() )
+	if (!CreateDevice())
 	{
 		goto OnError;
 	}
-		
+
 	return true;
 
 OnError:
@@ -65,8 +83,8 @@ void Engine::Graphics::GraphicsSystem::showBuffer()
 	const RECT* noDestinationRectangle = nullptr;
 	const HWND useDefaultWindow = nullptr;
 	const RGNDATA* noDirtyRegion = nullptr;
-	HRESULT result = s_direct3dDevice->Present( noSourceRectangle, noDestinationRectangle, useDefaultWindow, noDirtyRegion );
-	assert( SUCCEEDED( result ) );
+	HRESULT result = s_direct3dDevice->Present(noSourceRectangle, noDestinationRectangle, useDefaultWindow, noDirtyRegion);
+	assert(SUCCEEDED(result));
 }
 
 void Engine::Graphics::GraphicsSystem::beginScene()
@@ -108,11 +126,11 @@ bool Engine::Graphics::GraphicsSystem::destroy()
 {
 	bool wereThereErrors = false;
 
-	if ( s_direct3dInterface )
+	if (s_direct3dInterface)
 	{
-		if ( s_direct3dDevice )
+		if (s_direct3dDevice)
 		{
-			
+
 			s_direct3dDevice->Release();
 			s_direct3dDevice = nullptr;
 		}
@@ -127,7 +145,7 @@ bool Engine::Graphics::GraphicsSystem::destroy()
 
 IDirect3DDevice9* Engine::Graphics::GraphicsSystem::getDevice()
 {
-	if(s_direct3dDevice)
+	if (s_direct3dDevice)
 		return s_direct3dDevice;
 	return nullptr;
 }
@@ -152,16 +170,13 @@ bool Engine::Graphics::CreateDevice()
 		presentationParameters.hDeviceWindow = s_renderingWindow;
 		presentationParameters.Windowed = TRUE;
 		presentationParameters.EnableAutoDepthStencil = TRUE; //Changing from False to enable DepthBuffer
-		presentationParameters.AutoDepthStencilFormat = D3DFMT_D16;
+		presentationParameters.AutoDepthStencilFormat = D3DFMT_D24S8;
 
 		presentationParameters.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
 	}
 	HRESULT result = s_direct3dInterface->CreateDevice(useDefaultDevice, useHardwareRendering,
 		s_renderingWindow, useHardwareVertexProcessing, &presentationParameters, &s_direct3dDevice);
-	
-	/*result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-	result |= s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	result |= s_direct3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);*/
+
 	if (SUCCEEDED(result))
 	{
 		return true;
@@ -189,48 +204,45 @@ bool Engine::Graphics::CreateInterface()
 	}
 }
 
-
 bool Engine::Graphics::GraphicsSystem::setRenderState(uint8_t i_renderState)
 {
+	bool deviceRenderStatus = false;
 	HRESULT result = FALSE;
 	if (i_renderState & ALPHA_BLENDING)
 	{
-		result = s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-		result |= s_direct3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		result |= s_direct3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		EnableAlphaBlending(true);
 	}
 	else
 	{
-		result = s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		EnableAlphaBlending(false);
 	}
 
-	if(i_renderState & DEPTH_TESTING)
+	if (i_renderState & DEPTH_TESTING)
 	{
 
-		result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-		result |= s_direct3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+		EnableDepthTesting(true);
 	}
 	else
 	{
-		result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+		EnableDepthTesting(false);
 	}
 
-	if(i_renderState & DEPTH_WRITING)
+	if (i_renderState & DEPTH_WRITING)
 	{
-		result |= s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+		EnableDepthWriting(true);
 	}
 	else
 	{
-		result |= s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+		EnableDepthWriting(false);
 	}
 
-	if(i_renderState & FACE_CULLING)
+	if (i_renderState & FACE_CULLING)
 	{
-		result |= s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		EnableFaceCulling(true);
 	}
 	else
 	{
-		result |= s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		EnableFaceCulling(false);
 	}
 
 	if (SUCCEEDED(result))
@@ -239,7 +251,118 @@ bool Engine::Graphics::GraphicsSystem::setRenderState(uint8_t i_renderState)
 	return false;
 }
 
+void Engine::Graphics::GraphicsSystem::EnableWireFrame(bool iRequest)
+{
+	DWORD status;
+	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_FILLMODE, &status);
+	assert(result == D3D_OK);
+	switch (iRequest)
+	{
+	case true:
+		if (status == FALSE)
+			assert(s_direct3dDevice->SetRenderState(D3DRS_FILLMODE, TRUE) == D3D_OK);
+		break;
+	case false:
+		if (status == TRUE)
+			assert(s_direct3dDevice->SetRenderState(D3DRS_FILLMODE, FALSE) == D3D_OK);
+		break;
+	}
+}
+
+void Engine::Graphics::GraphicsSystem::EnableAlphaBlending(bool iRequest)
+{
+	DWORD status;
+	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_ALPHABLENDENABLE, &status);
+	assert(result == D3D_OK);
+	switch (iRequest)
+	{
+	case true:
+		if (status == FALSE)
+		{
+			result = s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+			result |= s_direct3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			result |= s_direct3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+			assert(result == D3D_OK);
+		}
+		break;
+	case false:
+		if (status == TRUE)
+			assert(s_direct3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE) == D3D_OK);
+		break;
+	}
+}
+
+void Engine::Graphics::GraphicsSystem::EnableDepthTesting(bool iRequest)
+{
+	DWORD status;
+	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_ZENABLE, &status);
+	assert(result == D3D_OK);
+	switch (iRequest)
+	{
+	case true:
+		if (status == FALSE)
+		{
+			result |= s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+			result |= s_direct3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+			assert(result == D3D_OK);
+		}
+		break;
+	case false:
+		if (status == TRUE)
+			assert(s_direct3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE) == D3D_OK);
+		break;
+	}
+}
+
+void Engine::Graphics::GraphicsSystem::EnableDepthWriting(bool iRequest)
+{
+	DWORD status;
+	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_ZWRITEENABLE, &status);
+	assert(result == D3D_OK);
+	switch (iRequest)
+	{
+	case true:
+		if (status == FALSE)
+		{
+			s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+			assert(result == D3D_OK);
+		}
+		break;
+	case false:
+		if (status == TRUE)
+			assert(s_direct3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE) == D3D_OK);
+		break;
+	}
+}
+
+void Engine::Graphics::GraphicsSystem::EnableFaceCulling(bool iRequest, DWORD cullingMode)
+{
+	DWORD status;
+	HRESULT result = s_direct3dDevice->GetRenderState(D3DRS_CULLMODE, &status);
+	assert(result == D3D_OK);
+	switch (iRequest)
+	{
+	case true:
+		if (status == FALSE)
+		{
+			s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, cullingMode);
+			assert(result == D3D_OK);
+		}
+		break;
+	case false:
+		if (status == TRUE)
+			assert(s_direct3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE) == D3D_OK);
+		break;
+	}
+}
 
 
 
-	
+
+
+
+
+
+
+
+

@@ -13,17 +13,17 @@ bool Engine::Graphics::Material::addMaterialToList(const char* i_materialName)
 {
 	bool success = false;
 	std::stringstream errormessage;
-	if(i_materialName)
+	if (i_materialName)
 	{
 		if (isMaterialExist(i_materialName))
 			return true;
 		else
 		{
-			Engine::SharedPointer<Engine::Graphics::Material> material(new Material(),"Engine::Graphics::Material");
+			Engine::SharedPointer<Engine::Graphics::Material> material(new Material(), "Engine::Graphics::Material");
 			if (!material.isNull())
 			{
 				material->setMaterialName(i_materialName);
-				if(material->loadMaterial())
+				if (material->loadMaterial())
 				{
 					mMaterialList[i_materialName] = material;
 					success = true;
@@ -33,7 +33,7 @@ bool Engine::Graphics::Material::addMaterialToList(const char* i_materialName)
 			else success = false;
 		}
 	}
-	else 
+	else
 	{
 		errormessage << "\nEmpty Material Name";
 		WindowsUtil::Print(errormessage.str());
@@ -61,30 +61,30 @@ bool Engine::Graphics::Material::loadMaterial()
 	readFile.read(buffer, length);
 	readFile.close();//Closing the file Pointer
 
-	/*Binary Format
-		Effect File Name
-		no of maps
-		for each map - read one by one
-		{
-			 pathName\0
-			 uniformName\0
-			 shaderType
-			 mapType
-		}
-		No of Uniforms
-		uniform names
-		foreach uniform
-		Uniforms
-		{
-			 Handle,
-			 shadertype,
-			 valType,
-			 valueCount,
-			 values
-		}*/
+					 /*Binary Format
+					 Effect File Name
+					 no of maps
+					 for each map - read one by one
+					 {
+					 pathName\0
+					 uniformName\0
+					 shaderType
+					 mapType
+					 }
+					 No of Uniforms
+					 uniform names
+					 foreach uniform
+					 Uniforms
+					 {
+					 Handle,
+					 shadertype,
+					 valType,
+					 valueCount,
+					 values
+					 }*/
 
 	BYTES* currentPosition = buffer;
-	{		
+	{
 		size_t tempSize = strlen(currentPosition);
 		std::string tempName = Engine::EngineCore::getEffectFolderPath();
 		size_t folderLength = tempName.size();
@@ -92,15 +92,15 @@ bool Engine::Graphics::Material::loadMaterial()
 		memcpy(effectFolderName, tempName.c_str(), folderLength);
 		effectFile = new char[tempSize + folderLength];
 		memcpy(effectFile, effectFolderName, folderLength);
-		memcpy(effectFile+folderLength, currentPosition, tempSize);
-		effectFile[tempSize+folderLength] = '\0';
+		memcpy(effectFile + folderLength, currentPosition, tempSize);
+		effectFile[tempSize + folderLength] = '\0';
 		currentPosition += tempSize + 1;
 		delete effectFolderName;
-	}	
+	}
 
 	//Loading Effect
-	
-	if(!Effect::addEffectToList(effectFile))
+
+	if (!Effect::addEffectToList(effectFile))
 	{
 		std::stringstream errorMessage;
 		errorMessage << "Unable to Load the effect. Please check shader files.\n";
@@ -114,55 +114,55 @@ bool Engine::Graphics::Material::loadMaterial()
 	int tempMapCount = *reinterpret_cast<int*>(currentPosition);
 	currentPosition += sizeof(int);
 	mapCount = tempMapCount;
-	mTextureMaps = new Map[mapCount];
-
-	for (int i = 0; i < mapCount; ++i)
+	if (mapCount > 0)
 	{
-		//Texture Path and Load Texture
+		mTextureMaps = new Map[mapCount];
+
+		for (size_t i = 0; i < mapCount; ++i)
 		{
-			size_t  texturePathLength = strlen(currentPosition);
-			std::string textureFolder = EngineCore::getTextureFolderPath();
-			size_t textureFolderLength = textureFolder.size();
-			char* textureFolderName = new char[textureFolderLength];
-			memcpy(textureFolderName, textureFolder.c_str(), textureFolderLength);
-			mTextureMaps[i].file = new char[texturePathLength + textureFolderLength];
-			memcpy(mTextureMaps[i].file, textureFolderName, textureFolderLength);
-			memcpy(mTextureMaps[i].file + textureFolderLength, currentPosition, texturePathLength);
-			mTextureMaps[i].file[textureFolderLength+texturePathLength] = '\0';
-			currentPosition += texturePathLength + 1;
-			Texture::addTextureToList(mTextureMaps[i].file);
-			delete textureFolderName;
+			//Texture Path and Load Texture
+			{
+				size_t  texturePathLength = strlen(currentPosition);
+				std::string textureFolder = EngineCore::getTextureFolderPath();
+				size_t textureFolderLength = textureFolder.size();
+				char* textureFolderName = new char[textureFolderLength];
+				memcpy(textureFolderName, textureFolder.c_str(), textureFolderLength);
+				mTextureMaps[i].file = new char[texturePathLength + textureFolderLength];
+				memcpy(mTextureMaps[i].file, textureFolderName, textureFolderLength);
+				memcpy(mTextureMaps[i].file + textureFolderLength, currentPosition, texturePathLength);
+				mTextureMaps[i].file[textureFolderLength + texturePathLength] = '\0';
+				currentPosition += texturePathLength + 1;
+				Texture::addTextureToList(mTextureMaps[i].file);
+				delete textureFolderName;
+			}
+
+			//Texture Uniform Name
+			{
+				size_t uniformNameLength = strlen(currentPosition);
+				mTextureMaps[i].uniform = new char[uniformNameLength];
+				memcpy(mTextureMaps[i].uniform, currentPosition, uniformNameLength);
+				mTextureMaps[i].uniform[uniformNameLength] = '\0';
+				currentPosition += uniformNameLength + 1;
+			}
+
+			//ShaderType
+			{
+				mTextureMaps[i].shaderType = *reinterpret_cast<ShaderType*>(currentPosition);
+				currentPosition += sizeof(ShaderType);
+			}
+
+			//MapType
+			{
+				mTextureMaps[i].mapType = *reinterpret_cast<MapType*>(currentPosition);
+				currentPosition += sizeof(MapType);
+			}
+
+			mTextureMaps[i].mapHandle = tempEffect->getUniformHandle(mTextureMaps[i].uniform, Fragment);
+			mTextureMaps[i].textureID = tempEffect->getSamplerID(mTextureMaps[i].mapHandle, Fragment);
+
 		}
-
-		//Texture Uniform Name
-		{
-			size_t uniformNameLength = strlen(currentPosition);
-			mTextureMaps[i].uniform = new char[uniformNameLength];
-			memcpy(mTextureMaps[i].uniform, currentPosition, uniformNameLength);
-			mTextureMaps[i].uniform[uniformNameLength] = '\0';
-			currentPosition += uniformNameLength + 1;
-		}
-
-		//ShaderType
-		{
-			mTextureMaps[i].shaderType = *reinterpret_cast<ShaderType*>(currentPosition);
-			currentPosition += sizeof(ShaderType);
-		}
-
-		//MapType
-		{
-			mTextureMaps[i].mapType = *reinterpret_cast<MapType*>(currentPosition);
-			currentPosition += sizeof(MapType);
-		}
-
-		mTextureMaps[i].mapHandle = tempEffect->getUniformHandle(mTextureMaps[i].uniform, Fragment);
-		mTextureMaps[i].textureID = tempEffect->getSamplerID(mTextureMaps[i].mapHandle, Fragment);
-
 	}
 
-
-	
-		
 	int uniformCount = *reinterpret_cast<int*>(currentPosition);
 	currentPosition += sizeof(int);
 	//tempEffect->createMaterialUniforms(uniformCount);
@@ -170,7 +170,7 @@ bool Engine::Graphics::Material::loadMaterial()
 	materialUniforms = new MaterialUniform[materialUniformCount];
 	materialUniformNames = new char*[materialUniformCount];
 
-	for (int i = 0; i < uniformCount;++i)
+	for (int i = 0; i < uniformCount; ++i)
 	{
 		size_t nameSize = strlen(currentPosition);
 		materialUniformNames[i] = new char[nameSize];
@@ -178,15 +178,15 @@ bool Engine::Graphics::Material::loadMaterial()
 		materialUniformNames[i][nameSize] = '\0';
 		currentPosition += strlen(materialUniformNames[i]) + 1;
 	}
-		
+
 	size_t uniform_length = sizeof(MaterialUniform);
 	memcpy(materialUniforms, currentPosition, sizeof(MaterialUniform)*materialUniformCount);
-	
-	for(int i = 0; i < uniformCount; ++i)
+
+	for (int i = 0; i < uniformCount; ++i)
 	{
 		materialUniforms[i].Handle = tempEffect->getUniformHandle(materialUniformNames[i], materialUniforms[i].type);
 	}
-	
+
 	delete buffer;
 	currentPosition = nullptr;
 	buffer = nullptr;
@@ -204,13 +204,25 @@ Engine::Graphics::Material::Material()
 	mTextureMaps = nullptr;
 }
 
-void Engine::Graphics::Material::setMaterialUniformParameters()
+void Engine::Graphics::Material::setMaterialUniformParameters() const
 {
 	std::string effectFileName = effectFile;
 	SharedPointer<Engine::Graphics::Effect> tempEffect = Engine::Graphics::Effect::getEffect(effectFileName);
-	for (int i = 0; i < materialUniformCount; ++i)
+	for (size_t i = 0; i < materialUniformCount; ++i)
 	{
 		tempEffect->setMaterialUniformValue(materialUniformNames[i], materialUniforms[i]);
+	}
+}
+
+
+void Engine::Graphics::Material::setTextureUniform() const
+{
+	std::string effectFileName = effectFile;
+	SharedPointer<Engine::Graphics::Effect> tempEffect = Engine::Graphics::Effect::getEffect(effectFileName);
+	for (int i = 0; i < mapCount; ++i)
+	{
+		TextureResource temp = Engine::Graphics::Texture::getTexture(mTextureMaps[i].file)->getTextureResource();
+		tempEffect->setTextureUniform(temp, mTextureMaps[i].textureID, i);
 	}
 }
 
@@ -229,7 +241,7 @@ Engine::Graphics::Material::Material(char* i_materialName)
 	mTextureMaps = nullptr;
 }
 
-const char* Engine::Graphics::Material::getMaterialName()
+const char* Engine::Graphics::Material::getMaterialName() const
 {
 	return materialName;
 }
@@ -247,28 +259,28 @@ Engine::Graphics::Material::~Material()
 {
 	if (effectFile)
 		delete effectFile;
-		
+
 	if (materialName)
 		delete materialName;
 
-	if(effectFile)
+	if (effectFile)
 		effectFile = nullptr;
 
-	if(materialName)
+	if (materialName)
 		materialName = nullptr;
 
-	if(materialUniforms)
+	if (materialUniforms)
 		delete materialUniforms;
 
-	if(materialUniformNames)
+	if (materialUniformNames)
 	{
-		for (int i = 0; i < materialUniformCount; i++)
+		for (size_t i = 0; i < materialUniformCount; i++)
 		{
 			delete materialUniformNames[i];
 		}
 		delete materialUniformNames;
 	}
-	
+
 	if (mTextureMaps)
 		delete mTextureMaps;
 }
@@ -292,11 +304,11 @@ bool Engine::Graphics::Material::isMaterialExist(const char* i_materialName)
 		if (strcmp(i->first.c_str(), i_materialName) == 0)
 			return true;
 	}
-	return false;	
+	return false;
 }
 
 
-const char* Engine::Graphics::Material::getEffectName()
+const char* Engine::Graphics::Material::getEffectName() const
 {
 	if (effectFile)
 		return effectFile;

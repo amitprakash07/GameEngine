@@ -17,6 +17,7 @@
 # Intellisense
 *.sdf
 *.opensdf
+*.opendb
 /ipch
 
 # Temporary Files

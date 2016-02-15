@@ -1,5 +1,5 @@
 /*
-	This file contains the function declarations for graphics
+This file contains the function declarations for graphics
 */
 
 #ifndef GRAPHICS_H
@@ -20,21 +20,13 @@ namespace Engine
 {
 	namespace Graphics
 	{
-		enum __renderState
-		{
-			ALPHA_BLENDING = 1 << 0,
-			DEPTH_TESTING = 1 << 1,
-			DEPTH_WRITING = 1 << 2,
-			FACE_CULLING = 1 << 3
-		};
-
 		class GraphicsSystem
 		{
 		public:
 			static bool Initialize(const HWND i_renderingWindow);
 			static void Render();
 			static bool ShutDown();
-			
+
 			static HWND getRenderingWindow()
 			{
 				if (s_renderingWindow)
@@ -44,6 +36,11 @@ namespace Engine
 			}
 
 			static bool setRenderState(uint8_t);
+			static void EnableWireFrame(bool);
+			static void EnableAlphaBlending(bool);
+			static void EnableDepthTesting(bool);
+			static void EnableDepthWriting(bool);
+			static void EnableFaceCulling(bool, DWORD cullingMode = D3DCULL_CCW);
 
 #ifdef PLATFORM_D3D
 			static IDirect3DDevice9* getDevice();
@@ -56,8 +53,15 @@ namespace Engine
 			static void beginScene();
 			static void endScene();
 			static bool destroy();
-
 		};
+	}
+}
+
+namespace Engine
+{
+	namespace Graphics
+	{
+		HRESULT GetVertexProcessingUsage(DWORD& o_usage);
 	}
 }
 
