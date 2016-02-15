@@ -5,8 +5,10 @@
 Engine::Graphics::Uniform::Uniform()
 {
 	mUniform.uniformName = nullptr;
+	isLocalToWorldTransformExist = false;
+	isWorldToViewTransformExist = false;
+	isViewToScreenTransformExist = false;
 }
-
 
 Engine::SharedPointer<Engine::Graphics::Uniform> 
 Engine::Graphics::Uniform::addUniform(
@@ -24,7 +26,6 @@ Engine::Graphics::Uniform::addUniform(
 	mUniformListInSystem[tempUniform->prefixUniformName()] = tempUniform;
 	return tempUniform;
 }
-
 
 void Engine::Graphics::Uniform::setUniformValue(UniformValues& iinitialValue)
 {
@@ -214,9 +215,25 @@ Engine::SharedPointer<Engine::Graphics::Uniform> Engine::Graphics::Uniform::getU
 	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = mUniformListInSystem.begin();
 	i!=mUniformListInSystem.end(); ++i)
 	{
-		
+		if (strcmp(i->second->getUniformName(), uniformName.c_str()) == 0 &&
+			strcmp(i->second->effectName.c_str(), effectFileName.c_str()) == 0 &&
+			i->second->getShaderType() == iShaderType)
+			return i->second;
 	}
+	return SharedPointer<Uniform>();
 }
+
+bool Engine::Graphics::Uniform::isUnformExist(std::string i_UniformNamae, 
+	std::string effectName, 
+	ShaderType iShaderType)
+{
+	SharedPointer<Uniform> tempUniform
+		= getUniform(i_UniformNamae, effectName, iShaderType);
+	if (tempUniform.isNull())
+		return false;
+	return true;
+}
+
 
 Engine::Graphics::UniformDataType Engine::Graphics::Uniform::getUniformDataType() const
 {
@@ -237,6 +254,118 @@ uint8_t Engine::Graphics::Uniform::getValueCount() const
 {
 	return mUniform.valCount;
 }
+
+void Engine::Graphics::Uniform::setTransformMatrixExistenceFlag(Transform_Matrix_Type iMatrixType)
+{
+	switch (iMatrixType)
+	{
+	case LocalToWorld:
+		isLocalToWorldTransformExist = true;
+		break;
+	case WorldToView:
+		isWorldToViewTransformExist = true;
+		break;
+	case ViewToScreen:
+		isViewToScreenTransformExist = true;
+		break;
+	default:
+		break;
+	}
+}
+
+void Engine::Graphics::Uniform::setLocalToWorldMatrrixTransformValue(
+	Transformation iObject)const
+{
+	if (isLocalToWorldTransformExist)
+	{
+		Engine::Math::cMatrix_transformation tempLocal =
+			Math::cMatrix_transformation(iObject.mOrientation, iObject.mPositionOffset);
+		SharedPointer<Uniform> localToWorld = getTransformationMatrix(LocalToWorld);
+		if (!localToWorld.isNull())
+		{
+			UniformValues tempValue;
+			tempValue.matrixValue.matrix = tempLocal;
+			tempValue.matrixValue.Type = LocalToWorld;
+			localToWorld->setUniformValue(tempValue);
+		}
+	}
+}
+
+void Engine::Graphics::Uniform::setWorldToViewTransformationValue(
+	Transformation cameraTransformation)const
+{
+	if (isWorldToViewTransformExist)
+	{
+		Engine::Math::cMatrix_transformation tempLocal =
+			Math::cMatrix_transformation::CreateWorldToViewTransform(cameraTransformation.mOrientation,
+				cameraTransformation.mPositionOffset);
+		SharedPointer<Uniform> worldToView = getTransformationMatrix(WorldToView);
+		if (!worldToView.isNull())
+		{
+			UniformValues tempValue;
+			tempValue.matrixValue.matrix = tempLocal;
+			tempValue.matrixValue.Type = WorldToView;
+			worldToView->setUniformValue(tempValue);
+		}
+	}
+}
+
+void Engine::Graphics::Uniform::setViewToScreenTransformationValue(float fieldOfView,
+	float aspectRatio, 
+	float nearPlane, 
+	float farPlane)const
+{
+	if (isViewToScreenTransformExist)
+	{
+		Engine::Math::cMatrix_transformation tempLocal =
+			Math::cMatrix_transformation::CreateViewToScreenTransform(
+				fieldOfView, aspectRatio, nearPlane, farPlane);
+		SharedPointer<Uniform> viewToScreen = getTransformationMatrix(ViewToScreen);
+		if (!viewToScreen.isNull())
+		{
+			UniformValues tempValue;
+			tempValue.matrixValue.matrix = tempLocal;
+			tempValue.matrixValue.Type = ViewToScreen;
+			viewToScreen->setUniformValue(tempValue);
+		}
+	}
+}
+
+
+Engine::SharedPointer<Engine::Graphics::Uniform> 
+Engine::Graphics::Uniform::getTransformationMatrix(Transform_Matrix_Type iMatrixType) const
+{
+	bool transformExist = false;
+	switch (iMatrixType)
+	{
+	case LocalToWorld:
+		if (isLocalToWorldTransformExist)
+			transformExist = true;
+		break;
+	case WorldToView:
+		if (isWorldToViewTransformExist)
+			transformExist = true;
+		break;
+	case ViewToScreen:
+		if (isViewToScreenTransformExist)
+			transformExist = true;
+		break;
+	default:
+		break;
+	}
+
+	if (transformExist)
+	{
+		for (std::map<std::string, SharedPointer<Uniform>>::iterator i = mUniformListInSystem.begin();
+		i != mUniformListInSystem.end(); ++i)
+		{
+			if (i->second->getMatrixType() == iMatrixType)
+				return i->second;
+		}
+	}
+	return SharedPointer<Uniform>();
+}
+
 
 
 

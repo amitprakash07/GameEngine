@@ -3,7 +3,6 @@
 #include "../Graphics.h"
 #include <assert.h>
 #include <fstream>
-#include "../../Core/Maths/Functions.h"
 
 
 bool Engine::Graphics::Effect::setShaders() const
@@ -37,11 +36,7 @@ Engine::Graphics::Effect::Effect(std::string i_effectFileName)
 	s_vertexShaderConstantTable = nullptr;
 	s_fragmentShaderConstantTable = nullptr;
 	renderState = new uint8_t;
-	*renderState = 0;
-	isLocalToWorldTransformExist = false;
-	isWorldToViewTransformExist = false;
-	isViewToScreenTransformExist = false;
-	uniformCount = 0;
+	*renderState = 0;		
 }
 
 Engine::Graphics::Effect::~Effect()
@@ -214,24 +209,20 @@ Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle
 	return sampleID;
 }
 
-void Engine::Graphics::Effect::setAllUniformToShader()
+
+const ID3DXConstantTable* Engine::Graphics::Effect::getConstantTable(ShaderType iType) const
 {
-	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = uniformNames.begin();
-	i != uniformNames.end(); ++i)
+	switch(iType)
 	{
-		switch (i->second->getUniformData().shaderType)
-		{
-		case Vertex:
-			i->second->setValueInShaderObject(s_vertexShaderConstantTable);
-			break;
-		case Fragment:
-			i->second->setValueInShaderObject(s_fragmentShaderConstantTable);
-			break;
-		default:
-			break;
-		}
+	case Vertex:
+		return s_vertexShaderConstantTable;		
+	case Fragment:
+		return s_fragmentShaderConstantTable;		
+	default:
+		return nullptr;
 	}
 }
+
 
 
 

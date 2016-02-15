@@ -24,13 +24,18 @@ bool Engine::Graphics::Effect::addEffectToList(std::string i_effectName)
 			Engine::SharedPointer<Engine::Graphics::Effect> effect(new Effect(i_effectName), "Engine::Graphics::Effect");
 			if (!effect.isNull())
 			{
+				mEffectList[i_effectName] = effect;
 				if (effect->LoadEffect())
-				{
-					mEffectList[i_effectName] = effect;
+				{					
 					success = true;
 				}
 				else
+				{
 					success = false;
+					/*mEffectList[i_effectName].deleteObject();
+					mEffectList[i_effectName] = SharedPointer<Effect>();*/
+				}
+					
 			}
 		}
 	}
@@ -109,6 +114,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 		tempBuffer += sizeof(char);
 		shaderNames[Fragment] = fragmentShader;
 
+		int uniformCount;
 		memcpy(&uniformCount, reinterpret_cast<uint8_t*>(tempBuffer), sizeof(uint8_t));
 		tempBuffer += sizeof(uint8_t);
 
@@ -137,20 +143,22 @@ bool Engine::Graphics::Effect::LoadEffect()
 			//m_uniforms = new ShaderUniform[uniformCount];
 			for (int i = 0; i < uniformCount; ++i)
 			{
-				SharedPointer<Uniform> tempUniform = Uniform::createUniform();
+				
 				//Uniform Name
 				char * tempUniformName = tempBuffer;
 				int uniformNameLength = strlen(tempUniformName);
 				tempUniformName[uniformNameLength] = '\0';
 				tempBuffer += uniformNameLength + 1;
-				tempUniform->setName(tempUniformName);
+				
 
 				//Shader Type
 				ShaderType tempShaderType;
 				memcpy(&tempShaderType, reinterpret_cast<ShaderType*>(tempBuffer), sizeof(ShaderType));
 				tempBuffer += sizeof(ShaderType);
-				tempUniform->setShaderType(tempShaderType);
-
+				
+				//Add Uniform to the shader Object
+				SharedPointer<Uniform> tempUniform = Uniform::addUniform(tempUniformName,
+					effectName,tempShaderType);
 
 				//ValType
 				UniformDataType dataType;
@@ -171,7 +179,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 					tempBuffer += sizeof(uint8_t);
 					tempUniform->setValCount(dataCount);
 					tempUniform->setMatrixType(tempMatrixType);
-					setTransformMatrixExistenceFlag(tempMatrixType);
+					tempUniform->setTransformMatrixExistenceFlag(tempMatrixType);
 				}
 				else
 				{
@@ -188,7 +196,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 				WindowsUtil::Assert(uniformHandle, "Unable to grab handle");
 				tempUniform->setHandle(uniformHandle);
 
-				uniformNames[tempUniform->prefixUniformName()] = tempUniform;
+				//uniformNames[tempUniform->prefixUniformName()] = tempUniform;
 			}
 		}
 
@@ -198,138 +206,9 @@ bool Engine::Graphics::Effect::LoadEffect()
 	return false;
 }
 
-void Engine::Graphics::Effect::setTransformMatrixExistenceFlag(Transform_Matrix_Type iMatrixType)
-{
-	switch (iMatrixType)
-	{
-	case LocalToWorld:
-		isLocalToWorldTransformExist = true;
-		break;
-	case WorldToView:
-		isWorldToViewTransformExist = true;
-		break;
-	case ViewToScreen:
-		isViewToScreenTransformExist = true;
-		break;
-	default:
-		break;
-	}
-}
 
-void Engine::Graphics::Effect::setLocalToWorldMatrrixTransformValue(Transformation iObject)
-{
-	if (isLocalToWorldTransformExist)
-	{
-		Engine::Math::cMatrix_transformation tempLocal =
-			Math::cMatrix_transformation(iObject.mOrientation, iObject.mPositionOffset);
-		SharedPointer<Uniform> localToWorld = getTransformationMatrix(LocalToWorld);
-		if (!localToWorld.isNull())
-		{
-			UniformValues tempValue;
-			tempValue.matrixValue.matrix = tempLocal;
-			tempValue.matrixValue.Type = LocalToWorld;
-			localToWorld->setUniformValue(tempValue);
-		}
-	}
-}
 
-void Engine::Graphics::Effect::setWorldToViewTransformationValue(Transformation cameraTransformation)
-{
-	if (isWorldToViewTransformExist)
-	{
-		Engine::Math::cMatrix_transformation tempLocal =
-			Math::cMatrix_transformation::CreateWorldToViewTransform(cameraTransformation.mOrientation,
-				cameraTransformation.mPositionOffset);
-		SharedPointer<Uniform> worldToView = getTransformationMatrix(WorldToView);
-		if (!worldToView.isNull())
-		{
-			UniformValues tempValue;
-			tempValue.matrixValue.matrix = tempLocal;
-			tempValue.matrixValue.Type = WorldToView;
-			worldToView->setUniformValue(tempValue);
-		}
-	}
-}
 
-void Engine::Graphics::Effect::setViewToScreenTransformationValue(float fieldOfView, float aspectRatio, float nearPlane, float farPlane)
-{
-	if (isViewToScreenTransformExist)
-	{
-		Engine::Math::cMatrix_transformation tempLocal =
-			Math::cMatrix_transformation::CreateViewToScreenTransform(
-				fieldOfView, aspectRatio, nearPlane, farPlane);
-		SharedPointer<Uniform> viewToScreen = getTransformationMatrix(ViewToScreen);
-		if (!viewToScreen.isNull())
-		{
-			UniformValues tempValue;
-			tempValue.matrixValue.matrix = tempLocal;
-			tempValue.matrixValue.Type = ViewToScreen;
-			viewToScreen->setUniformValue(tempValue);
-		}
-	}
-}
-
-Engine::SharedPointer<Engine::Graphics::Uniform> Engine::Graphics::Effect::getTransformationMatrix(Transform_Matrix_Type iMatrixType)
-{
-	bool transformExist = false;
-	switch (iMatrixType)
-	{
-	case LocalToWorld:
-		if (isLocalToWorldTransformExist)
-			transformExist = true;
-		break;
-	case WorldToView:
-		if (isWorldToViewTransformExist)
-			transformExist = true;
-		break;
-	case ViewToScreen:
-		if (isViewToScreenTransformExist)
-			transformExist = true;
-		break;
-	default:
-		break;
-	}
-
-	if (transformExist)
-	{
-		for (std::map<std::string, SharedPointer<Uniform>>::iterator i = uniformNames.begin();
-		i != uniformNames.end(); ++i)
-		{
-			if (i->second->getUniformData().value.matrixValue.Type == iMatrixType)
-				return i->second;
-		}
-	}
-	return SharedPointer<Uniform>();
-}
-
-void Engine::Graphics::Effect::setUniformValue(std::string iUniformName, UniformValues iValues)
-{
-	SharedPointer<Uniform> tempUniform = getUniform(iUniformName);
-	if (!tempUniform.isNull())
-		tempUniform->setUniformValue(iValues);
-}
-
-Engine::SharedPointer<Engine::Graphics::Uniform> Engine::Graphics::Effect::getUniform(std::string iUniformName)
-{
-	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = uniformNames.begin();
-	i != uniformNames.end(); ++i)
-	{
-		if (strcmp(i->second->getUniformData().uniformName, iUniformName.c_str()) == 0)
-			return i->second;
-	}
-	return SharedPointer<Uniform>();
-}
-
-bool Engine::Graphics::Effect::isUniformExist(std::string iUniformName)
-{
-	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = uniformNames.begin();
-	i != uniformNames.end(); ++i)
-	{
-		if (strcmp(i->second->getUniformData().uniformName, iUniformName.c_str()) == 0)
-			return true;
-	}
-	return false;
-}
 
 
 

@@ -73,7 +73,7 @@
     </ClCompile>
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="TextureCommon.cpp" />
-    <ClCompile Include="Uniform.cpp" />
+    <ClCompile Include="Uniform.common.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Effect.h" />

@@ -44,7 +44,6 @@
     <ClCompile Include="Direct3D\Sprite.d3d.cpp">
       <Filter>Direct3D</Filter>
     </ClCompile>
-    <ClCompile Include="Uniform.cpp" />
     <ClCompile Include="Direct3D\Line.d3d.cpp">
       <Filter>Direct3D</Filter>
     </ClCompile>
@@ -56,6 +55,7 @@
     <ClCompile Include="OpenGL\Uniform.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="Uniform.common.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
