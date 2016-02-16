@@ -7,6 +7,7 @@
 #include "../../Utilities/IObjectController.h"
 #include "../../../Core/Utilities/IMessageHandler.h"
 #include "Object.h"
+#include "../../../Graphics/typedefs.h"
 
 
 namespace Engine
@@ -14,7 +15,7 @@ namespace Engine
 	class MeshObject : public IMessageHandler, Object
 	{
 	public:
-		static SharedPointer<MeshObject> CreateMeshObject(std::string, std::string);
+		static SharedPointer<MeshObject> CreateMeshObject(std::string, std::string, Engine::Graphics::RGBAColor = {1.0f,1.0f,1.0f,1.0f});
 		void setObjectController(IObjectController *);
 		SharedPointer<Engine::Graphics::Mesh>       getMesh() const;
 		SharedPointer<Engine::Graphics::Effect>		getEffect() const;
@@ -34,10 +35,13 @@ namespace Engine
 		MeshObject(std::string, std::string);
 		std::string									mMeshName;
 		std::string									mMaterial;
+		std::string									vertexModifierUniform;
 		IObjectController*							mObjectController;
 		bool										renderable;
 		Transformation								mTransformation;
 		bool										debugObject;
+		Engine::Graphics::RGBAColor					vertexColor;
+		
 	};
 }
 

@@ -17,6 +17,7 @@ Engine::Graphics::UniformData::UniformData()
 void Engine::Graphics::Uniform::setValueInShaderObject(const ID3DXConstantTable* constantTable) const
 {
 	HRESULT result = TRUE;
+	WindowsUtil::Assert(mUniform.handle != nullptr, "There is no handle");
 	switch (mUniform.valType)
 	{
 	case Bool:

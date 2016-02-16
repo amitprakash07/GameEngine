@@ -2,7 +2,7 @@
 	Fragment shader
 */
 
-#include "../Dependencies/shaders.inc"
+#include "../Dependencies/shader_common.inc"
 
 uniform float3 g_PixelColorModifier;
 uniform float g_AlphaModifier;

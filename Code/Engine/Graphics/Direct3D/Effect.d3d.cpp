@@ -9,7 +9,7 @@ bool Engine::Graphics::Effect::setShaders() const
 {
 	if (s_vertexShader && s_fragmentShader)
 	{
-		bool result = GraphicsSystem::setRenderState(*renderState);
+		HRESULT result = GraphicsSystem::setRenderState(*renderState);
 		assert(SUCCEEDED(result));
 		result = GraphicsSystem::getDevice()->SetVertexShader(s_vertexShader);
 		assert(SUCCEEDED(result));
@@ -36,7 +36,10 @@ Engine::Graphics::Effect::Effect(std::string i_effectFileName)
 	s_vertexShaderConstantTable = nullptr;
 	s_fragmentShaderConstantTable = nullptr;
 	renderState = new uint8_t;
-	*renderState = 0;		
+	*renderState = 0;	
+	isLocalToWorldTransformExist =
+		isWorldToViewTransformExist =
+		isViewToScreenTransformExist = false;
 }
 
 Engine::Graphics::Effect::~Effect()
@@ -165,7 +168,7 @@ void Engine::Graphics::Effect::setTextureUniform(TextureResource i_textureResour
 	}
 }
 
-Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName,
+Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(const char* i_uniformName,
 	ShaderType i_shaderType) const
 {
 	UniformHandle handle = nullptr;

@@ -217,11 +217,11 @@ SHADER_UNIFORM:
 							lua_pushstring(mLuaState, "MatrixType");
 							lua_gettable(mLuaState, -2);
 							const char* tempMatrixType = lua_tostring(mLuaState, -1);
-							if (strcmp(tempMatrixType, "LocalToWorld"))
+							if (strcmp(tempMatrixType, "LocalToWorld")==0)
 								uniforms[i - 1].matrixType = Engine::Graphics::LocalToWorld;
-							else if (strcmp(tempMatrixType, "WorldToView"))
+							else if (strcmp(tempMatrixType, "WorldToView")==0)
 								uniforms[i - 1].matrixType = Engine::Graphics::WorldToView;
-							else if (strcmp(tempMatrixType, "ViewToScreen"))
+							else if (strcmp(tempMatrixType, "ViewToScreen")==0)
 								uniforms[i - 1].matrixType = Engine::Graphics::ViewToScreen;
 							lua_pop(mLuaState, 1);//Popping out matrixType
 						}

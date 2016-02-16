@@ -88,7 +88,7 @@ namespace Engine
 	template<typename T>
 	inline bool SharedPointer<T>::deleteObject()
 	{
-		assert(m_WrappingObject);
+		//assert(m_WrappingObject);
 		if (!this->isNull())
 		{
 			if ((*m_referenceCount - 1) == 0)

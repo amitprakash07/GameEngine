@@ -31,17 +31,20 @@ namespace Engine
 			Engine::Maths::Point3,
 			float iRadius = 1.0f,
 			Engine::Graphics::RGBColor = Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f)); //Sphere
+
 		static void DrawShape(ShapeTarget,
 			Engine::Maths::Point3,
 			float iLength = 1.0f,
 			float iWidth = 1.0f, float
 			iHeight = 1.0f,
 			Engine::Graphics::RGBColor = Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f)); //Box
+
 		static void DrawShape(ShapeTarget,
 			Engine::Maths::Point3,
 			float iRadius = 1.0f,
 			float iHeight = 1.0f,
 			Engine::Graphics::RGBColor = Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f)); //Cylinder
+
 		static void DrawShape(ShapeTarget,
 			Engine::Maths::Point3,
 			Engine::Maths::Point3,

@@ -1,20 +1,13 @@
 return
 {
-	vertex = "standard.vshd",
-	fragment = "standard.fshd",
+	vertex = "line.vshd",
+	fragment = "line.fshd",
 	AlphaTransparency = "False",
-	DepthTesting = "True",
-	DepthWriting = "True",
-	FaceCulling = "True",
+	DepthTesting = "False",
+	DepthWriting = "False",
+	FaceCulling = "False",
 	uniforms =
 	{
-		{
-			name = "g_transform_localToWorld",
-			shader = "vertex",
-			valType = "Matrix",
-			MatrixType = "LocalToWorld",
-			count = 1,
-		},
 		{
 			name = "g_transform_worldToView",
 			shader = "vertex",

@@ -30,20 +30,24 @@ namespace Engine
 			static void AddLine(Engine::Maths::Point3 i_startPoint,
 				Engine::Maths::Point3 i_endPoint,
 				RGBAColor iLineColor);
+			static bool containsDebugLine();
 			Transformation getTransformation() override;
 			void setTransformation(Math::cVector,
 				Math::cQuaternion = Math::cQuaternion()) override;
 			bool isDebugObject() const override;
 			bool isRenderable() const override;
 			void draw(bool drawDebugObject) override;
-			static bool containsDebugLine();
+			
 		private:
 			static std::vector<SharedPointer<Line>> mLineList;
 			Line();
 			LineStruct mLineStruct;
 			bool debugObject;
+			static std::string effectFile;
 			static bool createBuffer();
 			static bool writeToBuffer();
+			static bool bufferInitialized;
+			static bool vertexBufferInitalized;
 #ifdef PLATFORM_OPEN_GL
 			static 	GLuint s_vertexArrayID;
 			static GLuint vertexBufferId;

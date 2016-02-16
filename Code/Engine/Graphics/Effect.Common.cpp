@@ -114,7 +114,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 		tempBuffer += sizeof(char);
 		shaderNames[Fragment] = fragmentShader;
 
-		int uniformCount;
+		uint8_t uniformCount;
 		memcpy(&uniformCount, reinterpret_cast<uint8_t*>(tempBuffer), sizeof(uint8_t));
 		tempBuffer += sizeof(uint8_t);
 
@@ -179,7 +179,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 					tempBuffer += sizeof(uint8_t);
 					tempUniform->setValCount(dataCount);
 					tempUniform->setMatrixType(tempMatrixType);
-					tempUniform->setTransformMatrixExistenceFlag(tempMatrixType);
+					setTransformMatrixExistenceFlag(tempUniformName, tempMatrixType);
 				}
 				else
 				{
@@ -204,6 +204,50 @@ bool Engine::Graphics::Effect::LoadEffect()
 		return true;
 	}
 	return false;
+}
+
+
+void Engine::Graphics::Effect::setTransformMatrixExistenceFlag(
+	std::string uniformName, Transform_Matrix_Type iMatrixType)
+{
+	switch (iMatrixType)
+	{
+	case LocalToWorld:
+		isLocalToWorldTransformExist = true;
+		localToWorldTransformUniformName = uniformName;
+		break;
+	case WorldToView:
+		isWorldToViewTransformExist = true;
+		worldToViewTransformUniformName = uniformName;
+		break;
+	case ViewToScreen:
+		isViewToScreenTransformExist = true;
+		viewToScreenTransformUniformName = uniformName;
+		break;
+	default:
+		break;
+	}
+}
+
+std::string Engine::Graphics::Effect::getTransformMatrixUniformName(
+	ShaderType iShaderType, 
+	Transform_Matrix_Type iMatrixType) const
+{
+	switch (iMatrixType)
+	{
+	case LocalToWorld:
+		return localToWorldTransformUniformName;
+		break;
+	case WorldToView:
+		return worldToViewTransformUniformName;
+		break;
+	case ViewToScreen:
+		return viewToScreenTransformUniformName;
+		break;
+	default:
+		break;
+	}
+	return "";
 }
 
 

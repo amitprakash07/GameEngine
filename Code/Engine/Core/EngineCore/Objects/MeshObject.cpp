@@ -4,11 +4,15 @@
 #include "../../../Core/EngineCore/EngineCore.h"
 #include "Scene.h"
 #include  "../../../Graphics/Graphics.h"
+#include "../../../Graphics/Uniform.h"
 
 
 
 
-Engine::SharedPointer<Engine::MeshObject> Engine::MeshObject::CreateMeshObject(std::string i_meshFileName, std::string i_materialName)
+Engine::SharedPointer<Engine::MeshObject> Engine::MeshObject::CreateMeshObject(
+	std::string i_meshFileName, 
+	std::string i_materialName,
+	Engine::Graphics::RGBAColor iColor)
 {
 	i_meshFileName = Engine::EngineCore::getMeshFolderPath() + i_meshFileName;
 	i_materialName = Engine::EngineCore::getMaterialFolderPath() + i_materialName;
@@ -36,7 +40,17 @@ Engine::SharedPointer<Engine::MeshObject> Engine::MeshObject::CreateMeshObject(s
 			return (SharedPointer<MeshObject>());
 		}
 
-
+		//VertexColorModifier Uniform - Change here if changing the of the color;
+		SharedPointer<Engine::Graphics::Uniform> colorUniform = 
+			Engine::Graphics::Uniform::addUniform(tempMeshObject->vertexModifierUniform, 
+				tempMeshObject->getMaterial()->getEffectName(), 
+				Graphics::Vertex);
+		colorUniform->setValType(Graphics::FloatArray);
+		colorUniform->setValCount(4);
+		tempMeshObject->vertexColor = iColor;
+		std::string tempUniformName = tempMeshObject->vertexModifierUniform;		
+		colorUniform->setHandle(
+		tempMeshObject->getEffect()->Engine::Graphics::Effect::getUniformHandle(tempUniformName.c_str(), Graphics::Vertex));
 	}
 	return tempMeshObject;
 }
@@ -49,6 +63,7 @@ Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialNam
 	mMaterial = i_materialName;
 	mObjectController = nullptr;
 	debugObject = false;
+	vertexModifierUniform = "vertexColorModifier";
 }
 
 Engine::MeshObject::MeshObject()
@@ -165,12 +180,59 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 				Engine::Graphics::GraphicsSystem::EnableWireFrame(true);
 			getEffect()->setShaders();
 			Transformation gameObjectTransformation = getTransformation();
-			SharedPointer<Engine::Graphics::Effect> tempEffect = getEffect();
-			tempEffect->setLocalToWorldMatrrixTransformValue(gameObjectTransformation);
-			getEffect()->setWorldToViewTransformationValue(cameraTransformation);
-			getEffect()->setViewToScreenTransformationValue(fieldOfView,
-				aspectRatio, nearPlane, farPlane);
-			getEffect()->setAllUniformToShader();
+			std::string effectFile = getMaterial()->getEffectName();
+
+			SharedPointer<Graphics::Uniform> localToWorldUniform = 
+				Graphics::Uniform::getUniform(
+					getEffect()->getTransformMatrixUniformName(
+						Graphics::Vertex,
+						Graphics::LocalToWorld), effectFile, Graphics::Vertex);
+
+			SharedPointer<Graphics::Uniform> worldToView = Graphics::Uniform::getUniform(
+				getEffect()->getTransformMatrixUniformName(
+					Graphics::Vertex,
+					Graphics::WorldToView), effectFile, Graphics::Vertex);
+
+			SharedPointer<Graphics::Uniform> viewToScreen = Graphics::Uniform::getUniform(
+				getEffect()->getTransformMatrixUniformName(
+					Graphics::Vertex,
+					Graphics::ViewToScreen), effectFile, Graphics::Vertex);
+			
+			
+			Graphics::UniformValues localToWorlValues;
+			localToWorlValues.matrixValue.Type = Graphics::LocalToWorld;
+			localToWorlValues.matrixValue.matrix = 
+				Math::cMatrix_transformation(mTransformation.mOrientation,
+					mTransformation.mPositionOffset);
+			localToWorldUniform->setUniformValue(localToWorlValues);
+
+
+			Graphics::UniformValues worldToViewValues;
+			worldToViewValues.matrixValue.Type = Graphics::WorldToView;
+			worldToViewValues.matrixValue.matrix =
+				Math::cMatrix_transformation::CreateWorldToViewTransform(
+					cameraTransformation.mOrientation, 
+					cameraTransformation.mPositionOffset);
+			worldToView->setUniformValue(worldToViewValues);
+
+
+			Graphics::UniformValues viewToScreenValues;
+			viewToScreenValues.matrixValue.Type = Graphics::ViewToScreen;
+			viewToScreenValues.matrixValue.matrix =
+				Math::cMatrix_transformation::CreateViewToScreenTransform(
+					fieldOfView, aspectRatio,
+					nearPlane, farPlane);
+			viewToScreen->setUniformValue(viewToScreenValues);
+
+			Engine::Graphics::UniformValues tempColor;
+			float tempcolorfloats[] = { vertexColor.r,vertexColor.g,vertexColor.b,vertexColor.a };
+			tempColor.floatArray = tempcolorfloats;
+			SharedPointer<Engine::Graphics::Uniform> vertexColorUiform
+				= Engine::Graphics::Uniform::getUniform(vertexModifierUniform, effectFile, Graphics::Vertex);
+			vertexColorUiform->setUniformValue(tempColor);
+			
+
+			Engine::Graphics::Uniform::setAllUniformToShaderObjects();
 			getMaterial()->setMaterialUniformParameters();
 			getMaterial()->setTextureUniform();
 			getMesh()->drawMesh();

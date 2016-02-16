@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions>EAE6320_PLATFORM_GL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PLATFORM_OPEN_GL</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

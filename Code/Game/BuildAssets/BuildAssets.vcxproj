@@ -106,10 +106,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command> "$(BinDir)AssetBuilder.exe"</Command>
+      <Command>"$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
       <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -125,13 +129,17 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command> "$(BinDir)AssetBuilder.exe"</Command>
+      <Command>"$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
       <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -150,10 +158,14 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <CustomBuildStep>
-      <Command> "$(BinDir)AssetBuilder.exe"</Command>
+      <Command>"$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
       <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -173,13 +185,17 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <CustomBuildStep>
-      <Command> "$(BinDir)AssetBuilder.exe"</Command>
+      <Command>"$(BinDir)AssetBuilder.exe"</Command>
       <Message>Building Assets</Message>
       <Outputs>_ALWAYS_RUN;%(Outputs)</Outputs>
     </CustomBuildStep>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
   </ItemGroup>

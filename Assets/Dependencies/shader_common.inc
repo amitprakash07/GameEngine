@@ -21,10 +21,11 @@
 #elif defined(PLATFORM_OPEN_GL)
 
 // The version of GLSL to use must come first
-#version 330
+//#version 330
+#version 410 core
 
 // This extension is required in order to specify explicit locations for shader inputs and outputs
-#extension GL_ARB_separate_shader_objects : require
+//#extension GL_ARB_separate_shader_objects : require
 
 
 // Translate HLSL variable types to GLSL
@@ -40,3 +41,32 @@
 #define SampleTexture(sampler, texcoords) texture2D(sampler,texcoords)
 
 #endif
+
+void diffuse(const in vec3 iNormal,
+const in vec3 iLightDirection,
+const in vec3 difuseAlbedo,
+out vec3 o_DiffuseColor)
+{
+	vec3 lightVector = -iLightDirection;
+    float geometryTerm = dot(iNormal, lightVector);    
+    o_DiffuseColor = max(0.0,geometryTerm) * difuseAlbedo;
+}
+
+
+void specular(const in vec3 iViewVector,
+const in vec3 iNormal,
+const in vec3 iLightDirection,
+const in vec3 specularAlbedo,
+const in float specularGlossiness,
+out vec3 o_specularColor )
+{
+    vec3 normal = normalize(iNormal);
+    vec3 lightDirection = normalize(iLightDirection);
+    vec3 viewVector = normalize(iViewVector);
+
+    vec3 reflectionVector = reflect(-lightDirection,normal);
+    float geometryTerm = dot(reflectionVector,viewVector);
+
+    o_specularColor = pow(max(geometryTerm,0.0),specularGlossiness) * specularAlbedo;
+
+}

@@ -42,17 +42,17 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		scene->addObjectToScene(cementMatObject);
 
 		Engine::SharedPointer<Engine::MeshObject> floorMatObject =
-			Engine::MeshObject::CreateMeshObject("Arena/FloorMaterialMesh.mesh", "Arena/FloorMaterial.mat");
+			Engine::MeshObject::CreateMeshObject("Arena/FloorMaterialMesh.mesh", "Arena/floorMaterial.mat");
 		floorMatObject->setTransformation(Engine::Math::cVector(0, 0, 0), Engine::Math::cQuaternion());
 		scene->addObjectToScene(floorMatObject);
 
 		Engine::SharedPointer<Engine::MeshObject> lambertTwoMatObjects =
-			Engine::MeshObject::CreateMeshObject("Arena/LambertTwoMaterialMesh.mesh", "Arena/LambertTwoMaterial.mat");
+			Engine::MeshObject::CreateMeshObject("Arena/LambertTwoMaterialMesh.mesh", "Arena/lambertTwoMaterial.mat");
 		lambertTwoMatObjects->setTransformation(Engine::Math::cVector(0, 0, 0), Engine::Math::cQuaternion());
 		scene->addObjectToScene(lambertTwoMatObjects);
 
 		Engine::SharedPointer<Engine::MeshObject> metals =
-			Engine::MeshObject::CreateMeshObject("Arena/MetalMaterialMesh.mesh", "Arena/MetalMaterial.mat");
+			Engine::MeshObject::CreateMeshObject("Arena/MetalMaterialMesh.mesh", "Arena/metalMaterial.mat");
 		metals->setTransformation(Engine::Math::cVector(0, 0, 0), Engine::Math::cQuaternion());
 		scene->addObjectToScene(metals);
 
@@ -71,19 +71,35 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 			Engine::Maths::Point3(-70.0f, 0.0f, 0.0f), 1.0f,
 			Engine::Graphics::RGBColor(1.0f, 0.0f, 0.0f));
 
-		/*Engine::Debug::DrawShape(Engine::SPHERE,
+		Engine::Debug::DrawShape(Engine::SPHERE,
 		Engine::Maths::Point3(0.0f, 0.0f, 0.0f), 1.0f,
 		Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f));
 
-		Engine::Debug::DrawShape(Engine::SPHERE,
-		Engine::Maths::Point3(70.0f, 0.0f, 0.0f), 1.0f,
-		Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f));*/
+		Engine::Debug::DrawShape(Engine::BOX,
+		Engine::Maths::Point3(200.0f, 50.0f, 0.0f), 1.0f,1.0f,1.0f,
+		Engine::Graphics::RGBColor(1.0f, 0.0f, 1.0f));
+
+		Engine::Debug::DrawShape(Engine::BOX,
+			Engine::Maths::Point3(170.0f, 20.0f, -10.0f), 1.0f, 1.0f, 1.0f,
+			Engine::Graphics::RGBColor(1.0f, 1.0f, 0.0f));
+
+		Engine::Debug::DrawShape(Engine::CYLINDER,
+			Engine::Maths::Point3(100.0f, 20.0f, -20.0f), 1.0f,1.0f,
+			Engine::Graphics::RGBColor(0.0f, 0.0f, 1.0f));
+
+		Engine::Debug::DrawShape(Engine::CYLINDER,
+			Engine::Maths::Point3(-70.0f, 0.0f, 0.0f), 1.0f, 1.0f,
+			Engine::Graphics::RGBColor(0.5f, 0.5f, 0.5f));
+
+		Engine::Debug::DrawShape(Engine::LINE,
+			Engine::Maths::Point3(-53.28f,-108.953f,1043.751f), 
+			Engine::Maths::Point3(0.0f,0.0f,0.0f));
 
 
 		//Camera
 		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
-				Engine::Math::cVector(79.902, -84.281, 1912.918),
+				Engine::Math::cVector(-53.258, -108.953, 1043.751),
 				Engine::Math::cQuaternion(Engine::Math::ConvertDegreesToRadians(0),
 					Engine::Math::cVector(0, 1, 0)));
 

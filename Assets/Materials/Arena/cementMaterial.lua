@@ -4,7 +4,7 @@ return
 	map =
 	{
 		{
-			path = "alpha.png",
+			path = "Arena/cement_wall_D.png",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",
@@ -12,12 +12,11 @@ return
 	},
 	uniforms =
 	{
-	
 		{
 			name = "g_PixelColorModifier",
 			shader = "fragment",
 			valtype = "Float",
-			value = {0.0,0.0,1.0},
+			value = {1.0,1.0,1.0},
 		}
 	}	
 }

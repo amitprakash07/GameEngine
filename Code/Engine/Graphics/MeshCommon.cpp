@@ -144,18 +144,18 @@ bool Engine::Graphics::Mesh::isMeshExist(std::string i_fileName)
 	return false;
 }
 
-void Engine::Graphics::Mesh::addUniform(std::string iUniformName, ShaderType iShaderType)
-{
-	SharedPointer<Uniform> tempUniform = Uniform::createUniform();
-	tempUniform->setShaderType(iShaderType);
-	uniformNames[iUniformName] = tempUniform;
-}
-
-void Engine::Graphics::Mesh::setUniformHandle(std::string uniformName,
-	std::string effectName)
-{
-	SharedPointer<Uniform> tempUniform = uniformNames[uniformName];
-	tempUniform->setHandle(Engine::Graphics::Effect::getEffect(effectName)->getUniformHandle(
-		tempUniform->getUniformName(), tempUniform->getShaderType()));
-}
+//void Engine::Graphics::Mesh::addUniform(std::string iUniformName, ShaderType iShaderType)
+//{
+//	SharedPointer<Uniform> tempUniform = Uniform::createUniform();
+//	tempUniform->setShaderType(iShaderType);
+//	uniformNames[iUniformName] = tempUniform;
+//}
+//
+//void Engine::Graphics::Mesh::setUniformHandle(std::string uniformName,
+//	std::string effectName)
+//{
+//	SharedPointer<Uniform> tempUniform = uniformNames[uniformName];
+//	tempUniform->setHandle(Engine::Graphics::Effect::getEffect(effectName)->getUniformHandle(
+//		tempUniform->getUniformName(), tempUniform->getShaderType()));
+//}
 

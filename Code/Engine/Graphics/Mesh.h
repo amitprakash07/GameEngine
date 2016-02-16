@@ -33,10 +33,10 @@ namespace Engine
 			std::string getMeshFileName() const;
 			std::string getTypeInfo() const override { return ""; }
 			bool isBothSameType(RTTI*, std::string) const override { return true; }
-			void addUniform(std::string iUniformName, ShaderType iShaderType);
-			void setUniformHandle(std::string uniformName, std::string effectName);
-			void updateUniformValue(UniformValues iValue);
-			void setAllUniformValuesToShader();
+			/*void addUniform(std::string iUniformName, ShaderType iShaderType);
+			void setUniformHandle(std::string uniformName, std::string effectName);*/
+			/*void updateUniformValue(UniformValues iValue);
+			void setAllUniformValuesToShader();*/
 			~Mesh();
 		private:
 			static std::map<std::string, SharedPointer<Mesh>> meshList;

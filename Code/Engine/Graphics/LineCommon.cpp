@@ -6,6 +6,8 @@ Engine::Graphics::Line::mLineList;
 Engine::Graphics::Line::Line()
 {
 	debugObject = true;
+	bufferInitialized = false;
+	vertexBufferInitalized = false;
 }
 
 bool Engine::Graphics::Line::containsDebugLine()
@@ -23,6 +25,7 @@ void Engine::Graphics::Line::AddLine(Engine::Maths::Point3 i_startPoint, Engine:
 	tempLine->mLineStruct.color = iLineColor;
 	tempLine->debugObject = true;
 	mLineList.push_back(tempLine);
+	createBuffer();
 }
 
 Engine::Transformation Engine::Graphics::Line::getTransformation()

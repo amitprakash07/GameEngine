@@ -21,7 +21,8 @@ Engine::Graphics::Sprite::Sprite(std::string iSpriteName,
 		left = Math::scaleAndBias(left, -windowWidth, windowWidth, -1, 1);
 		right = Math::scaleAndBias(right, -windowWidth, windowWidth, -1, 1);
 		top = Math::scaleAndBias(top, -windowHeight, windowHeight, -1, 1);
-		bottom = Math::scaleAndBias(bottom, -windowHeight, windowHeight, -1, 1);
+		bottom = Math::scaleAndBias(bottom, static_cast<float>(-windowHeight),
+			static_cast<float>(windowHeight), -1.0f, 1.0f);
 		break;
 	case TEXTURE_COORDINATE:
 		left = Math::scaleAndBias(left, 0, 1, -1, 1);

@@ -1,10 +1,14 @@
 /*
-	This is an example of a vertex shader
+	Vertex shader with vertex color 
+	attribute modifier
 */
-#include "../Dependencies/shaders.inc"
+#include "../Dependencies/shader_common.inc"
 uniform float4x4  g_transform_localToWorld;
 uniform float4x4  g_transform_worldToView;
-uniform float4x4  g_transform_viewToScreen; 
+uniform float4x4  g_transform_viewToScreen;
+uniform float4 vertexColorModifier;
+
+
 
 
 #if defined (PLATFORM_D3D)
@@ -46,7 +50,7 @@ void main()
 	float4 position_world = Transform(float4(i_local_position,1.0), g_transform_localToWorld);
 	float4 position_view = Transform(float4(position_world), g_transform_worldToView);
 	O_SCREEN_POSITION = Transform( position_view, g_transform_viewToScreen);
-	o_color = i_color;
+	o_color = i_color*vertexColorModifier;
 	o_local_normal = i_local_normal;
 	o_local_tangent = i_local_tangent;
 	o_local_bi_tangent = i_local_bi_tangent;

@@ -16,6 +16,7 @@
     <ShadersDir>Shaders\</ShadersDir>
     <DependenciesFolder>Dependencies\</DependenciesFolder>
     <TexturesDir>Textures\</TexturesDir>
+    <AssetFile>ArenaAssets.lua</AssetFile>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Lib />
@@ -75,6 +76,10 @@
     </BuildMacro>
     <BuildMacro Include="TexturesDir">
       <Value>$(TexturesDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="AssetFile">
+      <Value>$(AssetFile)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>

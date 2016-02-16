@@ -8,7 +8,7 @@ std::vector<Engine::SharedPointer<Engine::Object>> Engine::Debug::debugShapeList
 
 bool Engine::Debug::IsDebugShapesAvailable()
 {
-	return debugShapeList.size();
+	return (debugShapeList.size() > 0 ? true: false);
 }
 
 
@@ -44,7 +44,7 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	//Engine::SharedPointer<Engine::MeshObject> debugSphere =
 	//Engine::MeshObject::CreateMeshObject("Arena/wallsMaterialMesh.mesh", "Arena/wallsMaterial.mat");
 	Engine::SharedPointer<Engine::MeshObject> debugSphere =
-		Engine::MeshObject::CreateMeshObject("Arena/DebugSphereForClass.mesh", "defaultDebugShapes.mat");
+		Engine::MeshObject::CreateMeshObject("DebugSphereForClass.mesh", "defaultDebugShapes.mat", color);
 	debugSphere->EnableDebugging(true);
 	debugSphere->getMaterial()->changeMaterialColor(iColor.r, iColor.g, iColor.b);
 	Math::cVector tempPosition;
@@ -70,7 +70,7 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	color.b = iColor.b;
 	color.a = 1.0f;
 	Engine::SharedPointer<Engine::MeshObject> debugBox =
-		Engine::MeshObject::CreateMeshObject("Arena/DebugCubeForClass.mesh", "defaultDebugShapes.mat");
+		Engine::MeshObject::CreateMeshObject("DebugCubeForClass.mesh", "defaultDebugShapes.mat", color);
 	debugBox->EnableDebugging(true);
 	debugBox->getMaterial()->changeMaterialColor(iColor.r, iColor.g, iColor.b);
 	Math::cVector tempPosition;
@@ -95,7 +95,7 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	color.b = iColor.b;
 	color.a = 1.0f;
 	Engine::SharedPointer<Engine::MeshObject> debugCylinder =
-		Engine::MeshObject::CreateMeshObject("Arena/DebugCylinderForClass.mesh", "defaultDebugShapes.mat");
+		Engine::MeshObject::CreateMeshObject("DebugCylinderForClass.mesh", "defaultDebugShapes.mat", color);
 	debugCylinder->EnableDebugging(true);
 	debugCylinder->getMaterial()->changeMaterialColor(iColor.r, iColor.g, iColor.b);
 	Math::cVector tempPosition;
