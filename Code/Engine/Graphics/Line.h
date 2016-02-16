@@ -18,9 +18,9 @@ namespace Engine
 	{
 		struct LineStruct
 		{
-			Engine::Maths::Point3 startPoint;
-			Engine::Maths::Point3 endPoint;
-			RGBAColor color;
+			Engine::Maths::Point3 startPoint; //12 bytes
+			Engine::Maths::Point3 endPoint; //12 bytes
+			RGBAColor color; //16 bytes
 		};
 
 		class Line :public Object
@@ -31,19 +31,21 @@ namespace Engine
 				Engine::Maths::Point3 i_endPoint,
 				RGBAColor iLineColor);
 			static bool containsDebugLine();
+			static void setMaterialName(std::string iMaterialName);
+			static uint8_t getLineCounts();
 			Transformation getTransformation() override;
 			void setTransformation(Math::cVector,
 				Math::cQuaternion = Math::cQuaternion()) override;
 			bool isDebugObject() const override;
 			bool isRenderable() const override;
-			void draw(bool drawDebugObject) override;
-			
+			void draw(bool drawDebugObject) override;			
 		private:
 			static std::vector<SharedPointer<Line>> mLineList;
+			static bool setUniforms();
 			Line();
 			LineStruct mLineStruct;
 			bool debugObject;
-			static std::string effectFile;
+			static std::string materialName;
 			static bool createBuffer();
 			static bool writeToBuffer();
 			static bool bufferInitialized;

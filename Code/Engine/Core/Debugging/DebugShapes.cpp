@@ -2,6 +2,8 @@
 #include "../../Windows/WindowsFunctions.h"
 #include "../../Graphics/Line.h"
 #include "../EngineCore/Objects/Scene.h"
+#include "../EngineCore/EngineCore.h"
+
 
 
 std::vector<Engine::SharedPointer<Engine::Object>> Engine::Debug::debugShapeList;
@@ -24,6 +26,14 @@ void Engine::Debug::DrawShape(ShapeTarget i_shapeType,
 	color.g = iColor.g;
 	color.b = iColor.b;
 	color.a = 1.0f;
+	
+	if (Engine::Graphics::Line::getLineCounts() == 0)
+	{
+		std::string materialFolderName = EngineCore::getMaterialFolderPath();
+		materialFolderName += "lineMaterial.mat";
+		Engine::Graphics::Material::addMaterialToList(materialFolderName.c_str());
+		Engine::Graphics::Line::setMaterialName(materialFolderName);
+	}	
 	Engine::Graphics::Line::AddLine(
 		iStartPoint, iEndPoint, color);
 }

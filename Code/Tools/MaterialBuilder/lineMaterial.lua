@@ -1,0 +1,4 @@
+return 
+{
+	effect = "standardEffect.effect"		
+}

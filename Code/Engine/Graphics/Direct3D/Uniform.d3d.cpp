@@ -66,13 +66,16 @@ void Engine::Graphics::Uniform::setValueInShaderObject(const ID3DXConstantTable*
 }
 
 
-void Engine::Graphics::Uniform::setAllUniformToShaderObjects()
+void Engine::Graphics::Uniform::setAllUniformToShaderObjects(std::string i_effectName)
 {
 	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = mUniformListInSystem.begin();
 	i!= mUniformListInSystem.end(); ++i)
 	{
-		i->second->setValueInShaderObject(
-			Effect::getEffect(i->second->effectName)->getConstantTable(i->second->mUniform.shaderType));
+		if (i->second->effectName.compare(i_effectName) == 0)
+		{
+			i->second->setValueInShaderObject(
+				Effect::getEffect(i->second->effectName)->getConstantTable(i->second->mUniform.shaderType));
+		}
 	}
 }
 

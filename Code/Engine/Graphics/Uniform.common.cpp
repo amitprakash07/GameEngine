@@ -160,39 +160,34 @@ Engine::Graphics::Uniform::~Uniform()
 
 char* Engine::Graphics::Uniform::prefixUniformName() const
 {
-	int uniformNameLength = static_cast<int>(strlen(mUniform.uniformName));
-	char* prefixedName = new char[uniformNameLength + 1];
-	char charToPrefix;
+	std::string prefixedNameWithEffect;
 	switch (mUniform.shaderType)
 	{
 	case Vertex:
-		charToPrefix = 'V';
-		memcpy(prefixedName, &charToPrefix, 1);
+		prefixedNameWithEffect += "V";		
 		break;
 	case Fragment:
-		charToPrefix = 'F';
-		memcpy(prefixedName, &charToPrefix, 1);
+		prefixedNameWithEffect += "F";
 		break;
 	case Tessalation:
-		charToPrefix = 'T';
-		memcpy(prefixedName, &charToPrefix, 1);
+		prefixedNameWithEffect += "T";
 		break;
 	case Geometry:
-		charToPrefix = 'G';
-		memcpy(prefixedName, &charToPrefix, 1);
+		prefixedNameWithEffect += "G";
 		break;
 	case Compute:
-		charToPrefix = 'C';
-		memcpy(prefixedName, &charToPrefix, 1);
+		prefixedNameWithEffect += "C";
 		break;
 	case Unknown:
-		charToPrefix = 'U';
-		memcpy(prefixedName, &charToPrefix, 1);
+		prefixedNameWithEffect += "U";
 		break;
 	}
 
-	memcpy(prefixedName + 1, mUniform.uniformName, uniformNameLength);
-	prefixedName[uniformNameLength + 1] = '\0';
+	prefixedNameWithEffect += effectName;
+	prefixedNameWithEffect += mUniform.uniformName;
+	char * prefixedName = new char[prefixedNameWithEffect.size()];
+	memcpy(prefixedName, prefixedNameWithEffect.c_str(), prefixedNameWithEffect.size());
+	prefixedName[prefixedNameWithEffect.size()] = '\0';
 	return prefixedName;
 }
 

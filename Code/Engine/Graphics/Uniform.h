@@ -21,7 +21,7 @@ namespace Engine
 			static bool isUnformExist(
 				std::string i_UniformNamae, std::string effectName,
 				ShaderType iShaderType);			
-			static void setAllUniformToShaderObjects();
+			static void setAllUniformToShaderObjects(std::string effectName);
 			static void setUniformValueToShaderObject(
 				std::string effect, std::string uniformName,
 				ShaderType iShaderType);

@@ -3,20 +3,28 @@
 #include "../../Windows/WindowsFunctions.h"
 #include "../../Core/EngineCore/EngineCore.h"
 #include "../Graphics.h"
+#include "../Material.h"
+#include "../Effect.h"
+#include "../../Core/EngineCore/Objects/Scene.h"
 
 IDirect3DVertexBuffer9* Engine::Graphics::Line::s_vertexBuffer;
 IDirect3DVertexDeclaration9* Engine::Graphics::Line::s_vertexDeclaration;
-bool Engine::Graphics::Line::bufferInitialized;
-bool Engine::Graphics::Line::vertexBufferInitalized;
+
 
 void Engine::Graphics::Line::drawLines(bool drawDebugLines)
-{
-	if (writeToBuffer())
+{	
+	if (writeToBuffer() && 
+		Engine::Graphics::Effect::getEffect(
+			Engine::Graphics::Material::getMaterial(
+				materialName.c_str())->getEffectName())->setShaders()
+		&& setUniforms())		
 	{
+		HRESULT vertexDeclerationResult = Engine::Graphics::GraphicsSystem::getDevice()->SetVertexDeclaration(s_vertexDeclaration);
+		assert(SUCCEEDED(vertexDeclerationResult));
 		HRESULT result;
-
+		
 		// There can be multiple streams of data feeding the display adaptor at the same time
-		const unsigned int streamIndex = 0;
+		const unsigned int streamIndex = 1;
 		// It's possible to start streaming data in the middle of a vertex buffer
 		const unsigned int bufferOffset = 0;
 		// The "stride" defines how large a single vertex is in the stream of data
@@ -36,7 +44,7 @@ void Engine::Graphics::Line::drawLines(bool drawDebugLines)
 			0,
 			static_cast<UINT>(mLineList.size()));
 
-		WindowsUtil::Assert(SUCCEEDED(result));
+		//WindowsUtil::Assert(SUCCEEDED(result));
 	}
 }
 
@@ -70,16 +78,7 @@ bool Engine::Graphics::Line::createBuffer()
 
 		HRESULT vertexDeclerationResult = Engine::Graphics::GraphicsSystem::getDevice()->CreateVertexDeclaration(vertexElements, &s_vertexDeclaration);
 
-		if (SUCCEEDED(vertexDeclerationResult))
-		{
-			vertexDeclerationResult = Engine::Graphics::GraphicsSystem::getDevice()->SetVertexDeclaration(s_vertexDeclaration);
-			if (FAILED(vertexDeclerationResult))
-			{
-				WindowsUtil::Print("Direct3D failed to set the vertex declaration");
-				return false;
-			}
-		}
-		else
+		if (!SUCCEEDED(vertexDeclerationResult))
 		{
 			WindowsUtil::Print("Direct3D failed to create a Direct3D9 vertex declaration");
 			return false;
@@ -91,7 +90,7 @@ bool Engine::Graphics::Line::createBuffer()
 		(3 position floats and 4 color floats)
 		start and end point
 		*/
-		const unsigned int bufferSize = static_cast<const unsigned int>(sizeof(LineStruct) * mLineList.size());
+		const unsigned int bufferSize = static_cast<const unsigned int>(sizeof(float) * 14 * 256);
 
 		// We will define our own vertex format
 		const DWORD useSeparateVertexDeclaration = 0;
@@ -141,9 +140,10 @@ bool Engine::Graphics::Line::writeToBuffer()
 			return false;
 		}
 
-		float *data = new float[sizeof(LineStruct)* mLineList.size()];
+		float *data = new float[sizeof(float) * 14 * mLineList.size()];
 		for (int i = 0; i < mLineList.size(); i++)
 		{
+			//StartPoint
 			data[i + 0] = mLineList[i]->mLineStruct.startPoint.x;
 			data[i + 1] = mLineList[i]->mLineStruct.startPoint.y;
 			data[i + 2] = mLineList[i]->mLineStruct.startPoint.z;
@@ -151,9 +151,18 @@ bool Engine::Graphics::Line::writeToBuffer()
 			data[i + 4] = mLineList[i]->mLineStruct.color.g;
 			data[i + 5] = mLineList[i]->mLineStruct.color.b;
 			data[i + 6] = mLineList[i]->mLineStruct.color.a;
+
+			//EndPoint
+			data[i + 7] = mLineList[i]->mLineStruct.endPoint.x;
+			data[i + 8] = mLineList[i]->mLineStruct.endPoint.y;
+			data[i + 9] = mLineList[i]->mLineStruct.endPoint.z;
+			data[i + 10] = mLineList[i]->mLineStruct.color.r;
+			data[i + 11] = mLineList[i]->mLineStruct.color.g;
+			data[i + 12] = mLineList[i]->mLineStruct.color.b;
+			data[i + 13] = mLineList[i]->mLineStruct.color.a;
 		}
 
-		memcpy(vertexData, data, sizeof(mLineStruct) * 256);
+		memcpy(vertexData, data, sizeof(float) * 14 * mLineList.size());
 		// unlockeing the buffer for use
 		const HRESULT vertexBufferunlockResult = s_vertexBuffer->Unlock();
 		if (FAILED(vertexBufferunlockResult))
@@ -166,6 +175,63 @@ bool Engine::Graphics::Line::writeToBuffer()
 	
 	return true;
 }
+
+
+bool Engine::Graphics::Line::setUniforms()
+{
+	SharedPointer<Scene> activeScene = Scene::getRenderableScene();
+	SharedPointer<Camera> tempCamera = activeScene->getActiveCamera();
+
+	if (!tempCamera.isNull())
+	{
+		Transformation cameraTransformation = tempCamera->getTransformation();
+		float fieldOfView = tempCamera->getFieldOfView();
+		float aspectRatio = tempCamera->getAspectRatio();
+		float nearPlane = tempCamera->getNearPlane();
+		float farPlane = tempCamera->getFarPlane();
+
+		std::string effectFile =
+			Engine::Graphics::Material::getMaterial(materialName.c_str())->getEffectName();
+
+		SharedPointer<Graphics::Uniform> worldToView = Graphics::Uniform::getUniform(
+			Engine::Graphics::Effect::getEffect(effectFile)->getTransformMatrixUniformName(
+				Graphics::Vertex,
+				Graphics::WorldToView), effectFile, Graphics::Vertex);
+
+		SharedPointer<Graphics::Uniform> viewToScreen = Graphics::Uniform::getUniform(
+			Engine::Graphics::Effect::getEffect(effectFile)->getTransformMatrixUniformName(
+				Graphics::Vertex,
+				Graphics::ViewToScreen), effectFile, Graphics::Vertex);
+
+		Graphics::UniformValues worldToViewValues;
+		worldToViewValues.matrixValue.Type = Graphics::WorldToView;
+		worldToViewValues.matrixValue.matrix =
+			Math::cMatrix_transformation::CreateWorldToViewTransform(
+				cameraTransformation.mOrientation,
+				cameraTransformation.mPositionOffset);
+		worldToView->setUniformValue(worldToViewValues);
+
+
+		Graphics::UniformValues viewToScreenValues;
+		viewToScreenValues.matrixValue.Type = Graphics::ViewToScreen;
+		viewToScreenValues.matrixValue.matrix =
+			Math::cMatrix_transformation::CreateViewToScreenTransform(
+				fieldOfView, aspectRatio,
+				nearPlane, farPlane);
+		viewToScreen->setUniformValue(viewToScreenValues);
+
+		Engine::Graphics::Uniform::setAllUniformToShaderObjects(effectFile);
+	}
+	else
+	{
+		std::stringstream errormessage;
+		errormessage << "Camera is not iniitalized\n";
+		WindowsUtil::Print(errormessage.str().c_str());
+		return false;
+	}
+	return true;
+}
+
 
 
 

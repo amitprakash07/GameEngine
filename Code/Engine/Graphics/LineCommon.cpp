@@ -2,6 +2,10 @@
 
 std::vector<Engine::SharedPointer<Engine::Graphics::Line>>
 Engine::Graphics::Line::mLineList;
+std::string Engine::Graphics::Line::materialName;
+bool Engine::Graphics::Line::bufferInitialized;
+bool Engine::Graphics::Line::vertexBufferInitalized;
+
 
 Engine::Graphics::Line::Line()
 {
@@ -51,8 +55,20 @@ bool Engine::Graphics::Line::isRenderable() const
 
 void Engine::Graphics::Line::draw(bool drawDebugObject)
 {
-
+	/*drawLines(drawDebugObject);*/
 }
+
+void Engine::Graphics::Line::setMaterialName(std::string iMaterialName)
+{
+	materialName = iMaterialName;
+}
+
+uint8_t Engine::Graphics::Line::getLineCounts()
+{
+	return mLineList.size();
+}
+
+
 
 
 

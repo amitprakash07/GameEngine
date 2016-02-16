@@ -110,9 +110,14 @@ bool Engine::Graphics::Material::loadMaterial()
 
 	SharedPointer<Effect> tempEffect = Effect::getEffect(effectFile);
 
-	//Loading Maps
-	int tempMapCount = *reinterpret_cast<int*>(currentPosition);
-	currentPosition += sizeof(int);
+	
+	int tempMapCount = 0;
+	if ((reinterpret_cast<BYTES*>(currentPosition) - buffer)  < length)
+	{
+		//Loading Maps
+		tempMapCount = *reinterpret_cast<int*>(currentPosition);
+		currentPosition += sizeof(int);
+	}
 	mapCount = tempMapCount;
 	if (mapCount > 0)
 	{
@@ -163,27 +168,37 @@ bool Engine::Graphics::Material::loadMaterial()
 		}
 	}
 
-	int uniformCount = *reinterpret_cast<int*>(currentPosition);
-	currentPosition += sizeof(int);
-	materialUniformCount = uniformCount;
-	materialUniforms = new MaterialUniform[materialUniformCount];
-	materialUniformNames = new char*[materialUniformCount];
 
-	for (int i = 0; i < uniformCount; ++i)
+	int uniformCount = 0;
+	if ((reinterpret_cast<BYTES*>(currentPosition) - buffer) < length)
 	{
-		size_t nameSize = strlen(currentPosition);
-		materialUniformNames[i] = new char[nameSize];
-		memcpy(materialUniformNames[i], currentPosition, sizeof(char)* nameSize);
-		materialUniformNames[i][nameSize] = '\0';
-		currentPosition += strlen(materialUniformNames[i]) + 1;
-	}
+		//Loading Maps
+		uniformCount = *reinterpret_cast<int*>(currentPosition);
+		currentPosition += sizeof(int);
+		materialUniformCount = uniformCount;
+		materialUniforms = new MaterialUniform[materialUniformCount];
+		materialUniformNames = new char*[materialUniformCount];
+	}	
 
-	size_t uniform_length = sizeof(MaterialUniform);
-	memcpy(materialUniforms, currentPosition, sizeof(MaterialUniform)*materialUniformCount);
-
-	for (int i = 0; i < uniformCount; ++i)
+	if (uniformCount > 0)
 	{
-		materialUniforms[i].Handle = tempEffect->getUniformHandle(materialUniformNames[i], materialUniforms[i].type);
+
+		for (int i = 0; i < uniformCount; ++i)
+		{
+			size_t nameSize = strlen(currentPosition);
+			materialUniformNames[i] = new char[nameSize];
+			memcpy(materialUniformNames[i], currentPosition, sizeof(char)* nameSize);
+			materialUniformNames[i][nameSize] = '\0';
+			currentPosition += strlen(materialUniformNames[i]) + 1;
+		}
+
+		size_t uniform_length = sizeof(MaterialUniform);
+		memcpy(materialUniforms, currentPosition, sizeof(MaterialUniform)*materialUniformCount);
+
+		for (int i = 0; i < uniformCount; ++i)
+		{
+			materialUniforms[i].Handle = tempEffect->getUniformHandle(materialUniformNames[i], materialUniforms[i].type);
+		}
 	}
 
 	delete buffer;

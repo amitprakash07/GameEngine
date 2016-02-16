@@ -15,6 +15,7 @@ uniform float4 vertexColorModifier;
 void main(
 		in const float3 i_local_position : POSITION0,
 		in const float4 i_color : COLOR0,
+		out float4 o_position : POSITION0,
 		out float4 o_color : COLOR0
 		)
 
@@ -30,7 +31,7 @@ void main()
 #endif
 
 {
-	float4 position_view = Transform(float4(i_local_position), g_transform_worldToView);
+	float4 position_view = Transform(float4(i_local_position,1.0), g_transform_worldToView);
 	O_SCREEN_POSITION = Transform( position_view, g_transform_viewToScreen);
 	o_color = i_color*vertexColorModifier;	
 }

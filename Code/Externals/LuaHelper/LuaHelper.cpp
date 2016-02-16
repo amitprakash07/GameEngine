@@ -22,8 +22,8 @@ bool LuaHelper::isTable(lua_State* luaState)
 	if (!lua_istable(luaState, -1))
 	{
 		std::stringstream errorMessage;
-		errorMessage << "Asset files must return a table (instead of a " << luaL_typename(luaState, -1) << ")\n";
-		OutputErrorMessage(errorMessage.str().c_str());
+		/*errorMessage << "Asset files must return a table (instead of a " << luaL_typename(luaState, -1) << ")\n";
+		OutputErrorMessage(errorMessage.str().c_str());*/
 		return false;
 	}
 	return true;

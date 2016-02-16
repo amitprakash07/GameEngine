@@ -232,7 +232,7 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 			vertexColorUiform->setUniformValue(tempColor);
 			
 
-			Engine::Graphics::Uniform::setAllUniformToShaderObjects();
+			Engine::Graphics::Uniform::setAllUniformToShaderObjects(effectFile);
 			getMaterial()->setMaterialUniformParameters();
 			getMaterial()->setTextureUniform();
 			getMesh()->drawMesh();

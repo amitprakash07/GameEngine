@@ -20,6 +20,8 @@ bool Engine::Graphics::Mesh::drawMesh(bool wireFrame)
 {
 	std::stringstream errormessage;
 
+	HRESULT vertexDeclerationResult = Engine::Graphics::GraphicsSystem::getDevice()->SetVertexDeclaration(s_vertexDeclaration);
+	assert(SUCCEEDED(vertexDeclerationResult));
 	HRESULT result;
 	// Bind a specific vertex buffer to the device as a data source
 
@@ -109,21 +111,11 @@ bool Engine::Graphics::Mesh::createVertexBuffer()
 
 	HRESULT vertexDeclerationResult = Engine::Graphics::GraphicsSystem::getDevice()->CreateVertexDeclaration(vertexElements, &s_vertexDeclaration);
 
-	if (SUCCEEDED(vertexDeclerationResult))
-	{
-		vertexDeclerationResult = Engine::Graphics::GraphicsSystem::getDevice()->SetVertexDeclaration(s_vertexDeclaration);
-		if (FAILED(vertexDeclerationResult))
-		{
-			WindowsUtil::Print("Direct3D failed to set the vertex declaration");
-			return false;
-		}
-	}
-	else
+	if(!SUCCEEDED(vertexDeclerationResult))
 	{
 		WindowsUtil::Print("Direct3D failed to create a Direct3D9 vertex declaration");
 		return false;
 	}
-
 
 	// Create a vertex buffer
 

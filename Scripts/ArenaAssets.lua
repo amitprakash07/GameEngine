@@ -151,6 +151,10 @@ return
 		{
 			src = "defaultMaterial.lua",
 			target = "defaultMaterial.mat",
+		},
+		{
+			src = "lineMaterial.lua",
+			target = "lineMaterial.mat",
 		},		
 	},
 	
