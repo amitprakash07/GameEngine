@@ -112,6 +112,14 @@ namespace Engine
 			//UniformData(UniformData &iUniformData);
 		};
 
+		struct MaterialUniform
+		{
+			UniformHandle Handle; //8 or 4
+			ShaderType type; //1
+			UniformDataType valType; //1
+			uint8_t valCount; //1
+			float values[4]; //16
+		};
 		enum __renderState
 		{
 			ALPHA_BLENDING = 1 << 0,
@@ -141,14 +149,7 @@ namespace Engine
 
 
 
-		struct MaterialUniform
-		{
-			UniformHandle Handle; //8 or 4
-			ShaderType type; //1
-			UniformDataType valType; //1
-			uint8_t valCount; //1
-			float values[4]; //16
-		};
+		
 
 
 	}

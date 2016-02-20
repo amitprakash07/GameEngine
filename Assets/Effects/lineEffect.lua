@@ -3,8 +3,8 @@ return
 	vertex = "line.vshd",
 	fragment = "line.fshd",
 	AlphaTransparency = "False",
-	DepthTesting = "False",
-	DepthWriting = "False",
+	DepthTesting = "True",
+	DepthWriting = "True",
 	FaceCulling = "False",
 	uniforms =
 	{

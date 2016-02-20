@@ -5,7 +5,7 @@ return
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",
-	FaceCulling = "True",
+	FaceCulling = "False",
 	uniforms =
 	{
 		{

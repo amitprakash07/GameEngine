@@ -24,7 +24,7 @@ void Engine::Graphics::Line::drawLines(bool drawDebugLines)
 		HRESULT result;
 		
 		// There can be multiple streams of data feeding the display adaptor at the same time
-		const unsigned int streamIndex = 1;
+		const unsigned int streamIndex = 0;
 		// It's possible to start streaming data in the middle of a vertex buffer
 		const unsigned int bufferOffset = 0;
 		// The "stride" defines how large a single vertex is in the stream of data

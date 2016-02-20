@@ -93,7 +93,14 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 
 		Engine::Debug::DrawShape(Engine::LINE,
 			Engine::Maths::Point3(-53.28f,-108.953f,1043.751f), 
-			Engine::Maths::Point3(0.0f,0.0f,0.0f));
+			Engine::Maths::Point3(0.0f,0.0f,0.0f),
+			Engine::Graphics::RGBColor(0,1.0f,0.0f));
+
+
+		/*Engine::Debug::DrawShape(Engine::LINE,
+			Engine::Maths::Point3(-53.28f, -108.953f, 1043.751f),
+			Engine::Maths::Point3(-70.0f, 0.0f, 0.0f),
+			Engine::Graphics::RGBColor(0, 1.0f, 1.0f));*/
 
 
 		//Camera
