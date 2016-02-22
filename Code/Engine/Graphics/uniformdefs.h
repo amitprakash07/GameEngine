@@ -159,9 +159,7 @@ namespace Engine
 		struct Map
 		{
 			char *file; //Texture File Name
-			char *uniform; //Uniform Name
-			UniformHandle mapHandle;
-			SamplerID textureID;
+			char *uniform; //Uniform Name			
 			ShaderType shaderType;
 			MapType mapType;
 		};

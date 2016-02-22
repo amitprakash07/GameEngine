@@ -4,12 +4,14 @@
 #include <sstream>
 #include "../Windows/WindowsFunctions.h"
 #include "../../Engine/Core/EngineCore/EngineCore.h"
+#include "Effect.h"
 
 typedef char BYTES;
 
 std::map<std::string, Engine::SharedPointer<Engine::Graphics::Texture>> Engine::Graphics::Texture::mTextureList;
 
-bool Engine::Graphics::Texture::addTextureToList(const char* i_TextureName)
+bool Engine::Graphics::Texture::addTextureToList(const char* i_effectFileName,
+	const char * i_TextureName, const char* i_samplerName, ShaderType iShaderType)
 {
 	bool success = false;
 	std::stringstream errormessage;
@@ -19,13 +21,17 @@ bool Engine::Graphics::Texture::addTextureToList(const char* i_TextureName)
 			return true;
 		else
 		{
-			Engine::SharedPointer<Engine::Graphics::Texture> Texture(new Engine::Graphics::Texture(), "Engine::Graphics::Texture");
-			if (!Texture.isNull())
+			Engine::SharedPointer<Engine::Graphics::Texture> tempTexture(new Engine::Graphics::Texture(), "Engine::Graphics::Texture");
+			if (!tempTexture.isNull())
 			{
-				Texture->setTextureName(i_TextureName);
-				if (Texture->loadTexture())
+				tempTexture->setTextureName(i_TextureName);
+				tempTexture->setEffectName(i_effectFileName);
+				tempTexture->setUniformName(i_samplerName);
+				tempTexture->setShaderType(iShaderType);
+				if (tempTexture->loadTexture())
 				{
-					mTextureList[i_TextureName] = Texture;
+					tempTexture->getSamplerDataFromShader();
+					mTextureList[i_TextureName] = tempTexture;
 					success = true;
 				}
 				else success = false;
@@ -43,10 +49,16 @@ bool Engine::Graphics::Texture::addTextureToList(const char* i_TextureName)
 }
 
 
-const char* Engine::Graphics::Texture::getTextureName()
+const char* Engine::Graphics::Texture::getTextureName()const
 {
 	return textureName;
 }
+
+void Engine::Graphics::Texture::setShaderType(ShaderType iShaderType)
+{
+	shaderType = iShaderType;
+}
+
 
 void Engine::Graphics::Texture::setTextureName(const char* i_TextureName)
 {
@@ -54,6 +66,30 @@ void Engine::Graphics::Texture::setTextureName(const char* i_TextureName)
 	textureName = new char[length];
 	memcpy(textureName, i_TextureName, sizeof(char)* length);
 	textureName[length] = '\0';
+}
+
+void Engine::Graphics::Texture::setEffectName(const char* i_effectName)
+{
+	size_t length = strlen(i_effectName);
+	effectName = new char[length];
+	memcpy(effectName, i_effectName, sizeof(char)* length);
+	effectName[length] = '\0';
+}
+
+void Engine::Graphics::Texture::setUniformName(const char* i_samplerName)
+{
+	size_t length = strlen(i_samplerName);
+	samplerName = new char[length];
+	memcpy(samplerName, i_samplerName, sizeof(char)* length);
+	samplerName[length] = '\0';
+}
+
+
+void Engine::Graphics::Texture::getSamplerDataFromShader()
+{
+	SharedPointer<Effect> tempEffect = Engine::Graphics::Effect::getEffect(effectName);
+	textureSamplerID =
+		tempEffect->getSamplerID(tempEffect->getUniformHandle(samplerName, shaderType), shaderType);
 }
 
 

@@ -13,6 +13,7 @@
 #include "../Core/Utilities/SharedPointer.h"
 #include <map>
 #include "typedefs.h"
+#include "uniformdefs.h"
 
 namespace Engine
 {
@@ -21,23 +22,39 @@ namespace Engine
 		class Texture :public RTTI
 		{
 		public:
-			static bool addTextureToList(const char*);
+			static bool addTextureToList(const char* i_effectFileName,
+				const char * i_TextureName, const char* i_samplerName,
+				ShaderType iShaderType);
 			static SharedPointer<Texture> getTexture(const char*);
 			static bool isTextureExist(const char*);
 			static void deleteAll();
 			void setTextureName(const char*);
-			const char* getTextureName();
+			void setEffectName(const char*);
+			void setUniformName(const char*);
+			void setShaderType(ShaderType iShaderType);
+			void getSamplerDataFromShader();
+			const char* getTextureName()const;
 			bool loadTexture();
 			std::string getTypeInfo() const override { return ""; }
 			bool isBothSameType(RTTI*, std::string) const override { return true; }
 			TextureResource getTextureResource() const;
+			void setSamplerID(SamplerID sampleID);
+			void setTextureInShaderObject(int i_textureUnit)const;
 			~Texture();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Texture>> mTextureList;
 			char* textureName;
-			Texture(char*);
-			Texture();
+			char* effectName;
+			char* samplerName;
+			ShaderType shaderType;
 			TextureResource texture;
+			SamplerID textureSamplerID;
+			TextureType textureType;
+			Texture(char* i_effectName, 
+				char* i_textureName,
+				char* i_samplerName,
+				ShaderType iShaderType);
+			Texture();
 		};
 	}
 

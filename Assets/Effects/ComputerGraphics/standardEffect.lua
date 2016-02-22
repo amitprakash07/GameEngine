@@ -1,7 +1,7 @@
 return
 {
-	vertex = "standard.vshd",
-	fragment = "standard.fshd",
+	vertex = "ComputerGraphics/standard.vshd",
+	fragment = "ComputerGraphics/standard.fshd",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",

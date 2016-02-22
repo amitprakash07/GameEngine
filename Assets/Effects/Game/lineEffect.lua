@@ -1,7 +1,7 @@
 return
 {
-	vertex = "line.vshd",
-	fragment = "line.fshd",
+	vertex = "Game/line.vshd",
+	fragment = "Game/line.fshd",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",

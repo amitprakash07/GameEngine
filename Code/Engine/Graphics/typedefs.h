@@ -145,6 +145,13 @@ namespace Engine
 			TEXTURE_COORDINATE = 2
 		};
 
+		enum TextureType
+		{
+			TEXTURE_2D = 0,
+			TEXTURE_CUBE = 1,
+			TEXTURE_3D = 2		
+		};
+
 		struct RGBColor
 		{
 			float r;

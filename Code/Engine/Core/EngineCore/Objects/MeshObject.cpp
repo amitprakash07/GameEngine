@@ -64,7 +64,7 @@ Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialNam
 	mMaterial = i_materialName;
 	mObjectController = nullptr;
 	debugObject = false;
-	vertexModifierUniform = "vertexColorModifier";
+	vertexModifierUniform = "vertexColorModifier\0";
 }
 
 Engine::MeshObject::MeshObject()
@@ -199,31 +199,38 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 					Graphics::Vertex,
 					Graphics::ViewToScreen), effectFile, Graphics::Vertex);
 			
-			
-			Graphics::UniformValues localToWorlValues;
-			localToWorlValues.matrixValue.Type = Graphics::LocalToWorld;
-			localToWorlValues.matrixValue.matrix = 
-				Math::cMatrix_transformation(mTransformation.mOrientation,
-					mTransformation.mPositionOffset);
-			localToWorldUniform->setUniformValue(localToWorlValues);
+			if (!localToWorldUniform.isNull())
+			{
+				Graphics::UniformValues localToWorlValues;
+				localToWorlValues.matrixValue.Type = Graphics::LocalToWorld;
+				localToWorlValues.matrixValue.matrix =
+					Math::cMatrix_transformation(mTransformation.mOrientation,
+						mTransformation.mPositionOffset);
+				localToWorldUniform->setUniformValue(localToWorlValues);
+			}
 
+			if (!worldToView.isNull())
+			{
+				Graphics::UniformValues worldToViewValues;
+				worldToViewValues.matrixValue.Type = Graphics::WorldToView;
+				worldToViewValues.matrixValue.matrix =
+					Math::cMatrix_transformation::CreateWorldToViewTransform(
+						cameraTransformation.mOrientation,
+						cameraTransformation.mPositionOffset);
+				worldToView->setUniformValue(worldToViewValues);
+			}
 
-			Graphics::UniformValues worldToViewValues;
-			worldToViewValues.matrixValue.Type = Graphics::WorldToView;
-			worldToViewValues.matrixValue.matrix =
-				Math::cMatrix_transformation::CreateWorldToViewTransform(
-					cameraTransformation.mOrientation, 
-					cameraTransformation.mPositionOffset);
-			worldToView->setUniformValue(worldToViewValues);
+			if (!viewToScreen.isNull())
+			{
+				Graphics::UniformValues viewToScreenValues;
+				viewToScreenValues.matrixValue.Type = Graphics::ViewToScreen;
+				viewToScreenValues.matrixValue.matrix =
+					Math::cMatrix_transformation::CreateViewToScreenTransform(
+						fieldOfView, aspectRatio,
+						nearPlane, farPlane);
+				viewToScreen->setUniformValue(viewToScreenValues);
+			}
 
-
-			Graphics::UniformValues viewToScreenValues;
-			viewToScreenValues.matrixValue.Type = Graphics::ViewToScreen;
-			viewToScreenValues.matrixValue.matrix =
-				Math::cMatrix_transformation::CreateViewToScreenTransform(
-					fieldOfView, aspectRatio,
-					nearPlane, farPlane);
-			viewToScreen->setUniformValue(viewToScreenValues);
 
 			Engine::Graphics::UniformValues tempColor;
 			

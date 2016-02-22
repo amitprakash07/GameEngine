@@ -1,7 +1,7 @@
 return
 {
-	vertex = "standard.vshd",
-	fragment = "transparent.fshd",
+	vertex = "Game/standard.vshd",
+	fragment = "Game/transparent.fshd",
 	AlphaTransparency = "True",
 	DepthTesting = "True",
 	DepthWriting = "False",

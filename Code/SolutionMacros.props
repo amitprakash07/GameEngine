@@ -16,7 +16,7 @@
     <ShadersDir>Shaders\</ShadersDir>
     <DependenciesFolder>Dependencies\</DependenciesFolder>
     <TexturesDir>Textures\</TexturesDir>
-    <AssetFile>ArenaAssets.lua</AssetFile>
+    <AssetFile>ComputerGraphicsAssets.lua</AssetFile>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Lib />

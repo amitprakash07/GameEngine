@@ -1,10 +1,10 @@
 return 
 {
-	effect = "standardEffect.effect",
+	effect = "Game/standardEffect.effect",
 	map =
 	{
 		{
-			path = "Arena/cement_wall_D.png",
+			path = "Game/Arena/cement_wall_D.png",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",

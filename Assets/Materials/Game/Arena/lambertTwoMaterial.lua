@@ -1,10 +1,10 @@
 return 
 {
-	effect = "standardEffect.effect",
+	effect = "Game/standardEffect.effect",
 	map =
 	{
 		{
-			path = "defaultTexture.png",
+			path = "Game/defaultTexture.png",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",

@@ -146,6 +146,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InteractiveComputerGraphics", "InteractiveComputerGraphics", "{1B799B5C-1062-472F-A6D6-71D4D8502F4A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InteractiveCG", "Code\InteractiveCG\InteractiveCG.vcxproj", "{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{887E9B0F-6FC5-4069-BD18-85246309F59E} = {887E9B0F-6FC5-4069-BD18-85246309F59E}
+		{CAC93CCD-8FEB-4452-80E8-11A2D7BDDB82} = {CAC93CCD-8FEB-4452-80E8-11A2D7BDDB82}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestCase", "TestCase", "{31A6BAD1-97B0-4693-8183-F02907A86159}"
 EndProject
@@ -157,64 +161,100 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SetAssetFile", "Code\Game\S
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{0EB2E7F6-2E4D-4E5C-9960-2D3ACEE26DA8}"
-	ProjectSection(SolutionItems) = preProject
-		Scripts\AssetsToBuild.lua = Scripts\AssetsToBuild.lua
-		Assets\Dependencies\shader_common.inc = Assets\Dependencies\shader_common.inc
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{037F4548-FF5D-4483-83F1-222116635AD2}"
 	ProjectSection(SolutionItems) = preProject
-		Assets\Materials\Arena\ceilingMaterial.lua = Assets\Materials\Arena\ceilingMaterial.lua
-		Assets\Materials\Arena\cementMaterial.lua = Assets\Materials\Arena\cementMaterial.lua
-		Assets\Materials\defaultDebugShapes.lua = Assets\Materials\defaultDebugShapes.lua
-		Assets\Materials\defaultMaterial.lua = Assets\Materials\defaultMaterial.lua
-		Assets\Materials\Arena\floorMaterial.lua = Assets\Materials\Arena\floorMaterial.lua
-		Assets\Materials\Arena\lambertTwoMaterial.lua = Assets\Materials\Arena\lambertTwoMaterial.lua
-		Assets\Materials\Arena\metalMaterial.lua = Assets\Materials\Arena\metalMaterial.lua
-		Assets\Materials\Arena\railingMaterial.lua = Assets\Materials\Arena\railingMaterial.lua
-		Assets\Materials\Arena\wallsMaterial.lua = Assets\Materials\Arena\wallsMaterial.lua
+		Assets\Materials\Game\Arena\ceilingMaterial.lua = Assets\Materials\Game\Arena\ceilingMaterial.lua
+		Assets\Materials\Game\Arena\cementMaterial.lua = Assets\Materials\Game\Arena\cementMaterial.lua
+		Assets\Materials\Game\defaultDebugShapes.lua = Assets\Materials\Game\defaultDebugShapes.lua
+		Assets\Materials\Game\defaultMaterial.lua = Assets\Materials\Game\defaultMaterial.lua
+		Assets\Materials\Game\Arena\floorMaterial.lua = Assets\Materials\Game\Arena\floorMaterial.lua
+		Assets\Materials\Game\Arena\lambertTwoMaterial.lua = Assets\Materials\Game\Arena\lambertTwoMaterial.lua
+		Assets\Materials\Game\lineMaterial.lua = Assets\Materials\Game\lineMaterial.lua
+		Assets\Materials\Game\Arena\metalMaterial.lua = Assets\Materials\Game\Arena\metalMaterial.lua
+		Assets\Materials\Game\Arena\railingMaterial.lua = Assets\Materials\Game\Arena\railingMaterial.lua
+		Assets\Materials\Game\Arena\wallsMaterial.lua = Assets\Materials\Game\Arena\wallsMaterial.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meshes", "Meshes", "{2705EE78-3190-47A1-A5A9-EF382A0E244E}"
 	ProjectSection(SolutionItems) = preProject
-		Assets\Meshes\Arena\ceilingMaterialMesh.lua = Assets\Meshes\Arena\ceilingMaterialMesh.lua
-		Assets\Meshes\Arena\cementMaterialMesh.lua = Assets\Meshes\Arena\cementMaterialMesh.lua
-		Assets\Meshes\DebugCubeForClass.lua = Assets\Meshes\DebugCubeForClass.lua
-		Assets\Meshes\DebugCylinderForClass.lua = Assets\Meshes\DebugCylinderForClass.lua
-		Assets\Meshes\DebugSphereForClass.lua = Assets\Meshes\DebugSphereForClass.lua
-		Assets\Meshes\Arena\FloorMaterialMesh.lua = Assets\Meshes\Arena\FloorMaterialMesh.lua
-		Assets\Meshes\Arena\LambertTwoMaterialMesh.lua = Assets\Meshes\Arena\LambertTwoMaterialMesh.lua
-		Assets\Meshes\Arena\MetalMaterialMesh.lua = Assets\Meshes\Arena\MetalMaterialMesh.lua
-		Assets\Meshes\Arena\railingMaterialMesh.lua = Assets\Meshes\Arena\railingMaterialMesh.lua
-		Assets\Meshes\Arena\wallsMaterialMesh.lua = Assets\Meshes\Arena\wallsMaterialMesh.lua
+		Assets\Meshes\Game\Arena\ceilingMaterialMesh.lua = Assets\Meshes\Game\Arena\ceilingMaterialMesh.lua
+		Assets\Meshes\Game\Arena\cementMaterialMesh.lua = Assets\Meshes\Game\Arena\cementMaterialMesh.lua
+		Assets\Meshes\Game\DebugCubeForClass.lua = Assets\Meshes\Game\DebugCubeForClass.lua
+		Assets\Meshes\Game\DebugCylinderForClass.lua = Assets\Meshes\Game\DebugCylinderForClass.lua
+		Assets\Meshes\Game\DebugSphereForClass.lua = Assets\Meshes\Game\DebugSphereForClass.lua
+		Assets\Meshes\Game\Arena\FloorMaterialMesh.lua = Assets\Meshes\Game\Arena\FloorMaterialMesh.lua
+		Assets\Meshes\Game\Arena\LambertTwoMaterialMesh.lua = Assets\Meshes\Game\Arena\LambertTwoMaterialMesh.lua
+		Assets\Meshes\Game\Arena\MetalMaterialMesh.lua = Assets\Meshes\Game\Arena\MetalMaterialMesh.lua
+		Assets\Meshes\Game\Arena\railingMaterialMesh.lua = Assets\Meshes\Game\Arena\railingMaterialMesh.lua
+		Assets\Meshes\Game\Arena\wallsMaterialMesh.lua = Assets\Meshes\Game\Arena\wallsMaterialMesh.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{CA8D7265-E33C-4887-9615-51FAFE6FAC62}"
 	ProjectSection(SolutionItems) = preProject
-		Assets\Effects\standardEffect.lua = Assets\Effects\standardEffect.lua
-		Assets\Effects\transparentEffect.lua = Assets\Effects\transparentEffect.lua
+		Assets\Effects\Game\lineEffect.lua = Assets\Effects\Game\lineEffect.lua
+		Assets\Effects\Game\standardEffect.lua = Assets\Effects\Game\standardEffect.lua
+		Assets\Effects\Game\transparentEffect.lua = Assets\Effects\Game\transparentEffect.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{949838A3-5252-42D8-AB70-A8B0C82818B1}"
 	ProjectSection(SolutionItems) = preProject
-		Assets\Shaders\standard.fshd = Assets\Shaders\standard.fshd
-		Assets\Shaders\standard.vshd = Assets\Shaders\standard.vshd
-		Assets\Shaders\transparent.fshd = Assets\Shaders\transparent.fshd
+		Assets\Shaders\Game\line.fshd = Assets\Shaders\Game\line.fshd
+		Assets\Shaders\Game\line.vshd = Assets\Shaders\Game\line.vshd
+		Assets\Shaders\Game\standard.fshd = Assets\Shaders\Game\standard.fshd
+		Assets\Shaders\Game\standard.vshd = Assets\Shaders\Game\standard.vshd
+		Assets\Shaders\Game\transparent.fshd = Assets\Shaders\Game\transparent.fshd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{571616AC-B632-4BAA-AA1B-1B73E88BE726}"
 	ProjectSection(SolutionItems) = preProject
-		Assets\Textures\alpha.png = Assets\Textures\alpha.png
-		Assets\Textures\bricks.png = Assets\Textures\bricks.png
-		Assets\Textures\Arena\cement_wall_D.png = Assets\Textures\Arena\cement_wall_D.png
-		Assets\Textures\clouds.png = Assets\Textures\clouds.png
-		Assets\Textures\defaultTexture.png = Assets\Textures\defaultTexture.png
-		Assets\Textures\eae6320.png = Assets\Textures\eae6320.png
-		Assets\Textures\Arena\floor_D.png = Assets\Textures\Arena\floor_D.png
-		Assets\Textures\Arena\metal_brace_D.png = Assets\Textures\Arena\metal_brace_D.png
-		Assets\Textures\Arena\railing_D.png = Assets\Textures\Arena\railing_D.png
-		Assets\Textures\Arena\wall_D.png = Assets\Textures\Arena\wall_D.png
+		Assets\Textures\Game\alpha.png = Assets\Textures\Game\alpha.png
+		Assets\Textures\Game\bricks.png = Assets\Textures\Game\bricks.png
+		Assets\Textures\Game\Arena\cement_wall_D.png = Assets\Textures\Game\Arena\cement_wall_D.png
+		Assets\Textures\Game\clouds.png = Assets\Textures\Game\clouds.png
+		Assets\Textures\Game\defaultTexture.png = Assets\Textures\Game\defaultTexture.png
+		Assets\Textures\Game\eae6320.png = Assets\Textures\Game\eae6320.png
+		Assets\Textures\Game\Arena\floor_D.png = Assets\Textures\Game\Arena\floor_D.png
+		Assets\Textures\Game\Arena\metal_brace_D.png = Assets\Textures\Game\Arena\metal_brace_D.png
+		Assets\Textures\Game\Arena\railing_D.png = Assets\Textures\Game\Arena\railing_D.png
+		Assets\Textures\Game\Arena\wall_D.png = Assets\Textures\Game\Arena\wall_D.png
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InteractiveCG", "InteractiveCG", "{C121E793-3704-41FD-8651-61C43E64D057}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\ComputerGraphicsAssets.lua = Scripts\ComputerGraphicsAssets.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{CACD40DE-8CD2-4CDA-8793-0AD57DDEE8A6}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\ArenaAssets.lua = Scripts\ArenaAssets.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{7FA5CAB7-C70F-4FA4-A130-4C363991CBC5}"
+	ProjectSection(SolutionItems) = preProject
+		Assets\Effects\ComputerGraphics\standardEffect.lua = Assets\Effects\ComputerGraphics\standardEffect.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{EBF44EFF-3961-484B-A0F8-A62D333F56F7}"
+	ProjectSection(SolutionItems) = preProject
+		Assets\Materials\ComputerGraphics\defaultMaterial.lua = Assets\Materials\ComputerGraphics\defaultMaterial.lua
+		Assets\Materials\ComputerGraphics\testMaterial.lua = Assets\Materials\ComputerGraphics\testMaterial.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{EA91C87F-C090-4591-900B-DB3409264710}"
+	ProjectSection(SolutionItems) = preProject
+		Assets\Shaders\ComputerGraphics\standard.fshd = Assets\Shaders\ComputerGraphics\standard.fshd
+		Assets\Shaders\ComputerGraphics\standard.vshd = Assets\Shaders\ComputerGraphics\standard.vshd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meshes", "Meshes", "{5EF8A44E-593F-45D7-B9C3-4D7130965DEA}"
+	ProjectSection(SolutionItems) = preProject
+		Assets\Meshes\ComputerGraphics\DebugCubeForClass.lua = Assets\Meshes\ComputerGraphics\DebugCubeForClass.lua
+		Assets\Meshes\ComputerGraphics\DebugCylinderForClass.lua = Assets\Meshes\ComputerGraphics\DebugCylinderForClass.lua
+		Assets\Meshes\ComputerGraphics\DebugSphereForClass.lua = Assets\Meshes\ComputerGraphics\DebugSphereForClass.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{FC71BA55-020A-4A1D-B503-4DB8A34E55A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -231,7 +271,6 @@ Global
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|Direct3D_64.ActiveCfg = Debug|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|Direct3D_64.Build.0 = Debug|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|OpenGL_32.ActiveCfg = Debug|Win32
-		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|OpenGL_32.Build.0 = Debug|Win32
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|x64.ActiveCfg = Debug|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|x64.Build.0 = Debug|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|x86.ActiveCfg = Debug|Win32
@@ -239,7 +278,6 @@ Global
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|Direct3D_64.ActiveCfg = Release|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|Direct3D_64.Build.0 = Release|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|OpenGL_32.ActiveCfg = Release|Win32
-		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|OpenGL_32.Build.0 = Release|Win32
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|x64.ActiveCfg = Release|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|x64.Build.0 = Release|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|x86.ActiveCfg = Release|Win32
@@ -644,12 +682,14 @@ Global
 		{CAC93CCD-8FEB-4452-80E8-11A2D7BDDB82}.Release|x86.Build.0 = Release|Win32
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Debug|Direct3D_64.ActiveCfg = Debug|x64
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Debug|OpenGL_32.ActiveCfg = Debug|Win32
+		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Debug|OpenGL_32.Build.0 = Debug|Win32
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Debug|x64.ActiveCfg = Debug|x64
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Debug|x64.Build.0 = Debug|x64
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Debug|x86.ActiveCfg = Debug|Win32
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Debug|x86.Build.0 = Debug|Win32
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Release|Direct3D_64.ActiveCfg = Release|x64
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Release|OpenGL_32.ActiveCfg = Release|Win32
+		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Release|OpenGL_32.Build.0 = Release|Win32
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Release|x64.ActiveCfg = Release|x64
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Release|x64.Build.0 = Release|x64
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B}.Release|x86.ActiveCfg = Release|Win32
@@ -714,10 +754,17 @@ Global
 		{CE7EC0BA-64C0-4C9D-9DA1-B09A8704562B} = {1B799B5C-1062-472F-A6D6-71D4D8502F4A}
 		{CB257A48-CDFE-4865-9DEA-85A5D1D0F552} = {31A6BAD1-97B0-4693-8183-F02907A86159}
 		{668DCA77-813C-4A0E-820C-4CA6FDEB1FDF} = {8D74FA87-6D36-4E20-8F70-06D7F986950B}
-		{037F4548-FF5D-4483-83F1-222116635AD2} = {0EB2E7F6-2E4D-4E5C-9960-2D3ACEE26DA8}
-		{2705EE78-3190-47A1-A5A9-EF382A0E244E} = {0EB2E7F6-2E4D-4E5C-9960-2D3ACEE26DA8}
-		{CA8D7265-E33C-4887-9615-51FAFE6FAC62} = {0EB2E7F6-2E4D-4E5C-9960-2D3ACEE26DA8}
-		{949838A3-5252-42D8-AB70-A8B0C82818B1} = {0EB2E7F6-2E4D-4E5C-9960-2D3ACEE26DA8}
-		{571616AC-B632-4BAA-AA1B-1B73E88BE726} = {0EB2E7F6-2E4D-4E5C-9960-2D3ACEE26DA8}
+		{037F4548-FF5D-4483-83F1-222116635AD2} = {CACD40DE-8CD2-4CDA-8793-0AD57DDEE8A6}
+		{2705EE78-3190-47A1-A5A9-EF382A0E244E} = {CACD40DE-8CD2-4CDA-8793-0AD57DDEE8A6}
+		{CA8D7265-E33C-4887-9615-51FAFE6FAC62} = {CACD40DE-8CD2-4CDA-8793-0AD57DDEE8A6}
+		{949838A3-5252-42D8-AB70-A8B0C82818B1} = {CACD40DE-8CD2-4CDA-8793-0AD57DDEE8A6}
+		{571616AC-B632-4BAA-AA1B-1B73E88BE726} = {CACD40DE-8CD2-4CDA-8793-0AD57DDEE8A6}
+		{C121E793-3704-41FD-8651-61C43E64D057} = {0EB2E7F6-2E4D-4E5C-9960-2D3ACEE26DA8}
+		{CACD40DE-8CD2-4CDA-8793-0AD57DDEE8A6} = {0EB2E7F6-2E4D-4E5C-9960-2D3ACEE26DA8}
+		{7FA5CAB7-C70F-4FA4-A130-4C363991CBC5} = {C121E793-3704-41FD-8651-61C43E64D057}
+		{EBF44EFF-3961-484B-A0F8-A62D333F56F7} = {C121E793-3704-41FD-8651-61C43E64D057}
+		{EA91C87F-C090-4591-900B-DB3409264710} = {C121E793-3704-41FD-8651-61C43E64D057}
+		{5EF8A44E-593F-45D7-B9C3-4D7130965DEA} = {C121E793-3704-41FD-8651-61C43E64D057}
+		{FC71BA55-020A-4A1D-B503-4DB8A34E55A9} = {C121E793-3704-41FD-8651-61C43E64D057}
 	EndGlobalSection
 EndGlobal

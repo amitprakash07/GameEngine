@@ -136,8 +136,7 @@ bool Engine::Graphics::Material::loadMaterial()
 				memcpy(mTextureMaps[i].file, textureFolderName, textureFolderLength);
 				memcpy(mTextureMaps[i].file + textureFolderLength, currentPosition, texturePathLength);
 				mTextureMaps[i].file[textureFolderLength + texturePathLength] = '\0';
-				currentPosition += texturePathLength + 1;
-				Texture::addTextureToList(mTextureMaps[i].file);
+				currentPosition += texturePathLength + 1;				
 				delete textureFolderName;
 			}
 
@@ -162,8 +161,11 @@ bool Engine::Graphics::Material::loadMaterial()
 				currentPosition += sizeof(MapType);
 			}
 
-			mTextureMaps[i].mapHandle = tempEffect->getUniformHandle(mTextureMaps[i].uniform, Fragment);
-			mTextureMaps[i].textureID = tempEffect->getSamplerID(mTextureMaps[i].mapHandle, Fragment);
+			Texture::addTextureToList(effectFile, //Effect File Name
+				mTextureMaps[i].file, //Texture Name
+				mTextureMaps[i].uniform, //Sampler Name
+				mTextureMaps[i].shaderType //Shader Type
+				);
 
 		}
 	}
@@ -245,12 +247,10 @@ void Engine::Graphics::Material::changeMaterialColor(float i_R, float i_G, float
 
 void Engine::Graphics::Material::setTextureUniform() const
 {
-	std::string effectFileName = effectFile;
-	SharedPointer<Engine::Graphics::Effect> tempEffect = Engine::Graphics::Effect::getEffect(effectFileName);
 	for (int i = 0; i < mapCount; ++i)
 	{
-		TextureResource temp = Engine::Graphics::Texture::getTexture(mTextureMaps[i].file)->getTextureResource();
-		tempEffect->setTextureUniform(temp, mTextureMaps[i].textureID, i);
+		SharedPointer<Texture> tempTexture = Engine::Graphics::Texture::getTexture(mTextureMaps[i].file);
+		tempTexture->setTextureInShaderObject(i);
 	}
 }
 

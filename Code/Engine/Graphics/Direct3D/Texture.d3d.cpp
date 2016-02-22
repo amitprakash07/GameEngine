@@ -30,18 +30,43 @@ Engine::Graphics::Texture::Texture()
 {
 	textureName = nullptr;
 	texture = nullptr;
+	effectName = nullptr;
+	textureName = nullptr;
+	shaderType = Fragment;
+	textureSamplerID = -1;
+	textureType = TEXTURE_2D;
+	samplerName = nullptr;
 }
 
 
-Engine::Graphics::Texture::Texture(char* i_textureName)
+Engine::Graphics::Texture::Texture(char* i_effectName,
+	char* i_textureName,
+	char* i_samplerName,
+	ShaderType iShaderType)
 {
 	if (i_textureName)
 	{
-		size_t length = strlen(textureName);
+		size_t length = strlen(i_textureName);
 		textureName = new char[length];
 		memcpy(textureName, i_textureName, length);
 	}
+	if (i_effectName)
+	{
+		size_t length = strlen(i_effectName);
+		effectName = new char[length];
+		memcpy(effectName, i_effectName, length);
+	}
+	if (i_samplerName)
+	{
+		size_t length = strlen(i_samplerName);
+		samplerName = new char[length];
+		memcpy(samplerName, i_samplerName, length);
+	}
 	texture = nullptr;
+	textureSamplerID = -1;
+	shaderType = iShaderType;
+	textureType = TEXTURE_2D;
+
 }
 
 Engine::Graphics::Texture::~Texture()
@@ -52,11 +77,20 @@ Engine::Graphics::Texture::~Texture()
 		texture->Release();
 }
 
-//bool Engine::Graphics::Texture::setTexture()
-//{
-//	HRESULT result = Engine::Graphics::GraphicsSystem::getDevice()->SetTexture(textureHandle, texture);
-//	return (SUCCEEDED(result));
-//}
+
+void Engine::Graphics::Texture::setSamplerID(SamplerID sampleID)
+{
+	textureSamplerID = sampleID;
+} 
+
+
+void Engine::Graphics::Texture::setTextureInShaderObject(int i_textureUnit)const
+{
+	HRESULT result = 
+		Engine::Graphics::GraphicsSystem::getDevice()->SetTexture(textureSamplerID, texture);
+	WindowsUtil::Assert(SUCCEEDED(result), "Unable to set the Texture to ths Shader");	
+}
+
 
 
 

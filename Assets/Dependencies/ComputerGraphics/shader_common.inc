@@ -1,9 +1,3 @@
-/*
-	This file should be #included in every shader
-	to set up platform-specific preprocessor directives
-	so that the shader itself can be mostly platform-independent
-*/
-
 #if defined(PLATFORM_D3D)
 
 // Translate GLSL variable types to HLSL
@@ -21,11 +15,11 @@
 #elif defined(PLATFORM_OPEN_GL)
 
 // The version of GLSL to use must come first
-//#version 330
-#version 410 core
+#version 330
+//#version 410 core
 
 // This extension is required in order to specify explicit locations for shader inputs and outputs
-//#extension GL_ARB_separate_shader_objects : require
+#extension GL_ARB_separate_shader_objects : require
 
 
 // Translate HLSL variable types to GLSL

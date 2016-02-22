@@ -2,7 +2,7 @@
 	Fragment shader
 */
 
-#include "../Dependencies/shader_common.inc"
+#include "../../Dependencies/Game/shader_common.inc"
 
 #if defined(PLATFORM_D3D)
 

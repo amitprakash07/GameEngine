@@ -1,10 +1,10 @@
 return 
 {
-	effect = "standardEffect.effect",
+	effect = "Game/standardEffect.effect",
 	map =
 	{
 		{
-			path = "Arena/metal_brace_D.png",
+			path = "Game/Arena/metal_brace_D.png",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",

@@ -1,4 +1,4 @@
 return 
 {
-	effect = "lineEffect.effect"		
+	effect = "Game/lineEffect.effect"		
 }

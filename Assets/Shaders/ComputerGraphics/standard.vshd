@@ -2,7 +2,7 @@
 	Vertex shader with vertex color 
 	attribute modifier
 */
-#include "../Dependencies/shader_common.inc"
+#include "../../Dependencies/ComputerGraphics/shader_common.inc"
 uniform float4x4  g_transform_localToWorld;
 uniform float4x4  g_transform_worldToView;
 uniform float4x4  g_transform_viewToScreen;
