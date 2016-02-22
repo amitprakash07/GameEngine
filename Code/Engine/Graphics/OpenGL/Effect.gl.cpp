@@ -1,6 +1,7 @@
 #include "../Effect.h"
 #include "../../Windows/WindowsFunctions.h"
 #include <assert.h>
+#include <gl/GLU.h>
 
 namespace Engine
 {
@@ -674,7 +675,6 @@ OnExit:
 Engine::Graphics::Effect::Effect(std::string i_effectFileName)
 {
 	effectName = i_effectFileName;
-	uniformCount = 0;
 	renderState = new uint8_t;
 	*renderState = 0;
 	isLocalToWorldTransformExist = false;
@@ -699,15 +699,6 @@ Engine::Graphics::Effect::~Effect()
 		s_programId = 0;
 	}
 	delete renderState;
-}
-
-void Engine::Graphics::Effect::setAllUniformToShader()
-{
-	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = uniformNames.begin();
-	i != uniformNames.end(); ++i)
-	{
-		i->second->setValueInShaderObject();
-	}
 }
 
 
@@ -743,7 +734,7 @@ void Engine::Graphics::Effect::setMaterialUniformValue(char* i_uniformName,
 }
 
 
-Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(char* i_uniformName,
+Engine::Graphics::UniformHandle Engine::Graphics::Effect::getUniformHandle(const char* i_uniformName,
 	ShaderType) const
 {
 	UniformHandle handle = glGetUniformLocation(s_programId, i_uniformName);

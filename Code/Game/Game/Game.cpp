@@ -67,7 +67,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		scene->addObjectToScene(walls);
 
 		//DebugObjects
-		Engine::Debug::DrawShape(Engine::SPHERE,
+		/*Engine::Debug::DrawShape(Engine::SPHERE,
 			Engine::Maths::Point3(-70.0f, 0.0f, 0.0f), 1.0f,
 			Engine::Graphics::RGBColor(1.0f, 0.0f, 0.0f));
 
@@ -95,7 +95,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 			Engine::Maths::Point3(-53.28f,-108.953f,1043.751f), 
 			Engine::Maths::Point3(0.0f,0.0f,0.0f),
 			Engine::Graphics::RGBColor(0,1.0f,0.0f));
-
+*/
 
 		/*Engine::Debug::DrawShape(Engine::LINE,
 			Engine::Maths::Point3(-53.28f, -108.953f, 1043.751f),

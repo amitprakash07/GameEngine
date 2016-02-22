@@ -432,61 +432,61 @@ OnExit:
 
 	// Delete the buffer object
 	// (the vertex array will hold a reference to it)
-	if (s_vertexArrayID != 0)
-	{
-		// Unbind the vertex array
-		// (this must be done before deleting the vertex buffer)
-		glBindVertexArray(0);
-		const GLenum errorCode = glGetError();
-		if (errorCode == GL_NO_ERROR)
-		{
-			if (vertexBufferId != 0)
-			{
-				// NOTE: If you delete the vertex buffer object here, as I recommend,
-				// then gDEBugger won't know about it and you won't be able to examine the data.
-				// If you find yourself in a situation where you want to see the buffer object data in gDEBugger
-				// comment out this block of code temporarily
-				// (doing this will cause a memory leak so make sure to restore the deletion code after you're done debugging).
-				const GLsizei bufferCount = 1;
-				glDeleteBuffers(bufferCount, &vertexBufferId);
-				const GLenum errorCode = glGetError();
-				if (errorCode != GL_NO_ERROR)
-				{
-					wereThereErrors = true;
-					std::stringstream errorMessage;
-					errorMessage << "OpenGL failed to delete the vertex buffer: " <<
-						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					WindowsUtil::Print(errorMessage.str());
-				}
-				vertexBufferId = 0;
-			}
-			if (indexBufferId != 0)
-			{
-				// NOTE: See the same comment above about deleting the vertex buffer object here and gDEBugger
-				// holds true for the index buffer
-				const GLsizei bufferCount = 1;
-				glDeleteBuffers(bufferCount, &indexBufferId);
-				const GLenum errorCode = glGetError();
-				if (errorCode != GL_NO_ERROR)
-				{
-					wereThereErrors = true;
-					std::stringstream errorMessage;
-					errorMessage << "\nOpenGL failed to delete the index buffer: " <<
-						reinterpret_cast<const char*>(gluErrorString(errorCode));
-					WindowsUtil::Print(errorMessage.str());
-				}
-				indexBufferId = 0;
-			}
-		}
-		else
-		{
-			wereThereErrors = true;
-			std::stringstream errorMessage;
-			errorMessage << "OpenGL failed to unbind the vertex array: " <<
-				reinterpret_cast<const char*>(gluErrorString(errorCode));
-			WindowsUtil::Print(errorMessage.str());
-		}
-	}
+	//if (s_vertexArrayID != 0)
+	//{
+	//	// Unbind the vertex array
+	//	// (this must be done before deleting the vertex buffer)
+	//	glBindVertexArray(0);
+	//	const GLenum errorCode = glGetError();
+	//	if (errorCode == GL_NO_ERROR)
+	//	{
+	//		if (vertexBufferId != 0)
+	//		{
+	//			// NOTE: If you delete the vertex buffer object here, as I recommend,
+	//			// then gDEBugger won't know about it and you won't be able to examine the data.
+	//			// If you find yourself in a situation where you want to see the buffer object data in gDEBugger
+	//			// comment out this block of code temporarily
+	//			// (doing this will cause a memory leak so make sure to restore the deletion code after you're done debugging).
+	//			const GLsizei bufferCount = 1;
+	//			glDeleteBuffers(bufferCount, &vertexBufferId);
+	//			const GLenum errorCode = glGetError();
+	//			if (errorCode != GL_NO_ERROR)
+	//			{
+	//				wereThereErrors = true;
+	//				std::stringstream errorMessage;
+	//				errorMessage << "OpenGL failed to delete the vertex buffer: " <<
+	//					reinterpret_cast<const char*>(gluErrorString(errorCode));
+	//				WindowsUtil::Print(errorMessage.str());
+	//			}
+	//			vertexBufferId = 0;
+	//		}
+	//		if (indexBufferId != 0)
+	//		{
+	//			// NOTE: See the same comment above about deleting the vertex buffer object here and gDEBugger
+	//			// holds true for the index buffer
+	//			const GLsizei bufferCount = 1;
+	//			glDeleteBuffers(bufferCount, &indexBufferId);
+	//			const GLenum errorCode = glGetError();
+	//			if (errorCode != GL_NO_ERROR)
+	//			{
+	//				wereThereErrors = true;
+	//				std::stringstream errorMessage;
+	//				errorMessage << "\nOpenGL failed to delete the index buffer: " <<
+	//					reinterpret_cast<const char*>(gluErrorString(errorCode));
+	//				WindowsUtil::Print(errorMessage.str());
+	//			}
+	//			indexBufferId = 0;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		wereThereErrors = true;
+	//		std::stringstream errorMessage;
+	//		errorMessage << "OpenGL failed to unbind the vertex array: " <<
+	//			reinterpret_cast<const char*>(gluErrorString(errorCode));
+	//		WindowsUtil::Print(errorMessage.str());
+	//	}
+	//}
 
 	return !wereThereErrors;
 }

@@ -71,7 +71,8 @@ bool Tools::AssetBuilder::cTextureBuilder::Build( const std::vector<std::string>
 				//	* If it can easily be determined that the source image doesn't have an alpha channel then DXT1 is used
 				//	* DXT5 is used for everything else
 				const D3DFORMAT format_original = imageInfo_source.Format;
-				const bool isAlphaChannelUnnecessary = ( format_original == D3DFMT_R8G8B8 ) || ( format_original == D3DFMT_X8R8G8B8 )
+				const bool isAlphaChannelUnnecessary = 
+					( format_original == D3DFMT_R8G8B8 ) || ( format_original == D3DFMT_X8R8G8B8 )
 					|| ( format_original == D3DFMT_R5G6B5 ) || ( format_original == D3DFMT_X1R5G5B5 )
 					|| ( format_original == D3DFMT_X4R4G4B4  ) || ( format_original == D3DFMT_X8B8G8R8 );
 				if ( isAlphaChannelUnnecessary )
@@ -84,8 +85,10 @@ bool Tools::AssetBuilder::cTextureBuilder::Build( const std::vector<std::string>
 				}
 			}
 		}
-		// The source width and height could be used, but ensuring that the dimensions are always a power-of-2 is more compatible
-		// (and the image will probably end up taking the same amount of space anyway because of alignment issues)
+		// The source width and height could be used, but ensuring that the
+		//dimensions are always a power-of-2 is more compatible
+		// (and the image will probably end up taking the same amount of 
+		//space anyway because of alignment issues)
 		const unsigned int roundUpToAPowerOf2 = D3DX_DEFAULT;
 		unsigned int requestedMipMapCount;
 		{
@@ -112,8 +115,10 @@ bool Tools::AssetBuilder::cTextureBuilder::Build( const std::vector<std::string>
 			{
 				const HRESULT result = D3DXCreateTextureFromFileEx( s_direct3dDevice, m_path_source, 
 					roundUpToAPowerOf2, roundUpToAPowerOf2, requestedMipMapCount,
-					staticTexture, format, letD3dManageMemory, useDefaultFiltering, useDefaultFiltering, noColorKey, 
-					&imageInfo_source, noColorPalette, reinterpret_cast<IDirect3DTexture9**>( &s_texture ) );
+					staticTexture, format, letD3dManageMemory, useDefaultFiltering, 
+					useDefaultFiltering, noColorKey, 
+					&imageInfo_source, noColorPalette, 
+					reinterpret_cast<IDirect3DTexture9**>( &s_texture ) );
 				if ( FAILED( result ) )
 				{
 					wereThereErrors = true;
@@ -127,8 +132,10 @@ bool Tools::AssetBuilder::cTextureBuilder::Build( const std::vector<std::string>
 			{
 				const HRESULT result = D3DXCreateCubeTextureFromFileEx( s_direct3dDevice, m_path_source, 
 					roundUpToAPowerOf2, requestedMipMapCount,
-					staticTexture, format, letD3dManageMemory, useDefaultFiltering, useDefaultFiltering, noColorKey, 
-					&imageInfo_source, noColorPalette, reinterpret_cast<IDirect3DCubeTexture9**>( &s_texture ) );
+					staticTexture, format, letD3dManageMemory, 
+					useDefaultFiltering, useDefaultFiltering, noColorKey, 
+					&imageInfo_source, noColorPalette, 
+					reinterpret_cast<IDirect3DCubeTexture9**>( &s_texture ) );
 				if ( FAILED( result ) )
 				{
 					wereThereErrors = true;
@@ -142,8 +149,10 @@ bool Tools::AssetBuilder::cTextureBuilder::Build( const std::vector<std::string>
 			{
 				const HRESULT result = D3DXCreateVolumeTextureFromFileEx( s_direct3dDevice, m_path_source, 
 					roundUpToAPowerOf2, roundUpToAPowerOf2, imageInfo_source.Depth, requestedMipMapCount,
-					staticTexture, format, letD3dManageMemory, useDefaultFiltering, useDefaultFiltering, noColorKey, 
-					&imageInfo_source, noColorPalette, reinterpret_cast<IDirect3DVolumeTexture9**>( &s_texture ) );
+					staticTexture, format, letD3dManageMemory, useDefaultFiltering, 
+					useDefaultFiltering, noColorKey, 
+					&imageInfo_source, noColorPalette, 
+					reinterpret_cast<IDirect3DVolumeTexture9**>( &s_texture ) );
 				if ( FAILED( result ) )
 				{
 					wereThereErrors = true;
@@ -228,8 +237,10 @@ namespace
 			if ( FAILED( result ) )
 			{
 				const D3DDEVTYPE useReferenceSoftwareImplementation = D3DDEVTYPE_REF;
-				result = s_direct3dInterface->CreateDevice( useDefaultDevice, useReferenceSoftwareImplementation,
-					mainWindow, useSoftwareVertexProcessing, &presentationParameters, &s_direct3dDevice );
+				result = s_direct3dInterface->CreateDevice( useDefaultDevice, 
+					useReferenceSoftwareImplementation,
+					mainWindow, useSoftwareVertexProcessing, 
+					&presentationParameters, &s_direct3dDevice );
 				if ( FAILED( result ) )
 				{
 					errormessage << "DirectX failed to create a Direct3D9 device";

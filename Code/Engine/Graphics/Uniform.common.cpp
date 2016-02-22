@@ -248,10 +248,11 @@ const char* Engine::Graphics::Uniform::getUniformName() const
 	return mUniform.uniformName;
 }
 
-Engine::Graphics::UniformValues Engine::Graphics::Uniform::getUniformValues() const
-{
-	return mUniform.value;
-}
+//Engine::Graphics::UniformValues Engine::Graphics::Uniform::getUniformValues() 
+//{
+//	UniformValues tempUniformValues = mUniform.value;
+//	return mUniform.value;
+//}
 
 uint8_t Engine::Graphics::Uniform::getValueCount() const
 {

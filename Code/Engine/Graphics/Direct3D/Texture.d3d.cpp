@@ -25,7 +25,7 @@ bool Engine::Graphics::Texture::loadTexture()
 	WindowsUtil::Print("Unable to load the texture in the device");
 	return false;
 }
-
+	
 Engine::Graphics::Texture::Texture()
 {
 	textureName = nullptr;

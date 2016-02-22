@@ -36,7 +36,7 @@ namespace Engine
 			uint8_t getValueCount() const;
 			UniformHandle getHandle() const;
 			Transform_Matrix_Type getMatrixType() const;
-			UniformValues getUniformValues() const;							
+			//UniformValues getUniformValues();							
 			char* prefixUniformName() const;
 			~Uniform();
 		private:

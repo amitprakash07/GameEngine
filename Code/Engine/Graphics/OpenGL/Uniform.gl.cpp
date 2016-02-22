@@ -1,6 +1,7 @@
 #include "../Uniform.h"
 #include "../../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 #include "../../Windows/WindowsFunctions.h"
+#include "../Effect.h"
 
 Engine::Graphics::UniformData::UniformData()
 {
@@ -213,8 +214,20 @@ void Engine::Graphics::Uniform::setValueInShaderObject() const
 	default:
 		break;
 	}
-	WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to set the value");
+	WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to set the Uniform value");
 }
 
+
+void Engine::Graphics::Uniform::setAllUniformToShaderObjects(std::string i_effectName)
+{
+	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = mUniformListInSystem.begin();
+	i != mUniformListInSystem.end(); ++i)
+	{
+		if (i->second->effectName.compare(i_effectName) == 0)
+		{
+			i->second->setValueInShaderObject();
+		}
+	}
+}
 
 

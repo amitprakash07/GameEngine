@@ -15,6 +15,20 @@ namespace Engine
 			float y;
 			float z;
 			float w;
+
+			VectorStruct()
+			{
+				x = y= z = w =0.0f;
+			}
+
+			VectorStruct(VectorStruct & iVectorStruct)
+			{
+				x = iVectorStruct.x;
+				y = iVectorStruct.y;
+				z = iVectorStruct.z;
+				w = iVectorStruct.w;
+			}
+			
 		};
 
 		enum UniformDataType :uint8_t
@@ -69,6 +83,7 @@ namespace Engine
 			MatrixStruct *matrixArray;
 			VectorStruct vectorValue;
 			VectorStruct * vectorArray;
+			
 			UniformValues()
 			{
 				boolValue = false;
@@ -80,7 +95,7 @@ namespace Engine
 				matrixValue.matrix = Engine::Math::cMatrix_transformation();
 				matrixValue.Type = Unspecified;
 				matrixArray = nullptr;
-				vectorValue = { 0.0f,0.0f,0.0f,0.0f };
+				vectorValue = VectorStruct();
 				vectorArray = nullptr;
 			}
 
@@ -109,7 +124,11 @@ namespace Engine
 			ShaderType shaderType;
 			UniformValues value;
 			UniformData();
-			//UniformData(UniformData &iUniformData);
+			
+			/*UniformData(UniformData &iUniformData)
+			{
+				value = iUniformData.value;
+			}*/
 		};
 
 		struct MaterialUniform

@@ -39,12 +39,15 @@ namespace Engine
 HRESULT Engine::Graphics::GetVertexProcessingUsage(DWORD& o_usage)
 {
 	D3DDEVICE_CREATION_PARAMETERS deviceCreationParameters;
-	const HRESULT result = Engine::Graphics::GraphicsSystem::getDevice()->GetCreationParameters(&deviceCreationParameters);
+	const HRESULT result = Engine::Graphics::GraphicsSystem::getDevice()->GetCreationParameters(
+		&deviceCreationParameters);
 	if (SUCCEEDED(result))
 	{
 		DWORD vertexProcessingType = deviceCreationParameters.BehaviorFlags &
-			(D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MIXED_VERTEXPROCESSING | D3DCREATE_SOFTWARE_VERTEXPROCESSING);
-		o_usage = (vertexProcessingType != D3DCREATE_SOFTWARE_VERTEXPROCESSING) ? 0 : D3DUSAGE_SOFTWAREPROCESSING;
+			(D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MIXED_VERTEXPROCESSING | 
+				D3DCREATE_SOFTWARE_VERTEXPROCESSING);
+		o_usage = (vertexProcessingType != 
+			D3DCREATE_SOFTWARE_VERTEXPROCESSING) ? 0 : D3DUSAGE_SOFTWAREPROCESSING;
 	}
 	else
 	{
@@ -83,7 +86,8 @@ void Engine::Graphics::GraphicsSystem::showBuffer()
 	const RECT* noDestinationRectangle = nullptr;
 	const HWND useDefaultWindow = nullptr;
 	const RGNDATA* noDirtyRegion = nullptr;
-	HRESULT result = s_direct3dDevice->Present(noSourceRectangle, noDestinationRectangle, useDefaultWindow, noDirtyRegion);
+	HRESULT result = s_direct3dDevice->Present(noSourceRectangle, 
+		noDestinationRectangle, useDefaultWindow, noDirtyRegion);
 	assert(SUCCEEDED(result));
 }
 
@@ -165,11 +169,11 @@ bool Engine::Graphics::CreateDevice()
 		}
 		presentationParameters.BackBufferFormat = D3DFMT_X8R8G8B8;
 		presentationParameters.BackBufferCount = 1;
-		presentationParameters.MultiSampleType = D3DMULTISAMPLE_NONE;
+		presentationParameters.MultiSampleType = D3DMULTISAMPLE_4_SAMPLES;
 		presentationParameters.SwapEffect = D3DSWAPEFFECT_DISCARD;
 		presentationParameters.hDeviceWindow = s_renderingWindow;
 		presentationParameters.Windowed = TRUE;
-		presentationParameters.EnableAutoDepthStencil = TRUE; //Changing from False to enable DepthBuffer
+		presentationParameters.EnableAutoDepthStencil = TRUE; //Changing from False to enable Stencil Buffer
 		presentationParameters.AutoDepthStencilFormat = D3DFMT_D24S8;
 
 		presentationParameters.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;

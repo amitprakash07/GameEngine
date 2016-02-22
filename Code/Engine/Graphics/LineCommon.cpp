@@ -1,4 +1,9 @@
 #include "Line.h"
+#include "../Windows/WindowsFunctions.h"
+#include "../Core/EngineCore/EngineCore.h"
+#include "Material.h"
+#include "Effect.h"
+#include "../Core/EngineCore/Objects/Scene.h"
 
 std::vector<Engine::SharedPointer<Engine::Graphics::Line>>
 Engine::Graphics::Line::mLineList;
@@ -68,6 +73,61 @@ uint8_t Engine::Graphics::Line::getLineCounts()
 	return mLineList.size();
 }
 
+
+bool Engine::Graphics::Line::setUniforms()
+{
+	SharedPointer<Scene> activeScene = Scene::getRenderableScene();
+	SharedPointer<Camera> tempCamera = activeScene->getActiveCamera();
+
+	if (!tempCamera.isNull())
+	{
+		Transformation cameraTransformation = tempCamera->getTransformation();
+		float fieldOfView = tempCamera->getFieldOfView();
+		float aspectRatio = tempCamera->getAspectRatio();
+		float nearPlane = tempCamera->getNearPlane();
+		float farPlane = tempCamera->getFarPlane();
+
+		std::string effectFile =
+			Engine::Graphics::Material::getMaterial(materialName.c_str())->getEffectName();
+
+		SharedPointer<Graphics::Uniform> worldToView = Graphics::Uniform::getUniform(
+			Engine::Graphics::Effect::getEffect(effectFile)->getTransformMatrixUniformName(
+				Graphics::Vertex,
+				Graphics::WorldToView), effectFile, Graphics::Vertex);
+
+		SharedPointer<Graphics::Uniform> viewToScreen = Graphics::Uniform::getUniform(
+			Engine::Graphics::Effect::getEffect(effectFile)->getTransformMatrixUniformName(
+				Graphics::Vertex,
+				Graphics::ViewToScreen), effectFile, Graphics::Vertex);
+
+		Graphics::UniformValues worldToViewValues;
+		worldToViewValues.matrixValue.Type = Graphics::WorldToView;
+		worldToViewValues.matrixValue.matrix =
+			Math::cMatrix_transformation::CreateWorldToViewTransform(
+				cameraTransformation.mOrientation,
+				cameraTransformation.mPositionOffset);
+		worldToView->setUniformValue(worldToViewValues);
+
+
+		Graphics::UniformValues viewToScreenValues;
+		viewToScreenValues.matrixValue.Type = Graphics::ViewToScreen;
+		viewToScreenValues.matrixValue.matrix =
+			Math::cMatrix_transformation::CreateViewToScreenTransform(
+				fieldOfView, aspectRatio,
+				nearPlane, farPlane);
+		viewToScreen->setUniformValue(viewToScreenValues);
+
+		Engine::Graphics::Uniform::setAllUniformToShaderObjects(effectFile);
+	}
+	else
+	{
+		std::stringstream errormessage;
+		errormessage << "Camera is not iniitalized\n";
+		WindowsUtil::Print(errormessage.str().c_str());
+		return false;
+	}
+	return true;
+}
 
 
 

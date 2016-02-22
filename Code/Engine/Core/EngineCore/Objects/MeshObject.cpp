@@ -5,8 +5,7 @@
 #include "Scene.h"
 #include  "../../../Graphics/Graphics.h"
 #include "../../../Graphics/Uniform.h"
-
-
+#include <iostream>
 
 
 Engine::SharedPointer<Engine::MeshObject> Engine::MeshObject::CreateMeshObject(
@@ -45,12 +44,14 @@ Engine::SharedPointer<Engine::MeshObject> Engine::MeshObject::CreateMeshObject(
 			Engine::Graphics::Uniform::addUniform(tempMeshObject->vertexModifierUniform, 
 				tempMeshObject->getMaterial()->getEffectName(), 
 				Graphics::Vertex);
-		colorUniform->setValType(Graphics::FloatArray);
-		colorUniform->setValCount(4);
+		colorUniform->setValType(Graphics::Vector);
+		colorUniform->setValCount(1);
 		tempMeshObject->vertexColor = iColor;
 		std::string tempUniformName = tempMeshObject->vertexModifierUniform;		
 		colorUniform->setHandle(
-		tempMeshObject->getEffect()->Engine::Graphics::Effect::getUniformHandle(tempUniformName.c_str(), Graphics::Vertex));
+		tempMeshObject->getEffect()->Engine::Graphics::Effect::getUniformHandle(
+			tempUniformName.c_str(), Graphics::Vertex));
+		
 	}
 	return tempMeshObject;
 }
@@ -225,8 +226,12 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 			viewToScreen->setUniformValue(viewToScreenValues);
 
 			Engine::Graphics::UniformValues tempColor;
-			float tempcolorfloats[] = { vertexColor.r,vertexColor.g,vertexColor.b,vertexColor.a };
-			tempColor.floatArray = tempcolorfloats;
+			
+			tempColor.vectorValue.x = vertexColor.r;
+			tempColor.vectorValue.y = vertexColor.g;
+			tempColor.vectorValue.z = vertexColor.b;
+			tempColor.vectorValue.w = vertexColor.a;
+
 			SharedPointer<Engine::Graphics::Uniform> vertexColorUiform
 				= Engine::Graphics::Uniform::getUniform(vertexModifierUniform, effectFile, Graphics::Vertex);
 			vertexColorUiform->setUniformValue(tempColor);
