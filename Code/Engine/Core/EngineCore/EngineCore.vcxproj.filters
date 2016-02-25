@@ -11,17 +11,11 @@
     <ClInclude Include="Objects\Scene.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectController\WalkController.h">
-      <Filter>ObjectController</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\Object.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Camera.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectController\CameraController.h">
-      <Filter>ObjectController</Filter>
     </ClInclude>
     <ClInclude Include="Objects\MeshObject.h">
       <Filter>Objects</Filter>
@@ -42,14 +36,8 @@
     <ClCompile Include="Objects\Scene.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectController\WalkController.cpp">
-      <Filter>ObjectController</Filter>
-    </ClCompile>
     <ClCompile Include="Objects\Camera.cpp">
       <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectController\CameraController.cpp">
-      <Filter>ObjectController</Filter>
     </ClCompile>
     <ClCompile Include="Objects\MeshObject.cpp">
       <Filter>Objects</Filter>
@@ -67,9 +55,6 @@
     </Filter>
     <Filter Include="Objects">
       <UniqueIdentifier>{4f0680e2-5cbd-4d6f-91c4-2ffd509a0b81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ObjectController">
-      <UniqueIdentifier>{7324fb0d-6b5d-4ad6-a0d9-7c5f45023aaf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

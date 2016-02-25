@@ -82,7 +82,7 @@ void Engine::Graphics::Sprite::changeSpriteMaterial(std::string iMaterial)
 
 
 //Stub - May be need to fix but later
-void Engine::Graphics::Sprite::setTransformation(Engine::Math::cVector, Engine::Math::cQuaternion)
+void Engine::Graphics::Sprite::setTransformation(Engine::Math::Vector3, Engine::Math::Quaternion)
 {
 
 }

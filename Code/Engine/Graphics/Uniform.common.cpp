@@ -276,8 +276,8 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //{
 //	if (isLocalToWorldTransformExist)
 //	{
-//		Engine::Math::cMatrix_transformation tempLocal =
-//			Math::cMatrix_transformation(iObject.mOrientation, iObject.mPositionOffset);
+//		Engine::Math::Matrix4x4 tempLocal =
+//			Math::Matrix4x4(iObject.mOrientation, iObject.mPositionOffset);
 //		SharedPointer<Uniform> localToWorld = getTransformationMatrix(LocalToWorld);
 //		if (!localToWorld.isNull())
 //		{
@@ -294,8 +294,8 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //{
 //	if (isWorldToViewTransformExist)
 //	{
-//		Engine::Math::cMatrix_transformation tempLocal =
-//			Math::cMatrix_transformation::CreateWorldToViewTransform(cameraTransformation.mOrientation,
+//		Engine::Math::Matrix4x4 tempLocal =
+//			Math::Matrix4x4::CreateWorldToViewTransform(cameraTransformation.mOrientation,
 //				cameraTransformation.mPositionOffset);
 //		SharedPointer<Uniform> worldToView = getTransformationMatrix(WorldToView);
 //		if (!worldToView.isNull())
@@ -315,8 +315,8 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //{
 //	if (isViewToScreenTransformExist)
 //	{
-//		Engine::Math::cMatrix_transformation tempLocal =
-//			Math::cMatrix_transformation::CreateViewToScreenTransform(
+//		Engine::Math::Matrix4x4 tempLocal =
+//			Math::Matrix4x4::CreateViewToScreenTransform(
 //				fieldOfView, aspectRatio, nearPlane, farPlane);
 //		SharedPointer<Uniform> viewToScreen = getTransformationMatrix(ViewToScreen);
 //		if (!viewToScreen.isNull())

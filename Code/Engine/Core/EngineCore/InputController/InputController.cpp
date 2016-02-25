@@ -21,50 +21,48 @@ bool Engine::InputController::isBothSameType(RTTI* i_first, std::string i_second
 
 void Engine::InputController::HandleMessage(Engine::utils::StringHash& i_message, Engine::RTTI* i_MessageSender, void* i_pMessageData)
 {
-	//SharedPointer<void> temp(*i_MessageSender);
 	if (i_MessageSender != nullptr)
 	{
-		if (/*isBothSameType(i_MessageSender, Engine::EngineCore::getWindowingSystem()->getTypeInfo()) && (*/Engine::utils::StringHash("KeyDown") == i_message)//)
+		if (Engine::utils::StringHash("KeyDown") == i_message)
 		{
 			if (i_pMessageData)
 			{
-				Engine::typedefs::Direction dir;
-				Engine::utils::StringHash gameObjectController = Engine::EngineCore::getStringPool()->findString("UpdateGameObject");
-				Engine::utils::StringHash cameraController = Engine::EngineCore::getStringPool()->findString("rotateCamera");
+				Engine::typedefs::Action action;
+				Engine::utils::StringHash gameObjectController = Engine::EngineCore::getStringPool()->findString("UpdateObject");
 				SharedPointer<InputController> tempInputController = Engine::EngineCore::getInputController();
 				switch (reinterpret_cast<WPARAM>(i_pMessageData))
 				{
 				case VK_LEFT:
-					dir = Engine::typedefs::LEFT;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &dir);
+					action = Engine::typedefs::MoveLeft;
+					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case 0x41:
-					dir = Engine::typedefs::LEFT;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &dir);
+					action = Engine::typedefs::MoveLeft;
+					//Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &action);
 					break;
 				case VK_RIGHT:
-					dir = Engine::typedefs::RIGHT;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &dir);
+					action = Engine::typedefs::MoveRight;
+					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case 0x44:
-					dir = Engine::typedefs::RIGHT;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &dir);
+					action = Engine::typedefs::MoveRight;
+					//Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &action);
 					break;
 				case VK_DOWN:
-					dir = Engine::typedefs::DOWN;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &dir);
+					action = Engine::typedefs::MoveBackWard;
+					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case 0x53:
-					dir = Engine::typedefs::DOWN;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &dir);
+					action = Engine::typedefs::MoveBackWard;
+					//Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &action);
 					break;
 				case VK_UP:
-					dir = Engine::typedefs::UP;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &dir);
+					action = Engine::typedefs::MoveForward;
+					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case 0x57:
-					dir = Engine::typedefs::UP;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &dir);
+					action = Engine::typedefs::MoveForward;
+					//Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &action);
 					break;
 				}
 			}

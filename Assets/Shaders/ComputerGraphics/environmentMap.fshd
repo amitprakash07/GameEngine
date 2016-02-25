@@ -1,0 +1,19 @@
+/*
+	Fragment shader
+*/
+
+uniform sampler3D g_TextureSampler;
+
+layout(location = 0) in vec4 i_color;
+layout(location = 1) in vec3 i_local_normal;
+layout(location = 2) in vec3 i_local_tangent;
+layout(location = 3) in vec3 i_local_bi_tangent;
+layout(location = 4) in vec3 i_local_texture;
+
+out vec4 o_color;
+
+void main()
+{
+	o_color = o_color * texture(g_TextureSampler,i_local_texture);	
+}
+

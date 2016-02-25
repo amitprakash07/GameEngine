@@ -206,7 +206,7 @@ bool Engine::Graphics::Line::writeToBuffer()
 //		Graphics::UniformValues worldToViewValues;
 //		worldToViewValues.matrixValue.Type = Graphics::WorldToView;
 //		worldToViewValues.matrixValue.matrix =
-//			Math::cMatrix_transformation::CreateWorldToViewTransform(
+//			Math::Matrix4x4::CreateWorldToViewTransform(
 //				cameraTransformation.mOrientation,
 //				cameraTransformation.mPositionOffset);
 //		worldToView->setUniformValue(worldToViewValues);
@@ -215,7 +215,7 @@ bool Engine::Graphics::Line::writeToBuffer()
 //		Graphics::UniformValues viewToScreenValues;
 //		viewToScreenValues.matrixValue.Type = Graphics::ViewToScreen;
 //		viewToScreenValues.matrixValue.matrix =
-//			Math::cMatrix_transformation::CreateViewToScreenTransform(
+//			Math::Matrix4x4::CreateViewToScreenTransform(
 //				fieldOfView, aspectRatio,
 //				nearPlane, farPlane);
 //		viewToScreen->setUniformValue(viewToScreenValues);

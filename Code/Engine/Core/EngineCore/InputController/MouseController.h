@@ -15,7 +15,7 @@ namespace Engine
 	{
 	public:
 		static SharedPointer<MouseController> getMouseController();
-		MouseEventAndPosition getCurrentMouseState();
+		Engine::MouseEventAndPosition getCurrentMouseState()const;
 		void HandleMessage(Engine::utils::StringHash &, RTTI*, void* i_pMessageData) override;
 		std::string getTypeInfo() const override;
 		bool isBothSameType(RTTI*, std::string) const override;
@@ -23,13 +23,14 @@ namespace Engine
 		void rightButtonPressed(bool);
 		void middleButtonPressed(bool);
 		void mouseMoving(bool);
-		void setMousePosition(int, int, POINTS);
+		void setMousePosition(int, int, POINTS);		
 	private:
 		static SharedPointer<MouseController> mMouseInputController;
 		std::string mTypeName;
 		MouseEventAndPosition mMouseCurrentStateAndPosition;
-		MouseEventAndPosition mMousePreviousStateAndPosition;
+		MouseEventAndPosition mMousePreviousStateAndPosition;		
 		MouseController();
+		bool arcBallReady;
 	};
 }
 #endif

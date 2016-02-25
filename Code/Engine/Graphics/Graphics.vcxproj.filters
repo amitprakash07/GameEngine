@@ -59,6 +59,13 @@
     <ClCompile Include="OpenGL\Line.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGL\SkyBox.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct3D\SkyBox.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBoxCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
@@ -72,5 +79,6 @@
     <ClInclude Include="Uniform.h" />
     <ClInclude Include="uniformdefs.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="SkyBox.h" />
   </ItemGroup>
 </Project>

@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="ObjectController\CameraController.h" />
+    <ClInclude Include="ObjectController\WalkController.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +32,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="ObjectController\CameraController.cpp" />
+    <ClCompile Include="ObjectController\WalkController.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}</ProjectGuid>

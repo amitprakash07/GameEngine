@@ -35,7 +35,7 @@ namespace Engine
 			int height;
 			HWND s_mainWindow;
 			const char* s_mainWindowClassName;
-			HWND CreateMainWindowHandle(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState);
+			HWND CreateMainWindowHandle(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState)const ;
 			ATOM RegisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram)const;
 			static LRESULT CALLBACK OnMessageReceived(HWND i_window, UINT i_message, WPARAM i_wParam, LPARAM i_lParam);
 			bool UnregisterMainWindowClass(const HINSTANCE i_thisInstanceOfTheProgram) const;

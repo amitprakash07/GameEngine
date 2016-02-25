@@ -26,9 +26,10 @@ namespace Engine
 				float top,
 				float bottom,
 				Coordinate i_coordinate = SCREEN_COORDINATE);
-			Transformation getTransformation() override { return Transformation(); }
-			void setTransformation(Engine::Math::cVector,
-				Engine::Math::cQuaternion = Engine::Math::cQuaternion()) override;
+
+			Math::Transformation getTransformation() override { return Math::Transformation(); }
+			void setTransformation(Engine::Math::Vector3,
+				Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
 			void changeSpriteMaterial(std::string);
 			void draw(bool) override;
 			bool isRenderable() const override { return true; }

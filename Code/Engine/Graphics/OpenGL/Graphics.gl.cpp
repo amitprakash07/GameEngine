@@ -57,31 +57,6 @@ bool Engine::Graphics::GraphicsSystem::create()
 		}
 	}
 
-	/*glEnable(GL_CULL_FACE);
-	if (glGetError() != GL_NO_ERROR)
-	{
-	goto OnError;
-	}
-
-	glEnable(GL_DEPTH_TEST);
-	if (glGetError() != GL_NO_ERROR)
-	{
-	goto OnError;
-	}
-
-	glDepthMask(GL_TRUE);
-	if (glGetError() != GL_NO_ERROR)
-	{
-	goto OnError;
-	}
-
-	glDepthFunc(GL_LEQUAL);
-	if (glGetError() != GL_NO_ERROR)
-	{
-	goto OnError;
-	}*/
-
-
 	return true;
 
 OnError:

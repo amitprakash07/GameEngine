@@ -2,7 +2,7 @@
 #define __UNIFORM_DEFS_H
 
 #include "typedefs.h"
-#include "../Core/Maths/cMatrix_transformation.h"
+#include "../Core/Maths/Matrix4x4.h"
 #include <stdint.h>
 
 namespace Engine
@@ -67,7 +67,7 @@ namespace Engine
 
 		struct MatrixStruct
 		{
-			Math::cMatrix_transformation matrix;
+			Math::Matrix4x4 matrix;
 			Transform_Matrix_Type Type;
 		};
 
@@ -92,7 +92,7 @@ namespace Engine
 				intArray = nullptr;
 				floatValue = 0.0f;
 				floatArray = nullptr;
-				matrixValue.matrix = Engine::Math::cMatrix_transformation();
+				matrixValue.matrix = Engine::Math::Matrix4x4();
 				matrixValue.Type = Unspecified;
 				matrixArray = nullptr;
 				vectorValue = VectorStruct();

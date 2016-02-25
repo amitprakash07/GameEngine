@@ -12,12 +12,12 @@ namespace Engine
 	class Camera : public IMessageHandler, Object
 	{
 	public:
-		static SharedPointer<Camera> CreateCamera(std::string, Math::cVector,
-			Math::cQuaternion, float i_fieldofView = 60.0f,
+		static SharedPointer<Camera> CreateCamera(std::string, Math::Vector3,
+			Math::Quaternion, float i_fieldofView = 60.0f,
 			float i_aspectRatio = static_cast<float>(800 / 600));
-		Transformation getTransformation() override;
-		void setTransformation(Engine::Math::cVector,
-			Engine::Math::cQuaternion = Engine::Math::cQuaternion()) override;
+		Math::Transformation getTransformation() override;
+		void setTransformation(Engine::Math::Vector3,
+			Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
 		void draw(bool) override {}
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
 		void setCameraController(IObjectController*);
@@ -37,7 +37,7 @@ namespace Engine
 		bool isRenderable() const override { return false; }
 		bool isDebugObject() const override { return false; }
 	private:
-		Engine::Transformation mTransformation;
+		Engine::Math::Transformation mTransformation;
 		std::string mCameraName;
 		IObjectController* mObjectController;
 		float fieldOfView;
@@ -47,7 +47,7 @@ namespace Engine
 		float farPlane;
 		MouseEventAndPosition mMouseCurrentStateAndPosition;
 		MouseEventAndPosition mMousePreviousStateAndPosition;
-		Camera(std::string, Math::cVector, Math::cQuaternion,
+		Camera(std::string, Math::Vector3, Math::Quaternion,
 			float,
 			float,
 			float i_nearPlane = 0.1f,

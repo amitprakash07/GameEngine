@@ -6,7 +6,6 @@
 #include <map>
 #include <vector>
 #include "../Utilities/SharedPointer.h"
-#include "../Utilities/additionaltypes.h"
 #include "../Utilities/RTTI.h"
 
 namespace Engine

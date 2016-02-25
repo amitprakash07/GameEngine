@@ -1,15 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="cMatrix_transformation.cpp" />
-    <ClCompile Include="cQuaternion.cpp" />
-    <ClCompile Include="cVector.cpp" />
     <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="Matrix4x4.cpp" />
+    <ClCompile Include="Point2D.cpp" />
+    <ClCompile Include="Point3D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cMatrix_transformation.h" />
-    <ClInclude Include="cQuaternion.h" />
-    <ClInclude Include="cVector.h" />
     <ClInclude Include="Functions.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Matrix4x4.h" />
+    <ClInclude Include="Point2D.h" />
+    <ClInclude Include="Point3D.h" />
   </ItemGroup>
 </Project>

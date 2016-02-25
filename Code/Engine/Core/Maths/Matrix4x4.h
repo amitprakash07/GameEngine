@@ -27,8 +27,8 @@ namespace Engine
 {
 	namespace Math
 	{
-		class cVector;
-		class cQuaternion;
+		class Vector3;
+		class Quaternion;
 	}
 }
 
@@ -39,25 +39,25 @@ namespace Engine
 {
 	namespace Math
 	{
-		class cMatrix_transformation
+		class Matrix4x4
 		{
 			// Interface
 			//==========
 
 		public:
 
-			static cMatrix_transformation CreateWorldToViewTransform(
-				const cQuaternion& i_cameraOrientation, const cVector& i_cameraPosition );
-			static cMatrix_transformation CreateViewToScreenTransform(
+			static Matrix4x4 CreateWorldToViewTransform(
+				const Quaternion& i_cameraOrientation, const Vector3& i_cameraPosition );
+			static Matrix4x4 CreateViewToScreenTransform(
 				const float i_fieldOfView_y, const float i_aspectRatio,
 				const float i_z_nearPlane = 0.1, const float i_z_farPlane = 100);
-			static cMatrix_transformation getIdentityMatrix();
+			static Matrix4x4 getIdentityMatrix();
 
 			// Initialization / Shut Down
 			//---------------------------
 
-			cMatrix_transformation();	// Identity
-			cMatrix_transformation( const cQuaternion& i_rotation, const cVector& i_translation );
+			Matrix4x4();	// Identity
+			Matrix4x4( const Quaternion& i_rotation, const Vector3& i_translation );
 
 			// Data
 			//=====
@@ -78,7 +78,7 @@ namespace Engine
 			// Initialization / Shut Down
 			//---------------------------
 
-			cMatrix_transformation(
+			Matrix4x4(
 				const float i_00, const float i_10, const float i_20, const float i_30,
 				const float i_01, const float i_11, const float i_21, const float i_31,
 				const float i_02, const float i_12, const float i_22, const float i_32,

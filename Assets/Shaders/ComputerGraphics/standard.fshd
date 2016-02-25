@@ -35,7 +35,7 @@ void main()
 	// (where color is represented by 4 floats representing "RGBA" == "Red/Green/Blue/Alpha")
 	{
 		o_color.rgb = i_color.rgb * g_PixelColorModifier;
-		o_color.a = i_color.a;
+		//o_color.a = i_color.a;
 		o_color = o_color * SampleTexture(g_TextureSampler,i_local_texture);
 	}
 }

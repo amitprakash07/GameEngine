@@ -5,10 +5,19 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="ObjectController\CameraController.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectController\WalkController.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
       <UniqueIdentifier>{a0056f30-4895-4a1b-b55d-bf8bc0eafc3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectController">
+      <UniqueIdentifier>{4bd65c74-fa0f-44e7-b621-782522116c70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -23,5 +32,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="ObjectController\CameraController.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectController\WalkController.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include "../Core/Utilities/SharedPointer.h"
 #include "typedefs.h"
 #include <vector>
+#include "../Core/Maths/Vector3.h"
 
 #ifdef PLATFORM_OPEN_GL
 #include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
@@ -18,8 +19,8 @@ namespace Engine
 	{
 		struct LineStruct
 		{
-			Engine::Maths::Point3 startPoint; //12 bytes
-			Engine::Maths::Point3 endPoint; //12 bytes
+			Engine::Math::Vector3 startPoint; //12 bytes
+			Engine::Math::Vector3 endPoint; //12 bytes
 			RGBAColor color; //16 bytes
 		};
 
@@ -27,15 +28,15 @@ namespace Engine
 		{
 		public:
 			static void drawLines(bool drawDebugLines);
-			static void AddLine(Engine::Maths::Point3 i_startPoint,
-				Engine::Maths::Point3 i_endPoint,
+			static void AddLine(Engine::Math::Vector3 i_startPoint,
+				Engine::Math::Vector3 i_endPoint,
 				RGBAColor iLineColor);
 			static bool containsDebugLine();
 			static void setMaterialName(std::string iMaterialName);
 			static uint8_t getLineCounts();
-			Transformation getTransformation() override;
-			void setTransformation(Math::cVector,
-				Math::cQuaternion = Math::cQuaternion()) override;
+			Math::Transformation getTransformation() override;
+			void setTransformation(Math::Vector3,
+				Math::Quaternion = Math::Quaternion()) override;
 			bool isDebugObject() const override;
 			bool isRenderable() const override;
 			void draw(bool drawDebugObject) override;			

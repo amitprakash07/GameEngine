@@ -1,7 +1,6 @@
 #include "Scene.h"
-#include "../../../Graphics/Effect.h"
 #include "../../../Graphics/Mesh.h"
-#include "../../../Windows/WindowsFunctions.h"
+#include "../../../Graphics/SkyBox.h"
 #include <algorithm>
 
 std::map<std::string, Engine::SharedPointer<Engine::Scene>> Engine::Scene::mSceneList;
@@ -125,6 +124,13 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 
 void Engine::Scene::drawScene(bool withDebug)
 {
+	Engine::SharedPointer<Engine::Graphics::SkyBox> tempSkyBox =
+		Engine::Graphics::SkyBox::getSkyBox();
+	if(!tempSkyBox.isNull() && tempSkyBox->isSkyBoxAvailableIntialized())
+	{
+		tempSkyBox->draw(true);
+	}
+
 	for (int i = 0; i < mMeshObjectInSceneList.size(); i++)
 		mMeshObjectInSceneList[i]->draw(withDebug);
 

@@ -9,18 +9,11 @@
 
 
 
-Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::mMessagingSystem =
-Engine::MessagingSystem::getMessagingSystem();
-Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::mStringPool =
-Engine::StringPool::getStringPool();
-Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::mEngineWindowingSystem =
-Engine::Windows::WindowingSystem::getWindowingSystem();
-Engine::SharedPointer<Engine::InputController> Engine::EngineCore::mInputController =
-Engine::InputController::getInputController();
-Engine::SharedPointer<Engine::MouseController> Engine::EngineCore::mMouseController =
-Engine::MouseController::getMouseController();
-
-
+Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::mMessagingSystem;
+Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::mStringPool;
+Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::mEngineWindowingSystem;
+Engine::SharedPointer<Engine::InputController> Engine::EngineCore::mInputController;
+Engine::SharedPointer<Engine::MouseController> Engine::EngineCore::mMouseController;
 std::string Engine::EngineCore::materialFolderPath;
 std::string Engine::EngineCore::shaderFolderName;
 std::string Engine::EngineCore::effectFolderName;
@@ -31,8 +24,14 @@ std::string Engine::EngineCore::textureFolderName;
 
 void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 {
+	getMessagingSystem();
+	getStringPool();
+	getWindowingSystem();
+	getInputController();
+	getMouseInputController();
+	
 	std::stringstream errormessage;
-	if (!mEngineWindowingSystem.isNull())
+	if (!getWindowingSystem().isNull())
 	{
 		mEngineWindowingSystem->CreateMainWindow(hInstance, windowLayout);
 		if (!Engine::Graphics::GraphicsSystem::Initialize(mEngineWindowingSystem->getMainWindow()))
@@ -50,6 +49,8 @@ void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
 	materialFolderPath = "data/Materials/";
 	effectFolderName = "data/Effects/";
 	textureFolderName = "data/Textures/";
+
+	
 }
 
 std::string Engine::EngineCore::getEffectFolderPath()
@@ -77,36 +78,61 @@ std::string Engine::EngineCore::getTextureFolderPath()
 	return textureFolderName;
 }
 
-
 Engine::EngineCore::EngineCore()
 {
 
 }
 
-
-
 Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::EngineCore::getWindowingSystem()
 {
+	if(mEngineWindowingSystem.isNull())
+	{
+		SharedPointer<Engine::Windows::WindowingSystem> tempWindowingSystem = 
+			Engine::Windows::WindowingSystem::getWindowingSystem();
+		mEngineWindowingSystem = tempWindowingSystem;
+	}
 	return mEngineWindowingSystem;
 }
 
 Engine::SharedPointer<Engine::MessagingSystem> Engine::EngineCore::getMessagingSystem()
 {
+	if(mMessagingSystem.isNull())
+	{
+		SharedPointer<Engine::MessagingSystem> tempMessagingSystem = Engine::MessagingSystem::getMessagingSystem();
+		mMessagingSystem = tempMessagingSystem;
+	}		
 	return mMessagingSystem;
 }
 
 Engine::SharedPointer<Engine::StringPool> Engine::EngineCore::getStringPool()
 {
+	if (mStringPool.isNull())
+	{
+		SharedPointer<Engine::StringPool> tempStringPool = Engine::StringPool::getStringPool();
+		mStringPool = tempStringPool;
+	}	
 	return mStringPool;
 }
 
 Engine::SharedPointer<Engine::InputController> Engine::EngineCore::getInputController()
 {
+	if(mInputController.isNull())
+	{
+		Engine::SharedPointer<Engine::InputController> tempInputcontroller =
+			Engine::InputController::getInputController();
+		mInputController = tempInputcontroller;
+	}
 	return mInputController;
 }
 
 Engine::SharedPointer<Engine::MouseController> Engine::EngineCore::getMouseInputController()
 {
+	if(mMouseController.isNull())
+	{
+		Engine::SharedPointer<Engine::MouseController> tempMouseController =
+			Engine::MouseController::getMouseController();
+		mMouseController = tempMouseController;
+	}
 	return mMouseController;
 }
 

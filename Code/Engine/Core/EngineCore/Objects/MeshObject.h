@@ -20,8 +20,8 @@ namespace Engine
 		SharedPointer<Engine::Graphics::Mesh>       getMesh() const;
 		SharedPointer<Engine::Graphics::Effect>		getEffect() const;
 		SharedPointer<Engine::Graphics::Material>   getMaterial() const;
-		void setTransformation(Engine::Math::cVector, Engine::Math::cQuaternion = Engine::Math::cQuaternion()) override;
-		Transformation getTransformation() override;
+		void setTransformation(Engine::Math::Vector3, Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
+		Math::Transformation getTransformation() override;
 		bool isRenderable() const override;
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
 		void draw(bool drawDebugObject) override;
@@ -38,7 +38,7 @@ namespace Engine
 		std::string									vertexModifierUniform;
 		IObjectController*							mObjectController;
 		bool										renderable;
-		Transformation								mTransformation;
+		Math::Transformation								mTransformation;
 		bool										debugObject;
 		Engine::Graphics::RGBAColor					vertexColor;
 		

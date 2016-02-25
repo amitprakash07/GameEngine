@@ -85,7 +85,9 @@ ATOM Engine::Windows::WindowingSystem::RegisterMainWindowClass(const HINSTANCE i
 	return mainWindowClass;
 }
 
-HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState)
+HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle(
+	const HINSTANCE i_thisInstanceOfTheProgram, 
+	const int i_initialWindowDisplayState)const
 {
 	// Create the main window
 	HWND mainWindow;
@@ -273,7 +275,7 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 	}
 	case WM_LBUTTONDOWN:
 	{
-		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseEvent");
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseButtonDownEvent");
 		SharedPointer<Engine::MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
 		WindowsParam windowsParameter;
 		windowsParameter.windowsMessage = i_message;
@@ -286,7 +288,7 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 	}
 	case WM_MOUSEMOVE:
 	{
-		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseEvent");
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseMoveEvent");
 		SharedPointer<Engine::MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
 		WindowsParam windowsParameter;
 		windowsParameter.windowsMessage = i_message;
@@ -299,7 +301,7 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 	}
 	case WM_LBUTTONUP:
 	{
-		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseEvent");
+		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("MouseButtonUpEvent");
 		SharedPointer<Engine::MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
 		WindowsParam windowsParameter;
 		windowsParameter.windowsMessage = i_message;

@@ -1,6 +1,7 @@
 #include "MouseController.h"
 #include "../EngineCore.h"
-#include <iostream>
+#include "../../../Windows/WindowsFunctions.h"
+
 
 Engine::SharedPointer<Engine::MouseController> Engine::MouseController::mMouseInputController;
 
@@ -30,6 +31,7 @@ Engine::MouseController::MouseController()
 	mMousePreviousStateAndPosition.mMouseStates.rightButtonPressed = false;
 	mMousePreviousStateAndPosition.x = 0;
 	mMousePreviousStateAndPosition.y = 0;
+	arcBallReady = false;
 
 }
 
@@ -49,12 +51,39 @@ Engine::SharedPointer<Engine::MouseController> Engine::MouseController::getMouse
 void Engine::MouseController::HandleMessage(Engine::utils::StringHash&, RTTI*, void* i_pMessageData)
 {
 	WindowsParam tempWindowsParameter = *reinterpret_cast<WindowsParam*>(i_pMessageData);
-	Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("RotateCamera");
+	if (tempWindowsParameter.windowsMessage && WM_LBUTTONDOWN && (!tempWindowsParameter.windowsMessage && WM_MOUSEMOVE))
+	{
+		mMouseCurrentStateAndPosition.mMouseStates.leftButtonPressed = true;
+		if (tempWindowsParameter.wParam && MK_CONTROL)
+			mMouseCurrentStateAndPosition.mMouseStates.ctrlKey = true;
+		if (tempWindowsParameter.wParam && MK_SHIFT)
+			mMouseCurrentStateAndPosition.mMouseStates.shiftKey = true;
+		if (tempWindowsParameter.wParam && MK_RBUTTON)
+			mMouseCurrentStateAndPosition.mMouseStates.rightButtonPressed = true;
+		if (tempWindowsParameter.wParam && MK_MBUTTON)
+			mMouseCurrentStateAndPosition.mMouseStates.middleButtonPressed = true;
+		mMouseCurrentStateAndPosition.x = GET_X_LPARAM(tempWindowsParameter.lParam);
+		mMouseCurrentStateAndPosition.y = GET_Y_LPARAM(tempWindowsParameter.lParam);
+		mMouseCurrentStateAndPosition.P = MAKEPOINTS(tempWindowsParameter.lParam);
+		arcBallReady = true;
+		mMousePreviousStateAndPosition = mMouseCurrentStateAndPosition;
+	}
+	else
+		arcBallReady = false;
+
+	if(tempWindowsParameter.windowsMessage && WM_MOUSEMOVE && arcBallReady)
+	{
+		mMouseCurrentStateAndPosition.x = GET_X_LPARAM(tempWindowsParameter.lParam);
+		mMouseCurrentStateAndPosition.y = GET_Y_LPARAM(tempWindowsParameter.lParam);
+		mMouseCurrentStateAndPosition.P = MAKEPOINTS(tempWindowsParameter.lParam);
+	}
+	
+	Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("ActionOnMouseEvent");
 	SharedPointer<MouseController> tempMouseController = Engine::EngineCore::getMouseInputController();
 	Engine::EngineCore::getMessagingSystem()->sendMessage(temp, tempMouseController.getRawPointer(), i_pMessageData);
 }
 
-MouseEventAndPosition Engine::MouseController::getCurrentMouseState()
+Engine::MouseEventAndPosition Engine::MouseController::getCurrentMouseState() const
 {
 	return mMouseCurrentStateAndPosition;
 }

@@ -1,11 +1,11 @@
 // Header Files
 //=============
 
-#include "cQuaternion.h"
+#include "Quaternion.h"
 
 #include <cassert>
 #include <cmath>
-#include "cVector.h"
+#include "Vector3.h"
 
 // Static Data Initialization
 //===========================
@@ -19,9 +19,9 @@ namespace
 //==========
 
 // Concatenation
-Engine::Math::cQuaternion Engine::Math::cQuaternion::operator *( const cQuaternion& i_rhs ) const
+Engine::Math::Quaternion Engine::Math::Quaternion::operator *( const Quaternion& i_rhs ) const
 {
-	return cQuaternion(
+	return Quaternion(
 		( m_w * i_rhs.m_w ) - ( ( m_x * i_rhs.m_x ) + ( m_y * i_rhs.m_y ) + ( m_z * i_rhs.m_z ) ),
 		( m_w * i_rhs.m_x ) + ( m_x * i_rhs.m_w ) + ( ( m_y * i_rhs.m_z ) - ( m_z * i_rhs.m_y ) ),
 		( m_w * i_rhs.m_y ) + ( m_y * i_rhs.m_w ) + ( ( m_z * i_rhs.m_x ) - ( m_x * i_rhs.m_z ) ),
@@ -29,19 +29,19 @@ Engine::Math::cQuaternion Engine::Math::cQuaternion::operator *( const cQuaterni
 }
 
 // Inversion
-void Engine::Math::cQuaternion::Invert()
+void Engine::Math::Quaternion::Invert()
 {
 	m_x = -m_x;
 	m_y = -m_y;
 	m_z = -m_z;
 }
-Engine::Math::cQuaternion Engine::Math::cQuaternion::CreateInverse() const
+Engine::Math::Quaternion Engine::Math::Quaternion::CreateInverse() const
 {
-	return cQuaternion( m_w, -m_x, -m_y, -m_z );
+	return Quaternion( m_w, -m_x, -m_y, -m_z );
 }
 
 // Normalization
-void Engine::Math::cQuaternion::Normalize()
+void Engine::Math::Quaternion::Normalize()
 {
 	const float length = std::sqrt( ( m_w * m_w ) + ( m_x * m_x ) + ( m_y * m_y ) + ( m_z * m_z ) );
 	assert( length > s_epsilon );
@@ -51,16 +51,16 @@ void Engine::Math::cQuaternion::Normalize()
 	m_y *= length_reciprocal;
 	m_z *= length_reciprocal;
 }
-Engine::Math::cQuaternion Engine::Math::cQuaternion::CreateNormalized() const
+Engine::Math::Quaternion Engine::Math::Quaternion::CreateNormalized() const
 {
 	const float length = std::sqrt( ( m_w * m_w ) + ( m_x * m_x ) + ( m_y * m_y ) + ( m_z * m_z ) );
 	assert( length > s_epsilon );
 	const float length_reciprocal = 1.0f / length;
-	return cQuaternion( m_w * length_reciprocal, m_x * length_reciprocal, m_y * length_reciprocal, m_z * length_reciprocal );
+	return Quaternion( m_w * length_reciprocal, m_x * length_reciprocal, m_y * length_reciprocal, m_z * length_reciprocal );
 }
 
 // Products
-float Engine::Math::Dot( const cQuaternion& i_lhs, const cQuaternion& i_rhs )
+float Engine::Math::Dot( const Quaternion& i_lhs, const Quaternion& i_rhs )
 {
 	return ( i_lhs.m_w * i_rhs.m_w ) + ( i_lhs.m_x * i_rhs.m_x ) + ( i_lhs.m_y * i_rhs.m_y ) + ( i_lhs.m_z * i_rhs.m_z );
 }
@@ -68,7 +68,7 @@ float Engine::Math::Dot( const cQuaternion& i_lhs, const cQuaternion& i_rhs )
 // Initialization / Shut Down
 //---------------------------
 
-Engine::Math::cQuaternion::cQuaternion()
+Engine::Math::Quaternion::Quaternion()
 	:
 	m_w( 1.0f ), m_x( 0.0f ), m_y( 0.0f ), m_z( 0.0f )
 {
@@ -76,13 +76,13 @@ Engine::Math::cQuaternion::cQuaternion()
 }
 
 
-Engine::Math::cQuaternion Engine::Math::cQuaternion::getIdentityQuartenion()
+Engine::Math::Quaternion Engine::Math::Quaternion::getIdentityQuartenion()
 {
-	return cQuaternion();
+	return Quaternion();
 }
 
 
-Engine::Math::cQuaternion::cQuaternion( const float i_angleInRadians, const cVector& i_axisOfRotation_normalized )
+Engine::Math::Quaternion::Quaternion( const float i_angleInRadians, const Vector3& i_axisOfRotation_normalized )
 {
 	const float theta_half = i_angleInRadians * 0.5f;
 	m_w = std::cos( theta_half );
@@ -98,7 +98,7 @@ Engine::Math::cQuaternion::cQuaternion( const float i_angleInRadians, const cVec
 // Initialization / Shut Down
 //---------------------------
 
-Engine::Math::cQuaternion::cQuaternion( const float i_w, const float i_x, const float i_y, const float i_z )
+Engine::Math::Quaternion::Quaternion( const float i_w, const float i_x, const float i_y, const float i_z )
 	:
 	m_w( i_w ), m_x( i_x ), m_y( i_y ), m_z( i_z )
 {

@@ -2,7 +2,6 @@
 #define __I_MESSAGE_HANDLER_H
 
 #include "../Utilities/HashedString.h"
-#include "../Utilities/SharedPointer.h"
 #include "../Utilities/additionaltypes.h"
 #include "../Utilities/RTTI.h"
 

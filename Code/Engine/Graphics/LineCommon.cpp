@@ -26,7 +26,7 @@ bool Engine::Graphics::Line::containsDebugLine()
 
 
 
-void Engine::Graphics::Line::AddLine(Engine::Maths::Point3 i_startPoint, Engine::Maths::Point3 i_endPoint, RGBAColor iLineColor)
+void Engine::Graphics::Line::AddLine(Engine::Math::Vector3 i_startPoint, Engine::Math::Vector3 i_endPoint, RGBAColor iLineColor)
 {
 	SharedPointer<Line> tempLine = SharedPointer<Line>(new Line(), "Engine::Graphics::Line");
 	tempLine->mLineStruct.startPoint = i_startPoint;
@@ -37,12 +37,12 @@ void Engine::Graphics::Line::AddLine(Engine::Maths::Point3 i_startPoint, Engine:
 	createBuffer();
 }
 
-Engine::Transformation Engine::Graphics::Line::getTransformation()
+Engine::Math::Transformation Engine::Graphics::Line::getTransformation()
 {
-	return Transformation();
+	return Math::Transformation();
 }
 
-void Engine::Graphics::Line::setTransformation(Math::cVector, Math::cQuaternion)
+void Engine::Graphics::Line::setTransformation(Math::Vector3, Math::Quaternion)
 {}
 
 
@@ -81,7 +81,7 @@ bool Engine::Graphics::Line::setUniforms()
 
 	if (!tempCamera.isNull())
 	{
-		Transformation cameraTransformation = tempCamera->getTransformation();
+		Math::Transformation cameraTransformation = tempCamera->getTransformation();
 		float fieldOfView = tempCamera->getFieldOfView();
 		float aspectRatio = tempCamera->getAspectRatio();
 		float nearPlane = tempCamera->getNearPlane();
@@ -103,7 +103,7 @@ bool Engine::Graphics::Line::setUniforms()
 		Graphics::UniformValues worldToViewValues;
 		worldToViewValues.matrixValue.Type = Graphics::WorldToView;
 		worldToViewValues.matrixValue.matrix =
-			Math::cMatrix_transformation::CreateWorldToViewTransform(
+			Math::Matrix4x4::CreateWorldToViewTransform(
 				cameraTransformation.mOrientation,
 				cameraTransformation.mPositionOffset);
 		worldToView->setUniformValue(worldToViewValues);
@@ -112,7 +112,7 @@ bool Engine::Graphics::Line::setUniforms()
 		Graphics::UniformValues viewToScreenValues;
 		viewToScreenValues.matrixValue.Type = Graphics::ViewToScreen;
 		viewToScreenValues.matrixValue.matrix =
-			Math::cMatrix_transformation::CreateViewToScreenTransform(
+			Math::Matrix4x4::CreateViewToScreenTransform(
 				fieldOfView, aspectRatio,
 				nearPlane, farPlane);
 		viewToScreen->setUniformValue(viewToScreenValues);

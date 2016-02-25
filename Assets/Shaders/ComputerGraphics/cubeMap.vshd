@@ -4,6 +4,9 @@
 #pragma optimize(off)
 #pragma debug(on)
 
+
+uniform mat4 g_transform_localToWorld;
+uniform mat4 g_transform_worldToView;
 uniform mat4 g_transform_viewToScreen;
 uniform vec4 vertexColorModifier;
 
@@ -18,12 +21,16 @@ layout(location = 0) out vec4 o_color;
 layout(location = 1) out vec3 o_local_normal;
 layout(location = 2) out vec3 o_local_tangent;
 layout(location = 3) out vec3 o_local_bi_tangent;
-layout(location = 4) out vec2 o_local_texture;
+layout(location = 4) out vec3 o_local_texture;
 
 void main()
 {	
-	o_color = i_color*vertexColorModifier;
-	gl_Position = vec4(i_local_position,1.0);
+	o_color = i_color * vertexColorModifier;
+	vec4 positionInWorld = vec4(i_local_position,1.0) * g_transform_localToWorld ;
+	vec4 positionInView = positionInWorld * g_transform_worldToView ;
+	vec4 screenPosition = positionInView * g_transform_viewToScreen;
+	o_local_texture = screenPosition.xyz;
+	gl_Position = screenPosition;	
 }
 
 

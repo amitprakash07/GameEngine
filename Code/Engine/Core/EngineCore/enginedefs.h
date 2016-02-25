@@ -2,47 +2,45 @@
 #define __ENGINE_DEF_H
 
 #include "../../Windows/WindowsIncludes.h"
-#include "../Maths/cQuaternion.h"
-#include "../Maths/cVector.h"
-
 
 namespace Engine
 {
-	struct Transformation
+	struct MouseStates
 	{
-		Engine::Math::cVector mPositionOffset;
-		Engine::Math::cQuaternion mOrientation;
-		Transformation()
+		bool leftButtonPressed;
+		bool rightButtonPressed;
+		bool middleButtonPressed;
+		bool shiftKey;
+		bool ctrlKey;
+		bool mouseMoving;
+		MouseStates()
 		{
-			mPositionOffset = Engine::Math::cVector();
-			mOrientation = Engine::Math::cQuaternion();
+			leftButtonPressed =
+				rightButtonPressed =
+				middleButtonPressed =
+				shiftKey =
+				ctrlKey =
+				mouseMoving = false;
 		}
+	};
+
+	struct MouseEventAndPosition
+	{
+		int x; //x-coordinate
+		int y; //y-coordiante
+		POINTS P; //Point in screen coordinate - depending on screen size
+		MouseStates mMouseStates;
+	};
+
+	struct WindowsParam
+	{
+		UINT windowsMessage;
+		WPARAM wParam;
+		LPARAM lParam;
 	};
 }
 
-struct MouseStates
-{
-	bool leftButtonPressed;
-	bool rightButtonPressed;
-	bool middleButtonPressed;
-	bool mouseMoving;
 
-};
-
-struct MouseEventAndPosition
-{
-	int x; //x-coordinate
-	int y; //y-coordiante
-	POINTS P; //Point in screen coordinate - depending on screen size
-	MouseStates mMouseStates;
-};
-
-struct WindowsParam
-{
-	UINT windowsMessage;
-	WPARAM wParam;
-	LPARAM lParam;
-};
 
 
 

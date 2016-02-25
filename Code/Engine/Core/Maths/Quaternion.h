@@ -12,7 +12,7 @@ namespace Engine
 {
 	namespace Math
 	{
-		class cVector;
+		class Vector3;
 	}
 }
 
@@ -23,33 +23,33 @@ namespace Engine
 {
 	namespace Math
 	{
-		class cQuaternion
+		class Quaternion
 		{
 			// Interface
 			//==========
 
 		public:
 
-			static cQuaternion getIdentityQuartenion();
+			static Quaternion getIdentityQuartenion();
 			// Concatenation
-			cQuaternion operator *( const cQuaternion& i_rhs ) const;
+			Quaternion operator *( const Quaternion& i_rhs ) const;
 
 			// Inversion
 			void Invert();
-			cQuaternion CreateInverse() const;
+			Quaternion CreateInverse() const;
 
 			// Normalization
 			void Normalize();
-			cQuaternion CreateNormalized() const;
+			Quaternion CreateNormalized() const;
 
 			// Products
-			friend float Dot( const cQuaternion& i_lhs, const cQuaternion& i_rhs );
+			friend float Dot( const Quaternion& i_lhs, const Quaternion& i_rhs );
 
 			// Initialization / Shut Down
 			//---------------------------
 
-			cQuaternion();	// Identity
-			cQuaternion( const float i_angleInRadians, const cVector& i_axisOfRotation_normalized );
+			Quaternion();	// Identity
+			Quaternion( const float i_angleInRadians, const Vector3& i_axisOfRotation_normalized );
 
 			// Data
 			//=====
@@ -66,12 +66,12 @@ namespace Engine
 			// Initialization / Shut Down
 			//---------------------------
 
-			cQuaternion( const float i_w, const float i_x, const float i_y, const float i_z );
+			Quaternion( const float i_w, const float i_x, const float i_y, const float i_z );
 
 			// Friend Classes
 			//===============
 
-			friend class cMatrix_transformation;
+			friend class Matrix4x4;
 		};
 	}
 }

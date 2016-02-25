@@ -59,7 +59,7 @@ Engine::SharedPointer<Engine::MeshObject> Engine::MeshObject::CreateMeshObject(
 Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialName)
 {
 	renderable = true;
-	mTransformation = Transformation();
+	mTransformation = Math::Transformation();
 	mMeshName = i_meshName;
 	mMaterial = i_materialName;
 	mObjectController = nullptr;
@@ -73,8 +73,8 @@ Engine::MeshObject::MeshObject()
 	mMeshName = "";
 	mMaterial = "";
 	mObjectController = nullptr;
-	mTransformation.mOrientation = Engine::Math::cQuaternion();
-	mTransformation.mPositionOffset = Engine::Math::cVector();
+	mTransformation.mOrientation = Engine::Math::Quaternion();
+	mTransformation.mPositionOffset = Engine::Math::Vector3();
 	debugObject = false;
 }
 
@@ -114,7 +114,7 @@ bool Engine::MeshObject::isRenderable() const
 	return renderable;
 }
 
-void Engine::MeshObject::setTransformation(Engine::Math::cVector i_positionOffset, Engine::Math::cQuaternion i_orientation)
+void Engine::MeshObject::setTransformation(Engine::Math::Vector3 i_positionOffset, Engine::Math::Quaternion i_orientation)
 {
 	mTransformation.mOrientation = i_orientation;
 	mTransformation.mPositionOffset = i_positionOffset;
@@ -124,35 +124,35 @@ void Engine::MeshObject::HandleMessage(Engine::utils::StringHash& i_message, RTT
 {
 	if (i_MessageSender != nullptr)
 	{
-		if (/*isBothSameType(i_MessageSender, Engine::InputController::getInputController()->getTypeInfo()) && (*/Engine::utils::StringHash("UpdateMeshObject") == i_message)//)
-		{
-			//Engine::SharedPointer<Engine::MeshObject> temp= SharedPointer<MeshObject>(this); //Need to think about this
-			switch (*(reinterpret_cast<Engine::typedefs::Direction*>(i_pMessageData)))
-			{
-			case Engine::typedefs::NONE:
-				break;
-			case Engine::typedefs::UP:
-				if (mObjectController)
-					mObjectController->updateObject(*this, Engine::typedefs::UP);
-				break;
-			case Engine::typedefs::DOWN:
-				if (mObjectController)
-					mObjectController->updateObject(*this, Engine::typedefs::DOWN);
-				break;
-			case Engine::typedefs::LEFT:
-				if (mObjectController)
-					mObjectController->updateObject(*this, Engine::typedefs::LEFT);
-				break;
-			case Engine::typedefs::RIGHT:
-				if (mObjectController)
-					mObjectController->updateObject(*this, Engine::typedefs::RIGHT);
-				break;
-			}
-		}
+		//if (/*isBothSameType(i_MessageSender, Engine::InputController::getInputController()->getTypeInfo()) && (*/Engine::utils::StringHash("UpdateMeshObject") == i_message)//)
+		//{
+		//	//Engine::SharedPointer<Engine::MeshObject> temp= SharedPointer<MeshObject>(this); //Need to think about this
+		//	switch (*(reinterpret_cast<Engine::typedefs::Direction*>(i_pMessageData)))
+		//	{
+		//	case Engine::typedefs::NONE:
+		//		break;
+		//	case Engine::typedefs::UP:
+		//		if (mObjectController)
+		//			mObjectController->updateObject(*this, Engine::typedefs::UP);
+		//		break;
+		//	case Engine::typedefs::DOWN:
+		//		if (mObjectController)
+		//			mObjectController->updateObject(*this, Engine::typedefs::DOWN);
+		//		break;
+		//	case Engine::typedefs::LEFT:
+		//		if (mObjectController)
+		//			mObjectController->updateObject(*this, Engine::typedefs::LEFT);
+		//		break;
+		//	case Engine::typedefs::RIGHT:
+		//		if (mObjectController)
+		//			mObjectController->updateObject(*this, Engine::typedefs::RIGHT);
+		//		break;
+		//	}
+		//}
 	}
 }
 
-Engine::Transformation Engine::MeshObject::getTransformation()
+Engine::Math::Transformation Engine::MeshObject::getTransformation()
 {
 	return mTransformation;
 }
@@ -172,7 +172,7 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 		Scene::applyPaintersAlgorithmForTransparency();
 		if (!tempCamera.isNull())
 		{
-			Transformation cameraTransformation = tempCamera->getTransformation();
+			Math::Transformation cameraTransformation = tempCamera->getTransformation();
 			float fieldOfView = tempCamera->getFieldOfView();
 			float aspectRatio = tempCamera->getAspectRatio();
 			float nearPlane = tempCamera->getNearPlane();
@@ -180,7 +180,7 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 			if (debugObject)
 				Engine::Graphics::GraphicsSystem::EnableWireFrame(true);
 			getEffect()->setShaders();
-			Transformation gameObjectTransformation = getTransformation();
+			Math::Transformation gameObjectTransformation = getTransformation();
 			std::string effectFile = getMaterial()->getEffectName();
 
 			SharedPointer<Graphics::Uniform> localToWorldUniform = 
@@ -204,7 +204,7 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 				Graphics::UniformValues localToWorlValues;
 				localToWorlValues.matrixValue.Type = Graphics::LocalToWorld;
 				localToWorlValues.matrixValue.matrix =
-					Math::cMatrix_transformation(mTransformation.mOrientation,
+					Math::Matrix4x4(mTransformation.mOrientation,
 						mTransformation.mPositionOffset);
 				localToWorldUniform->setUniformValue(localToWorlValues);
 			}
@@ -214,7 +214,7 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 				Graphics::UniformValues worldToViewValues;
 				worldToViewValues.matrixValue.Type = Graphics::WorldToView;
 				worldToViewValues.matrixValue.matrix =
-					Math::cMatrix_transformation::CreateWorldToViewTransform(
+					Math::Matrix4x4::CreateWorldToViewTransform(
 						cameraTransformation.mOrientation,
 						cameraTransformation.mPositionOffset);
 				worldToView->setUniformValue(worldToViewValues);
@@ -225,7 +225,7 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 				Graphics::UniformValues viewToScreenValues;
 				viewToScreenValues.matrixValue.Type = Graphics::ViewToScreen;
 				viewToScreenValues.matrixValue.matrix =
-					Math::cMatrix_transformation::CreateViewToScreenTransform(
+					Math::Matrix4x4::CreateViewToScreenTransform(
 						fieldOfView, aspectRatio,
 						nearPlane, farPlane);
 				viewToScreen->setUniformValue(viewToScreenValues);

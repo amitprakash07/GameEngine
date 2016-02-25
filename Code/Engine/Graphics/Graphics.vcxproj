@@ -37,6 +37,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Direct3D\SkyBox.d3d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Direct3D\Sprite.d3d.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -72,6 +76,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="OpenGL\SkyBox.gl.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="OpenGL\Sprite.gl.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -84,6 +92,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="SkyBoxCommon.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="TextureCommon.cpp" />
     <ClCompile Include="Uniform.common.cpp" />
@@ -95,6 +104,7 @@
     <ClInclude Include="Line.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="typedefs.h" />
@@ -195,7 +205,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Windows.lib;OpenGLExtensions.lib;Opengl32.lib;glu32.lib;Utilities.lib;Maths.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Maths.lib;Windows.lib;OpenGLExtensions.lib;Opengl32.lib;glu32.lib;Utilities.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x64\;$(LibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4006,4221 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
@@ -216,7 +226,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;Windows.lib;Utilities.lib;Maths.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Maths.lib;d3d9.lib;d3dx9.lib;Windows.lib;Utilities.lib;Maths.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x64\;$(LibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4006,4221 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
@@ -244,7 +254,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>Windows.lib;OpenGLExtensions.lib;Opengl32.lib;glu32.lib;Utilities.lib;Maths.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Maths.lib;Windows.lib;OpenGLExtensions.lib;Opengl32.lib;glu32.lib;Utilities.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x64\;$(LibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4006,4221 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
@@ -268,7 +278,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;Windows.lib;Utilities.lib;Maths.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Maths.lib;d3d9.lib;d3dx9.lib;Windows.lib;Utilities.lib;Maths.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x64\;$(LibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4006,4221 %(AdditionalOptions)</AdditionalOptions>
     </Lib>

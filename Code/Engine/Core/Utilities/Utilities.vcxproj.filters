@@ -4,10 +4,10 @@
     <ClInclude Include="HashedString.h" />
     <ClInclude Include="SharedPointer.h" />
     <ClInclude Include="UniquePtr.h" />
-    <ClInclude Include="additionaltypes.h" />
     <ClInclude Include="RTTI.h" />
     <ClInclude Include="IMessageHandler.h" />
     <ClInclude Include="IObjectController.h" />
+    <ClInclude Include="additionaltypes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedPointer.inl" />
