@@ -4,14 +4,13 @@
 
 Engine::Graphics::Texture::Texture()
 {
-	textureName = nullptr;
+	//textureName = nullptr;
 	texture = -1;
-	effectName = nullptr;
-	textureName = nullptr;
+	//effectName = nullptr;
 	shaderType = Fragment;
 	textureSamplerID = -1;
 	textureType = TEXTURE_2D;
-	samplerName = nullptr;
+	//samplerName = nullptr;
 }
 
 Engine::Graphics::Texture::Texture(char* i_effectName,
@@ -21,21 +20,24 @@ Engine::Graphics::Texture::Texture(char* i_effectName,
 {
 	if (i_textureName)
 	{
-		size_t length = strlen(i_textureName);
+		textureName = i_textureName;
+		/*size_t length = strlen(i_textureName);
 		textureName = new char[length];
-		memcpy(textureName, i_textureName, length);
+		memcpy(textureName, i_textureName, length);*/
 	}
 	if (i_effectName)
 	{
-		size_t length = strlen(i_effectName);
-		effectName = new char[length];
-		memcpy(effectName, i_effectName, length);
+		effectName = i_effectName;
+		//size_t length = strlen(i_effectName);
+		//effectName = reinterpret_cast<char*>(malloc(length));// new char[length];
+		//memcpy(effectName, i_effectName, length);
 	}
 	if (i_samplerName)
 	{
-		size_t length = strlen(i_samplerName);
+		samplerName = i_samplerName;
+		/*size_t length = strlen(i_samplerName);
 		samplerName = new char[length];
-		memcpy(samplerName, i_samplerName, length);
+		memcpy(samplerName, i_samplerName, length);*/
 	}
 	texture = -1;
 	textureSamplerID = -1;
@@ -59,7 +61,7 @@ bool Engine::Graphics::Texture::loadTexture()
 		const DWORD onlySucceedIfFileExists = OPEN_EXISTING;
 		const DWORD useDefaultAttributes = FILE_ATTRIBUTE_NORMAL;
 		const HANDLE dontUseTemplateFile = nullptr;
-		fileHandle = CreateFile(textureName, desiredAccess, otherProgramsCanStillReadTheFile,
+		fileHandle = CreateFile(textureName.c_str(), desiredAccess, otherProgramsCanStillReadTheFile,
 			useDefaultSecurity, onlySucceedIfFileExists, useDefaultAttributes, dontUseTemplateFile);
 
 		if (fileHandle == INVALID_HANDLE_VALUE)
@@ -162,8 +164,7 @@ bool Engine::Graphics::Texture::loadTexture()
 	}
 	
 	// Extracting the header
-	// (this struct can also be found in Dds.h in the DirectX header files
-	// or here as of this comment: https://msdn.microsoft.com/en-us/library/windows/desktop/bb943982(v=vs.85).aspx )
+	// https://msdn.microsoft.com/en-us/library/windows/desktop/bb943982(v=vs.85).aspx 
 	struct sDdsHeader
 	{
 		uint32_t structSize;
@@ -409,8 +410,11 @@ OnExit:
 
 Engine::Graphics::Texture::~Texture()
 {
-	if (textureName)
-		delete textureName;
+	for (std::map<std::string, SharedPointer<Texture>>::iterator i = mTextureList.begin();
+	i != mTextureList.end(); ++i)
+	{
+//		glDeleteTextures(1, &i->second->texture);
+	}
 }
 
 
@@ -419,8 +423,9 @@ void Engine::Graphics::Texture::setSamplerID(SamplerID sampleID)
 	textureSamplerID = sampleID;	
 }
 
-void Engine::Graphics::Texture::setTextureInShaderObject(int i_textureUnit)const
+void Engine::Graphics::Texture::setTextureInShaderObject(int i_textureUnit)
 {
+	associateSamplerDataFromShader();
 	glActiveTexture(GL_TEXTURE0 + i_textureUnit);
 	GLenum errorCode = glGetError();
 	if ((errorCode == GL_NO_ERROR))
@@ -439,7 +444,7 @@ void Engine::Graphics::Texture::setTextureInShaderObject(int i_textureUnit)const
 		}		
 		errorCode = glGetError();
 		if ((errorCode == GL_NO_ERROR))
-		{
+		{		
 			glUniform1i(textureSamplerID, i_textureUnit);
 			errorCode = glGetError();
 			if (!errorCode == GL_NO_ERROR)

@@ -1,11 +1,11 @@
 return
 {
-	vertex = "ComputerGraphics/cubeMap.vshd",
-	fragment = "ComputerGraphics/cubeMap.fshd",
+	vertex = "ComputerGraphics/floorVertex.glsl",
+	fragment = "ComputerGraphics/floorFragment.glsl",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",
-	FaceCulling = "True",	
+	FaceCulling = "True",
 	uniforms =
 	{
 		{

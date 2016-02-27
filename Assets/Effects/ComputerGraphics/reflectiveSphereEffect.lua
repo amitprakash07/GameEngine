@@ -1,12 +1,12 @@
 return
 {
-	vertex = "ComputerGraphics/environmentMap.vshd",
-	fragment = "ComputerGraphics/environmentMap.fshd",
+	vertex = "ComputerGraphics/reflectiveSphereVertex.glsl",
+	fragment = "ComputerGraphics/reflectiveSphereFragment.glsl",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",
 	FaceCulling = "True",
-    uniforms =
+	uniforms =
 	{
 		{
 			name = "g_transform_localToWorld",
@@ -29,5 +29,5 @@ return
 			MatrixType = "ViewToScreen",
 			count = 1,
 		},		
-	}	
+	}
 }

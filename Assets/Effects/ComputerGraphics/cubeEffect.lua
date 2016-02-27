@@ -1,7 +1,7 @@
 return
 {
-	vertex = "ComputerGraphics/standard.vshd",
-	fragment = "ComputerGraphics/standard.fshd",
+	vertex = "ComputerGraphics/cubeVertex.glsl",
+	fragment = "ComputerGraphics/cubeFragment.glsl",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",

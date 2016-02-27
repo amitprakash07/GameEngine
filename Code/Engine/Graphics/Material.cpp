@@ -19,7 +19,8 @@ bool Engine::Graphics::Material::addMaterialToList(const char* i_materialName)
 			return true;
 		else
 		{
-			Engine::SharedPointer<Engine::Graphics::Material> material(new Material(), "Engine::Graphics::Material");
+			Engine::SharedPointer<Engine::Graphics::Material> material(new Material(), 
+				"Engine::Graphics::Material");
 			if (!material.isNull())
 			{
 				material->setMaterialName(i_materialName);
@@ -161,12 +162,11 @@ bool Engine::Graphics::Material::loadMaterial()
 				currentPosition += sizeof(MapType);
 			}
 
-			Texture::addTextureToList(effectFile, //Effect File Name
+			WindowsUtil::Assert(Texture::addTextureToList(effectFile, //Effect File Name
 				mTextureMaps[i].file, //Texture Name
 				mTextureMaps[i].uniform, //Sampler Name
 				mTextureMaps[i].shaderType //Shader Type
-				);
-
+				), "Unable to load the texture");
 		}
 	}
 
@@ -250,6 +250,7 @@ void Engine::Graphics::Material::setTextureUniform() const
 	for (int i = 0; i < mapCount; ++i)
 	{
 		SharedPointer<Texture> tempTexture = Engine::Graphics::Texture::getTexture(mTextureMaps[i].file);
+		tempTexture->setEffectName(effectFile);
 		tempTexture->setTextureInShaderObject(i);
 	}
 }

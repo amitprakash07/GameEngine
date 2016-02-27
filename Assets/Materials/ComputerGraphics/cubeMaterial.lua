@@ -1,10 +1,10 @@
 return 
 {
-	effect = "ComputerGraphics/standardEffect.effect",
+	effect = "ComputerGraphics/cubeEffect.effect",
 	map =
 	{
 		{
-			path = "ComputerGraphics/defaultTexture.png",
+			path = "ComputerGraphics/environment.dds",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",
@@ -18,5 +18,5 @@ return
 			valtype = "Float",
 			value = {1.0,1.0,1.0},
 		}
-	}	
+	},		
 }

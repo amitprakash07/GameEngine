@@ -38,7 +38,7 @@ namespace Engine
 		std::string									vertexModifierUniform;
 		IObjectController*							mObjectController;
 		bool										renderable;
-		Math::Transformation								mTransformation;
+		Math::Transformation						mTransformation;
 		bool										debugObject;
 		Engine::Graphics::RGBAColor					vertexColor;
 		

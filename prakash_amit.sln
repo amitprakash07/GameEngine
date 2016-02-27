@@ -232,29 +232,79 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{CACD40DE-8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{7FA5CAB7-C70F-4FA4-A130-4C363991CBC5}"
 	ProjectSection(SolutionItems) = preProject
-		Assets\Effects\ComputerGraphics\standardEffect.lua = Assets\Effects\ComputerGraphics\standardEffect.lua
+		Assets\Effects\ComputerGraphics\cubeEffect.lua = Assets\Effects\ComputerGraphics\cubeEffect.lua
+		Assets\Effects\ComputerGraphics\floorEffect.lua = Assets\Effects\ComputerGraphics\floorEffect.lua
+		Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua = Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua
+		Assets\Effects\ComputerGraphics\skyBoxEffect.lua = Assets\Effects\ComputerGraphics\skyBoxEffect.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{EBF44EFF-3961-484B-A0F8-A62D333F56F7}"
 	ProjectSection(SolutionItems) = preProject
-		Assets\Materials\ComputerGraphics\defaultMaterial.lua = Assets\Materials\ComputerGraphics\defaultMaterial.lua
-		Assets\Materials\ComputerGraphics\testMaterial.lua = Assets\Materials\ComputerGraphics\testMaterial.lua
+		Assets\Materials\ComputerGraphics\cubeMaterial.lua = Assets\Materials\ComputerGraphics\cubeMaterial.lua
+		Assets\Materials\ComputerGraphics\floorMaterial.lua = Assets\Materials\ComputerGraphics\floorMaterial.lua
+		Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua = Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua
+		Assets\Materials\ComputerGraphics\skyBoxMaterial.lua = Assets\Materials\ComputerGraphics\skyBoxMaterial.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{EA91C87F-C090-4591-900B-DB3409264710}"
 	ProjectSection(SolutionItems) = preProject
-		Assets\Shaders\ComputerGraphics\standard.fshd = Assets\Shaders\ComputerGraphics\standard.fshd
-		Assets\Shaders\ComputerGraphics\standard.vshd = Assets\Shaders\ComputerGraphics\standard.vshd
+		Assets\Shaders\ComputerGraphics\cubeFragment.glsl = Assets\Shaders\ComputerGraphics\cubeFragment.glsl
+		Assets\Shaders\ComputerGraphics\cubeVertex.glsl = Assets\Shaders\ComputerGraphics\cubeVertex.glsl
+		Assets\Shaders\ComputerGraphics\floorFragment.glsl = Assets\Shaders\ComputerGraphics\floorFragment.glsl
+		Assets\Shaders\ComputerGraphics\floorVertex.glsl = Assets\Shaders\ComputerGraphics\floorVertex.glsl
+		Assets\Shaders\ComputerGraphics\reflectiveSphereFragment.glsl = Assets\Shaders\ComputerGraphics\reflectiveSphereFragment.glsl
+		Assets\Shaders\ComputerGraphics\reflectiveSphereVertex.glsl = Assets\Shaders\ComputerGraphics\reflectiveSphereVertex.glsl
+		Assets\Shaders\ComputerGraphics\skyBoxFragment.glsl = Assets\Shaders\ComputerGraphics\skyBoxFragment.glsl
+		Assets\Shaders\ComputerGraphics\skyBoxVertex.glsl = Assets\Shaders\ComputerGraphics\skyBoxVertex.glsl
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meshes", "Meshes", "{5EF8A44E-593F-45D7-B9C3-4D7130965DEA}"
 	ProjectSection(SolutionItems) = preProject
-		Assets\Meshes\ComputerGraphics\DebugCubeForClass.lua = Assets\Meshes\ComputerGraphics\DebugCubeForClass.lua
-		Assets\Meshes\ComputerGraphics\DebugCylinderForClass.lua = Assets\Meshes\ComputerGraphics\DebugCylinderForClass.lua
-		Assets\Meshes\ComputerGraphics\DebugSphereForClass.lua = Assets\Meshes\ComputerGraphics\DebugSphereForClass.lua
+		Assets\Meshes\ComputerGraphics\Cube.lua = Assets\Meshes\ComputerGraphics\Cube.lua
+		Assets\Meshes\ComputerGraphics\floor.lua = Assets\Meshes\ComputerGraphics\floor.lua
+		Assets\Meshes\ComputerGraphics\reflectiveSphere.lua = Assets\Meshes\ComputerGraphics\reflectiveSphere.lua
+		Assets\Meshes\ComputerGraphics\Torus.lua = Assets\Meshes\ComputerGraphics\Torus.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{FC71BA55-020A-4A1D-B503-4DB8A34E55A9}"
+	ProjectSection(SolutionItems) = preProject
+		Assets\Textures\ComputerGraphics\Beveled_Checker_Board_Seamless_by_FantasyStock.jpg = Assets\Textures\ComputerGraphics\Beveled_Checker_Board_Seamless_by_FantasyStock.jpg
+		Assets\Textures\ComputerGraphics\checkerBoard.jpg = Assets\Textures\ComputerGraphics\checkerBoard.jpg
+		Assets\Textures\ComputerGraphics\cm_back.tga = Assets\Textures\ComputerGraphics\cm_back.tga
+		Assets\Textures\ComputerGraphics\cm_bottom.tga = Assets\Textures\ComputerGraphics\cm_bottom.tga
+		Assets\Textures\ComputerGraphics\cm_front.tga = Assets\Textures\ComputerGraphics\cm_front.tga
+		Assets\Textures\ComputerGraphics\cm_left.tga = Assets\Textures\ComputerGraphics\cm_left.tga
+		Assets\Textures\ComputerGraphics\cm_right.tga = Assets\Textures\ComputerGraphics\cm_right.tga
+		Assets\Textures\ComputerGraphics\cm_top.tga = Assets\Textures\ComputerGraphics\cm_top.tga
+		Assets\Textures\ComputerGraphics\cube-env01.jpeg = Assets\Textures\ComputerGraphics\cube-env01.jpeg
+		Assets\Textures\ComputerGraphics\cube.jpg = Assets\Textures\ComputerGraphics\cube.jpg
+		Assets\Textures\ComputerGraphics\cube_map2.png = Assets\Textures\ComputerGraphics\cube_map2.png
+		Assets\Textures\ComputerGraphics\cube_map_distribution.png = Assets\Textures\ComputerGraphics\cube_map_distribution.png
+		Assets\Textures\ComputerGraphics\CubeLayout6Faces.png = Assets\Textures\ComputerGraphics\CubeLayout6Faces.png
+		Assets\Textures\ComputerGraphics\cubemap-diagram.jpg = Assets\Textures\ComputerGraphics\cubemap-diagram.jpg
+		Assets\Textures\ComputerGraphics\cubemap.jpg = Assets\Textures\ComputerGraphics\cubemap.jpg
+		Assets\Textures\ComputerGraphics\cubemap_512.png = Assets\Textures\ComputerGraphics\cubemap_512.png
+		Assets\Textures\ComputerGraphics\cubeMap_Distribution.jpg = Assets\Textures\ComputerGraphics\cubeMap_Distribution.jpg
+		Assets\Textures\ComputerGraphics\cubemapping.jpg = Assets\Textures\ComputerGraphics\cubemapping.jpg
+		Assets\Textures\ComputerGraphics\CubeMappingSequence_1.jpg = Assets\Textures\ComputerGraphics\CubeMappingSequence_1.jpg
+		Assets\Textures\ComputerGraphics\CubeTextureMapFig8p24.jpg = Assets\Textures\ComputerGraphics\CubeTextureMapFig8p24.jpg
+		Assets\Textures\ComputerGraphics\cubeview.jpg = Assets\Textures\ComputerGraphics\cubeview.jpg
+		Assets\Textures\ComputerGraphics\defaultTexture.png = Assets\Textures\ComputerGraphics\defaultTexture.png
+		Assets\Textures\ComputerGraphics\environment - Copy.dds = Assets\Textures\ComputerGraphics\environment - Copy.dds
+		Assets\Textures\ComputerGraphics\environment.dds = Assets\Textures\ComputerGraphics\environment.dds
+		Assets\Textures\ComputerGraphics\example_cube_map_environment.png = Assets\Textures\ComputerGraphics\example_cube_map_environment.png
+		Assets\Textures\ComputerGraphics\i3dp_0807.png = Assets\Textures\ComputerGraphics\i3dp_0807.png
+		Assets\Textures\ComputerGraphics\nebula_tut10.jpg = Assets\Textures\ComputerGraphics\nebula_tut10.jpg
+		Assets\Textures\ComputerGraphics\nvlobby_all6.jpg = Assets\Textures\ComputerGraphics\nvlobby_all6.jpg
+		Assets\Textures\ComputerGraphics\Photoshop_cube_maps_in_Fallout_3_image_2.jpg = Assets\Textures\ComputerGraphics\Photoshop_cube_maps_in_Fallout_3_image_2.jpg
+		Assets\Textures\ComputerGraphics\singlelayershadowmask.png = Assets\Textures\ComputerGraphics\singlelayershadowmask.png
+		Assets\Textures\ComputerGraphics\sistine_cubemap.jpg = Assets\Textures\ComputerGraphics\sistine_cubemap.jpg
+		Assets\Textures\ComputerGraphics\stormydays_large.jpg = Assets\Textures\ComputerGraphics\stormydays_large.jpg
+		Assets\Textures\ComputerGraphics\stretching-the-cubic-projection-to-a-virtual-3d-cube.png = Assets\Textures\ComputerGraphics\stretching-the-cubic-projection-to-a-virtual-3d-cube.png
+		Assets\Textures\ComputerGraphics\Unfolded CubeMap.jpg = Assets\Textures\ComputerGraphics\Unfolded CubeMap.jpg
+		Assets\Textures\ComputerGraphics\UV_Checker_Map.jpg = Assets\Textures\ComputerGraphics\UV_Checker_Map.jpg
+		Assets\Textures\ComputerGraphics\Vs2Uha6.png = Assets\Textures\ComputerGraphics\Vs2Uha6.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

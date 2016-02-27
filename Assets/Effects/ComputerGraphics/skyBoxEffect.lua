@@ -1,7 +1,7 @@
 return
 {
-	vertex = "ComputerGraphics/skyBox.vshd",
-	fragment = "ComputerGraphics/skyBox.fshd",
+	vertex = "ComputerGraphics/skyBoxVertex.glsl",
+	fragment = "ComputerGraphics/skyBoxFragment.glsl",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",

@@ -1,7 +1,9 @@
 /*
-	Vertex shader with vertex color 
-	attribute modifier
+Vertex shader with vertex color
+attribute modifier
 */
+
+#version 410 core
 
 uniform mat4  g_transform_localToWorld;
 uniform mat4  g_transform_worldToView;
@@ -17,25 +19,22 @@ layout(location = 3) in vec3 i_local_bi_tangent;
 layout(location = 4) in vec2 i_local_texture;
 layout(location = 5) in vec4 i_color;
 
-
 //Output
 layout(location = 0) out vec4 o_color;
 layout(location = 1) out vec3 o_local_normal;
 layout(location = 2) out vec3 o_local_tangent;
 layout(location = 3) out vec3 o_local_bi_tangent;
-layout(location = 4) out vec3 o_local_texture;
+layout(location = 4) out vec2 o_local_texture;
 
 void main()
 {
-	vec4 position_world = vec4(i_local_position,1.0) * g_transform_localToWorld;
+	vec4 position_world = vec4(i_local_position, 1.0) * g_transform_localToWorld;
 	vec4 position_view = position_world * g_transform_worldToView;
-	gl_Position = position_view * g_transform_viewToScreen;
+	vec4 screenPosition = position_view * g_transform_viewToScreen;
+	gl_Position = screenPosition;
 	o_color = i_color*vertexColorModifier;
 	o_local_normal = i_local_normal;
 	o_local_tangent = i_local_tangent;
-	o_local_bi_tangent = i_local_bi_tangent;
-	vec4 normalInWorld = vec4(i_local_normal,0) * g_transform_localToWorld;
-	o_local_texture = normalInWorld * g_transform_worldToView;
+	o_local_bi_tangent = i_local_bi_tangent;	
+	o_local_texture = i_local_texture;
 }
-
-

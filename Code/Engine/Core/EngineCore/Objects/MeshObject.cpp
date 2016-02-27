@@ -64,7 +64,7 @@ Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialNam
 	mMaterial = i_materialName;
 	mObjectController = nullptr;
 	debugObject = false;
-	vertexModifierUniform = "vertexColorModifier\0";
+	vertexModifierUniform = "vertexColorModifier\0";	
 }
 
 Engine::MeshObject::MeshObject()
@@ -240,11 +240,13 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 			tempColor.vectorValue.w = vertexColor.a;
 
 			SharedPointer<Engine::Graphics::Uniform> vertexColorUiform
-				= Engine::Graphics::Uniform::getUniform(vertexModifierUniform, effectFile, Graphics::Vertex);
+				= Engine::Graphics::Uniform::getUniform(vertexModifierUniform, 
+					effectFile, Graphics::Vertex);
 			vertexColorUiform->setUniformValue(tempColor);
 			
 
 			Engine::Graphics::Uniform::setAllUniformToShaderObjects(effectFile);
+
 			getMaterial()->setMaterialUniformParameters();
 			getMaterial()->setTextureUniform();
 			getMesh()->drawMesh();

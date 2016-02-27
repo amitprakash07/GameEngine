@@ -22,40 +22,86 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		Engine::SharedPointer<Engine::Scene> scene = Engine::Scene::CreateNewScene("Scene_01");
 		scene->renderScene(true);
 
+		Engine::Graphics::SkyBox::CreateSkyBox("ComputerGraphics/skyBoxMaterial.mat");
 
 		//GameObjects		
-		/*Engine::SharedPointer<Engine::MeshObject> floor =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/CheckerBoardPlane.mesh", 
-				"ComputerGraphics/checkerBoardMaterial.mat");
-		floor->setTransformation(Engine::Math::Vector3(0, -10, 0), Engine::Math::Quaternion());
-		scene->addObjectToScene(floor);*/
+		Engine::SharedPointer<Engine::MeshObject> floor =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/floor.mesh", 
+				"ComputerGraphics/floorMaterial.mat");
+		floor->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(floor);
 
 
 		Engine::SharedPointer<Engine::MeshObject> sphere =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/DefaultSphere.mesh", 
-				"ComputerGraphics/environmentMappingMaterial.mat", 
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/reflectiveSphere.mesh", 
+				"ComputerGraphics/reflectiveSphereMaterial.mat", 
 				Engine::Graphics::RGBAColor(1.0f,0.0f,0.0f,1.0f));
 		sphere->setTransformation(Engine::Math::Vector3(0, 5, -10), Engine::Math::Quaternion());
 		scene->addObjectToScene(sphere);
 
-		/*Engine::SharedPointer<Engine::MeshObject> cube =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/DefaultCube.mesh", 
-				"ComputerGraphics/environmentMappingMaterial.mat", 
-				Engine::Graphics::RGBAColor(0.0f, 1.0f, 0.0f, 1.0f));
-		cube->setTransformation(Engine::Math::Vector3(0, -5, -10), Engine::Math::Quaternion());
-		scene->addObjectToScene(cube);*/
+		Engine::SharedPointer<Engine::MeshObject> cube =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Cube.mesh",
+				"ComputerGraphics/cubeMaterial.mat");
+		cube->setTransformation(Engine::Math::Vector3(0, 1, -10), Engine::Math::Quaternion());
+		scene->addObjectToScene(cube);
 
-
-		Engine::Graphics::SkyBox::CreateSkyBox("ComputerGraphics/skyBox.mat");
-
-		//Camera
-		Engine::SharedPointer<Engine::Camera> mainCamera =
-			Engine::Camera::CreateCamera("MainCamera",
-				Engine::Math::Vector3(0.0f, 0.0f, 50.0f),
-				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
-					Engine::Math::Vector3(0, 15, 0)));
 
 		
+
+		//Camera
+		/*Engine::SharedPointer<Engine::Camera> mainCamera =
+			Engine::Camera::CreateCamera("MainCamera",
+				Engine::Math::Vector3(0.0f, 0.0f, 0.0f),
+				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
+					Engine::Math::Vector3(0, 0, 0)));*/
+
+		Engine::SharedPointer<Engine::Camera> mainCamera =
+			Engine::Camera::CreateCamera("MainCamera",
+				Engine::Math::Vector3(0.532f, 48.008f, 152.492f),
+				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
+					Engine::Math::Vector3(0, 0, 0)));
+
+		/*Engine::SharedPointer<Engine::MeshObject> ceiling =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/ceilingMaterialMesh.mesh", "Game/Arena/ceilingMaterial.mat");
+		ceiling->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(ceiling);
+
+		Engine::SharedPointer<Engine::MeshObject> cementMatObject =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/cementMaterialMesh.mesh", "Game/Arena/cementMaterial.mat");
+		cementMatObject->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(cementMatObject);
+
+		Engine::SharedPointer<Engine::MeshObject> floorMatObject =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/FloorMaterialMesh.mesh", "Game/Arena/floorMaterial.mat");
+		floorMatObject->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(floorMatObject);
+
+		Engine::SharedPointer<Engine::MeshObject> lambertTwoMatObjects =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/LambertTwoMaterialMesh.mesh", "Game/Arena/lambertTwoMaterial.mat");
+		lambertTwoMatObjects->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(lambertTwoMatObjects);
+
+		Engine::SharedPointer<Engine::MeshObject> metals =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/MetalMaterialMesh.mesh", "Game/Arena/metalMaterial.mat");
+		metals->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(metals);
+
+		Engine::SharedPointer<Engine::MeshObject> railing =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/railingMaterialMesh.mesh", "Game/Arena/railingMaterial.mat");
+		railing->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(railing);
+
+		Engine::SharedPointer<Engine::MeshObject> walls =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/wallsMaterialMesh.mesh", "Game/Arena/wallsMaterial.mat");
+		walls->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(walls);
+
+
+		Engine::SharedPointer<Engine::Camera> mainCamera =
+			Engine::Camera::CreateCamera("MainCamera",
+				Engine::Math::Vector3(-53.258, -108.953, 1043.751),
+				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
+					Engine::Math::Vector3(0, 1, 0)));*/
 
 		mainCamera->activateCamera(true);
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
