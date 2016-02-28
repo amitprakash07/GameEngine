@@ -170,8 +170,8 @@ return
 	{
 		BuildTool = "TextureBuilder.exe",
 		{
-			src = "ComputerGraphics/environment.dds",
-			target = "ComputerGraphics/environment.dds",
+			src = "ComputerGraphics/myFace.dds",
+			target = "ComputerGraphics/myFace.dds",
 		},				
 		{
 			src = "ComputerGraphics/checkerBoard.jpg",
@@ -180,6 +180,10 @@ return
 		{
 			src = "ComputerGraphics/defaultTexture.png",
 			target = "ComputerGraphics/defaultTexture.png",
+		},
+		{
+			src = "ComputerGraphics/Yokohama3.dds",
+			target = "ComputerGraphics/Yokohama3.dds",
 		},
 	}
 -- ====================================================================

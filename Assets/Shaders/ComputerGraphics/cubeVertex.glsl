@@ -24,7 +24,7 @@ layout(location = 0) out vec4 o_color;
 layout(location = 1) out vec3 o_local_normal;
 layout(location = 2) out vec3 o_local_tangent;
 layout(location = 3) out vec3 o_local_bi_tangent;
-layout(location = 4) out vec3 o_local_texture;
+layout(location = 4) out vec2 o_local_texture;
 
 void main()
 {
@@ -35,7 +35,6 @@ void main()
 	o_color = i_color*vertexColorModifier;
 	o_local_normal = i_local_normal;
 	o_local_tangent = i_local_tangent;
-	o_local_bi_tangent = i_local_bi_tangent;
-	vec3 textureCoordinate = screenPosition.xyz;
-	o_local_texture = textureCoordinate;
+	o_local_bi_tangent = i_local_bi_tangent;	
+	o_local_texture = i_local_texture;
 }
