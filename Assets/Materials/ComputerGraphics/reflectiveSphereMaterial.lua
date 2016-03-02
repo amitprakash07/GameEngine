@@ -4,7 +4,7 @@ return
 	map =
 	{
 		{
-			path = "ComputerGraphics/defaultTexture.png",
+			path = "ComputerGraphics/Yokohama3.dds",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",
@@ -16,7 +16,7 @@ return
 			name = "g_PixelColorModifier",
 			shader = "fragment",
 			valtype = "Float",
-			value = {1.0,1.0,1.0},
+			value = {0.2,0.5,0.7},
 		}
 	},		
 }

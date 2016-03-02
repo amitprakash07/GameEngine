@@ -28,10 +28,9 @@ namespace Engine
 			Vector3& operator -=( const Vector3& i_rhs );
 			Vector3 operator -() const;
 
-			// Multiplication
+			// Scalar Multiplication
 			Vector3 operator *( const float i_rhs ) const;
-			Vector3& operator *=( const float i_rhs );
-			friend Vector3 operator *( const float i_lhs, const Vector3& i_rhs );
+			Vector3& operator *=( const float i_rhs );			
 
 			// Division
 			Vector3 operator /( const float i_rhs ) const;
@@ -42,9 +41,10 @@ namespace Engine
 			float Normalize();
 			Vector3 CreateNormalized() const;
 
-			// Products
-			friend float Dot( const Vector3& i_lhs, const Vector3& i_rhs );
-			friend Vector3 Cross( const Vector3& i_lhs, const Vector3& i_rhs );
+			// Dot Product
+			float dot( const Vector3& i_rhs )const;
+			//Cross Product
+			Vector3 Cross(const Vector3& i_rhs )const;
 
 			// Comparison
 			bool operator ==( const Vector3& i_rhs ) const;
@@ -61,21 +61,8 @@ namespace Engine
 		// A vector class is one of the very few examples where I make data public
 		public:
 
-			float x, y, z;
-
-			// Friend Classes
-			//===============
-
-			friend class Matrix4x4;
-			friend class Quaternion;
-		};
-
-		// Friend Function Declarations
-		//=============================
-
-		Vector3 operator*( const float i_lhs, const Vector3& i_rhs );
-		float Dot( const Vector3& i_lhs, const Vector3& i_rhs );
-		Vector3 Cross( const Vector3& i_lhs, const Vector3& i_rhs );
+			float x, y, z;			
+		};		
 	}
 }
 

@@ -15,8 +15,8 @@ namespace Engine
 		static SharedPointer<Camera> CreateCamera(std::string, Math::Vector3,
 			Math::Quaternion, float i_fieldofView = 60.0f,
 			float i_aspectRatio = static_cast<float>(800 / 600));
-		Math::Transformation getTransformation() override;
-		void setTransformation(Engine::Math::Vector3,
+		Math::Transform getTransform() override;
+		void setTransform(Engine::Math::Vector3,
 			Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
 		void draw(bool) override {}
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
@@ -36,8 +36,9 @@ namespace Engine
 		std::string getCameraName() const;
 		bool isRenderable() const override { return false; }
 		bool isDebugObject() const override { return false; }
+		Engine::Math::Vector3 getForwardVector()const;
 	private:
-		Engine::Math::Transformation mTransformation;
+		Engine::Math::Transform mTransform;
 		std::string mCameraName;
 		IObjectController* mObjectController;
 		float fieldOfView;

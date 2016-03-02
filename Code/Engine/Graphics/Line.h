@@ -34,8 +34,8 @@ namespace Engine
 			static bool containsDebugLine();
 			static void setMaterialName(std::string iMaterialName);
 			static uint8_t getLineCounts();
-			Math::Transformation getTransformation() override;
-			void setTransformation(Math::Vector3,
+			Math::Transform getTransform() override;
+			void setTransform(Math::Vector3,
 				Math::Quaternion = Math::Quaternion()) override;
 			bool isDebugObject() const override;
 			bool isRenderable() const override;

@@ -1,7 +1,7 @@
 return
 {
-	vertex = "ComputerGraphics/reflectiveSphereVertex.glsl",
-	fragment = "ComputerGraphics/reflectiveSphereFragment.glsl",
+	vertex = "ComputerGraphics/environmentMappingSphereVertex.glsl",
+	fragment = "ComputerGraphics/environmentMappingSphereFragment.glsl",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",

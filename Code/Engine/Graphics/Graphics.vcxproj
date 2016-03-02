@@ -53,6 +53,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="OpenGL\ReflectingObject.d3d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="OpenGL\ReflectingObject.gl.cpp" />
+    <ClCompile Include="ReflectingObjectCommon.cpp" />
     <ClCompile Include="Effect.Common.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="LineCommon.cpp" />
@@ -98,6 +104,7 @@
     <ClCompile Include="Uniform.common.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ReflectingObject.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Includes.h" />

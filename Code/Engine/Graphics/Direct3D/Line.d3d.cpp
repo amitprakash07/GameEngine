@@ -184,7 +184,7 @@ bool Engine::Graphics::Line::writeToBuffer()
 //
 //	if (!tempCamera.isNull())
 //	{
-//		Transformation cameraTransformation = tempCamera->getTransformation();
+//		Transform cameraTransform = tempCamera->getTransform();
 //		float fieldOfView = tempCamera->getFieldOfView();
 //		float aspectRatio = tempCamera->getAspectRatio();
 //		float nearPlane = tempCamera->getNearPlane();
@@ -207,8 +207,8 @@ bool Engine::Graphics::Line::writeToBuffer()
 //		worldToViewValues.matrixValue.Type = Graphics::WorldToView;
 //		worldToViewValues.matrixValue.matrix =
 //			Math::Matrix4x4::CreateWorldToViewTransform(
-//				cameraTransformation.mOrientation,
-//				cameraTransformation.mPositionOffset);
+//				cameraTransform.mOrientation,
+//				cameraTransform.mPositionOffset);
 //		worldToView->setUniformValue(worldToViewValues);
 //
 //

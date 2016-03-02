@@ -62,7 +62,7 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	tempPosition.x = iCenter.x;
 	tempPosition.y = iCenter.y;
 	tempPosition.z = iCenter.z;
-	debugSphere->setTransformation(tempPosition, Engine::Math::Quaternion());
+	debugSphere->setTransform(tempPosition, Engine::Math::Quaternion());
 	Engine::Scene::getRenderableScene()->addObjectToScene(debugSphere);
 }
 
@@ -88,7 +88,7 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	tempPosition.x = i_position.x;
 	tempPosition.y = i_position.y;
 	tempPosition.z = i_position.z;
-	debugBox->setTransformation(tempPosition, Engine::Math::Quaternion());
+	debugBox->setTransform(tempPosition, Engine::Math::Quaternion());
 	Engine::Scene::getRenderableScene()->addObjectToScene(debugBox);
 }
 
@@ -113,7 +113,7 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	tempPosition.x = i_position.x;
 	tempPosition.y = i_position.y;
 	tempPosition.z = i_position.z;
-	debugCylinder->setTransformation(tempPosition, Engine::Math::Quaternion());
+	debugCylinder->setTransform(tempPosition, Engine::Math::Quaternion());
 	Engine::Scene::getRenderableScene()->addObjectToScene(debugCylinder);
 }
 

@@ -33,37 +33,37 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		//GameObjects		
 		Engine::SharedPointer<Engine::MeshObject> ceiling =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/ceilingMaterialMesh.mesh", "Game/Arena/ceilingMaterial.mat");
-		ceiling->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		ceiling->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(ceiling);
 
 		Engine::SharedPointer<Engine::MeshObject> cementMatObject =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/cementMaterialMesh.mesh", "Game/Arena/cementMaterial.mat");
-		cementMatObject->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		cementMatObject->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(cementMatObject);
 
 		Engine::SharedPointer<Engine::MeshObject> floorMatObject =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/FloorMaterialMesh.mesh", "Game/Arena/floorMaterial.mat");
-		floorMatObject->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		floorMatObject->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(floorMatObject);
 
 		Engine::SharedPointer<Engine::MeshObject> lambertTwoMatObjects =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/LambertTwoMaterialMesh.mesh", "Game/Arena/lambertTwoMaterial.mat");
-		lambertTwoMatObjects->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		lambertTwoMatObjects->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(lambertTwoMatObjects);
 
 		Engine::SharedPointer<Engine::MeshObject> metals =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/MetalMaterialMesh.mesh", "Game/Arena/metalMaterial.mat");
-		metals->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		metals->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(metals);
 
 		Engine::SharedPointer<Engine::MeshObject> railing =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/railingMaterialMesh.mesh", "Game/Arena/railingMaterial.mat");
-		railing->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		railing->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(railing);
 
 		Engine::SharedPointer<Engine::MeshObject> walls =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/wallsMaterialMesh.mesh", "Game/Arena/wallsMaterial.mat");
-		walls->setTransformation(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		walls->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(walls);
 
 		//DebugObjects

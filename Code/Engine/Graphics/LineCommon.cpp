@@ -21,7 +21,7 @@ Engine::Graphics::Line::Line()
 
 bool Engine::Graphics::Line::containsDebugLine()
 {
-	return mLineList.size();
+	return mLineList.size() > 0 ? true : false;
 }
 
 
@@ -37,12 +37,12 @@ void Engine::Graphics::Line::AddLine(Engine::Math::Vector3 i_startPoint, Engine:
 	createBuffer();
 }
 
-Engine::Math::Transformation Engine::Graphics::Line::getTransformation()
+Engine::Math::Transform Engine::Graphics::Line::getTransform()
 {
-	return Math::Transformation();
+	return Math::Transform();
 }
 
-void Engine::Graphics::Line::setTransformation(Math::Vector3, Math::Quaternion)
+void Engine::Graphics::Line::setTransform(Math::Vector3, Math::Quaternion)
 {}
 
 
@@ -70,7 +70,7 @@ void Engine::Graphics::Line::setMaterialName(std::string iMaterialName)
 
 uint8_t Engine::Graphics::Line::getLineCounts()
 {
-	return mLineList.size();
+	return static_cast<uint8_t>(mLineList.size());
 }
 
 
@@ -81,7 +81,7 @@ bool Engine::Graphics::Line::setUniforms()
 
 	if (!tempCamera.isNull())
 	{
-		Math::Transformation cameraTransformation = tempCamera->getTransformation();
+		Math::Transform cameraTransform = tempCamera->getTransform();
 		float fieldOfView = tempCamera->getFieldOfView();
 		float aspectRatio = tempCamera->getAspectRatio();
 		float nearPlane = tempCamera->getNearPlane();
@@ -104,8 +104,8 @@ bool Engine::Graphics::Line::setUniforms()
 		worldToViewValues.matrixValue.Type = Graphics::WorldToView;
 		worldToViewValues.matrixValue.matrix =
 			Math::Matrix4x4::CreateWorldToViewTransform(
-				cameraTransformation.mOrientation,
-				cameraTransformation.mPositionOffset);
+				cameraTransform.getOrientation(),
+				cameraTransform.getPosition());
 		worldToView->setUniformValue(worldToViewValues);
 
 

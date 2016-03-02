@@ -4,25 +4,25 @@
 
 void Application::CameraController::updateObject(Engine::Object& iObject, Engine::typedefs::Action iAction)
 {
-	Engine::Math::Transformation transformation= iObject.getTransformation();
+	Engine::Math::Transform Transform= iObject.getTransform();
 	switch (iAction)
 	{
 	case Engine::typedefs::MoveForward:
-		transformation.mPositionOffset += Engine::Math::Vector3(0.0f, 0.0f, -1.0f);
+		Transform.mPositionOffset += Engine::Math::Vector3(0.0f, 0.0f, -1.0f);
 	break;
 	case Engine::typedefs::MoveBackWard:
-		transformation.mPositionOffset += Engine::Math::Vector3(0.0f, 0.0f, 1.0f);
+		Transform.mPositionOffset += Engine::Math::Vector3(0.0f, 0.0f, 1.0f);
 	break;
 	case Engine::typedefs::MoveLeft:
-		transformation.mPositionOffset += Engine::Math::Vector3(-1.0f, 0.0f, 0.0f);
+		Transform.mPositionOffset += Engine::Math::Vector3(-1.0f, 0.0f, 0.0f);
 	break;
 	case Engine::typedefs::MoveRight:
-		transformation.mPositionOffset += Engine::Math::Vector3(1.0f, 0.0f, 0.0f);
+		Transform.mPositionOffset += Engine::Math::Vector3(1.0f, 0.0f, 0.0f);
 	break;
 	default:
 	break;
 	}
-	iObject.setTransformation(transformation.mPositionOffset, transformation.mOrientation);
+	iObject.setTransform(Transform.mPositionOffset, Transform.mOrientation);
 }
 
 

@@ -19,7 +19,11 @@ return
 		{
 			src = "ComputerGraphics/Torus.lua",
 			target = "ComputerGraphics/Torus.mesh",
-		},					
+		},	
+		{
+			src = "ComputerGraphics/environmentMappingSphere.lua",
+			target = "ComputerGraphics/environmentMappingSphere.mesh",
+		},				
 	},
 -- =====================================================================
 
@@ -41,6 +45,10 @@ return
 		{
 			src = "ComputerGraphics/skyBoxEffect.lua",
 			target = "ComputerGraphics/skyBoxEffect.effect"
+		},
+		{
+			src = "ComputerGraphics/environmentMappingSphereEffect.lua",
+			target = "ComputerGraphics/environmentMappingSphereEffect.effect"
 		},
 	},
 
@@ -66,6 +74,10 @@ return
 			src = "ComputerGraphics/skyBoxMaterial.lua",
 			target = "ComputerGraphics/skyBoxMaterial.mat",
 		},		
+		{
+			src = "ComputerGraphics/environmentMappingSphereMaterial.lua",
+			target = "ComputerGraphics/environmentMappingSphereMaterial.mat",
+		},
 	},
 
 -- ======================================================================
@@ -159,6 +171,27 @@ return
 
 		},
 	-- *******************************************************************		
+		{
+			src = "ComputerGraphics/environmentMappingSphereVertex.glsl",
+			target = "ComputerGraphics/environmentMappingSphereVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/environmentMappingSphereFragment.glsl",
+			target = "ComputerGraphics/environmentMappingSphereFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************	
 	
 	},
 
@@ -184,6 +217,10 @@ return
 		{
 			src = "ComputerGraphics/Yokohama3.dds",
 			target = "ComputerGraphics/Yokohama3.dds",
+		},
+		{
+			src = "ComputerGraphics/LancellottiChapel.dds",
+			target = "ComputerGraphics/LancellottiChapel.dds",
 		},
 	}
 -- ====================================================================

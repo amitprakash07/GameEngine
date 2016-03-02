@@ -6,8 +6,7 @@
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
-    <ClCompile Include="Point2D.cpp" />
-    <ClCompile Include="Point3D.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Functions.h" />
@@ -16,7 +15,6 @@
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Matrix4x4.h" />
-    <ClInclude Include="Point2D.h" />
-    <ClInclude Include="Point3D.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
 </Project>

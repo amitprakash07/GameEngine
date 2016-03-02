@@ -19,8 +19,8 @@ namespace Engine
 		public:
 			static void CreateSkyBox(std::string i_MaterialName);
 			static SharedPointer<SkyBox> getSkyBox();
-			Math::Transformation getTransformation() override;
-			void setTransformation(Math::Vector3,
+			Math::Transform getTransform() override;
+			void setTransform(Math::Vector3,
 				Math::Quaternion = Math::Quaternion()) override;
 			bool isDebugObject() const override;
 			bool isRenderable() const override;
@@ -30,7 +30,7 @@ namespace Engine
 		private:
 			static SharedPointer<SkyBox> mSkyBox;
 			SkyBox(std::string material_Name);
-			Math::Transformation stubTransform;
+			Math::Transform stubTransform;
 			std::string mMaterialName;
 			bool createBuffer();	
 			bool isSkyBoxAvailable;

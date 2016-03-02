@@ -233,6 +233,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{7FA5CAB7-C70F-4FA4-A130-4C363991CBC5}"
 	ProjectSection(SolutionItems) = preProject
 		Assets\Effects\ComputerGraphics\cubeEffect.lua = Assets\Effects\ComputerGraphics\cubeEffect.lua
+		Assets\Effects\ComputerGraphics\environmentMappingSphereEffect.lua = Assets\Effects\ComputerGraphics\environmentMappingSphereEffect.lua
 		Assets\Effects\ComputerGraphics\floorEffect.lua = Assets\Effects\ComputerGraphics\floorEffect.lua
 		Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua = Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua
 		Assets\Effects\ComputerGraphics\skyBoxEffect.lua = Assets\Effects\ComputerGraphics\skyBoxEffect.lua
@@ -241,6 +242,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{EBF44EFF-3961-484B-A0F8-A62D333F56F7}"
 	ProjectSection(SolutionItems) = preProject
 		Assets\Materials\ComputerGraphics\cubeMaterial.lua = Assets\Materials\ComputerGraphics\cubeMaterial.lua
+		Assets\Materials\ComputerGraphics\environmentMappingSphereMaterial.lua = Assets\Materials\ComputerGraphics\environmentMappingSphereMaterial.lua
 		Assets\Materials\ComputerGraphics\floorMaterial.lua = Assets\Materials\ComputerGraphics\floorMaterial.lua
 		Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua = Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua
 		Assets\Materials\ComputerGraphics\skyBoxMaterial.lua = Assets\Materials\ComputerGraphics\skyBoxMaterial.lua
@@ -250,6 +252,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{EA91
 	ProjectSection(SolutionItems) = preProject
 		Assets\Shaders\ComputerGraphics\cubeFragment.glsl = Assets\Shaders\ComputerGraphics\cubeFragment.glsl
 		Assets\Shaders\ComputerGraphics\cubeVertex.glsl = Assets\Shaders\ComputerGraphics\cubeVertex.glsl
+		Assets\Shaders\ComputerGraphics\environmentMappingSphereFragment.glsl = Assets\Shaders\ComputerGraphics\environmentMappingSphereFragment.glsl
+		Assets\Shaders\ComputerGraphics\environmentMappingSphereVertex.glsl = Assets\Shaders\ComputerGraphics\environmentMappingSphereVertex.glsl
 		Assets\Shaders\ComputerGraphics\floorFragment.glsl = Assets\Shaders\ComputerGraphics\floorFragment.glsl
 		Assets\Shaders\ComputerGraphics\floorVertex.glsl = Assets\Shaders\ComputerGraphics\floorVertex.glsl
 		Assets\Shaders\ComputerGraphics\reflectiveSphereFragment.glsl = Assets\Shaders\ComputerGraphics\reflectiveSphereFragment.glsl
@@ -261,6 +265,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meshes", "Meshes", "{5EF8A44E-593F-45D7-B9C3-4D7130965DEA}"
 	ProjectSection(SolutionItems) = preProject
 		Assets\Meshes\ComputerGraphics\Cube.lua = Assets\Meshes\ComputerGraphics\Cube.lua
+		Assets\Meshes\ComputerGraphics\environmentMappingSphere.lua = Assets\Meshes\ComputerGraphics\environmentMappingSphere.lua
 		Assets\Meshes\ComputerGraphics\floor.lua = Assets\Meshes\ComputerGraphics\floor.lua
 		Assets\Meshes\ComputerGraphics\reflectiveSphere.lua = Assets\Meshes\ComputerGraphics\reflectiveSphere.lua
 		Assets\Meshes\ComputerGraphics\Torus.lua = Assets\Meshes\ComputerGraphics\Torus.lua

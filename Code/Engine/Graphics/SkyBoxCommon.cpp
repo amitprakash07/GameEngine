@@ -26,7 +26,7 @@ bool Engine::Graphics::SkyBox::isSkyBoxAvailableIntialized() const
 	return isSkyBoxAvailable;
 }
 
-Engine::Math::Transformation Engine::Graphics::SkyBox::getTransformation()
+Engine::Math::Transform Engine::Graphics::SkyBox::getTransform()
 {
 	return stubTransform;
 }
@@ -51,7 +51,7 @@ bool Engine::Graphics::SkyBox::isRenderable() const
 	return true;
 }
 
-void Engine::Graphics::SkyBox::setTransformation(Math::Vector3, Math::Quaternion)
+void Engine::Graphics::SkyBox::setTransform(Math::Vector3, Math::Quaternion)
 {
 	
 }

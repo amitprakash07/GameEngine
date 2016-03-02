@@ -1,10 +1,10 @@
 return 
 {
-	effect = "ComputerGraphics/reflectiveSphereEffect.effect",
+	effect = "ComputerGraphics/environmentMappingSphereEffect.effect",
 	map =
 	{
 		{
-			path = "ComputerGraphics/defaultTexture.png",
+			path = "ComputerGraphics/Yokohama3.dds",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",

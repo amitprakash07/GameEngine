@@ -66,6 +66,13 @@
       <Filter>Direct3D</Filter>
     </ClCompile>
     <ClCompile Include="SkyBoxCommon.cpp" />
+    <ClCompile Include="ReflectingObjectCommon.cpp" />
+    <ClCompile Include="OpenGL\ReflectingObject.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL\ReflectingObject.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
@@ -80,5 +87,6 @@
     <ClInclude Include="uniformdefs.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="ReflectingObject.h" />
   </ItemGroup>
 </Project>

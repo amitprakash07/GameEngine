@@ -19,15 +19,23 @@ Engine::SharedPointer<Engine::Camera> Engine::Camera::CreateCamera(std::string i
 }
 
 
+Engine::Math::Vector3 Engine::Camera::getForwardVector()const
+{
+	return(mTransform.getForwardVector());
+}
+
+
 Engine::Camera::Camera()
 {
 	mObjectController = nullptr;
 	mCameraName = "";
-	mTransformation.mOrientation = Engine::Math::Quaternion();
-	mTransformation.mPositionOffset = Engine::Math::Vector3();
+	mTransform.setOrientation(Engine::Math::Quaternion());
+	mTransform.setPosition(Engine::Math::Vector3());
 	fieldOfView = 0.0f;
 	aspectRatio = 0.0f;
 	active = false;
+	nearPlane = 0.0f;
+	farPlane = 0.0f;
 }
 
 
@@ -40,10 +48,10 @@ Engine::Camera::Camera(std::string i_name, Math::Vector3 i_position,
 	)
 {
 	mObjectController = nullptr;
-	mTransformation = Math::Transformation();
+	mTransform = Math::Transform();
 	mCameraName = i_name;
-	mTransformation.mOrientation = i_orientation;
-	mTransformation.mPositionOffset = i_position;
+	mTransform.setOrientation(i_orientation);
+	mTransform.setPosition(i_position);
 	fieldOfView = Engine::Math::ConvertDegreesToRadians(i_fieldOfView);
 	aspectRatio = i_aspectRatio;
 	active = false;
@@ -85,16 +93,16 @@ bool Engine::Camera::isActive() const
 }
 
 
-Engine::Math::Transformation Engine::Camera::getTransformation()
+Engine::Math::Transform Engine::Camera::getTransform()
 {
-	return mTransformation;
+	return mTransform;
 }
 
-void Engine::Camera::setTransformation(Engine::Math::Vector3 i_positionOffset,
+void Engine::Camera::setTransform(Engine::Math::Vector3 i_positionOffset,
 	Engine::Math::Quaternion i_orientation)
 {
-	mTransformation.mOrientation = i_orientation;
-	mTransformation.mPositionOffset = i_positionOffset;
+	mTransform.setOrientation(i_orientation);
+	mTransform.setPosition(i_positionOffset);
 }
 
 

@@ -49,6 +49,7 @@ bool Engine::Scene::addObjectToScene(SharedPointer<T> & i_game_object)
 	return false;
 }
 
+//MeshObjects
 template<>
 bool Engine::Scene::addObjectToScene<Engine::MeshObject>(
 	SharedPointer<MeshObject> & iMeshObject)
@@ -61,6 +62,8 @@ bool Engine::Scene::addObjectToScene<Engine::MeshObject>(
 	return false;
 }
 
+
+//Lines
 template<>
 bool Engine::Scene::addObjectToScene<Engine::Graphics::Line>(
 	SharedPointer<Engine::Graphics::Line> & iLine)
@@ -73,6 +76,8 @@ bool Engine::Scene::addObjectToScene<Engine::Graphics::Line>(
 	return false;
 }
 
+
+//Sprites
 template<>
 bool Engine::Scene::addObjectToScene<Engine::Graphics::Sprite>(
 	SharedPointer<Engine::Graphics::Sprite> & iSprite)
@@ -86,6 +91,20 @@ bool Engine::Scene::addObjectToScene<Engine::Graphics::Sprite>(
 }
 
 
+//Reflecting Objects - Environment Maps
+template<>
+bool Engine::Scene::addObjectToScene<Engine::Graphics::ReflectingObject>(
+	SharedPointer<Engine::Graphics::ReflectingObject> & iReflectingObject)
+{
+	if (!iReflectingObject.isNull())
+	{
+		mReflectingObjectList.push_back(iReflectingObject);
+		return true;
+	}
+	return false;
+}
+
+//Camera
 bool Engine::Scene::addCameraToScene(SharedPointer<Camera>& i_camera)
 {
 	if (!i_camera.isNull())
@@ -124,6 +143,16 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 
 void Engine::Scene::drawScene(bool withDebug)
 {
+	//Generate dynamic Cube Maps
+	if(mReflectingObjectList.size()>0)
+	{
+		sortAllReflectingObjects();
+		for (uint8_t i = 0; i < mReflectingObjectList.size(); i++)
+		{
+			mReflectingObjectList[i]->generateCubeMap();
+		}
+	}
+
 	Engine::SharedPointer<Engine::Graphics::SkyBox> tempSkyBox =
 		Engine::Graphics::SkyBox::getSkyBox();
 	if(!tempSkyBox.isNull() && tempSkyBox->isSkyBoxAvailableIntialized())
@@ -131,30 +160,101 @@ void Engine::Scene::drawScene(bool withDebug)
 		tempSkyBox->draw(true);
 	}
 
-	for (int i = 0; i < mMeshObjectInSceneList.size(); i++)
+	for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
 		mMeshObjectInSceneList[i]->draw(withDebug);
 
-	for (int i = 0; i < mSpriteListInScene.size(); i++)
+	for (uint8_t i = 0; i < mSpriteListInScene.size(); i++)
 		mSpriteListInScene[i]->draw(withDebug);
 
 	if (Engine::Graphics::Line::containsDebugLine())
 		Engine::Graphics::Line::drawLines(withDebug);
 
+	
+	//Draw the environment mapping reflecting Objects
+	if (mReflectingObjectList.size()>0)
+	{
+		for (uint8_t i = 0; i < mReflectingObjectList.size(); i++)
+		{
+			mReflectingObjectList[i]->draw(true);
+		}
+	}
+
 	mTimer->updateDeltaTime();
 }
+
+
+
 
 void Engine::Scene::applyPaintersAlgorithmForTransparency()
 {
 	SharedPointer<Scene> activeScene = getRenderableScene();
-	std::sort(activeScene->mMeshObjectInSceneList.begin(), activeScene->mMeshObjectInSceneList.end(), sortingFunc);
+	std::sort(activeScene->mMeshObjectInSceneList.begin(), 
+		activeScene->mMeshObjectInSceneList.end(), sortMeshObject);
+}
+
+void Engine::Scene::sortAllReflectingObjects()
+{
+	SharedPointer<Scene> activeScene = getRenderableScene();
+	std::sort(activeScene->mReflectingObjectList.begin(), 
+		activeScene->mReflectingObjectList.end(), sortReflectingObject);
 }
 
 
-bool Engine::Scene::sortingFunc(SharedPointer<MeshObject> i_gameObjectOne,
+std::vector<Engine::SharedPointer<Engine::MeshObject>> 
+	Engine::Scene::getMeshObjectList() const
+{
+	return mMeshObjectInSceneList;
+}
+
+std::vector<Engine::SharedPointer<Engine::Graphics::Sprite>> 
+	Engine::Scene::getSpriteObjectList() const
+{
+	return mSpriteListInScene;
+}
+
+
+std::vector<Engine::SharedPointer<Engine::Graphics::Line>> 
+	Engine::Scene::getLineList() const
+{
+	return mLineListInScene;
+}
+
+
+std::vector<Engine::SharedPointer<Engine::Graphics::ReflectingObject>> 
+	Engine::Scene::getReflectingObjectList() const
+{
+	return mReflectingObjectList;
+}
+
+
+bool Engine::Scene::sortMeshObject(
+	SharedPointer<MeshObject> i_gameObjectOne,
 	SharedPointer<MeshObject> i_gameObjectTwo)
 {
-	if (i_gameObjectOne->getTransformation().mPositionOffset.z <
-		i_gameObjectTwo->getTransformation().mPositionOffset.z)
+	if (i_gameObjectOne->getTransform().getPosition().z <
+		i_gameObjectTwo->getTransform().getPosition().z)
+		return true;
+	return false;
+}
+
+
+bool Engine::Scene::sortSprites(
+	SharedPointer<Engine::Graphics::Sprite> i_gameObjectOne,
+	SharedPointer<Engine::Graphics::Sprite> i_gameObjectTwo)
+{
+	if (i_gameObjectOne->getTransform().getPosition().z <
+		i_gameObjectTwo->getTransform().getPosition().z)
+		return true;
+	return false;
+}
+
+
+bool Engine::Scene::sortReflectingObject(
+	SharedPointer<Engine::Graphics::ReflectingObject> i_gameObjectOne,
+	SharedPointer<Engine::Graphics::ReflectingObject> i_gameObjectTwo)
+{
+	if (i_gameObjectOne->getTransform().getPosition().z <
+		i_gameObjectTwo->getTransform().getPosition().z)
 		return true;
 	return false;
 }

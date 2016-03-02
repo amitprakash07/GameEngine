@@ -59,7 +59,7 @@ Engine::SharedPointer<Engine::MeshObject> Engine::MeshObject::CreateMeshObject(
 Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialName)
 {
 	renderable = true;
-	mTransformation = Math::Transformation();
+	mTransform = Math::Transform();
 	mMeshName = i_meshName;
 	mMaterial = i_materialName;
 	mObjectController = nullptr;
@@ -73,8 +73,8 @@ Engine::MeshObject::MeshObject()
 	mMeshName = "";
 	mMaterial = "";
 	mObjectController = nullptr;
-	mTransformation.mOrientation = Engine::Math::Quaternion();
-	mTransformation.mPositionOffset = Engine::Math::Vector3();
+	mTransform.setOrientation(Engine::Math::Quaternion());
+	mTransform.setPosition(Engine::Math::Vector3());
 	debugObject = false;
 }
 
@@ -114,10 +114,10 @@ bool Engine::MeshObject::isRenderable() const
 	return renderable;
 }
 
-void Engine::MeshObject::setTransformation(Engine::Math::Vector3 i_positionOffset, Engine::Math::Quaternion i_orientation)
+void Engine::MeshObject::setTransform(Engine::Math::Vector3 i_positionOffset, Engine::Math::Quaternion i_orientation)
 {
-	mTransformation.mOrientation = i_orientation;
-	mTransformation.mPositionOffset = i_positionOffset;
+	mTransform.setOrientation(i_orientation);
+	mTransform.setPosition(i_positionOffset);
 }
 
 void Engine::MeshObject::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i_MessageSender, void* i_pMessageData)
@@ -152,9 +152,9 @@ void Engine::MeshObject::HandleMessage(Engine::utils::StringHash& i_message, RTT
 	}
 }
 
-Engine::Math::Transformation Engine::MeshObject::getTransformation()
+Engine::Math::Transform Engine::MeshObject::getTransform()
 {
-	return mTransformation;
+	return mTransform;
 }
 
 Engine::MeshObject::~MeshObject()
@@ -172,7 +172,7 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 		Scene::applyPaintersAlgorithmForTransparency();
 		if (!tempCamera.isNull())
 		{
-			Math::Transformation cameraTransformation = tempCamera->getTransformation();
+			Math::Transform cameraTransform = tempCamera->getTransform();
 			float fieldOfView = tempCamera->getFieldOfView();
 			float aspectRatio = tempCamera->getAspectRatio();
 			float nearPlane = tempCamera->getNearPlane();
@@ -180,7 +180,7 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 			if (debugObject)
 				Engine::Graphics::GraphicsSystem::EnableWireFrame(true);
 			getEffect()->setShaders();
-			Math::Transformation gameObjectTransformation = getTransformation();
+			Math::Transform gameObjectTransform = getTransform();
 			std::string effectFile = getMaterial()->getEffectName();
 
 			SharedPointer<Graphics::Uniform> localToWorldUniform = 
@@ -204,8 +204,8 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 				Graphics::UniformValues localToWorlValues;
 				localToWorlValues.matrixValue.Type = Graphics::LocalToWorld;
 				localToWorlValues.matrixValue.matrix =
-					Math::Matrix4x4(mTransformation.mOrientation,
-						mTransformation.mPositionOffset);
+					Math::Matrix4x4(mTransform.getOrientation(),
+						mTransform.getPosition());
 				localToWorldUniform->setUniformValue(localToWorlValues);
 			}
 
@@ -215,8 +215,8 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 				worldToViewValues.matrixValue.Type = Graphics::WorldToView;
 				worldToViewValues.matrixValue.matrix =
 					Math::Matrix4x4::CreateWorldToViewTransform(
-						cameraTransformation.mOrientation,
-						cameraTransformation.mPositionOffset);
+						cameraTransform.getOrientation(),
+						cameraTransform.getPosition());
 				worldToView->setUniformValue(worldToViewValues);
 			}
 

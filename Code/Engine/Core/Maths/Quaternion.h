@@ -5,19 +5,7 @@
 #ifndef _MATH_CQUATERNION_H
 #define _MATH_CQUATERNION_H
 
-// Forward Declarations
-//=====================
-
-namespace Engine
-{
-	namespace Math
-	{
-		class Vector3;
-	}
-}
-
-// Class Declaration
-//==================
+#include "Vector3.h"
 
 namespace Engine
 {
@@ -25,53 +13,96 @@ namespace Engine
 	{
 		class Quaternion
 		{
-			// Interface
-			//==========
-
 		public:
+			Quaternion();
+			static Quaternion getIdentityQuartenion();	
+			static Quaternion slerp(Quaternion fromQuaternion,
+				Quaternion toQuartenion, float interpolationFactor);
 
-			static Quaternion getIdentityQuartenion();
-			// Concatenation
+			float w()const;
+			float x()const;
+			float y()const;
+			float z()const;
+
+			//Cross Product
 			Quaternion operator *( const Quaternion& i_rhs ) const;
+			Quaternion cross(const Quaternion& i_rhs) const;
 
-			// Inversion
-			void Invert();
+			//Inverse
+			void inverse();
 			Quaternion CreateInverse() const;
 
-			// Normalization
+
+			//Negate
+			Quaternion operator -()const;
+			void conjugate();
+
+			//Magnitude
+			float magnitude()const;
+
+			
+			//Normalization
+			/*
+			q = [s,v] = [s,x,y,z]
+			magnitude = length = sqrt(s*s + x*x + y*y + z*z)
+			normalize = magnitude * q
+			*/
 			void Normalize();
 			Quaternion CreateNormalized() const;
 
-			// Products
-			friend float Dot( const Quaternion& i_lhs, const Quaternion& i_rhs );
+			//Angular Displacement
+			/*
+			Given orientations a and b, we can compute the angular displacement
+			d which rotates from a to b i.e.				
+			ad = b => d(difference) = inverse(a)b
+			*/
+			Quaternion angularDisplacement(Quaternion i_other)const; 
+			Quaternion operator -(const Quaternion &iRhs)const;
+			Quaternion& operator -=(const Quaternion &iRhs);
 
-			// Initialization / Shut Down
-			//---------------------------
 
-			Quaternion();	// Identity
-			Quaternion( const float i_angleInRadians, const Vector3& i_axisOfRotation_normalized );
+			//Dot Product
+			/*
+			The geometric interpretation of the quaternion dot product is similar to 
+			the interpretation of the vector dot product; 
+			The larger the absolute value of the quaternion dot product ab, the more
+			“similar” the angular displacements represented by a and b.
+			*/
+			float dot(const Quaternion& i_rhs )const;
 
-			// Data
-			//=====
+			//Exponent
+			/*
+			Quaternion exponentiation is useful because it allows us to 
+			extract a “fraction” of an angular displacement. 
+			For example, to compute a quaternion that represents one-third
+			of the angular displacement represented by the quaternion q, 
+			we would compute q1/3.
+
+			The caveat we here is this: a quaternion represents angular displacements
+			using the shortest arc. “Multiple spins” cannot be represented. 
+			For our example from above, q4 is not a 240º clockwise rotation about the x-axis as expected; 
+			it is an 80º counterclockwise rotation.
+			*/
+			Quaternion operator^(const float power)const;
+
+
+			//Rotation Quartenion
+			Quaternion( const float i_angleInRadians, const Vector3& i_axisOfRotation );
+			static Quaternion getYaw(const float angleInRadians);//About y-axis
+			static Quaternion getPitch(const float angleInRadians);//About x-axis
+			static Quaternion getRoll(const float angleInRadians);//About z-axis
+			static Quaternion getYawPitchRoll(const float angleInRadiansForPitch,
+				const float angleInRadiansForYaw,
+				const float angleInRadiansForRoll);
+
 
 		private:
-
-			float m_w, m_x, m_y, m_z;
-
-			// Implementation
-			//===============
-
-		private:
-
-			// Initialization / Shut Down
-			//---------------------------
-
+			float mW, mX, mY, mZ;
+			float scalar;
+			Vector3 vector;
 			Quaternion( const float i_w, const float i_x, const float i_y, const float i_z );
-
-			// Friend Classes
-			//===============
-
-			friend class Matrix4x4;
+			void splitToScalarVector();
+			void splitFromScalarVector();
 		};
 	}
 }

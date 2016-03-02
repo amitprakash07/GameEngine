@@ -21,7 +21,9 @@ bool Engine::Graphics::Texture::addTextureToList(const char* i_effectFileName,
 			return true;
 		else
 		{
-			Engine::SharedPointer<Engine::Graphics::Texture> tempTexture(new Engine::Graphics::Texture(), "Engine::Graphics::Texture");
+			Engine::SharedPointer<Engine::Graphics::Texture> tempTexture(
+				new Engine::Graphics::Texture(), 
+				"Engine::Graphics::Texture");
 			if (!tempTexture.isNull())
 			{
 				tempTexture->setTextureName(i_TextureName);

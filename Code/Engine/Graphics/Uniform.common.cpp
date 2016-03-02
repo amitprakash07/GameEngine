@@ -272,13 +272,13 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 
 
 //void Engine::Graphics::Uniform::setLocalToWorldMatrrixTransformValue(
-//	Transformation iObject)const
+//	Transform iObject)const
 //{
 //	if (isLocalToWorldTransformExist)
 //	{
 //		Engine::Math::Matrix4x4 tempLocal =
 //			Math::Matrix4x4(iObject.mOrientation, iObject.mPositionOffset);
-//		SharedPointer<Uniform> localToWorld = getTransformationMatrix(LocalToWorld);
+//		SharedPointer<Uniform> localToWorld = getTransformMatrix(LocalToWorld);
 //		if (!localToWorld.isNull())
 //		{
 //			UniformValues tempValue;
@@ -289,15 +289,15 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //	}
 //}
 //
-//void Engine::Graphics::Uniform::setWorldToViewTransformationValue(
-//	Transformation cameraTransformation)const
+//void Engine::Graphics::Uniform::setWorldToViewTransformValue(
+//	Transform cameraTransform)const
 //{
 //	if (isWorldToViewTransformExist)
 //	{
 //		Engine::Math::Matrix4x4 tempLocal =
-//			Math::Matrix4x4::CreateWorldToViewTransform(cameraTransformation.mOrientation,
-//				cameraTransformation.mPositionOffset);
-//		SharedPointer<Uniform> worldToView = getTransformationMatrix(WorldToView);
+//			Math::Matrix4x4::CreateWorldToViewTransform(cameraTransform.mOrientation,
+//				cameraTransform.mPositionOffset);
+//		SharedPointer<Uniform> worldToView = getTransformMatrix(WorldToView);
 //		if (!worldToView.isNull())
 //		{
 //			UniformValues tempValue;
@@ -308,7 +308,7 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //	}
 //}
 //
-//void Engine::Graphics::Uniform::setViewToScreenTransformationValue(float fieldOfView,
+//void Engine::Graphics::Uniform::setViewToScreenTransformValue(float fieldOfView,
 //	float aspectRatio, 
 //	float nearPlane, 
 //	float farPlane)const
@@ -318,7 +318,7 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //		Engine::Math::Matrix4x4 tempLocal =
 //			Math::Matrix4x4::CreateViewToScreenTransform(
 //				fieldOfView, aspectRatio, nearPlane, farPlane);
-//		SharedPointer<Uniform> viewToScreen = getTransformationMatrix(ViewToScreen);
+//		SharedPointer<Uniform> viewToScreen = getTransformMatrix(ViewToScreen);
 //		if (!viewToScreen.isNull())
 //		{
 //			UniformValues tempValue;
@@ -331,7 +331,7 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //
 //
 //Engine::SharedPointer<Engine::Graphics::Uniform>
-//Engine::Graphics::Uniform::getTransformationMatrix(
+//Engine::Graphics::Uniform::getTransformMatrix(
 //	std::string i_effectName,
 //	ShaderType i_shaderType,
 //	Transform_Matrix_Type i_MatrixType)
@@ -359,7 +359,7 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //	{
 //		if(i->second->effectName.compare(effectName) == 0 && i->second->getShaderType() == iShaderType)
 //		{
-//			return i->second->getTransformationMatrix(LocalToWorld);
+//			return i->second->getTransformMatrix(LocalToWorld);
 //		}
 //	}
 //	return SharedPointer<Uniform>();
@@ -376,7 +376,7 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //	{
 //		if (i->second->effectName.compare(effectName) == 0 && i->second->getShaderType() == iShaderType)
 //		{
-//			return i->second->getTransformationMatrix(WorldToView);
+//			return i->second->getTransformMatrix(WorldToView);
 //		}
 //	}
 //	return SharedPointer<Uniform>();
@@ -392,7 +392,7 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 //	{
 //		if (i->second->effectName.compare(effectName) == 0 && i->second->getShaderType() == iShaderType)
 //		{
-//			return i->second->getTransformationMatrix(ViewToScreen);
+//			return i->second->getTransformMatrix(ViewToScreen);
 //		}
 //	}
 //	return SharedPointer<Uniform>();

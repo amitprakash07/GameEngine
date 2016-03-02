@@ -1,15 +1,15 @@
 #ifndef __OBJECT_H
 #define __OBJECT_H
 
-#include "../../Maths/Math.h"
+#include "../../Maths/Transform.h"
 
 namespace Engine
 {
 	class Object
 	{
 	public:
-		virtual Math::Transformation getTransformation() = 0;
-		virtual void setTransformation(Engine::Math::Vector3,
+		virtual Math::Transform getTransform() = 0;
+		virtual void setTransform(Engine::Math::Vector3,
 			Engine::Math::Quaternion = Engine::Math::Quaternion()) = 0;
 		virtual void draw(bool) = 0;
 		virtual bool isRenderable() const = 0;
