@@ -28,17 +28,17 @@ namespace Engine
 		std::string getTypeInfo() const override { return ""; }
 		bool isBothSameType(RTTI*, std::string) const override { return true; }
 		void EnableDebugging(bool enable = false);
-		bool isDebugObject() const override;
-		MeshObject();
+		bool isDebugObject() const override;		
 		~MeshObject();
 	private:
 		MeshObject(std::string, std::string);
+		MeshObject();
 		std::string									mMeshName;
 		std::string									mMaterial;
 		std::string									vertexModifierUniform;
 		IObjectController*							mObjectController;
 		bool										renderable;
-		Math::Transform						mTransform;
+		Math::Transform								mTransform;
 		bool										debugObject;
 		Engine::Graphics::RGBAColor					vertexColor;
 		

@@ -26,6 +26,10 @@ namespace Engine
 			static bool addTextureToList(const char* i_effectFileName,
 				const char * i_TextureName, const char* i_samplerName,
 				ShaderType iShaderType);
+			static bool addTextureToList(const char* i_effectFileName,
+				const char * textureName, TextureResource textureResource,
+				const char* samplerName, ShaderType shaderType, 
+				TextureType textureType);
 			static SharedPointer<Texture> getTexture(const char*);
 			static bool isTextureExist(const char*);
 			static void deleteAll();
@@ -38,6 +42,7 @@ namespace Engine
 			std::string getTypeInfo() const override { return ""; }
 			bool isBothSameType(RTTI*, std::string) const override { return true; }
 			TextureResource getTextureResource() const;
+			void setTextureResource(TextureResource textureResource);
 			void setSamplerID(SamplerID sampleID);
 			void setTextureInShaderObject(int i_textureUnit);
 			~Texture();

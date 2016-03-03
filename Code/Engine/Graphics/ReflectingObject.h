@@ -25,16 +25,17 @@ namespace Engine
 			bool isDebugObject() const override;
 			void draw(bool) override;			
 			void generateCubeMap();
-		private:			
+			void setDynamicTextureSamplerName(std::string samplerUniformName);					
+		private:
 			ReflectingObject();
-			bool initialized;
 			bool init();
+			bool cubeMapGenerated;
 			std::string meshName;
 			std::string materialName;
-			ShaderType shaderType;
-			TextureResource texture;
-			SamplerID textureSamplerID;
-			TextureType textureType;
+			std::string textureName;
+			std::string dynamicTextureSamplerName;
+			TextureResource texture;			
+			void renderScene();
 #ifdef PLATFORM_OPEN_GL
 			GLuint renderBuffer[6];
 			GLuint frameBuffer[6];

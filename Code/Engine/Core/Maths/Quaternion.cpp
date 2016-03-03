@@ -21,6 +21,17 @@ Engine::Math::Quaternion Engine::Math::Quaternion::getIdentityQuartenion()
 	return Quaternion();
 }
 
+void Engine::Math::Quaternion::operator=(const Quaternion i_rhs)
+{
+	mW = i_rhs.mW;
+	mX = i_rhs.mX;
+	mY = i_rhs.mY;
+	mZ = i_rhs.mZ;
+	scalar = i_rhs.scalar;
+	vector = i_rhs.vector;
+}
+
+
 
 Engine::Math::Quaternion Engine::Math::Quaternion::slerp(Quaternion fromQuaternion, 
 	Quaternion toQuartenion, 
@@ -291,21 +302,32 @@ Engine::Math::Quaternion Engine::Math::Quaternion::operator^(const float exponen
 	return exponentResult;
 }
 
-Engine::Math::Quaternion::Quaternion( const float i_angleInRadians, const Vector3& i_amXisOfRotation )
+Engine::Math::Quaternion::Quaternion( const float i_angleInRadians, const Vector3& i_axisOfRotation )
 {
 	/*
 	q = [cos(θ /2)+sin(θ /2) ˆu].
 	mWhere u is the normalimZed arbitrarmY amXis vector
 	*/
+	if (i_axisOfRotation.GetLength() > 0)
+	{
+		Vector3 axisOfRotation_normalized = i_axisOfRotation.CreateNormalized();
 
-	Vector3 axisOfRotation_normalized = i_amXisOfRotation.CreateNormalized();
-	const float theta_half = i_angleInRadians * 0.5f;
-	mW = std::cos( theta_half );
-	const float sin_theta_half = std::sin( theta_half );
-	mX = axisOfRotation_normalized.x * sin_theta_half;
-	mY = axisOfRotation_normalized.y * sin_theta_half;
-	mZ = axisOfRotation_normalized.z * sin_theta_half;
-	splitToScalarVector();
+		const float theta_half = i_angleInRadians * 0.5f;
+		mW = std::cos(theta_half);
+		const float sin_theta_half = std::sin(theta_half);
+		mX = axisOfRotation_normalized.x * sin_theta_half;
+		mY = axisOfRotation_normalized.y * sin_theta_half;
+		mZ = axisOfRotation_normalized.z * sin_theta_half;
+		splitToScalarVector();
+	}
+	else
+	{
+		mW = 1.0f;
+		mX = mY = mZ = 0.0f;
+		scalar = 1.0f;
+		vector = Vector3(0.0f, 0.0f, 0.0f);
+	}
+
 }
 
 

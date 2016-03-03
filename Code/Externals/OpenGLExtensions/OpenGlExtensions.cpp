@@ -93,6 +93,8 @@ PFNGLFRAMEBUFFERTEXTURE3DPROC glFramebufferTexture3D = nullptr;
 
 PFNGLFRAMEBUFFERRENDERBUFFERPROC glFramebufferRenderbuffer = nullptr;
 
+PFNGLGENERATEMIPMAPPROC glGenerateMipmap = nullptr;
+
 // Initialization
 //---------------
 
@@ -189,6 +191,8 @@ bool OpenGlExtensions::Load(std::string* o_errorMessage)
 	LOADGLFUNCTION(glFramebufferTexture3D, PFNGLFRAMEBUFFERTEXTURE3DPROC);
 
 	LOADGLFUNCTION(glFramebufferRenderbuffer, PFNGLFRAMEBUFFERRENDERBUFFERPROC);
+
+	LOADGLFUNCTION(glGenerateMipmap, PFNGLGENERATEMIPMAPPROC);
 
 #undef LOADGLFUNCTION
 

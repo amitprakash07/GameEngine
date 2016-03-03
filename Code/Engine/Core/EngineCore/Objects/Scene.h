@@ -10,8 +10,9 @@
 #include "../../../Core/Time/FrameTime.h"
 #include "../../../Graphics/ReflectingObject.h"
 
+
 namespace Engine
-{
+{	
 	class Scene :public RTTI
 	{
 	public:

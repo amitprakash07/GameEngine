@@ -72,6 +72,22 @@ void Engine::Math::Transform::rotateByEulerAngles(
 }
 
 
+void Engine::Math::Transform::translate(Vector3 iVector)
+{
+	position += iVector;
+}
+
+
+void Engine::Math::Transform::rotate(const float angleInRadians,const Vector3 axisOfRotation)
+{
+	orientation = orientation * Quaternion(angleInRadians, axisOfRotation.CreateNormalized());
+}
+
+void Engine::Math::Transform::rotate(const Quaternion rotor)
+{
+	orientation = orientation * rotor;
+}
+
 void Engine::Math::Transform::setOrientation(Quaternion newOrientation)
 {
 	orientation = newOrientation;

@@ -95,6 +95,8 @@ extern PFNGLFRAMEBUFFERTEXTURE3DPROC glFramebufferTexture3D;
 
 extern PFNGLFRAMEBUFFERRENDERBUFFERPROC glFramebufferRenderbuffer;
 
+extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
+
 // Initialization
 //---------------
 

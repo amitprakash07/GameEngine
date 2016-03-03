@@ -13,7 +13,7 @@ namespace Engine
 			static bool addMaterialToList(const char*);
 			static SharedPointer<Material> getMaterial(const char*);
 			static bool isMaterialExist(const char*);
-			static void deleteAll();
+			static void deleteAll();			
 			void setMaterialName(const char*);
 			const char *getMaterialName() const;
 			const char* getEffectName() const;

@@ -20,6 +20,8 @@ Engine::SharedPointer<Engine::Graphics::ReflectingObject>
 			new ReflectingObject(), "Engine::Graphics::ReflectingObject");
 		tempReflectingObject->meshName = i_meshFileName;
 		tempReflectingObject->materialName = i_materialName;
+		tempReflectingObject->textureName = "dynamic" + i_meshFileName;
+		tempReflectingObject->cubeMapGenerated = false;
 
 		std::stringstream errormessage;
 		if (!Engine::Graphics::Material::addMaterialToList(i_materialName.c_str()))
@@ -37,6 +39,21 @@ Engine::SharedPointer<Engine::Graphics::ReflectingObject>
 			tempReflectingObject.deleteObject();
 			return (SharedPointer<Engine::Graphics::ReflectingObject>());
 		}		
+
+		SharedPointer<Engine::Graphics::Uniform> colorUniform =
+			Engine::Graphics::Uniform::addUniform("vertexColorModifier",
+				Engine::Graphics::Material::getMaterial(
+					tempReflectingObject->materialName.c_str())->getEffectName(),
+				Graphics::Vertex);
+
+		colorUniform->setValType(Graphics::Vector);
+		colorUniform->setValCount(1);
+		std::string tempUniformName = "vertexColorModifier";
+		colorUniform->setHandle(
+			Engine::Graphics::Effect::getEffect(
+				Engine::Graphics::Material::getMaterial(
+					tempReflectingObject->materialName.c_str())->getEffectName())->getUniformHandle(
+				tempUniformName.c_str(), Graphics::Vertex));
 		return tempReflectingObject;		
 	}
 	return SharedPointer<ReflectingObject>();
@@ -66,6 +83,13 @@ void Engine::Graphics::ReflectingObject::setTransform(
 	mTransform.setPosition(position);
 	mTransform.setOrientation(rotation);
 }
+
+void Engine::Graphics::ReflectingObject::setDynamicTextureSamplerName(
+	std::string samplerUniformName)
+{
+	dynamicTextureSamplerName = samplerUniformName;
+}
+
 
 
 

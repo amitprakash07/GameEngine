@@ -12,6 +12,7 @@
 #include "../Engine/Graphics/SkyBox.h"
 
 
+
 int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_commandLineArguments, int i_initialWindowDisplayState)
 {
 	{
@@ -39,13 +40,14 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 			Engine::Math::Vector3(0, 5, -10), Engine::Math::Quaternion());
 		scene->addObjectToScene(reflectivesphereWithBlend);
 
-
-		Engine::SharedPointer<Engine::MeshObject> environmentMappingSphere =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/environmentMappingSphere.mesh",
-				"ComputerGraphics/environmentMappingSphereMaterial.mat");
+		Engine::SharedPointer<Engine::Graphics::ReflectingObject> environmentMappingSphere =
+			Engine::Graphics::ReflectingObject::CreateReflectingObject("ComputerGraphics/environmentMappingSphere.mesh",
+				"ComputerGraphics/environmentMappingSphereMaterial.mat",0.1,1000.0f);
 		environmentMappingSphere->setTransform(
 			Engine::Math::Vector3(0, 5, -10), Engine::Math::Quaternion());
+		environmentMappingSphere->setDynamicTextureSamplerName("g_TextureSampler");
 		scene->addObjectToScene(environmentMappingSphere);
+		
 
 
 		Engine::SharedPointer<Engine::MeshObject> cube =
@@ -53,9 +55,6 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 				"ComputerGraphics/cubeMaterial.mat");
 		cube->setTransform(Engine::Math::Vector3(0, 1, -10), Engine::Math::Quaternion());
 		scene->addObjectToScene(cube);
-
-
-		
 
 		//Camera
 		/*Engine::SharedPointer<Engine::Camera> mainCamera =

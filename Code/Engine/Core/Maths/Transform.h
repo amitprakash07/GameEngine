@@ -23,6 +23,9 @@ namespace Engine
 				const float angleInRadiansForYaw,
 				const float angleInRadiansForRoll);
 			void getEulerAngles() const;
+			void translate(Vector3 iVector);
+			void rotate(const float angleInRadians, const Vector3 axisOfRotation);
+			void rotate(const Quaternion rotor);
 			Matrix4x4 getLocalToWorldMatrix()const;	
 			void TransformTo(Vector3& iPoint)const;
 			void TransformFrom(Vector3& iPoint)const;

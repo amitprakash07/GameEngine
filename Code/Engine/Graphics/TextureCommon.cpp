@@ -50,6 +50,41 @@ bool Engine::Graphics::Texture::addTextureToList(const char* i_effectFileName,
 }
 
 
+bool Engine::Graphics::Texture::addTextureToList(const char* i_effectFileName,
+	const char* textureName,
+	TextureResource textureResource,
+	const char* samplerName,
+	ShaderType shaderType,
+	TextureType textureType)
+{
+	if (!isTextureExist(textureName))
+	{
+		Engine::SharedPointer<Engine::Graphics::Texture> tempTexture(
+			new Engine::Graphics::Texture(),
+			"Engine::Graphics::Texture");
+		if (!tempTexture.isNull())
+		{
+			tempTexture->setTextureName(textureName);
+			tempTexture->setEffectName(i_effectFileName);
+			tempTexture->setUniformName(samplerName);
+			tempTexture->setShaderType(shaderType);
+			tempTexture->setTextureResource(textureResource);
+			tempTexture->textureType = textureType;
+			mTextureList[textureName] = tempTexture;
+			return true;
+		}
+		return true;
+	}
+	return false;
+}
+
+
+void Engine::Graphics::Texture::setTextureResource(TextureResource textureResource)
+{
+	texture = textureResource;
+}
+
+
 const char* Engine::Graphics::Texture::getTextureName()const
 {
 	return textureName.c_str();

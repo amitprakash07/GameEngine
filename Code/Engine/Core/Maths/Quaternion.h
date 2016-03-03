@@ -24,6 +24,9 @@ namespace Engine
 			float y()const;
 			float z()const;
 
+			//Assignment
+			void operator = (const Quaternion i_rhs);
+
 			//Cross Product
 			Quaternion operator *( const Quaternion& i_rhs ) const;
 			Quaternion cross(const Quaternion& i_rhs) const;
@@ -94,6 +97,7 @@ namespace Engine
 			static Quaternion getYawPitchRoll(const float angleInRadiansForPitch,
 				const float angleInRadiansForYaw,
 				const float angleInRadiansForRoll);
+
 
 
 		private:
