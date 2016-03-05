@@ -9,6 +9,7 @@ Link http://www.euclideanspace.com/
 #include <cmath>
 #include "Quaternion.h"
 #include "Vector3.h"
+#include <iostream>
 
 // Interface
 //==========
@@ -141,19 +142,25 @@ Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::operator*(double scalar)const
 
 Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::operator*(Matrix4x4 m_2)const
 {
+	/*
+	http://www.euclideanspace.com/maths/algebra/matrix/resources/code/index.htm#cpp
+	*/
 	Matrix4x4 produxtMatrix;
 	produxtMatrix.m_00 = m_00*m_2.m_00 + m_01*m_2.m_10 + m_02*m_2.m_20 + m_03*m_2.m_30;
 	produxtMatrix.m_01 = m_00*m_2.m_01 + m_01*m_2.m_11 + m_02*m_2.m_21 + m_03*m_2.m_31;
 	produxtMatrix.m_02 = m_00*m_2.m_02 + m_01*m_2.m_12 + m_02*m_2.m_22 + m_03*m_2.m_32;
 	produxtMatrix.m_03 = m_00*m_2.m_03 + m_01*m_2.m_13 + m_02*m_2.m_23 + m_03*m_2.m_33;
+
 	produxtMatrix.m_10 = m_10*m_2.m_00 + m_11*m_2.m_10 + m_12*m_2.m_20 + m_13*m_2.m_30;
 	produxtMatrix.m_11 = m_10*m_2.m_01 + m_11*m_2.m_11 + m_12*m_2.m_21 + m_13*m_2.m_31;
 	produxtMatrix.m_12 = m_10*m_2.m_02 + m_11*m_2.m_12 + m_12*m_2.m_22 + m_13*m_2.m_32;
 	produxtMatrix.m_13 = m_10*m_2.m_03 + m_11*m_2.m_13 + m_12*m_2.m_23 + m_13*m_2.m_33;
+
 	produxtMatrix.m_20 = m_20*m_2.m_00 + m_21*m_2.m_10 + m_22*m_2.m_20 + m_23*m_2.m_30;
 	produxtMatrix.m_21 = m_20*m_2.m_01 + m_21*m_2.m_11 + m_22*m_2.m_21 + m_23*m_2.m_31;
 	produxtMatrix.m_22 = m_20*m_2.m_02 + m_21*m_2.m_12 + m_22*m_2.m_22 + m_23*m_2.m_32;
 	produxtMatrix.m_23 = m_20*m_2.m_03 + m_21*m_2.m_13 + m_22*m_2.m_23 + m_23*m_2.m_33;
+
 	produxtMatrix.m_30 = m_30*m_2.m_00 + m_31*m_2.m_10 + m_32*m_2.m_20 + m_33*m_2.m_30;
 	produxtMatrix.m_31 = m_30*m_2.m_01 + m_31*m_2.m_11 + m_32*m_2.m_21 + m_33*m_2.m_31;
 	produxtMatrix.m_32 = m_30*m_2.m_02 + m_31*m_2.m_12 + m_32*m_2.m_22 + m_33*m_2.m_32;
@@ -231,6 +238,9 @@ Engine::Math::Matrix4x4::Matrix4x4( const Quaternion& i_rotation, const Vector3&
 {
 
 	/*
+	http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+	*/
+	/*
 	1−2(y^2+ z^2)	 2(xy−wz)		 2(xz+wy)
 	2(xy+wz)		 1−2(x^2+z^2)	 2(yz−wx)	
 	2(xz−wy)		 2(yz+wx)		 1−2(x^2+y^2)	
@@ -264,6 +274,69 @@ Engine::Math::Matrix4x4::Matrix4x4( const Quaternion& i_rotation, const Vector3&
 }
 
 
+Engine::Math::Matrix4x4::Matrix4x4(const Vector3& i_translation, bool direction)	
+{
+	m_00 = 1.0f; m_01 = 0.0f; m_02 = 0.0f; m_03 = 0.0f;
+	m_10 = 0.0f; m_11 = 1.0f; m_12 = 0.0f; m_13 = 0.0f;
+	m_20 = 0.0f; m_21 = 0.0f; m_22 = 1.0f; m_23 = 0.0f;
+	m_30 = 0.0f; m_31 = 0.0f; m_32 = 0.0f; m_33 = 1.0f;
+
+	if(direction)
+		m_33 = 0.0f;
+	m_30 = i_translation.x;
+	m_31 = i_translation.y;
+	m_32 = i_translation.z;
+}
+
+Engine::Math::Matrix4x4::Matrix4x4(const Quaternion& i_rotation, bool direction)	
+{
+	/*
+	http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+	*/
+	/*
+	1−2(y^2+ z^2)	 2(xy−wz)		 2(xz+wy)
+	2(xy+wz)		 1−2(x^2+z^2)	 2(yz−wx)
+	2(xz−wy)		 2(yz+wx)		 1−2(x^2+y^2)
+	*/
+
+	m_00 = 1.0f; m_01 = 0.0f; m_02 = 0.0f; m_03 = 0.0f;
+	m_10 = 0.0f; m_11 = 1.0f; m_12 = 0.0f; m_13 = 0.0f;
+	m_20 = 0.0f; m_21 = 0.0f; m_22 = 1.0f; m_23 = 0.0f;
+	m_30 = 0.0f; m_31 = 0.0f; m_32 = 0.0f; m_33 = 1.0f;
+
+	if (direction)
+		m_33 = 0.0f;
+
+	//Only rotation part Assignment below
+	const float _2x = i_rotation.x() + i_rotation.x();
+	const float _2y = i_rotation.y() + i_rotation.y();
+	const float _2z = i_rotation.z() + i_rotation.z();
+	const float _2xx = i_rotation.x() * _2x;
+	const float _2xy = _2x * i_rotation.y();
+	const float _2xz = _2x * i_rotation.z();
+	const float _2xw = _2x * i_rotation.w();
+	const float _2yy = _2y * i_rotation.y();
+	const float _2yz = _2y * i_rotation.z();
+	const float _2yw = _2y * i_rotation.w();
+	const float _2zz = _2z * i_rotation.z();
+	const float _2zw = _2z * i_rotation.w();
+
+	m_00 = 1.0f - _2yy - _2zz;
+	m_10 = _2xy + _2zw;
+	m_20 = _2xz - _2yw;
+
+	m_01 = _2xy - _2zw;
+	m_11 = 1.0f - _2xx - _2zz;
+	m_21 = _2yz + _2xw;
+
+	m_02 = _2xz + _2yw;
+	m_12 = _2yz - _2xw;
+	m_22 = 1.0f - _2xx - _2yy;
+}
+
+
+
+
 Engine::Math::Matrix4x4::Matrix4x4(
 	const float i_00, const float i_10, const float i_20, const float i_30,
 	const float i_01, const float i_11, const float i_21, const float i_31,
@@ -277,3 +350,14 @@ Engine::Math::Matrix4x4::Matrix4x4(
 {
 
 }
+
+
+void Engine::Math::Matrix4x4::printMatrix4x4() const
+{
+	std::cout << "Matrix values is =\n";
+	std::cout << m_00 << ", " << m_01 << ", " << m_02 << ", " << m_03 << std::endl;
+	std::cout << m_10 << ", " << m_11 << ", " << m_12 << ", " << m_13 << std::endl;
+	std::cout << m_20 << ", " << m_21 << ", " << m_22 << ", " << m_23 << std::endl;
+	std::cout << m_30 << ", " << m_31 << ", " << m_32 << ", " << m_33 << std::endl;
+}
+

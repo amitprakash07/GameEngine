@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cmath>
 #include "Vector3.h"
+#include <iostream>
 
 namespace
 {
@@ -306,7 +307,7 @@ Engine::Math::Quaternion::Quaternion( const float i_angleInRadians, const Vector
 {
 	/*
 	q = [cos(θ /2)+sin(θ /2) ˆu].
-	mWhere u is the normalimZed arbitrarmY amXis vector
+	mWhere u is the normalimZed arbitrary axis vector
 	*/
 	if (i_axisOfRotation.GetLength() > 0)
 	{
@@ -334,7 +335,7 @@ Engine::Math::Quaternion::Quaternion( const float i_angleInRadians, const Vector
 //About rightVector(x-axis)
 Engine::Math::Quaternion Engine::Math::Quaternion::getPitch(const float angleInRadians)
 {
-	return Quaternion(cos(angleInRadians/2), sin(angleInRadians/2), 0.0f, 0.0f);
+	return Quaternion(angleInRadians, Vector3(1.0f, 0.0f, 0.0f));
 }
 
 
@@ -397,5 +398,23 @@ void Engine::Math::Quaternion::splitFromScalarVector()
 	mY = vector.y;
 	mZ = vector.z;
 }
+
+
+void Engine::Math::Quaternion::printQuaternion() const
+{
+	std::cout << "w = " <<scalar<<" " ;	
+	vector.printVector();
+	std::cout << std::endl;
+}
+
+
+Engine::Math::Vector3 Engine::Math::Quaternion::operator*(const Vector3 i_rhs)
+{
+	Quaternion tempQuaternion = Quaternion(0.0f, i_rhs.x, i_rhs.y, i_rhs.z);
+	Quaternion crossQuaternion = (*(this))*tempQuaternion;
+	Quaternion final_quaternion = crossQuaternion * this->CreateInverse();
+	return (Vector3(final_quaternion.x(),final_quaternion.y(),final_quaternion.z()));
+}
+
 
 

@@ -3,7 +3,6 @@
 #include "../../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 #include "../../../Engine/Core/EngineCore/WindowingSystem/WindowsProgram.h"
 #include "../../Windows/WindowsFunctions.h"
-#include "../../Core/EngineCore/Objects/Camera.h"
 #include "../SkyBox.h"
 #include "../../Core/Maths/Functions.h"
 #include "../../../Engine/Core/Maths/Transform.h"
@@ -14,8 +13,6 @@
 #include "../../Core/EngineCore/Objects/MeshObject.h"
 #include "../Sprite.h"
 #include "../Line.h"
-
-//#include "../../Core/EngineCore/Objects/Scene.h"
 
 
 namespace Engine
@@ -36,6 +33,7 @@ Engine::Graphics::ReflectingObject::ReflectingObject()
 {
 	texture = -1;		
 	cubeMapGenerated = false;	
+	cameraCreated = false;
 }
 
 
@@ -54,22 +52,28 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 		Engine::Math::Quaternion rotor =
 			Engine::Math::Quaternion::getIdentityQuartenion();
 
-		Engine::SharedPointer<Engine::Camera> cubeMapCamera =
-			Engine::Camera::CreateCamera("cubeMapCamera",
-				mTransform.getPosition(),
-				rotor);
+		if (!cameraCreated)
+		{
+			Engine::SharedPointer<Engine::Camera> tempCamera =
+				Engine::Camera::CreateCamera("cubeMapCamera",
+					mTransform.getPosition(),
+					rotor);
+			environmentCamera = tempCamera;
+			environmentCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
+			environmentCamera->setFieldOfView(90.0f);
+			currentScene->addCameraToScene(environmentCamera);
+			cameraCreated = true;
+		}
 
-		cubeMapCamera->activateCamera(true);
-		cubeMapCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
-		cubeMapCamera->setFieldOfView(90.0f);
-		currentScene->addCameraToScene(cubeMapCamera);
+		environmentCamera->activateCamera(true);		
 
-		GLsizei textureHeight = Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowHeight();
-		GLsizei textureWidth = Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowWidth();
+		GLsizei textureHeight = 1600;/*Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowHeight();*/
+		GLsizei textureWidth = 1600;/* Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowWidth();*/
 		
 		
 		for (int i = 5; i > -1; --i)
 		{
+			//int b = 4;
 			switch(i)
 			{
 			case 5:
@@ -79,6 +83,8 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 				break;
 			case 4:
 				//Positive Z
+				/*rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0.0f),
+					Engine::Math::Vector3(0.0f, 1.0f, 0.0f));*/
 				rotor = Engine::Math::Quaternion::getIdentityQuartenion();
 				break;
 			case 3:
@@ -103,10 +109,11 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 				break;
 			}
 
-			Engine::Math::Transform cubeMapCameraTransform = cubeMapCamera->getTransform();
+
+			Engine::Math::Transform cubeMapCameraTransform = environmentCamera->getTransform();
 			//cubeMapCameraTransform.rotate(rotor);
 			cubeMapCameraTransform.setOrientation(rotor);
-			cubeMapCamera->setTransform(cubeMapCameraTransform.getPosition(), cubeMapCameraTransform.getOrientation());
+			environmentCamera->setTransform(cubeMapCameraTransform.getPosition(), cubeMapCameraTransform.getOrientation());
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer[i]);
 			GLenum errorCode = glGetError();
 			WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to bind framebuffer");
@@ -120,14 +127,15 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 			errorCode = glGetError();
 			WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to clear color and depth buffer");
 			renderScene();
+			/*break;*/
 		}
 
-		cubeMapCamera->activateCamera(false);
+		environmentCamera->activateCamera(false);
 		previousCamera->activateCamera(true);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		GLenum errorCode = glGetError();
 		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to bind framebuffer");
-		/*glViewport(0, 0, textureWidth, textureHeight);
+		glViewport(0, 0, textureWidth, textureHeight);
 		errorCode = glGetError();
 		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to set ViewPort");
 		glClearColor(0.0, 0.0, 1.0, 1.0);
@@ -135,7 +143,7 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to set clear color");
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		errorCode = glGetError();
-		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to clear color and depth buffer");*/
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to clear color and depth buffer");
 		Texture::addTextureToList(Material::getMaterial(materialName.c_str())->getEffectName(),
 			textureName.c_str(), 
 			texture, dynamicTextureSamplerName.c_str(),
@@ -197,7 +205,7 @@ bool Engine::Graphics::ReflectingObject::init()
 				for (int i = 0; i < 6; i++)
 				{
 					glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-						0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, nullptr);
+						0, GL_RGBA, 1600, 1600, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, nullptr);
 					errorCode = glGetError();
 					WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to create immutable texture");
 				}
@@ -212,7 +220,7 @@ bool Engine::Graphics::ReflectingObject::init()
 			for (int i = 0; i < 6; i++)
 			{
 				glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer[i]);
-				glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+				glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 1600, 1600);
 				GLenum errorCode = glGetError();
 				wereThereErrors |= errorCode == GL_NO_ERROR ? false : true;
 				WindowsUtil::Assert(!wereThereErrors, "Unable to bind or create the buffer storage for the render buffer");

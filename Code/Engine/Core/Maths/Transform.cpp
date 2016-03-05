@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include <iostream>
 
 
 Engine::Math::Transform::Transform()
@@ -98,6 +99,16 @@ void Engine::Math::Transform::setPosition(Vector3 newPosition)
 {
 	position = newPosition;
 }
+
+
+void Engine::Math::Transform::printTransform()const
+{
+	std::cout << "Position is ";
+	position.printVector();
+	std::cout << "Orientation is ";
+	orientation.printQuaternion();
+}
+
 
 
 

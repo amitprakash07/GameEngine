@@ -31,6 +31,8 @@ namespace Engine
 			Quaternion operator *( const Quaternion& i_rhs ) const;
 			Quaternion cross(const Quaternion& i_rhs) const;
 
+			Vector3 operator*(const Vector3 i_rhs);
+
 			//Inverse
 			void inverse();
 			Quaternion CreateInverse() const;
@@ -99,7 +101,7 @@ namespace Engine
 				const float angleInRadiansForRoll);
 
 
-
+			void printQuaternion() const;
 		private:
 			float mW, mX, mY, mZ;
 			float scalar;

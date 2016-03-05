@@ -59,7 +59,10 @@ namespace Engine
 			void inverse();
 			double determinant()const;
 			Matrix4x4();
-			Matrix4x4( const Quaternion& i_rotation, const Vector3& i_translation );			
+			Matrix4x4( const Quaternion& i_rotation, const Vector3& i_translation );	
+			Matrix4x4(const Vector3& i_translation, bool direction = false);
+			Matrix4x4(const Quaternion& i_rotation, bool direction = false);
+			void printMatrix4x4() const;
 		private:
 			// Storage is column-major; see notes at the top of the file
 			float 

@@ -27,7 +27,7 @@ namespace Engine
 
 		private:
 			unsigned __int32 mHash;
-#ifdef _ENGINE_DEBUG
+#ifdef _DEBUG
 			char *mString;
 #endif
 		};

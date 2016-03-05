@@ -22,7 +22,7 @@ namespace Engine
 		StringHash::StringHash(const char* i_string) :
 			mHash(Hash(i_string))
 		{
-#ifdef _ENGINE_DEBUG
+#ifdef _DEBUG
 			mString = _strdup(i_string);
 #endif
 		}//end parameterized constructor
@@ -32,7 +32,7 @@ namespace Engine
 		StringHash::StringHash(const StringHash & i_other) :
 			mHash(i_other.mHash)
 		{
-#ifdef _ENGINE_DEBUG
+#ifdef _DEBUG
 			mString = _strdup(i_other.mString);
 #endif
 		}//end copy constructor
@@ -42,7 +42,7 @@ namespace Engine
 		StringHash& StringHash::operator=(const StringHash& i_other)
 		{
 			mHash = i_other.mHash;
-#ifdef _ENGINE_DEBUG
+#ifdef _DEBUG
 			if (mString)
 				free(mString);
 

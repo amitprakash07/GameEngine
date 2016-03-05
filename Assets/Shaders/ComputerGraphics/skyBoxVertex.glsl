@@ -6,7 +6,7 @@ attribute modifier
 #version 410 core
 
 //uniform mat4  g_transform_localToWorld;
-//uniform mat4  g_transform_worldToView;
+uniform mat4  g_transform_worldToView;
 //uniform mat4  g_transform_viewToScreen;
 //uniform vec4 vertexColorModifier;
 
@@ -19,11 +19,10 @@ layout(location = 0) out vec3 o_local_texture;
 
 void main()
 {
-	/*vec4 position_world = vec4(i_local_position, 1.0) * g_transform_localToWorld;
-	vec4 position_view = position_world * g_transform_worldToView;
-	vec4 screenPosition = position_view * g_transform_viewToScreen;*/
-	vec4 screenPosition = vec4(i_local_position, 1);
+	//vec4 position_view = vec4(i_local_position, 1) * g_transform_worldToView;	
+	vec3 position_view = i_local_position * mat3(g_transform_worldToView);
+	vec4 screenPosition = vec4(position_view,1.0);
 	gl_Position = screenPosition;	
-	vec3 skyBoxTexture = i_local_position.xyz;
+	vec3 skyBoxTexture = position_view.xyz;
 	o_local_texture = skyBoxTexture /** vertexColorModifier.xyz*/;
 }

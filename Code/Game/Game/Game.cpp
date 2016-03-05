@@ -6,11 +6,11 @@
 #include "../../Engine/Core/EngineCore/Objects/Scene.h"
 #include "../../Engine/Core/Utilities/SharedPointer.h"
 #include "../../Engine/Core/EngineCore/Objects/MeshObject.h"
-#include "../../Engine/Core/EngineCore/ObjectController/CameraController.h"
 #include "../../Engine/Core/EngineCore/Objects/Camera.h"
 #include "../../Engine/Core/Maths/Functions.h"
 #include "../../Engine/Windows/WindowsFunctions.h"
 #include "../../Engine/Core/Debugging/DebugShapes.h"
+#include "ObjectController/CameraController.h"
 
 
 #define shared_pointer_reinterpret_cast_to_object(x) \
@@ -119,7 +119,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		mainCamera->activateCamera(true);
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
 		mainCamera->setFieldOfView(60.0f);
-		mainCamera->setCameraController(new Engine::CameraController());
+		mainCamera->setCameraController(new Application::CameraController());
 		scene->addCameraToScene(mainCamera);
 
 

@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <iostream>
 
 // Static Data Initialization
 //===========================
@@ -162,3 +163,11 @@ Engine::Math::Vector3::Vector3( const float i_x, const float i_y, const float i_
 {
 
 }
+
+
+void Engine::Math::Vector3::printVector() const
+{
+	std::cout << "x = " << x << ", y = " << y << ", z= " << z;
+	std::cout << std::endl;
+}
+

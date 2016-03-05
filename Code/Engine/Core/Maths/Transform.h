@@ -31,6 +31,7 @@ namespace Engine
 			void TransformFrom(Vector3& iPoint)const;
 			void VectorTransformTo(Vector3& iDir)const;
 			void VectorTransformFrom(Vector3& iDir)const;
+			void printTransform()const;
 		private:
 			Vector3 position;
 			Quaternion orientation;

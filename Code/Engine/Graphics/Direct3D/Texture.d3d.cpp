@@ -15,7 +15,7 @@ bool Engine::Graphics::Texture::loadTexture()
 	D3DXIMAGE_INFO* noSourceInfo = nullptr;
 	PALETTEENTRY* noColorPalette = nullptr;
 	const HRESULT result = 
-		D3DXCreateTextureFromFileEx(Engine::Graphics::GraphicsSystem::getDevice(), textureName, 
+		D3DXCreateTextureFromFileEx(Engine::Graphics::GraphicsSystem::getDevice(), textureName.c_str(), 
 			useDimensionsFromFile, useDimensionsFromFile, useMipMapsFromFile, staticTexture,
 			useFormatFromFile, letD3dManageMemory, useDefaultFiltering, useDefaultFiltering,
 			noColorKey, noSourceInfo, noColorPalette, &texture);
@@ -28,14 +28,11 @@ bool Engine::Graphics::Texture::loadTexture()
 	
 Engine::Graphics::Texture::Texture()
 {
-	textureName = nullptr;
-	texture = nullptr;
-	effectName = nullptr;
-	textureName = nullptr;
+	texture = nullptr;	
 	shaderType = Fragment;
 	textureSamplerID = -1;
 	textureType = TEXTURE_2D;
-	samplerName = nullptr;
+	
 }
 
 
@@ -46,21 +43,24 @@ Engine::Graphics::Texture::Texture(char* i_effectName,
 {
 	if (i_textureName)
 	{
-		size_t length = strlen(i_textureName);
+		textureName = i_textureName;
+		/*size_t length = strlen(i_textureName);
 		textureName = new char[length];
-		memcpy(textureName, i_textureName, length);
+		memcpy(textureName, i_textureName, length);*/
 	}
 	if (i_effectName)
 	{
-		size_t length = strlen(i_effectName);
+		effectName = i_effectName;
+		/*size_t length = strlen(i_effectName);
 		effectName = new char[length];
-		memcpy(effectName, i_effectName, length);
+		memcpy(effectName, i_effectName, length);*/
 	}
 	if (i_samplerName)
 	{
-		size_t length = strlen(i_samplerName);
+		samplerName = i_samplerName;
+		/*size_t length = strlen(i_samplerName);
 		samplerName = new char[length];
-		memcpy(samplerName, i_samplerName, length);
+		memcpy(samplerName, i_samplerName, length);*/
 	}
 	texture = nullptr;
 	textureSamplerID = -1;
@@ -71,10 +71,10 @@ Engine::Graphics::Texture::Texture(char* i_effectName,
 
 Engine::Graphics::Texture::~Texture()
 {
-	if (textureName)
+	/*if (textureName)
 		delete textureName;
 	if (texture)
-		texture->Release();
+		texture->Release();*/
 }
 
 
@@ -84,8 +84,9 @@ void Engine::Graphics::Texture::setSamplerID(SamplerID sampleID)
 } 
 
 
-void Engine::Graphics::Texture::setTextureInShaderObject(int i_textureUnit)const
+void Engine::Graphics::Texture::setTextureInShaderObject(int i_textureUnit)
 {
+	associateSamplerDataFromShader();
 	HRESULT result = 
 		Engine::Graphics::GraphicsSystem::getDevice()->SetTexture(textureSamplerID, texture);
 	WindowsUtil::Assert(SUCCEEDED(result), "Unable to set the Texture to ths Shader");	

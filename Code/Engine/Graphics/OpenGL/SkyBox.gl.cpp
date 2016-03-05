@@ -2,6 +2,19 @@
 #include "../../Windows/WindowsFunctions.h"
 #include "../../Graphics/Effect.h"
 #include "../../Graphics/Material.h"
+#include "../../Core/EngineCore/Objects/Camera.h"
+
+
+namespace Engine
+{
+	class Scene :public RTTI
+	{
+	public:
+		static Engine::SharedPointer<Scene> getRenderableScene();
+		SharedPointer<Camera> getActiveCamera() const;		
+	};
+}
+
 
 Engine::Graphics::SkyBox::SkyBox(std::string material_Name)
 {
@@ -142,22 +155,52 @@ void Engine::Graphics::SkyBox::draw(bool)
 
 	WindowsUtil::Assert(isEffectFound, "No Effect Found for the SkyBox");
 
-	if(isEffectFound)
+	if (isEffectFound)
 	{
-		tempEffect->setShaders();
-		tempMaterial->setMaterialUniformParameters();
-		tempMaterial->setTextureUniform();
-		glBindVertexArray(s_vertexArrayID);
-		WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to bind the vertex Array Object");
 
-		const GLenum mode = GL_TRIANGLES;
-		const GLenum indexType = GL_UNSIGNED_INT;
-		const GLvoid* const offset = 0;
-		glDrawElements(mode, 12 * 3, indexType, offset);
-		WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to Draw ths SkyBox");
-		glClear(GL_DEPTH_BUFFER_BIT);
+		SharedPointer<Scene> activeScene = Scene::getRenderableScene();
+		SharedPointer<Camera> tempCamera = activeScene->getActiveCamera();
+
+		if (!tempCamera.isNull())
+		{
+			Math::Transform cameraTransform = tempCamera->getTransform();
+			float fieldOfView = tempCamera->getFieldOfView();
+			float aspectRatio = tempCamera->getAspectRatio();
+			float nearPlane = tempCamera->getNearPlane();
+			float farPlane = tempCamera->getFarPlane();
+
+			tempEffect->setShaders();
+
+			SharedPointer<Graphics::Uniform> worldToView = Graphics::Uniform::getUniform(
+				tempEffect->getTransformMatrixUniformName(
+					Graphics::Vertex,
+					Graphics::WorldToView), tempMaterial->getEffectName(), Graphics::Vertex);
+
+			if (!worldToView.isNull())
+			{
+				Graphics::UniformValues worldToViewValues;
+				worldToViewValues.matrixValue.Type = Graphics::WorldToView;
+				worldToViewValues.matrixValue.matrix =
+					Math::Matrix4x4::CreateWorldToViewTransform(
+						cameraTransform.getOrientation(),
+						cameraTransform.getPosition());
+				worldToView->setUniformValue(worldToViewValues);
+			}
+
+			Engine::Graphics::Uniform::setAllUniformToShaderObjects(tempMaterial->getEffectName());
+			tempMaterial->setMaterialUniformParameters();
+			tempMaterial->setTextureUniform();
+			glBindVertexArray(s_vertexArrayID);
+			WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to bind the vertex Array Object");
+
+			const GLenum mode = GL_TRIANGLES;
+			const GLenum indexType = GL_UNSIGNED_INT;
+			const GLvoid* const offset = 0;
+			glDrawElements(mode, 12 * 3, indexType, offset);
+			WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to Draw ths SkyBox");
+			glClear(GL_DEPTH_BUFFER_BIT);
+		}
 	}	
-	
 }
 
 

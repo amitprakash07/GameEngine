@@ -50,8 +50,7 @@ namespace Engine
 			bool operator ==( const Vector3& i_rhs ) const;
 			bool operator !=( const Vector3& i_rhs ) const;
 
-			// Initialization / Shut Down
-			//---------------------------
+			void printVector() const;
 
 			Vector3( const float i_x = 0.0f, const float i_y = 0.0f, const float i_z = 0.0f );
 

@@ -4,9 +4,8 @@
 #include "../Core/EngineCore/Objects/Object.h"
 #include "../Core/Utilities/SharedPointer.h"
 #include <string>
-#include <vector>
 #include "typedefs.h"
-#include "uniformdefs.h"
+#include "../Core/EngineCore/Objects/Camera.h"
 
 namespace Engine
 {
@@ -30,6 +29,8 @@ namespace Engine
 			ReflectingObject();
 			bool init();
 			bool cubeMapGenerated;
+			SharedPointer<Engine::Camera> environmentCamera;
+			bool cameraCreated;
 			std::string meshName;
 			std::string materialName;
 			std::string textureName;

@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include <sstream>
 
+
 Engine::SharedPointer<Engine::Graphics::ReflectingObject> 
 	Engine::Graphics::ReflectingObject::CreateReflectingObject(
 		std::string i_meshFileName,
