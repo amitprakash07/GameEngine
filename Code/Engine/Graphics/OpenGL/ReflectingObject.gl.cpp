@@ -333,6 +333,7 @@ void Engine::Graphics::ReflectingObject::draw(bool)
 		Engine::Graphics::Material::getMaterial(materialName.c_str())->setMaterialUniformParameters();
 		Engine::Graphics::Texture::getTexture(textureName.c_str())->setTextureInShaderObject(0);
 		Engine::Graphics::Mesh::getMesh(meshName)->drawMesh();
+		/*jshdkjfhsdkjhfkj*/
 	}
 	else
 	{
