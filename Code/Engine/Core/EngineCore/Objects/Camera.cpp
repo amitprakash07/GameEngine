@@ -2,6 +2,7 @@
 #include "../../../Core/Utilities/HashedString.h"
 #include "../../../Core/EngineCore/EngineCore.h"
 #include "../../Maths/Functions.h"
+#include "../../Utilities/IObjectController.h"
 
 
 Engine::SharedPointer<Engine::Camera> Engine::Camera::CreateCamera(std::string i_name,
@@ -12,7 +13,7 @@ Engine::SharedPointer<Engine::Camera> Engine::Camera::CreateCamera(std::string i
 {
 	SharedPointer<Engine::Camera> tempCamera(new Engine::Camera(i_name, i_position, i_orientation, i_fieldofView, i_aspectRatio), "Engine::Camera");
 	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateObject"));
-	Engine::utils::StringHash tempOne(Engine::EngineCore::getStringPool()->findString("MouseEvent"));
+	Engine::utils::StringHash tempOne(Engine::EngineCore::getStringPool()->findString("ActionOnMouseEvent"));
 	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempCamera.getRawPointer()), Engine::typedefs::HIGH);
 	Engine::EngineCore::getMessagingSystem()->addMessageHandler(tempOne, reinterpret_cast<IMessageHandler*>(tempCamera.getRawPointer()), Engine::typedefs::HIGH);
 	return tempCamera;
@@ -106,11 +107,6 @@ void Engine::Camera::setTransform(Engine::Math::Vector3 i_positionOffset,
 }
 
 
-void Engine::Camera::setCameraController(IObjectController* i_objectController)
-{
-	mObjectController = i_objectController;
-}
-
 float Engine::Camera::getNearPlane() const
 {
 	return nearPlane;
@@ -146,8 +142,25 @@ void Engine::Camera::setNearPlane(float i_nearPlane)
 void Engine::Camera::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i_MessageSender, void* i_pMessageData)
 {
 	if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
-		mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::Action*>(i_pMessageData));
+		mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));
 }
+
+void Engine::Camera::updateObject()
+{
+	typedefs::ActionWithKeyBound action;
+	action.action = typedefs::Default;
+	action.keyVal = 0x00;
+	if (mObjectController)
+		mObjectController->updateObject(*this, action);
+}
+
+
+void Engine::Camera::setObjectController(IObjectController* i_objectController)
+{
+	if (i_objectController)
+		mObjectController = i_objectController;
+}
+
 
 
 

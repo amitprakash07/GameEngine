@@ -34,6 +34,8 @@ namespace Engine
 			void draw(bool) override;
 			bool isRenderable() const override { return true; }
 			bool isDebugObject() const override { return false; }
+			void updateObject() override;
+			void setObjectController(IObjectController* objectController) override;
 			~Sprite();
 		private:
 			Sprite(std::string spriteName,
@@ -51,6 +53,7 @@ namespace Engine
 			float rectBottom;
 			bool createBuffers();
 			bool writeToBuffer() const;
+			IObjectController * mObjectController;
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;
 			GLuint vertexBufferId;

@@ -11,9 +11,10 @@
 #include "../../../Graphics/ReflectingObject.h"
 
 
+
 namespace Engine
 {	
-	class Scene :public RTTI
+	class Scene :public Object, IMessageHandler
 	{
 	public:
 		static SharedPointer<Scene> CreateNewScene(std::string);
@@ -25,6 +26,7 @@ namespace Engine
 		void useCamera(const std::string) const;
 		void useCamera(SharedPointer<Camera>) const;
 		void drawScene(bool withDebug = true);
+		void updateScene();
 		static SharedPointer<Engine::Scene> getScene(std::string);
 		void renderScene(bool);
 		std::vector<SharedPointer<Engine::MeshObject>> getMeshObjectList() const;
@@ -37,6 +39,17 @@ namespace Engine
 		bool isBothSameType(RTTI*, std::string) const override { return true; }
 		static void applyPaintersAlgorithmForTransparency();
 		static void sortAllReflectingObjects();
+		//Object Override functions
+		Math::Transform getTransform() override { return Math::Transform(); }
+		void draw(bool) override {}
+		bool isRenderable()const override { return true; }
+		bool isDebugObject()const override { return false; }
+		void updateObject() override;
+		void setObjectController(IObjectController * iObjectController) override;
+		void setTransform(Engine::Math::Vector3,
+			Engine::Math::Quaternion = Engine::Math::Quaternion())override {}
+		//IMesageHandler override function
+		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
 		~Scene();
 	private:
 		static std::map<std::string, SharedPointer<Scene>> mSceneList;
@@ -66,6 +79,7 @@ namespace Engine
 		std::string sceneName;
 		bool render;
 		bool renderDebug;
+		IObjectController * mObjectController;
 	};
 }
 

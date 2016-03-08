@@ -14,6 +14,7 @@ Engine::Scene::Scene(std::string i_sceneName) :
 	sceneName = i_sceneName;
 	render = false;
 	renderDebug = true;
+	mObjectController = nullptr;
 }
 
 Engine::SharedPointer<Engine::Scene> Engine::Scene::CreateNewScene(std::string i_sceneName)
@@ -154,7 +155,7 @@ void Engine::Scene::drawScene(bool withDebug)
 	}
 
 	Engine::SharedPointer<Engine::Graphics::SkyBox> tempSkyBox =
-		Engine::Graphics::SkyBox::getSkyBox();
+		Engine::Graphics::SkyBox::getCurrentSkyBox();
 	if(!tempSkyBox.isNull() && tempSkyBox->isSkyBoxAvailableIntialized())
 	{
 		tempSkyBox->draw(true);
@@ -180,10 +181,43 @@ void Engine::Scene::drawScene(bool withDebug)
 	}
 
 	mTimer->updateDeltaTime();
+	updateScene();
 }
 
 
 
+void Engine::Scene::updateScene()
+{
+	if (mReflectingObjectList.size()>0)
+	{
+		for (uint8_t i = 0; i < mReflectingObjectList.size(); i++)
+		{
+			mReflectingObjectList[i]->updateObject();
+		}
+	}
+
+	Engine::SharedPointer<Engine::Graphics::SkyBox> tempSkyBox =
+		Engine::Graphics::SkyBox::getCurrentSkyBox();
+	if (!tempSkyBox.isNull() && tempSkyBox->isSkyBoxAvailableIntialized())
+	{
+		tempSkyBox->updateObject();
+	}
+
+	for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
+		mMeshObjectInSceneList[i]->updateObject();
+
+	for (uint8_t i = 0; i < mSpriteListInScene.size(); i++)
+		mSpriteListInScene[i]->updateObject();
+
+	//Draw the environment mapping reflecting Objects
+	if (mReflectingObjectList.size()>0)
+	{
+		for (uint8_t i = 0; i < mReflectingObjectList.size(); i++)
+		{
+			mReflectingObjectList[i]->updateObject();
+		}
+	}
+}
 
 void Engine::Scene::applyPaintersAlgorithmForTransparency()
 {
@@ -361,6 +395,38 @@ Engine::SharedPointer<Engine::Camera> Engine::Scene::findCamera(const std::strin
 	}
 	return SharedPointer<Camera>();
 }
+
+
+void Engine::Scene::updateObject()
+{
+	typedefs::ActionWithKeyBound action;
+	action.action = typedefs::Default;
+	action.keyVal = 0x00;
+	if (mObjectController)
+		mObjectController->updateObject(*this, action);
+}
+
+
+void Engine::Scene::setObjectController(IObjectController* iObjectController)
+{
+	if (iObjectController)
+		mObjectController = iObjectController;
+}
+
+
+void Engine::Scene::HandleMessage(Engine::utils::StringHash& i_message,
+	RTTI* i_MessageSender, 
+	void* i_pMessageData)
+{
+	if (i_MessageSender != nullptr)
+	{
+		if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+			mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));
+	}
+}
+
+
+
 
 
 

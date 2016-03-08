@@ -36,6 +36,27 @@ Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::getIdentityMatrix()
 }
 
 
+Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateScaleMatrix(
+	const float scaleX, 
+	const float scaleY, 
+	const float scaleZ)
+{
+	Matrix4x4 scaleMatrix = Matrix4x4();
+	scaleMatrix.m_00 = scaleX;
+	scaleMatrix.m_11 = scaleY;
+	scaleMatrix.m_22 = scaleZ;
+	return scaleMatrix;
+}
+
+
+Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateNormalMatrix(
+	const Matrix4x4 modelMatrix)
+{
+	return (modelMatrix.getTranspose().getInverse());
+}
+
+
+
 Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateViewToScreenTransform(
 	const float i_fieldOfView_y, const float i_aspectRatio,
 	const float i_z_nearPlane, const float i_z_farPlane )

@@ -1,40 +1,119 @@
 #include "SkyBox.h"
 #include "../Graphics/Material.h"
 #include "../Core/EngineCore/EngineCore.h"
+#include "../../Engine/Core/Utilities/IObjectController.h"
+
+
+std::map<std::string, Engine::SharedPointer<Engine::Graphics::SkyBox>>
+Engine::Graphics::SkyBox::mSkyBoxList;
+bool Engine::Graphics::SkyBox::isSkyBoxAvailable = false;
 
 
 Engine::SharedPointer<Engine::Graphics::SkyBox>
-	Engine::Graphics::SkyBox::mSkyBox;
-
-
-void Engine::Graphics::SkyBox::CreateSkyBox(std::string i_materialName)
+	Engine::Graphics::SkyBox::CreateSkyBox(std::string i_materialName)
 {
-	if(mSkyBox.isNull())
+	if (!isSkyBoxExist(i_materialName))
 	{
 		i_materialName = Engine::EngineCore::getMaterialFolderPath() + i_materialName;
-		SharedPointer<SkyBox> tempSkyBox = 
+		SharedPointer<SkyBox> tempSkyBox =
 			SharedPointer<SkyBox>(new SkyBox(i_materialName), "Engine::Graphics::SkyBox");
-		mSkyBox = tempSkyBox;
 		Engine::Graphics::Material::addMaterialToList(i_materialName.c_str());
-		if(mSkyBox->createBuffer())
-			mSkyBox->isSkyBoxAvailable = true;
+		Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateObject"));
+		Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, 
+			reinterpret_cast<IMessageHandler*>(tempSkyBox.getRawPointer()), Engine::typedefs::HIGH);
+		mSkyBoxList[i_materialName] = tempSkyBox;
+		if (tempSkyBox->createBuffer())
+		{
+			tempSkyBox->isSkyBoxAvailable = true;
+			tempSkyBox->isCurrent = false;
+			return tempSkyBox;
+		}
+		return SharedPointer<SkyBox>();
 	}
+	return getSkyBox(i_materialName);
 }
+
+Engine::SharedPointer<Engine::Graphics::SkyBox> Engine::Graphics::SkyBox::getSkyBox(int index)
+{
+	int counter = 0;
+	for (std::map<std::string, SharedPointer<SkyBox>>::iterator i = mSkyBoxList.begin();
+	i != mSkyBoxList.end(); ++i)
+	{
+		if (index == counter)
+			return i->second;
+		counter++;
+	}
+	return SharedPointer<SkyBox>();
+}
+
+
+Engine::SharedPointer<Engine::Graphics::SkyBox> Engine::Graphics::SkyBox::getSkyBox(std::string i_materialName)
+{
+	if(isSkyBoxExist(i_materialName))
+	{
+		for (std::map<std::string, SharedPointer<SkyBox>>::iterator i = mSkyBoxList.begin();
+		i != mSkyBoxList.end(); ++i)
+		{
+			if (i->first == i_materialName)
+				return i->second;
+		}
+	}
+	return SharedPointer<SkyBox>();
+}
+
+
+bool Engine::Graphics::SkyBox::isSkyBoxExist(std::string materialName)
+{
+	for (std::map<std::string, SharedPointer<SkyBox>>::iterator i = mSkyBoxList.begin();
+	i != mSkyBoxList.end(); ++i)
+	{
+		if (i->first == materialName)
+			return true;
+	}
+	return false;
+}
+
 
 bool Engine::Graphics::SkyBox::isSkyBoxAvailableIntialized() const
 {
 	return isSkyBoxAvailable;
 }
 
+
+void Engine::Graphics::SkyBox::setCurrentSkyBox()
+{
+	deactivateAll();
+	isCurrent = true;
+}
+
+
 Engine::Math::Transform Engine::Graphics::SkyBox::getTransform()
 {
 	return stubTransform;
 }
 
-Engine::SharedPointer<Engine::Graphics::SkyBox> Engine::Graphics::SkyBox::getSkyBox()
+Engine::SharedPointer<Engine::Graphics::SkyBox> 
+	Engine::Graphics::SkyBox::getCurrentSkyBox()
 {
-	return mSkyBox;
+	for (std::map<std::string, SharedPointer<SkyBox>>::iterator i = mSkyBoxList.begin();
+	i!=mSkyBoxList.end();++i)
+	{
+		if (i->second->isCurrent)
+			return i->second;
+	}
+	return SharedPointer<SkyBox>();
 }
+
+
+void Engine::Graphics::SkyBox::deactivateAll()
+{
+	for (std::map<std::string, SharedPointer<SkyBox>>::iterator i = mSkyBoxList.begin();
+	i != mSkyBoxList.end(); ++i)
+	{
+		i->second->isCurrent = false;
+	}
+}
+
 
 bool Engine::Graphics::SkyBox::isDebugObject() const
 {
@@ -55,6 +134,37 @@ void Engine::Graphics::SkyBox::setTransform(Math::Vector3, Math::Quaternion)
 {
 	
 }
+
+
+void Engine::Graphics::SkyBox::setObjectController(IObjectController* i_ObjectController)
+{
+	if (mObjectController)
+		mObjectController = i_ObjectController;
+}
+
+
+void Engine::Graphics::SkyBox::updateObject()
+{
+	typedefs::ActionWithKeyBound action;
+	action.action = typedefs::Default;
+	action.keyVal = 0x00;
+	if (mObjectController)
+		mObjectController->updateObject(*this, action);
+}
+
+
+void Engine::Graphics::SkyBox::HandleMessage(Engine::utils::StringHash& i_message,
+	RTTI* i_MessageSender, void* i_pMessageData)
+{
+	if (i_MessageSender != nullptr)
+	{
+		if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+			mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));
+	}
+}
+
+
+
 
 
 

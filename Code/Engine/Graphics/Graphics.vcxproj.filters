@@ -73,6 +73,7 @@
     <ClCompile Include="OpenGL\ReflectingObject.d3d.cpp">
       <Filter>Direct3D</Filter>
     </ClCompile>
+    <ClCompile Include="uniformdefs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />

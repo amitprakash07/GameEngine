@@ -6,6 +6,7 @@ Fragment shader
 
 uniform vec3 g_PixelColorModifier;
 uniform samplerCube g_TextureSampler;
+uniform float g_intensity;
 
 //Input
 layout(location = 0) in vec4 i_color;
@@ -16,7 +17,7 @@ layout(location = 3) in vec3 i_local_bi_tangent;
 layout(location = 4) in vec2 i_local_texture;
 layout(location = 5) in mat4 i_viewMatrix;
 //position in eye space
-layout(location = 6) in vec3 i_position_in_eye; 
+layout(location = 6) in vec3 i_position_in_eye;
 
 
 //Output
@@ -33,5 +34,5 @@ void main()
 
 	//Calculating reflection vector in World Space
 	vec3 reflectedVectorInWorld = vec3(vec4(reflectedVectorInEye, 0) * inverse(i_viewMatrix));
-	o_color = o_color * texture(g_TextureSampler, reflectedVectorInEye);
+	o_color = o_color * texture(g_TextureSampler, reflectedVectorInWorld.xyz);
 }

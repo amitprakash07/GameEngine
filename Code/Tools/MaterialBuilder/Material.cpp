@@ -3,6 +3,31 @@
 #include "../../Externals/LuaHelper/LuaHelper.h"
 #include <iostream>
 #include <Windows.h>
+#include "../../Engine/Graphics/Includes.h"
+
+
+#define GARBAGE 0xCDED
+
+#ifdef PLATFORM_D3D
+#define INITIAL_VAL nullptr
+#define DELETE_HANDLE(X) (X = nullptr)
+#elif PLATFORM_OPEN_GL
+#define INITIAL_VAL 255
+#define DELETE_HANDLE(X) (X = 0)
+#endif
+
+Tools::AssetBuilder::MaterialUniform::MaterialUniform()
+{
+	Handle = INITIAL_VAL;
+	values[0] = GARBAGE;
+	values[1] = GARBAGE;
+	values[2] = GARBAGE;
+	values[3] = GARBAGE;
+	type = Engine::Graphics::Unknown;
+	valCount = 0;
+	valType = Engine::Graphics::Float;
+}
+
 
 
 Tools::AssetBuilder::Map* Tools::AssetBuilder::Material::getMap()
@@ -125,9 +150,9 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 							lua_gettable(mLuaState, -2);
 							const char* shaderType = lua_tostring(mLuaState, -1);
 							if (strcmp(shaderType, "Fragment") == 0)
-								maps[i - 1].shaderType = Fragment;
+								maps[i - 1].shaderType = Engine::Graphics::Fragment;
 							else
-								maps[i - 1].shaderType = Vertex;
+								maps[i - 1].shaderType = Engine::Graphics::Vertex;
 							lua_pop(mLuaState, 1);
 						}
 
@@ -193,9 +218,9 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 						const char *tempString = lua_tostring(mLuaState, -1);
 						size_t length = strlen(tempString);
 						if (strcmp(tempString, "fragment") == 0)
-							materialUniforms[i - 1].type = ShaderType::Fragment;
+							materialUniforms[i - 1].type = Engine::Graphics::ShaderType::Fragment;
 						else if (strcmp(tempString, "vertex") == 0)
-							materialUniforms[i - 1].type = ShaderType::Vertex;
+							materialUniforms[i - 1].type = Engine::Graphics::ShaderType::Vertex;
 						lua_pop(mLuaState, 1); //Popping out the shader type
 											   //std::cerr << "\nshader Type is " << tempString << std::endl;
 					}
@@ -204,9 +229,9 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 						lua_pushstring(mLuaState, "valtype");
 						lua_gettable(mLuaState, -2);
 						if (strcmp(lua_tostring(mLuaState, -1), "Matrix") == 0)
-							materialUniforms[i - 1].valType = MATRIX;
+							materialUniforms[i - 1].valType = Engine::Graphics::Matrix;
 						else
-							materialUniforms[i - 1].valType = FLOAT;
+							materialUniforms[i - 1].valType = Engine::Graphics::Float;
 						lua_pop(mLuaState, 1);
 					}
 
@@ -220,7 +245,7 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 							//std::cerr << "value type" << luaL_typename(mLuaState, -1)<<std::endl;
 							size_t valCount = luaL_len(mLuaState, -1);
 							//std::cerr << "\nVAl Count is " << valCount << std::endl;
-							materialUniforms[i - 1].setValCount(static_cast<int>(valCount));
+							materialUniforms[i - 1].valCount = static_cast<uint8_t>(valCount);
 							//materialUniforms[i - 1].values = new float[valCount];
 							for (size_t k = 1; k <= valCount; ++k)
 							{
@@ -231,7 +256,7 @@ bool Tools::AssetBuilder::Material::loadMaterial()
 							}
 						}
 						else
-							materialUniforms[i - 1].setValCount(0);
+							materialUniforms[i - 1].valCount = 0;
 
 						lua_pop(mLuaState, 1);//Popping out the values						
 					}

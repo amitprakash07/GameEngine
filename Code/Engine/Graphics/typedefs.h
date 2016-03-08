@@ -84,15 +84,6 @@ namespace Engine
 #endif
 		};
 
-
-#ifdef PLATFORM_D3D
-#define INITIAL_VAL nullptr
-#define DELETE_HANDLE(X) (X = nullptr)
-#elif PLATFORM_OPEN_GL
-#define INITIAL_VAL 0
-#define DELETE_HANDLE(X) (X = 0)
-#endif
-
 		enum Coordinate
 		{
 			SCREEN_COORDINATE = 0,

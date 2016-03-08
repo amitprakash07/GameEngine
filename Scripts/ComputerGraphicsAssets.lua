@@ -23,7 +23,11 @@ return
 		{
 			src = "ComputerGraphics/environmentMappingSphere.lua",
 			target = "ComputerGraphics/environmentMappingSphere.mesh",
-		},				
+		},			
+		{
+			src = "ComputerGraphics/TestSphere.lua",
+			target = "ComputerGraphics/TestSphere.mesh",
+		},	
 	},
 -- =====================================================================
 
@@ -221,6 +225,10 @@ return
 		{
 			src = "ComputerGraphics/LancellottiChapel.dds",
 			target = "ComputerGraphics/LancellottiChapel.dds",
+		},
+		{
+			src = "ComputerGraphics/Test.dds",
+			target = "ComputerGraphics/Test.dds",
 		},
 	}
 -- ====================================================================

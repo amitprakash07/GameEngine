@@ -44,6 +44,7 @@ Engine::Graphics::Sprite::Sprite(std::string iSpriteName,
 	mMaterial = iMaterialName;
 	s_vertexArrayID = 0;
 	vertexBufferId = 0;
+	mObjectController = nullptr;
 }
 
 

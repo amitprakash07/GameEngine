@@ -5,6 +5,7 @@
 #include "Effect.h"
 #include "../Core/EngineCore/Objects/Scene.h"
 
+
 std::vector<Engine::SharedPointer<Engine::Graphics::Line>>
 Engine::Graphics::Line::mLineList;
 std::string Engine::Graphics::Line::materialName;
@@ -17,6 +18,7 @@ Engine::Graphics::Line::Line()
 	debugObject = true;
 	bufferInitialized = false;
 	vertexBufferInitalized = false;
+	mObjectController = nullptr;
 }
 
 bool Engine::Graphics::Line::containsDebugLine()
@@ -128,6 +130,25 @@ bool Engine::Graphics::Line::setUniforms()
 	}
 	return true;
 }
+
+
+void Engine::Graphics::Line::updateObject()
+{
+	typedefs::ActionWithKeyBound action;
+	action.action = typedefs::Default;
+	action.keyVal = 0x00;
+	if (mObjectController)
+		mObjectController->updateObject(*this, action);
+}
+
+
+void Engine::Graphics::Line::setObjectController(IObjectController* i_ObjectControlller)
+{
+	if (i_ObjectControlller)
+		mObjectController = i_ObjectControlller;
+}
+
+
 
 
 

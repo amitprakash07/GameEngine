@@ -3,6 +3,7 @@
 #include "../Core/EngineCore/EngineCore.h"
 #include "Material.h"
 #include "../Core/Maths/Functions.h"
+#include "../Core/Utilities/IObjectController.h"
 
 Engine::SharedPointer<Engine::Graphics::Sprite>
 Engine::Graphics::Sprite::CreateSprite(std::string iSpriteName,
@@ -86,3 +87,22 @@ void Engine::Graphics::Sprite::setTransform(Engine::Math::Vector3, Engine::Math:
 {
 
 }
+
+
+void Engine::Graphics::Sprite::updateObject()
+{
+	typedefs::ActionWithKeyBound action;
+	action.action = typedefs::Default;
+	action.keyVal = 0x00;
+	if (mObjectController)
+		mObjectController->updateObject(*this, action);
+}
+
+
+void Engine::Graphics::Sprite::setObjectController(IObjectController* i_objectController)
+{
+	if (i_objectController)
+		mObjectController = i_objectController;
+}
+
+

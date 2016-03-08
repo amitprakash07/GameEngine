@@ -39,11 +39,14 @@ namespace Engine
 				Math::Quaternion = Math::Quaternion()) override;
 			bool isDebugObject() const override;
 			bool isRenderable() const override;
-			void draw(bool drawDebugObject) override;			
+			void draw(bool drawDebugObject) override;	
+			void updateObject() override;
+			void setObjectController(IObjectController *i_ObjectControlller) override;
 		private:
 			static std::vector<SharedPointer<Line>> mLineList;
 			static bool setUniforms();
 			Line();
+			IObjectController* mObjectController;
 			LineStruct mLineStruct;
 			bool debugObject;
 			static std::string materialName;

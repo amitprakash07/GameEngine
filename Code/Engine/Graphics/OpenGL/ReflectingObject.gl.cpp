@@ -34,6 +34,7 @@ Engine::Graphics::ReflectingObject::ReflectingObject()
 	texture = -1;		
 	cubeMapGenerated = false;	
 	cameraCreated = false;
+	mObjectController = nullptr;
 }
 
 
@@ -59,7 +60,7 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 					mTransform.getPosition(),
 					rotor);
 			environmentCamera = tempCamera;
-			environmentCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
+			environmentCamera->setAspectRatio(static_cast<float>(1.0f));
 			environmentCamera->setFieldOfView(90.0f);
 			currentScene->addCameraToScene(environmentCamera);
 			cameraCreated = true;
@@ -67,25 +68,25 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 
 		environmentCamera->activateCamera(true);		
 
-		GLsizei textureHeight = 1600;/*Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowHeight();*/
-		GLsizei textureWidth = 1600;/* Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowWidth();*/
+		GLsizei textureHeight = 2048;/*Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowHeight();*/
+		GLsizei textureWidth = 2048;/* Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowWidth();*/
 		
-		
-		for (int i = 5; i > -1; --i)
+		Engine::Math::Transform cubeMapCameraTransform = environmentCamera->getTransform();
+		for (int i = 5; i >= 0; --i)
 		{
-			//int b = 4;
+			cubeMapCameraTransform.setOrientation(Engine::Math::Quaternion::getIdentityQuartenion());
 			switch(i)
 			{
 			case 5:
 				//Negative Z
-				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(180.0f),
+				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0.0f),
 					Engine::Math::Vector3(0.0f, 1.0f, 0.0f));
 				break;
 			case 4:
 				//Positive Z
-				/*rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0.0f),
-					Engine::Math::Vector3(0.0f, 1.0f, 0.0f));*/
-				rotor = Engine::Math::Quaternion::getIdentityQuartenion();
+				//rotor = Engine::Math::Quaternion::getIdentityQuartenion();
+				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(180.0f),
+					Engine::Math::Vector3(0.0f, 1.0f, 0.0f));
 				break;
 			case 3:
 				//Negative Y
@@ -99,19 +100,16 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 				break;
 			case 1:
 				//Negative X
-				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
+				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90.0f),
 					Engine::Math::Vector3(0.0f, 1.0f, 0.0f));
 				break;
 			case 0:
 				//Positive X
-				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90.0f),
+				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
 					Engine::Math::Vector3(0.0f, 1.0f, 0.0f));
 				break;
 			}
-
-
-			Engine::Math::Transform cubeMapCameraTransform = environmentCamera->getTransform();
-			//cubeMapCameraTransform.rotate(rotor);
+						
 			cubeMapCameraTransform.setOrientation(rotor);
 			environmentCamera->setTransform(cubeMapCameraTransform.getPosition(), cubeMapCameraTransform.getOrientation());
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer[i]);
@@ -131,6 +129,7 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 		}
 
 		environmentCamera->activateCamera(false);
+		environmentCamera->setTransform(environmentCamera->getTransform().getPosition(),Engine::Math::Quaternion::getIdentityQuartenion());
 		previousCamera->activateCamera(true);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		GLenum errorCode = glGetError();
@@ -169,7 +168,7 @@ void Engine::Graphics::ReflectingObject::renderScene()
 		Engine::Scene::getRenderableScene();
 
 	Engine::SharedPointer<Engine::Graphics::SkyBox> tempSkyBox =
-		Engine::Graphics::SkyBox::getSkyBox();
+		Engine::Graphics::SkyBox::getCurrentSkyBox();
 
 	if (!tempSkyBox.isNull() && tempSkyBox->isSkyBoxAvailableIntialized())
 	{
@@ -205,7 +204,7 @@ bool Engine::Graphics::ReflectingObject::init()
 				for (int i = 0; i < 6; i++)
 				{
 					glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-						0, GL_RGBA, 1600, 1600, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, nullptr);
+						0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, nullptr);
 					errorCode = glGetError();
 					WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to create immutable texture");
 				}
@@ -220,7 +219,7 @@ bool Engine::Graphics::ReflectingObject::init()
 			for (int i = 0; i < 6; i++)
 			{
 				glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer[i]);
-				glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 1600, 1600);
+				glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 2048, 2048);
 				GLenum errorCode = glGetError();
 				wereThereErrors |= errorCode == GL_NO_ERROR ? false : true;
 				WindowsUtil::Assert(!wereThereErrors, "Unable to bind or create the buffer storage for the render buffer");

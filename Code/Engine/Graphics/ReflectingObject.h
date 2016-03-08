@@ -24,10 +24,13 @@ namespace Engine
 			bool isDebugObject() const override;
 			void draw(bool) override;			
 			void generateCubeMap();
-			void setDynamicTextureSamplerName(std::string samplerUniformName);					
+			void setDynamicTextureSamplerName(std::string samplerUniformName);	
+			void setObjectController(IObjectController *) override;
+			void updateObject() override;
 		private:
 			ReflectingObject();
 			bool init();
+			IObjectController *mObjectController;
 			bool cubeMapGenerated;
 			SharedPointer<Engine::Camera> environmentCamera;
 			bool cameraCreated;

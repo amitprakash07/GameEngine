@@ -5,6 +5,7 @@
 #include "../Core/Maths/Matrix4x4.h"
 #include <stdint.h>
 
+
 namespace Engine
 {
 	namespace Graphics
@@ -15,20 +16,8 @@ namespace Engine
 			float y;
 			float z;
 			float w;
-
-			VectorStruct()
-			{
-				x = y= z = w =0.0f;
-			}
-
-			VectorStruct(VectorStruct & iVectorStruct)
-			{
-				x = iVectorStruct.x;
-				y = iVectorStruct.y;
-				z = iVectorStruct.z;
-				w = iVectorStruct.w;
-			}
-			
+			VectorStruct();
+			VectorStruct(VectorStruct & iVectorStruct);
 		};
 
 		enum UniformDataType :uint8_t
@@ -84,35 +73,7 @@ namespace Engine
 			VectorStruct vectorValue;
 			VectorStruct * vectorArray;
 			
-			UniformValues()
-			{
-				boolValue = false;
-				boolArray = nullptr;
-				intValue = 0xefef;
-				intArray = nullptr;
-				floatValue = 0.0f;
-				floatArray = nullptr;
-				matrixValue.matrix = Engine::Math::Matrix4x4();
-				matrixValue.Type = Unspecified;
-				matrixArray = nullptr;
-				vectorValue = VectorStruct();
-				vectorArray = nullptr;
-			}
-
-			/*UniformValues(UniformValues &iUniformValues)
-			{
-			boolValue = iUniformValues.boolValue;
-			boolArray = iUniformValues.boolArray;
-			intValue = iUniformValues.intValue;
-			intArray = iUniformValues.intArray;
-			floatValue = iUniformValues.floatValue;
-			floatArray = iUniformValues.floatArray;
-			matrixValue.matrix = iUniformValues.matrixValue.matrix;
-			matrixValue.Type = iUniformValues.matrixValue.Type;
-			matrixArray = iUniformValues.matrixArray;
-			vectorValue = iUniformValues.vectorValue;
-			vectorArray = iUniformValues.vectorArray;
-			}*/
+			UniformValues();		
 		};
 
 		struct UniformData
@@ -123,12 +84,8 @@ namespace Engine
 			uint8_t valCount;
 			ShaderType shaderType;
 			UniformValues value;
-			UniformData();
+			UniformData();			
 			
-			/*UniformData(UniformData &iUniformData)
-			{
-				value = iUniformData.value;
-			}*/
 		};
 
 		struct MaterialUniform
@@ -138,7 +95,12 @@ namespace Engine
 			UniformDataType valType; //1
 			uint8_t valCount; //1
 			float values[4]; //16
+
+			MaterialUniform();			
+			~MaterialUniform();			
 		};
+
+
 		enum __renderState
 		{
 			ALPHA_BLENDING = 1 << 0,

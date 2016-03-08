@@ -105,6 +105,7 @@
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="TextureCommon.cpp" />
     <ClCompile Include="Uniform.common.cpp" />
+    <ClCompile Include="uniformdefs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ReflectingObject.h" />
