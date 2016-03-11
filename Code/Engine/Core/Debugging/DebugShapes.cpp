@@ -31,7 +31,7 @@ void Engine::Debug::DrawShape(ShapeTarget i_shapeType,
 	if (Engine::Graphics::Line::getLineCounts() == 0)
 	{
 		std::string materialFolderName = EngineCore::getMaterialFolderPath();
-		materialFolderName += "lineMaterial.mat";
+		materialFolderName += "Game/lineMaterial.mat";
 		Engine::Graphics::Material::addMaterialToList(materialFolderName.c_str());
 		Engine::Graphics::Line::setMaterialName(materialFolderName);
 	}	
@@ -55,7 +55,7 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	//Engine::SharedPointer<Engine::MeshObject> debugSphere =
 	//Engine::MeshObject::CreateMeshObject("Arena/wallsMaterialMesh.mesh", "Arena/wallsMaterial.mat");
 	Engine::SharedPointer<Engine::MeshObject> debugSphere =
-		Engine::MeshObject::CreateMeshObject("DebugSphereForClass.mesh", "defaultDebugShapes.mat", color);
+		Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh", "Game/defaultDebugShapes.mat", color);
 	debugSphere->EnableDebugging(true);
 	debugSphere->getMaterial()->changeMaterialColor(iColor.r, iColor.g, iColor.b);
 	Math::Vector3 tempPosition;
@@ -81,7 +81,7 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	color.b = iColor.b;
 	color.a = 1.0f;
 	Engine::SharedPointer<Engine::MeshObject> debugBox =
-		Engine::MeshObject::CreateMeshObject("DebugCubeForClass.mesh", "defaultDebugShapes.mat", color);
+		Engine::MeshObject::CreateMeshObject("Game/DebugCubeForClass.mesh", "Game/defaultDebugShapes.mat", color);
 	debugBox->EnableDebugging(true);
 	debugBox->getMaterial()->changeMaterialColor(iColor.r, iColor.g, iColor.b);
 	Math::Vector3 tempPosition;
@@ -106,7 +106,7 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	color.b = iColor.b;
 	color.a = 1.0f;
 	Engine::SharedPointer<Engine::MeshObject> debugCylinder =
-		Engine::MeshObject::CreateMeshObject("DebugCylinderForClass.mesh", "defaultDebugShapes.mat", color);
+		Engine::MeshObject::CreateMeshObject("Game/DebugCylinderForClass.mesh", "Game/defaultDebugShapes.mat", color);
 	debugCylinder->EnableDebugging(true);
 	debugCylinder->getMaterial()->changeMaterialColor(iColor.r, iColor.g, iColor.b);
 	Math::Vector3 tempPosition;

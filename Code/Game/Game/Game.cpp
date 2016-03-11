@@ -67,35 +67,35 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		scene->addObjectToScene(walls);
 
 		//DebugObjects
-		/*Engine::Debug::DrawShape(Engine::SPHERE,
-			Engine::Maths::Point3(-70.0f, 0.0f, 0.0f), 1.0f,
+		Engine::Debug::DrawShape(Engine::SPHERE,
+			Engine::Math::Vector3(-70.0f, 0.0f, 0.0f), 1.0f,
 			Engine::Graphics::RGBColor(1.0f, 0.0f, 0.0f));
 
 		Engine::Debug::DrawShape(Engine::SPHERE,
-		Engine::Maths::Point3(0.0f, 0.0f, 0.0f), 1.0f,
+			Engine::Math::Vector3(0.0f, 0.0f, 0.0f), 1.0f,
 		Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f));
 
 		Engine::Debug::DrawShape(Engine::BOX,
-		Engine::Maths::Point3(200.0f, 50.0f, 0.0f), 1.0f,1.0f,1.0f,
+			Engine::Math::Vector3(200.0f, 50.0f, 0.0f), 1.0f,1.0f,1.0f,
 		Engine::Graphics::RGBColor(1.0f, 0.0f, 1.0f));
 
 		Engine::Debug::DrawShape(Engine::BOX,
-			Engine::Maths::Point3(170.0f, 20.0f, -10.0f), 1.0f, 1.0f, 1.0f,
+			Engine::Math::Vector3(170.0f, 20.0f, -10.0f), 1.0f, 1.0f, 1.0f,
 			Engine::Graphics::RGBColor(1.0f, 1.0f, 0.0f));
 
 		Engine::Debug::DrawShape(Engine::CYLINDER,
-			Engine::Maths::Point3(100.0f, 20.0f, -20.0f), 1.0f,1.0f,
+			Engine::Math::Vector3(100.0f, 20.0f, -20.0f), 1.0f,1.0f,
 			Engine::Graphics::RGBColor(0.0f, 0.0f, 1.0f));
 
 		Engine::Debug::DrawShape(Engine::CYLINDER,
-			Engine::Maths::Point3(-70.0f, 0.0f, 0.0f), 1.0f, 1.0f,
+			Engine::Math::Vector3(-70.0f, 0.0f, 0.0f), 1.0f, 1.0f,
 			Engine::Graphics::RGBColor(0.5f, 0.5f, 0.5f));
 
 		Engine::Debug::DrawShape(Engine::LINE,
-			Engine::Maths::Point3(-53.28f,-108.953f,1043.751f), 
-			Engine::Maths::Point3(0.0f,0.0f,0.0f),
+			Engine::Math::Vector3(-53.28f,-108.953f,1043.751f),
+			Engine::Math::Vector3(0.0f,0.0f,0.0f),
 			Engine::Graphics::RGBColor(0,1.0f,0.0f));
-*/
+
 
 		/*Engine::Debug::DrawShape(Engine::LINE,
 			Engine::Maths::Point3(-53.28f, -108.953f, 1043.751f),
