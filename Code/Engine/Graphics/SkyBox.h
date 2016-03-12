@@ -17,7 +17,7 @@ namespace Engine
 {
 	namespace Graphics
 	{
-		class SkyBox:public IMessageHandler,Engine::Object
+		class SkyBox:public IMessageHandler ,Engine::Object
 		{
 		public:
 			static SharedPointer<SkyBox> CreateSkyBox(std::string i_MaterialName);

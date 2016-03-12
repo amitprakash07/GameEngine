@@ -20,7 +20,7 @@ Engine::SharedPointer<Engine::Graphics::SkyBox>
 		Engine::Graphics::Material::addMaterialToList(i_materialName.c_str());
 		Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateObject"));
 		Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, 
-			reinterpret_cast<IMessageHandler*>(tempSkyBox.getRawPointer()), Engine::typedefs::HIGH);
+			static_cast<IMessageHandler*>(tempSkyBox.getRawPointer()), Engine::typedefs::HIGH);
 		mSkyBoxList[i_materialName] = tempSkyBox;
 		if (tempSkyBox->createBuffer())
 		{

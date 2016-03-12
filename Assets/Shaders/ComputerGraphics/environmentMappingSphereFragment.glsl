@@ -35,8 +35,8 @@ void main()
 	vec3 reflectedVectorInEye = reflect(normalizedViewVector, normalizedNormalInEye);
 
 	//Calculating reflection vector in World Space
-	vec4 reflectedVectorInWorld = vec4(reflectedVectorInEye, 0) * inverse(g_transform_worldToView);
-	reflectedVectorInWorld = vec4(reflectedVectorInWorld.xyz,0)  * inverse(g_transform_localToWorld);
+	vec4 reflectedVectorInWorld = inverse(g_transform_worldToView) *  vec4(reflectedVectorInEye, 0);
+	reflectedVectorInWorld = inverse(g_transform_localToWorld) *vec4(reflectedVectorInWorld.xyz,0);
 	//reflectedVectorInWorld.y = 1- reflectedVectorInWorld.y;
 	o_color = o_color * texture(g_TextureSampler, reflectedVectorInWorld.xyz);
 }

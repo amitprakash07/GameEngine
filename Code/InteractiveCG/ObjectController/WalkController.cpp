@@ -12,20 +12,27 @@ void Application::WalkController::updateObject(Engine::Object& iObject, Engine::
 	{
 	case Engine::typedefs::MoveForward:
 		transform.setPosition(transform.getPosition() + Vector3(0,1,0));
-	break;
+		break;
 	case Engine::typedefs::MoveBackWard:
 		transform.setPosition(transform.getPosition() + Vector3(0, -1,0));		
-	break;
+		break;
 	case Engine::typedefs::MoveLeft:
 		transform.setPosition(transform.getPosition() + Vector3(1, 0, 0));		
-	break;
+		break;
 	case Engine::typedefs::MoveRight:
 		transform.setPosition(transform.getPosition() + Vector3(-1, 0, 0));		
-	break;
+		break;
 	default:
-	break;
+		break;
 	}
 	
+	switch(iAction.keyVal)
+	{
+	case 0x41:
+		break;
+	case 0x44:
+		break;
+	}
 	
 	/*Engine::SharedPointer<Engine::Time::FrameTime> timer = Engine::Scene::getTimer();
 	Engine::Math::Vector3 upVector = Engine::Math::Matrix4x4(transform.getOrientation(), 
