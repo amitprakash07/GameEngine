@@ -283,9 +283,18 @@ void Engine::Graphics::GraphicsSystem::EnableDepthTesting(bool)
 
 }
 
-void Engine::Graphics::GraphicsSystem::EnableWireFrame(bool)
+void Engine::Graphics::GraphicsSystem::EnableWireFrame(bool iRequest)
 {
-
+	switch(iRequest)
+	{
+	case true:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		break;
+	case false:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		break;
+	}
+	
 }
 
 

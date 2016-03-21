@@ -1,5 +1,6 @@
 return
 {
+-- ===============================MeshBuilder=========================
 	{
 		BuildTool = "MeshBuilder.exe",
 		{
@@ -44,6 +45,10 @@ return
 		},		
 	},
 
+-- =====================================================================
+
+-- ===============================EffectBuilder=========================
+
 	{
 		BuildTool = "EffectBuilder.exe",
 		{
@@ -57,63 +62,18 @@ return
 		{
 			src = "Game/lineEffect.lua",
 			target = "Game/lineEffect.effect"
-		}
+		},
+		{
+			src = "Game/spriteEffect.lua",
+			target = "Game/spriteEffect.effect"
+		},
+
 	},
 
-	{
-		BuildTool = "ShaderBuilder.exe",
-		{
-			src = "Game/standard.fshd",
-			target = "Game/standard.fshd",
-			optionaltype = "fragment",
-			dependencies =
-			{
-				"Game/shader_common.inc"
-			}
+-- =======================================================================
 
-		},
 
-		{
-			src = "Game/standard.vshd",
-			target = "Game/standard.vshd",
-			optionaltype = "vertex",
-			dependencies =
-			{
-				"Game/shader_common.inc"
-			}
-		},
-		
-		{
-			src = "Game/transparent.fshd",
-			target = "Game/transparent.fshd",
-			optionaltype = "fragment",
-			dependencies = 
-			{
-				"Game/shader_common.inc"
-			}
-		},
-		
-		{
-			src = "Game/line.vshd",			
-			target = "Game/line.vshd",
-			optionaltype = "vertex",
-			dependencies = 
-			{
-				"Game/shader_common.inc"
-			}
-		},
-		
-		{
-			src = "Game/line.fshd",
-			target = "Game/line.fshd",
-			optionaltype = "fragment",
-			dependencies = 
-			{
-				"Game/shader_common.inc"
-			}
-		}
-	},
-	
+-- ===============================MaterialBuilder=========================
 	{
 		BuildTool = "MaterialBuilder.exe",
 		{
@@ -155,34 +115,146 @@ return
 		{
 			src = "Game/lineMaterial.lua",
 			target = "Game/lineMaterial.mat",
-		},		
+		},	
+		{
+			src = "Game/spriteMaterial.lua",
+			target = "Game/spriteMaterial.mat",
+		},	
+		{
+			src = "Game/numbersMaterial.lua",
+			target = "Game/numbersMaterial.mat",
+		},
 	},
-	
+
+-- ======================================================================
+
+
+-- ===============================ShaderBuilder=========================
+
+	{
+		BuildTool = "ShaderBuilder.exe",
+		{
+			src = "Game/standard.fshd",
+			target = "Game/standard.fshd",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"Game/shader_common.inc"
+			}
+
+		},
+
+		{
+			src = "Game/standard.vshd",
+			target = "Game/standard.vshd",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"Game/shader_common.inc"
+			}
+		},
+
+-- *******************************************************************
+
+		{
+			src = "Game/transparent.fshd",
+			target = "Game/transparent.fshd",
+			optionaltype = "fragment",
+			dependencies = 
+			{
+				"Game/shader_common.inc"
+			}
+		},
+
+-- *******************************************************************
+		{
+			src = "Game/line.vshd",			
+			target = "Game/line.vshd",
+			optionaltype = "vertex",
+			dependencies = 
+			{
+				"Game/shader_common.inc"
+			}
+		},
+		
+		{
+			src = "Game/line.fshd",
+			target = "Game/line.fshd",
+			optionaltype = "fragment",
+			dependencies = 
+			{
+				"Game/shader_common.inc"
+			}
+		},
+
+-- *******************************************************************
+		{
+			src = "Game/spriteVertex.glsl",			
+			target = "Game/spriteVertex.glsl",
+			optionaltype = "vertex",
+			dependencies = 
+			{
+				"Game/shader_common.inc"
+			}
+		},
+		
+		{
+			src = "Game/spriteFragment.glsl",
+			target = "Game/spriteFragment.glsl",
+			optionaltype = "fragment",
+			dependencies = 
+			{
+				"Game/shader_common.inc"
+			}
+		},
+-- *******************************************************************
+	},
+
+-- ====================================================================
+
+
+-- ===============================TextureBuilder=========================	
 	{
 		BuildTool = "TextureBuilder.exe",
 		{
 			src = "Game/Arena/cement_wall_D.png",
 			target = "Game/Arena/cement_wall_D.png",
 		},
+
 		{
 			src = "Game/Arena/floor_D.png",
 			target = "Game/Arena/floor_D.png",
 		},
+
 		{
 			src = "Game/Arena/metal_brace_D.png",
 			target = "Game/Arena/metal_brace_D.png",
 		},
+
 		{
 			src = "Game/Arena/railing_D.png",
 			target = "Game/Arena/railing_D.png",
 		},
+
 		{
 			src = "Game/Arena/wall_D.png",
 			target = "Game/Arena/wall_D.png",
 		},
+
 		{
 			src = "Game/defaultTexture.png",
 			target = "Game/defaultTexture.png",
-		},		
+		},	
+
+		{
+			src = "Game/logo.png",
+			target = "Game/logo.png",
+		},
+
+		{
+			src = "Game/numbers.png",
+			target = "Game/numbers.png",
+		},	
 	}
+-- ====================================================================
 }

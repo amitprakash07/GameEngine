@@ -51,9 +51,6 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	color.g = iColor.g;
 	color.b = iColor.b;
 	color.a = 1.0f;
-
-	//Engine::SharedPointer<Engine::MeshObject> debugSphere =
-	//Engine::MeshObject::CreateMeshObject("Arena/wallsMaterialMesh.mesh", "Arena/wallsMaterial.mat");
 	Engine::SharedPointer<Engine::MeshObject> debugSphere =
 		Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh", "Game/defaultDebugShapes.mat", color);
 	debugSphere->EnableDebugging(true);

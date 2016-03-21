@@ -53,7 +53,7 @@ namespace WindowsUtil
 	void Print(std::string,
 		const char* i_optionalFileName = nullptr);
 
-	void Assert(bool, std::string = NULL);
+	bool Assert(bool, std::string = NULL);
 
 	bool setVSEnvironmentVariableValue(const char* variableName,
 		const char* value);

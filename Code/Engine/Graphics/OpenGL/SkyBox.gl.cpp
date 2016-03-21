@@ -37,7 +37,7 @@ bool Engine::Graphics::SkyBox::createBuffer()
 bool Engine::Graphics::SkyBox::createVertexArray()
 {
 	glGenVertexArrays(1, &s_vertexArrayID);
-	bool wereThereErrors = false;
+	bool wereThereErrors;
 	GLenum errorCode = glGetError();
 	wereThereErrors = errorCode == GL_NO_ERROR ? false : true;
 	WindowsUtil::Assert(!wereThereErrors, "Unable to Create VertexArray for the SkyBox");
@@ -164,11 +164,6 @@ void Engine::Graphics::SkyBox::draw(bool)
 		if (!tempCamera.isNull())
 		{
 			Math::Transform cameraTransform = tempCamera->getTransform();
-			float fieldOfView = tempCamera->getFieldOfView();
-			float aspectRatio = tempCamera->getAspectRatio();
-			float nearPlane = tempCamera->getNearPlane();
-			float farPlane = tempCamera->getFarPlane();
-
 			tempEffect->setShaders();
 
 			SharedPointer<Graphics::Uniform> worldToView = Graphics::Uniform::getUniform(

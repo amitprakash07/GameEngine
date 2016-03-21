@@ -177,7 +177,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{
 		Assets\Materials\Game\Arena\lambertTwoMaterial.lua = Assets\Materials\Game\Arena\lambertTwoMaterial.lua
 		Assets\Materials\Game\lineMaterial.lua = Assets\Materials\Game\lineMaterial.lua
 		Assets\Materials\Game\Arena\metalMaterial.lua = Assets\Materials\Game\Arena\metalMaterial.lua
+		Assets\Materials\Game\numbersMaterial.lua = Assets\Materials\Game\numbersMaterial.lua
 		Assets\Materials\Game\Arena\railingMaterial.lua = Assets\Materials\Game\Arena\railingMaterial.lua
+		Assets\Materials\Game\spriteMaterial.lua = Assets\Materials\Game\spriteMaterial.lua
 		Assets\Materials\Game\Arena\wallsMaterial.lua = Assets\Materials\Game\Arena\wallsMaterial.lua
 	EndProjectSection
 EndProject
@@ -198,6 +200,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{CA8D7265-E33C-4887-9615-51FAFE6FAC62}"
 	ProjectSection(SolutionItems) = preProject
 		Assets\Effects\Game\lineEffect.lua = Assets\Effects\Game\lineEffect.lua
+		Assets\Effects\Game\spriteEffect.lua = Assets\Effects\Game\spriteEffect.lua
 		Assets\Effects\Game\standardEffect.lua = Assets\Effects\Game\standardEffect.lua
 		Assets\Effects\Game\transparentEffect.lua = Assets\Effects\Game\transparentEffect.lua
 	EndProjectSection
@@ -206,6 +209,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{9498
 	ProjectSection(SolutionItems) = preProject
 		Assets\Shaders\Game\line.fshd = Assets\Shaders\Game\line.fshd
 		Assets\Shaders\Game\line.vshd = Assets\Shaders\Game\line.vshd
+		Assets\Shaders\Game\spriteFragment.glsl = Assets\Shaders\Game\spriteFragment.glsl
+		Assets\Shaders\Game\spriteVertex.glsl = Assets\Shaders\Game\spriteVertex.glsl
 		Assets\Shaders\Game\standard.fshd = Assets\Shaders\Game\standard.fshd
 		Assets\Shaders\Game\standard.vshd = Assets\Shaders\Game\standard.vshd
 		Assets\Shaders\Game\transparent.fshd = Assets\Shaders\Game\transparent.fshd
@@ -220,7 +225,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{57
 		Assets\Textures\Game\defaultTexture.png = Assets\Textures\Game\defaultTexture.png
 		Assets\Textures\Game\eae6320.png = Assets\Textures\Game\eae6320.png
 		Assets\Textures\Game\Arena\floor_D.png = Assets\Textures\Game\Arena\floor_D.png
+		Assets\Textures\Game\logo.png = Assets\Textures\Game\logo.png
 		Assets\Textures\Game\Arena\metal_brace_D.png = Assets\Textures\Game\Arena\metal_brace_D.png
+		Assets\Textures\Game\numbers.png = Assets\Textures\Game\numbers.png
 		Assets\Textures\Game\Arena\railing_D.png = Assets\Textures\Game\Arena\railing_D.png
 		Assets\Textures\Game\Arena\wall_D.png = Assets\Textures\Game\Arena\wall_D.png
 	EndProjectSection

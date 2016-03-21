@@ -1,8 +1,5 @@
-#include "Game.h"
 #include "../../Engine/Core/EngineCore/EngineCore.h"
 #include <windows.h>
-#include <fstream>
-#include <crtdbg.h>
 #include "../../Engine/Core/EngineCore/Objects/Scene.h"
 #include "../../Engine/Core/Utilities/SharedPointer.h"
 #include "../../Engine/Core/EngineCore/Objects/MeshObject.h"
@@ -11,6 +8,7 @@
 #include "../../Engine/Windows/WindowsFunctions.h"
 #include "../../Engine/Core/Debugging/DebugShapes.h"
 #include "ObjectController/CameraController.h"
+#include "../../Engine/Graphics/Sprite.h"
 
 
 #define shared_pointer_reinterpret_cast_to_object(x) \
@@ -97,11 +95,23 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 			Engine::Graphics::RGBColor(0,1.0f,0.0f));
 
 
-		/*Engine::Debug::DrawShape(Engine::LINE,
-			Engine::Maths::Point3(-53.28f, -108.953f, 1043.751f),
-			Engine::Maths::Point3(-70.0f, 0.0f, 0.0f),
-			Engine::Graphics::RGBColor(0, 1.0f, 1.0f));*/
+		Engine::Debug::DrawShape(Engine::LINE,
+			Engine::Math::Vector3(-53.28f, -108.953f, 1043.751f),
+			Engine::Math::Vector3(-70.0f, 0.0f, 0.0f),
+			Engine::Graphics::RGBColor(0, 1.0f, 1.0f));
 
+		Engine::SharedPointer<Engine::Graphics::Sprite> logoSprite = 
+			Engine::Graphics::Sprite::CreateSprite("EAElogo", 
+				"Game/spriteMaterial.mat", 0, 100, 900, 800, Engine::Graphics::VIEWPORT_COORDINATE);
+		scene->addObjectToScene(logoSprite);
+
+
+		Engine::SharedPointer<Engine::Graphics::Sprite> numberSprite =
+			Engine::Graphics::Sprite::CreateSprite("numbers",
+				"Game/numbersMaterial.mat", 1540, 1590, 890, 840, Engine::Graphics::VIEWPORT_COORDINATE);
+		scene->addObjectToScene(numberSprite);
+		numberSprite->sliceSprite(1, 10);
+		numberSprite->setCellToRender(2);
 
 		//Camera
 		Engine::SharedPointer<Engine::Camera> mainCamera =
@@ -109,12 +119,6 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 				Engine::Math::Vector3(-53.258, -108.953, 1043.751),
 				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
 					Engine::Math::Vector3(0, 1, 0)));
-
-		/*Engine::SharedPointer<Engine::Camera> mainCamera =
-		Engine::Camera::CreateCamera("MainCamera",
-		Engine::Math::Vector3(0, -1, -10),
-		Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
-		Engine::Math::Vector3(0, 1, 0)));*/
 
 		mainCamera->activateCamera(true);
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));

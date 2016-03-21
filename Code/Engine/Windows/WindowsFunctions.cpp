@@ -475,12 +475,16 @@ void WindowsUtil::Print(std::string i_str,
 	std::cerr << message.str().c_str() << "\n";
 }
 
-void WindowsUtil::Assert(bool evaluatedBool,
+bool WindowsUtil::Assert(bool evaluatedBool,
 	std::string message)
 {
 	if (!evaluatedBool)
+	{
 		Print(message);
+		return false;
+	}
 	assert(evaluatedBool);
+	return true;
 }
 
 bool WindowsUtil::setVSEnvironmentVariableValue(const char* variableName,

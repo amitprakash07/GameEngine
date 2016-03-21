@@ -193,7 +193,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 
 				//Handle
 				UniformHandle uniformHandle = getUniformHandle(tempUniformName, tempShaderType);
-				WindowsUtil::Assert(uniformHandle, "Unable to grab handle");
+				WindowsUtil::Assert(uniformHandle != -1, "Unable to grab handle");
 				tempUniform->setHandle(uniformHandle);
 
 				//uniformNames[tempUniform->prefixUniformName()] = tempUniform;

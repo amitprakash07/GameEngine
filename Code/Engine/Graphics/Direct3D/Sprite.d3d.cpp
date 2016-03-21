@@ -126,7 +126,7 @@ bool Engine::Graphics::Sprite::createVertexBuffer()
 }
 
 
-void Engine::Graphics::Sprite::draw(bool)
+void Engine::Graphics::Sprite::drawSprite()
 {
 	HRESULT result;
 
