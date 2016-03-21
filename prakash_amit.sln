@@ -257,6 +257,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{
 		Assets\Materials\ComputerGraphics\environmentMappingSphereMaterial.lua = Assets\Materials\ComputerGraphics\environmentMappingSphereMaterial.lua
 		Assets\Materials\ComputerGraphics\floorMaterial.lua = Assets\Materials\ComputerGraphics\floorMaterial.lua
 		Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua = Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua
+		Assets\Materials\ComputerGraphics\skyBoxMaterial Second.lua = Assets\Materials\ComputerGraphics\skyBoxMaterial Second.lua
 		Assets\Materials\ComputerGraphics\skyBoxMaterial.lua = Assets\Materials\ComputerGraphics\skyBoxMaterial.lua
 	EndProjectSection
 EndProject

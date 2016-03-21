@@ -49,6 +49,9 @@ namespace Engine
 				const float i_fieldOfView_y, const float i_aspectRatio,
 				const float i_z_nearPlane = 0.1, const float i_z_farPlane = 100);
 			static Matrix4x4 getIdentityMatrix();
+			static Matrix4x4 CreateScaleMatrix(const float scaleX,
+				const float scaleY, const float scaleZ);
+			static Matrix4x4 CreateNormalMatrix(const Matrix4x4 modelMatrix);
 			Matrix4x4 operator*(double scalar)const;
 			Matrix4x4 operator*(Matrix4x4 i_rhs)const;
 			Vector3 mul(Vector3 vector, bool isVector = false)const;

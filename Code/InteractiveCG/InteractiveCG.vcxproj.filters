@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="InteractiveCG.h" />
-    <ClInclude Include="ObjectController\CameraController.h">
+    <ClInclude Include="ObjectController\RotateObject.h">
       <Filter>ObjectController</Filter>
     </ClInclude>
     <ClInclude Include="ObjectController\WalkController.h">
@@ -11,7 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InteractiveCG.cpp" />
-    <ClCompile Include="ObjectController\CameraController.cpp">
+    <ClCompile Include="ObjectController\RotateObject.cpp">
       <Filter>ObjectController</Filter>
     </ClCompile>
     <ClCompile Include="ObjectController\WalkController.cpp">

@@ -3,6 +3,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include <sstream>
+#include "../Core/Utilities/IObjectController.h"
 
 
 Engine::SharedPointer<Engine::Graphics::ReflectingObject> 
@@ -90,6 +91,24 @@ void Engine::Graphics::ReflectingObject::setDynamicTextureSamplerName(
 {
 	dynamicTextureSamplerName = samplerUniformName;
 }
+
+
+void Engine::Graphics::ReflectingObject::setObjectController(IObjectController* i_objectController)
+{
+	if (i_objectController)
+		mObjectController = i_objectController;
+}
+
+
+void Engine::Graphics::ReflectingObject::updateObject()
+{
+	typedefs::ActionWithKeyBound action;
+	action.action = typedefs::Default;
+	action.keyVal = 0x00;
+	if (mObjectController)
+		mObjectController->updateObject(*this, action);
+}
+
 
 
 

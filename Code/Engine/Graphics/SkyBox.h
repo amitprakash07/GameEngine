@@ -10,15 +10,20 @@
 #include <d3d9.h>
 #endif
 
+#include "../../Engine/Core/Utilities/IMessageHandler.h"
+#include <map>
+
 namespace Engine
 {
 	namespace Graphics
 	{
-		class SkyBox:public Engine::Object
+		class SkyBox:public IMessageHandler ,Engine::Object
 		{
 		public:
-			static void CreateSkyBox(std::string i_MaterialName);
-			static SharedPointer<SkyBox> getSkyBox();
+			static SharedPointer<SkyBox> CreateSkyBox(std::string i_MaterialName);
+			static SharedPointer<SkyBox> getCurrentSkyBox();
+			static SharedPointer<SkyBox> getSkyBox(std::string);
+			static SharedPointer<SkyBox> getSkyBox(int index);
 			Math::Transform getTransform() override;
 			void setTransform(Math::Vector3,
 				Math::Quaternion = Math::Quaternion()) override;
@@ -27,13 +32,25 @@ namespace Engine
 			void draw(bool drawDebugObject) override;
 			void setMaterial(std::string newMaterialName);
 			bool isSkyBoxAvailableIntialized()const;
+			void updateObject() override;
+			void setObjectController(IObjectController *)override;
+			void setCurrentSkyBox();
+			static bool isSkyBoxExist(std::string materialName);
+			void HandleMessage(
+				Engine::utils::StringHash &,
+				RTTI* i_MessageSender, void* i_pMessageData) override;
+			std::string getTypeInfo() const override { return ""; }
+			bool isBothSameType(RTTI*, std::string) const override { return true; }
 		private:
-			static SharedPointer<SkyBox> mSkyBox;
+			static std::map<std::string, SharedPointer<SkyBox>> mSkyBoxList;
+			static bool isSkyBoxAvailable;			
 			SkyBox(std::string material_Name);
 			Math::Transform stubTransform;
 			std::string mMaterialName;
-			bool createBuffer();	
-			bool isSkyBoxAvailable;
+			bool createBuffer();				
+			IObjectController * mObjectController;
+			bool isCurrent;
+			static void deactivateAll();
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;
 			GLuint vertexBufferId;

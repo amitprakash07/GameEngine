@@ -16,7 +16,7 @@ Engine::SharedPointer<Engine::MeshObject> Engine::MeshObject::CreateMeshObject(
 	i_meshFileName = Engine::EngineCore::getMeshFolderPath() + i_meshFileName;
 	i_materialName = Engine::EngineCore::getMaterialFolderPath() + i_materialName;
 	SharedPointer<MeshObject> tempMeshObject(new MeshObject(i_meshFileName, i_materialName), "Engine::MeshObject");
-	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateMeshObject"));
+	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateObject"));
 	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempMeshObject.getRawPointer()), Engine::typedefs::HIGH);
 
 	if (!i_meshFileName.empty() && !i_meshFileName.empty() && !i_materialName.empty())
@@ -90,7 +90,8 @@ bool Engine::MeshObject::isDebugObject() const
 
 void Engine::MeshObject::setObjectController(IObjectController* i_objectController)
 {
-	mObjectController = i_objectController;
+	if (i_objectController)
+		mObjectController = i_objectController;
 }
 
 
@@ -124,33 +125,21 @@ void Engine::MeshObject::HandleMessage(Engine::utils::StringHash& i_message, RTT
 {
 	if (i_MessageSender != nullptr)
 	{
-		//if (/*isBothSameType(i_MessageSender, Engine::InputController::getInputController()->getTypeInfo()) && (*/Engine::utils::StringHash("UpdateMeshObject") == i_message)//)
-		//{
-		//	//Engine::SharedPointer<Engine::MeshObject> temp= SharedPointer<MeshObject>(this); //Need to think about this
-		//	switch (*(reinterpret_cast<Engine::typedefs::Direction*>(i_pMessageData)))
-		//	{
-		//	case Engine::typedefs::NONE:
-		//		break;
-		//	case Engine::typedefs::UP:
-		//		if (mObjectController)
-		//			mObjectController->updateObject(*this, Engine::typedefs::UP);
-		//		break;
-		//	case Engine::typedefs::DOWN:
-		//		if (mObjectController)
-		//			mObjectController->updateObject(*this, Engine::typedefs::DOWN);
-		//		break;
-		//	case Engine::typedefs::LEFT:
-		//		if (mObjectController)
-		//			mObjectController->updateObject(*this, Engine::typedefs::LEFT);
-		//		break;
-		//	case Engine::typedefs::RIGHT:
-		//		if (mObjectController)
-		//			mObjectController->updateObject(*this, Engine::typedefs::RIGHT);
-		//		break;
-		//	}
-		//}
+		if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+			mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));		
 	}
 }
+
+
+void Engine::MeshObject::updateObject()
+{
+	typedefs::ActionWithKeyBound action;
+	action.action = typedefs::Default;
+	action.keyVal = 0x00;
+	if(mObjectController)
+		mObjectController->updateObject(*this, action);
+}
+
 
 Engine::Math::Transform Engine::MeshObject::getTransform()
 {

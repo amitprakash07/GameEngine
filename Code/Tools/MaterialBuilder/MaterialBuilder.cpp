@@ -1,7 +1,6 @@
 #include "MaterialBuilder.h"
 #include "Material.h"
 #include <fstream>
-#include <sstream>
 #include <iostream>
 
 typedef char BYTES;
@@ -96,12 +95,12 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 						}//UniformName
 
 						{//shaderType
-							ShaderType *tempShaderType = new ShaderType;
+							Engine::Graphics::ShaderType *tempShaderType = new Engine::Graphics::ShaderType;
 							*tempShaderType = tempMap[i].shaderType;
 							//std::cerr << "\nShaderType is " << *tempShaderType << std::endl;
-							byte = new BYTES[sizeof(ShaderType)];
-							memcpy(byte, tempShaderType, sizeof(ShaderType));
-							writeToMaterialFile.write(byte, sizeof(ShaderType));
+							byte = new BYTES[sizeof(Engine::Graphics::ShaderType)];
+							memcpy(byte, tempShaderType, sizeof(Engine::Graphics::ShaderType));
+							writeToMaterialFile.write(byte, sizeof(Engine::Graphics::ShaderType));
 							delete tempShaderType;
 							delete byte;
 
@@ -155,9 +154,9 @@ bool Tools::AssetBuilder::MaterialBuilder::Build(const std::vector<std::string>&
 					byte = nullptr;
 				}
 
-				byte = new BYTES[sizeof(MaterialUniform)*m->getUniformCount()];
-				memcpy(byte, m->getAllMaterialUniform(), sizeof(MaterialUniform)*m->getUniformCount());
-				writeToMaterialFile.write(byte, sizeof(MaterialUniform)*m->getUniformCount());
+				byte = new BYTES[sizeof(Engine::Graphics::MaterialUniform)*m->getUniformCount()];
+				memcpy(byte, m->getAllMaterialUniform(), sizeof(Engine::Graphics::MaterialUniform)*m->getUniformCount());
+				writeToMaterialFile.write(byte, sizeof(Engine::Graphics::MaterialUniform)*m->getUniformCount());
 				delete byte;
 			}
 		}

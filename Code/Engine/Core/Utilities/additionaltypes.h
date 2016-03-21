@@ -15,7 +15,7 @@ namespace Engine
 			LOW = 2
 		};		
 
-		enum Action:uint8_t
+		enum Action :uint8_t
 		{
 			Zoom = 0,
 			ArcBallRotate = 1,
@@ -27,8 +27,19 @@ namespace Engine
 			MoveRight = 7,
 			Jump = 8,
 			Duck = 9,
-			Attack = 10
+			Attack = 10,
+			RotateLeft = 11,
+			RotateRight = 12,
+			RotateUp = 13,
+			RotateDown = 14,
+			Default = 15
 		};	
+
+		struct ActionWithKeyBound
+		{
+			Action action;
+			uint64_t keyVal;
+		};
 
 		struct _String
 		{

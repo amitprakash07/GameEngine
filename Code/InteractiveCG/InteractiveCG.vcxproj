@@ -185,13 +185,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="InteractiveCG.h" />
-    <ClInclude Include="ObjectController\CameraController.h" />
     <ClInclude Include="ObjectController\WalkController.h" />
+    <ClInclude Include="ObjectController\RotateObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InteractiveCG.cpp" />
-    <ClCompile Include="ObjectController\CameraController.cpp" />
     <ClCompile Include="ObjectController\WalkController.cpp" />
+    <ClCompile Include="ObjectController\RotateObject.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

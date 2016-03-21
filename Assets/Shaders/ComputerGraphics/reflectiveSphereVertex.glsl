@@ -22,13 +22,13 @@ layout(location = 5) in vec4 i_color;
 //Output
 layout(location = 0) out vec4 o_color;
 // Normal in eye space
-layout(location = 1) out vec3 o_normal_eye; 
+layout(location = 1) out vec3 o_normal_eye;
 layout(location = 2) out vec3 o_local_tangent;
 layout(location = 3) out vec3 o_local_bi_tangent;
 layout(location = 4) out vec2 o_local_texture;
 layout(location = 5) out mat4 o_viewMatrix;
 //position in eye space
-layout(location = 6) out vec3 o_position_in_eye; 
+layout(location = 6) out vec3 o_position_in_eye;
 
 void main()
 {
@@ -38,13 +38,13 @@ void main()
 	gl_Position = screenPosition;
 	o_color = i_color*vertexColorModifier;
 
-	
+
 	//Eye Space Normals
 	vec4 temp_normal_eye = vec4(i_local_normal, 0) * g_transform_localToWorld;
 	o_normal_eye = vec3(temp_normal_eye * g_transform_worldToView);
 
 
-	
+
 	//Pass as it is- may be used for bump mapping
 	o_local_tangent = i_local_tangent;
 	o_local_bi_tangent = i_local_bi_tangent;

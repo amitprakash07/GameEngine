@@ -27,42 +27,43 @@ void Engine::InputController::HandleMessage(Engine::utils::StringHash& i_message
 		{
 			if (i_pMessageData)
 			{
-				Engine::typedefs::Action action;
+				Engine::typedefs::ActionWithKeyBound action;
 				Engine::utils::StringHash gameObjectController = Engine::EngineCore::getStringPool()->findString("UpdateObject");
 				SharedPointer<InputController> tempInputController = Engine::EngineCore::getInputController();
+				action.keyVal = reinterpret_cast<WPARAM>(i_pMessageData);
 				switch (reinterpret_cast<WPARAM>(i_pMessageData))
 				{
 				case VK_LEFT:
-					action = Engine::typedefs::MoveLeft;
+					action.action = Engine::typedefs::MoveLeft;
 					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case 0x41:
-					action = Engine::typedefs::MoveLeft;
-					//Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &action);
+					action.action = Engine::typedefs::RotateLeft;
+					//Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case VK_RIGHT:
-					action = Engine::typedefs::MoveRight;
+					action.action = Engine::typedefs::MoveRight;
 					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case 0x44:
-					action = Engine::typedefs::MoveRight;
-					//Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &action);
+					action.action = Engine::typedefs::RotateRight;
+					//Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case VK_DOWN:
-					action = Engine::typedefs::MoveBackWard;
+					action.action = Engine::typedefs::MoveBackWard;
 					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case 0x53:
-					action = Engine::typedefs::MoveBackWard;
-					//Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &action);
+					action.action = Engine::typedefs::RotateDown;
+					//Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case VK_UP:
-					action = Engine::typedefs::MoveForward;
+					action.action = Engine::typedefs::MoveForward;
 					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				case 0x57:
-					action = Engine::typedefs::MoveForward;
-					//Engine::EngineCore::getMessagingSystem()->sendMessage(cameraController, tempInputController.getRawPointer(), &action);
+					action.action = Engine::typedefs::RotateUp;
+					//Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				}
 			}

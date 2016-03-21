@@ -3,7 +3,7 @@
 
 #include "../../../Core/Utilities/IMessageHandler.h"
 #include "../../../Core/Utilities/SharedPointer.h"
-#include "../../Utilities/IObjectController.h"
+//#include "../../Utilities/IObjectController.h"
 #include "Object.h"
 #include "../enginedefs.h"
 
@@ -20,7 +20,7 @@ namespace Engine
 			Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
 		void draw(bool) override {}
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
-		void setCameraController(IObjectController*);
+		//void setCameraController(IObjectController*);
 		void setFieldOfView(float);
 		float getFieldOfView() const;
 		void setAspectRatio(float);
@@ -37,6 +37,8 @@ namespace Engine
 		bool isRenderable() const override { return false; }
 		bool isDebugObject() const override { return false; }
 		Engine::Math::Vector3 getForwardVector()const;
+		void updateObject() override;
+		void setObjectController(IObjectController* objectController) override;
 	private:
 		Engine::Math::Transform mTransform;
 		std::string mCameraName;

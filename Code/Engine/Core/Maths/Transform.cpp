@@ -10,7 +10,7 @@ Engine::Math::Transform::Transform()
 
 Engine::Math::Vector3 Engine::Math::Transform::getForwardVector() const
 {
-	return(getLocalToWorldMatrix().getInverse().mul(Vector3(0.0f, 0.0f, 1.0f),true));
+	return(getLocalToWorldMatrix().mul(Vector3(0.0f, 0.0f, 1.0f),true));
 }
 
 
@@ -75,7 +75,7 @@ void Engine::Math::Transform::rotateByEulerAngles(
 
 void Engine::Math::Transform::translate(Vector3 iVector)
 {
-	position += iVector;
+	position += iVector + getForwardVector();
 }
 
 

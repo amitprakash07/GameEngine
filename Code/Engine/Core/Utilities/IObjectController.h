@@ -11,7 +11,7 @@ namespace Engine
 	{
 	public:
 		virtual ~IObjectController(){};
-		virtual void updateObject(Engine::Object &, typedefs::Action iAction) = 0;
+		virtual void updateObject(Engine::Object &, typedefs::ActionWithKeyBound iAction) = 0;
 		virtual std::string getTypeInfo() const override { return "Engine::IObjectController"; }
 		virtual bool isBothSameType(RTTI*, std::string i_inString) const override { return (i_inString == "Engine::IObjectController"); }
 		IObjectController() {}

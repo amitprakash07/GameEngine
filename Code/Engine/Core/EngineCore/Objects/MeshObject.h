@@ -16,7 +16,7 @@ namespace Engine
 	{
 	public:
 		static SharedPointer<MeshObject> CreateMeshObject(std::string, std::string, Engine::Graphics::RGBAColor = {1.0f,1.0f,1.0f,1.0f});
-		void setObjectController(IObjectController *);
+		void setObjectController(IObjectController *)override;
 		SharedPointer<Engine::Graphics::Mesh>       getMesh() const;
 		SharedPointer<Engine::Graphics::Effect>		getEffect() const;
 		SharedPointer<Engine::Graphics::Material>   getMaterial() const;
@@ -28,7 +28,8 @@ namespace Engine
 		std::string getTypeInfo() const override { return ""; }
 		bool isBothSameType(RTTI*, std::string) const override { return true; }
 		void EnableDebugging(bool enable = false);
-		bool isDebugObject() const override;		
+		bool isDebugObject() const override;	
+		void updateObject() override;
 		~MeshObject();
 	private:
 		MeshObject(std::string, std::string);

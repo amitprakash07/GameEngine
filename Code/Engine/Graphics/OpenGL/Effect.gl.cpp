@@ -453,7 +453,7 @@ OnExit:
 		// once it has been attached to the program we can (and should) delete our reference to it
 		// (any associated memory that OpenGL has allocated internally will be freed
 		// once the program is deleted)
-		glDeleteShader(fragmentShaderId);
+		/*glDeleteShader(fragmentShaderId);
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
 		{
@@ -462,12 +462,12 @@ OnExit:
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
 			WindowsUtil::Print(errorMessage.str());
 		}
-		fragmentShaderId = 0;
+		fragmentShaderId = 0;*/
 	}
 	if (shaderSource != nullptr)
 	{
-		free(shaderSource);
-		shaderSource = nullptr;
+		/*free(shaderSource);
+		shaderSource = nullptr;*/
 	}
 
 	return !wereThereErrors;
@@ -652,7 +652,7 @@ OnExit:
 		// once it has been attached to the program we can (and should) delete our reference to it
 		// (any associated memory that OpenGL has allocated internally will be freed
 		// once the program is deleted)
-		glDeleteShader(vertexShaderId);
+		/*glDeleteShader(vertexShaderId);
 		const GLenum errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
 		{
@@ -661,12 +661,12 @@ OnExit:
 				reinterpret_cast<const char*>(gluErrorString(errorCode));
 			WindowsUtil::Print(errorMessage.str());
 		}
-		vertexShaderId = 0;
+		vertexShaderId = 0;*/
 	}
 	if (shaderSource != nullptr)
 	{
-		free(shaderSource);
-		shaderSource = nullptr;
+		/*free(shaderSource);
+		shaderSource = nullptr;*/
 	}
 
 	return !wereThereErrors;
@@ -755,40 +755,7 @@ Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle
 }
 
 
-//void Engine::Graphics::Effect::setTextureUniform(TextureResource i_textureResource,
-//	SamplerID i_TextureSamplerID, int i_textureUnit)
-//{
-//	glActiveTexture(GL_TEXTURE0 + i_textureUnit);
-//	GLenum errorCode = glGetError();
-//	if ((errorCode == GL_NO_ERROR))
-//	{
-//		glBindTexture(GL_TEXTURE_2D, i_textureResource);
-//		errorCode = glGetError();
-//		if ((errorCode == GL_NO_ERROR))
-//		{
-//			glUniform1i(i_TextureSamplerID, i_textureUnit);
-//			errorCode = glGetError();
-//			if (!errorCode == GL_NO_ERROR)
-//			{
-//				std::stringstream errormessage;
-//				errormessage << "Unable to set the texture Uniform";
-//				WindowsUtil::Print(errormessage.str());
-//			}
-//		}
-//		else
-//		{
-//			std::stringstream errormessage;
-//			errormessage << "Unable to bind the texture";
-//			WindowsUtil::Print(errormessage.str());
-//		}
-//	}
-//	else
-//	{
-//		std::stringstream errormessage;
-//		errormessage << "Unable to active texture Uniform";
-//		WindowsUtil::Print(errormessage.str());
-//	}
-//}
+
 
 
 

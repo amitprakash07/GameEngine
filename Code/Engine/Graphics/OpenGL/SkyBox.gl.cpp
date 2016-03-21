@@ -22,7 +22,9 @@ Engine::Graphics::SkyBox::SkyBox(std::string material_Name)
 	s_vertexArrayID = -1;
 	vertexBufferId = -1;
 	indexBufferId = -1;
-	isSkyBoxAvailable = false;
+	mObjectController = nullptr;
+	isCurrent = false;
+	stubTransform = Engine::Math::Transform();
 }
 
 
@@ -68,15 +70,56 @@ bool Engine::Graphics::SkyBox::createVertexArray()
 
 	GLfloat vertexDataForSkyBox[] =
 	{
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
+
+		/*-50.0f, -50.0f,  50.0f,
+		 50.0f, -50.0f,  50.0f,
+		 50.0f,  50.0f,  50.0f,
+		-50.0f,  50.0f,  50.0f,
+
+		-50.0f, -50.0f, -50.0f,
+		 50.0f, -50.0f, -50.0f,
+		 50.0f,  50.0f, -50.0f,
+		-50.0f,  50.0f, -50.0f*/
+
+		-100.0f, -100.0f,  100.0f,
+		 100.0f, -100.0f,  100.0f,
+	 	 100.0f,  100.0f,  100.0f,
+		-100.0f,  100.0f,  100.0f,
+
+		-100.0f, -100.0f, -100.0f,
+		 100.0f, -100.0f, -100.0f,
+		 100.0f,  100.0f, -100.0f,
+		-100.0f,  100.0f, -100.0f
+
+		/*-500.0f, -500.0f,  500.0f,
+		 500.0f, -500.0f,  500.0f,
+		 500.0f,  500.0f,  500.0f,
+		-500.0f,  500.0f,  500.0f,
 		
-		-1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f
+		-500.0f, -500.0f, -500.0f,
+		 500.0f, -500.0f, -500.0f,
+		 500.0f,  500.0f, -500.0f,
+		-500.0f,  500.0f, -500.0f*/
+		
+		/*-1000.0f, -1000.0f,  1000.0f,
+		 1000.0f, -1000.0f,  1000.0f,
+		 1000.0f,  1000.0f,  1000.0f,
+		-1000.0f,  1000.0f,  1000.0f,
+
+		-1000.0f, -1000.0f, -1000.0f,
+		 1000.0f, -1000.0f, -1000.0f,
+		 1000.0f,  1000.0f, -1000.0f,
+		-1000.0f,  1000.0f, -1000.0f*/
+
+		/*-10000.0f, -10000.0f,  10000.0f,
+		 10000.0f, -10000.0f,  10000.0f,
+		 10000.0f,  10000.0f,  10000.0f,
+		-10000.0f,  10000.0f,  10000.0f,
+
+		-10000.0f, -10000.0f, -10000.0f,
+		 10000.0f, -10000.0f, -10000.0f,
+		 10000.0f,  10000.0f, -10000.0f,
+		-10000.0f,  10000.0f, -10000.0f*/
 	};
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexDataForSkyBox),
@@ -166,20 +209,49 @@ void Engine::Graphics::SkyBox::draw(bool)
 			Math::Transform cameraTransform = tempCamera->getTransform();
 			tempEffect->setShaders();
 
+			SharedPointer<Graphics::Uniform> localToWorld = Graphics::Uniform::getUniform(
+				tempEffect->getTransformMatrixUniformName(
+					Graphics::Vertex,
+					Graphics::LocalToWorld), tempMaterial->getEffectName(), Graphics::Vertex);
+
 			SharedPointer<Graphics::Uniform> worldToView = Graphics::Uniform::getUniform(
 				tempEffect->getTransformMatrixUniformName(
 					Graphics::Vertex,
 					Graphics::WorldToView), tempMaterial->getEffectName(), Graphics::Vertex);
 
+			SharedPointer<Graphics::Uniform> viewToScreen = Graphics::Uniform::getUniform(
+				tempEffect->getTransformMatrixUniformName(
+					Graphics::Vertex,
+					Graphics::ViewToScreen), tempMaterial->getEffectName(), Graphics::Vertex);
+
+			if (!localToWorld.isNull())
+			{
+				Graphics::UniformValues localToWorlValues;
+				localToWorlValues.matrixValue.Type = Graphics::LocalToWorld;
+				localToWorlValues.matrixValue.matrix = Engine::Math::Matrix4x4();
+				localToWorld->setUniformValue(localToWorlValues);
+			}
+
 			if (!worldToView.isNull())
 			{
 				Graphics::UniformValues worldToViewValues;
 				worldToViewValues.matrixValue.Type = Graphics::WorldToView;
-				worldToViewValues.matrixValue.matrix =
-					Math::Matrix4x4::CreateWorldToViewTransform(
-						cameraTransform.getOrientation(),
-						cameraTransform.getPosition());
+				/*worldToViewValues.matrixValue.matrix = Engine::Math::Matrix4x4(
+					cameraTransform.getOrientation()).getInverse();*/
+				worldToViewValues.matrixValue.matrix = Engine::Math::Matrix4x4::CreateWorldToViewTransform(
+					cameraTransform.getOrientation(), cameraTransform.getPosition());
 				worldToView->setUniformValue(worldToViewValues);
+			}
+
+
+			if (!viewToScreen.isNull())
+			{
+				Graphics::UniformValues viewToScreenValues;
+				viewToScreenValues.matrixValue.Type = Graphics::ViewToScreen;
+				viewToScreenValues.matrixValue.matrix = Engine::Math::Matrix4x4::CreateViewToScreenTransform(
+					fieldOfView, aspectRatio,
+					nearPlane, farPlane);
+				viewToScreen->setUniformValue(viewToScreenValues);
 			}
 
 			Engine::Graphics::Uniform::setAllUniformToShaderObjects(tempMaterial->getEffectName());

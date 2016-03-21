@@ -5,6 +5,7 @@
 
 namespace Engine
 {
+	class IObjectController;
 	class Object
 	{
 	public:
@@ -14,6 +15,8 @@ namespace Engine
 		virtual void draw(bool) = 0;
 		virtual bool isRenderable() const = 0;
 		virtual bool isDebugObject() const = 0;
+		virtual void updateObject() = 0;	
+		virtual void setObjectController(IObjectController* objectController) = 0;
 		Object() {}
 		virtual ~Object() {}
 	};
