@@ -38,7 +38,9 @@ namespace Engine
 		bool isDebugObject() const override { return false; }
 		Engine::Math::Vector3 getForwardVector()const;
 		void updateObject() override;
+		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{/*Stub*/};
 		void setObjectController(IObjectController* objectController) override;
+
 	private:
 		Engine::Math::Transform mTransform;
 		std::string mCameraName;

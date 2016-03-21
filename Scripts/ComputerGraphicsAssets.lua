@@ -7,11 +7,7 @@ return
 		{
 			src = "ComputerGraphics/Cube.lua",
 			target = "ComputerGraphics/Cube.mesh",
-		},	
-		{
-			src = "ComputerGraphics/floor.lua",
-			target = "ComputerGraphics/floor.mesh",
-		},		
+		},					
 		{
 			src = "ComputerGraphics/reflectiveSphere.lua",
 			target = "ComputerGraphics/reflectiveSphere.mesh",
@@ -28,6 +24,80 @@ return
 			src = "ComputerGraphics/TestSphere.lua",
 			target = "ComputerGraphics/TestSphere.mesh",
 		},	
+		{
+			src = "ComputerGraphics/backWall.lua",
+			target = "ComputerGraphics/backWall.mesh",
+		},
+		{
+			src = "ComputerGraphics/ceiling.lua",
+			target = "ComputerGraphics/ceiling.mesh",
+		},
+		{
+			src = "ComputerGraphics/floor.lua",
+			target = "ComputerGraphics/floor.mesh",
+		},
+		{
+			src = "ComputerGraphics/frontWall.lua",
+			target = "ComputerGraphics/frontWall.mesh",
+		},
+		{
+			src = "ComputerGraphics/leftWall.lua",
+			target = "ComputerGraphics/leftWall.mesh",
+		},
+		{
+			src = "ComputerGraphics/rightWall.lua",
+			target = "ComputerGraphics/rightWall.mesh",
+		},
+	-- Teapot one
+		{
+			src = "ComputerGraphics/teapot1_lid.lua",
+			target = "ComputerGraphics/teapot1_lid.mesh",
+		},
+		{
+			src = "ComputerGraphics/teapot1_handle.lua",
+			target = "ComputerGraphics/teapot1_handle.mesh",
+		},
+		{
+			src = "ComputerGraphics/teapot1_circum.lua",
+			target = "ComputerGraphics/teapot1_circum.mesh",
+		},
+	-- Teapot two
+		{
+			src = "ComputerGraphics/teapot2_circum.lua",
+			target = "ComputerGraphics/teapot2_circum.mesh",
+		},
+		{
+			src = "ComputerGraphics/teapot2_lid.lua",
+			target = "ComputerGraphics/teapot2_lid.mesh",
+		},
+		{
+			src = "ComputerGraphics/teapot2_handle01.lua",
+			target = "ComputerGraphics/teapot2_handle01.mesh",
+		},
+		{
+			src = "ComputerGraphics/teapot2_handle02.lua",
+			target = "ComputerGraphics/teapot2_handle02.mesh",
+		},
+	-- tray
+		{
+			src = "ComputerGraphics/tray.lua",
+			target = "ComputerGraphics/tray.mesh",
+		},
+	-- konvinceTeapot
+		{
+			src = "ComputerGraphics/konvinceTeapot.lua",
+			target = "ComputerGraphics/konvinceTeapot.mesh",
+		},
+	-- utahTeapot
+		{
+			src = "ComputerGraphics/utahTeapot.lua",
+			target = "ComputerGraphics/utahTeapot.mesh",
+		},
+	-- proxyLightSphere
+		{
+			src = "ComputerGraphics/proxyLightSphere.lua",
+			target = "ComputerGraphics/proxyLightSphere.mesh",
+		},
 	},
 -- =====================================================================
 
@@ -53,6 +123,10 @@ return
 		{
 			src = "ComputerGraphics/environmentMappingSphereEffect.lua",
 			target = "ComputerGraphics/environmentMappingSphereEffect.effect"
+		},
+		{
+			src = "ComputerGraphics/blueEffect.lua",
+			target = "ComputerGraphics/blueEffect.effect"
 		},
 	},
 
@@ -81,6 +155,41 @@ return
 		{
 			src = "ComputerGraphics/environmentMappingSphereMaterial.lua",
 			target = "ComputerGraphics/environmentMappingSphereMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/ceilingMaterial.lua",
+			target = "ComputerGraphics/ceilingMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/rightWallMaterial.lua",
+			target = "ComputerGraphics/rightWallMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/leftWallMaterial.lua",
+			target = "ComputerGraphics/leftWallMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/frontWallMaterial.lua",
+			target = "ComputerGraphics/frontWallMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/backWallMaterial.lua",
+			target = "ComputerGraphics/backWallMaterial.mat",
+		},
+	-- konvinceTeapot
+		{
+			src = "ComputerGraphics/konvinceTeapotMaterial.lua",
+			target = "ComputerGraphics/konvinceTeapotMaterial.mat",
+		},
+	-- utahTeapot
+		{
+			src = "ComputerGraphics/utahTeapotMaterial.lua",
+			target = "ComputerGraphics/utahTeapotMaterial.mat",
+		},
+	-- proxyLightSphere
+		{
+			src = "ComputerGraphics/proxyLightSphereMaterial.lua",
+			target = "ComputerGraphics/proxyLightSphereMaterial.mat",
 		},
 	},
 
@@ -207,9 +316,13 @@ return
 	{
 		BuildTool = "TextureBuilder.exe",
 		{
-			src = "ComputerGraphics/myFace.dds",
-			target = "ComputerGraphics/myFace.dds",
+			src = "ComputerGraphics/borgTexture.jpg",
+			target = "ComputerGraphics/borgTexture.jpg",
 		},				
+		{
+			src = "ComputerGraphics/marbleTexture.jpg",
+			target = "ComputerGraphics/marbleTexture.jpg",
+		},
 		{
 			src = "ComputerGraphics/checkerBoard.jpg",
 			target = "ComputerGraphics/checkerBoard.jpg",
@@ -229,6 +342,10 @@ return
 		{
 			src = "ComputerGraphics/Test.dds",
 			target = "ComputerGraphics/Test.dds",
+		},
+		{
+			src = "ComputerGraphics/plank.png",
+			target = "ComputerGraphics/plank.png",
 		},
 	}
 -- ====================================================================

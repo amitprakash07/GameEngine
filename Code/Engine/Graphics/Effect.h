@@ -33,7 +33,7 @@ namespace Engine
 			std::string getTypeInfo() const override { return ""; }
 			bool isBothSameType(RTTI*, std::string) const  override { return true; }						
 			void setMaterialUniformValue(char*, MaterialUniform) const;
-			void setTextureUniform(TextureResource, SamplerID, int i_textureUnit = 0);
+			//void setTextureUniform(TextureResource, SamplerID, int i_textureUnit = 0);
 			UniformHandle getUniformHandle(const char *, ShaderType) const;
 			SamplerID getSamplerID(UniformHandle, ShaderType);			
 #ifdef PLATFORM_D3D
@@ -42,7 +42,9 @@ namespace Engine
 			~Effect();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Effect>> mEffectList;
-			std::map<ShaderType, std::string> shaderNames;	
+			std::map<ShaderType, std::string> shaderNames;
+			std::string normalMatrixUniformName;
+			std::string scaleMatrixUniformName;
 			std::string localToWorldTransformUniformName;
 			std::string worldToViewTransformUniformName;
 			std::string viewToScreenTransformUniformName;			
@@ -51,6 +53,8 @@ namespace Engine
 			bool isLocalToWorldTransformExist;
 			bool isWorldToViewTransformExist;
 			bool isViewToScreenTransformExist;
+			bool isScaleMatrixTransformExist;
+			bool isNormalMAtrixTransformExist;
 			bool LoadShaders();
 			bool LoadFragmentShader();
 			bool LoadVertexShader();	

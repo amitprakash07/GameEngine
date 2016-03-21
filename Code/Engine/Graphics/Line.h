@@ -41,6 +41,7 @@ namespace Engine
 			bool isRenderable() const override;
 			void draw(bool drawDebugObject) override;	
 			void updateObject() override;
+			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 			void setObjectController(IObjectController *i_ObjectControlller) override;
 		private:
 			static std::vector<SharedPointer<Line>> mLineList;

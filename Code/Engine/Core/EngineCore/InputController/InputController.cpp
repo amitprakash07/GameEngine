@@ -31,6 +31,9 @@ void Engine::InputController::HandleMessage(Engine::utils::StringHash& i_message
 				Engine::utils::StringHash gameObjectController = Engine::EngineCore::getStringPool()->findString("UpdateObject");
 				SharedPointer<InputController> tempInputController = Engine::EngineCore::getInputController();
 				action.keyVal = reinterpret_cast<WPARAM>(i_pMessageData);
+				action.action = typedefs::Default;
+				Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
+				/*
 				switch (reinterpret_cast<WPARAM>(i_pMessageData))
 				{
 				case VK_LEFT:
@@ -66,6 +69,7 @@ void Engine::InputController::HandleMessage(Engine::utils::StringHash& i_message
 					//Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
 					break;
 				}
+				*/
 			}
 		}
 	}

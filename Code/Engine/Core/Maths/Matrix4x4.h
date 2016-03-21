@@ -51,6 +51,7 @@ namespace Engine
 			static Matrix4x4 getIdentityMatrix();
 			static Matrix4x4 CreateScaleMatrix(const float scaleX,
 				const float scaleY, const float scaleZ);
+			static Matrix4x4 CreateScaleMatrix(Vector3 iScaleFactor);
 			static Matrix4x4 CreateNormalMatrix(const Matrix4x4 modelMatrix);
 			Matrix4x4 operator*(double scalar)const;
 			Matrix4x4 operator*(Matrix4x4 i_rhs)const;

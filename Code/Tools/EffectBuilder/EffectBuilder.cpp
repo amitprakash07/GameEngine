@@ -223,6 +223,10 @@ SHADER_UNIFORM:
 								uniforms[i - 1].matrixType = Engine::Graphics::WorldToView;
 							else if (strcmp(tempMatrixType, "ViewToScreen")==0)
 								uniforms[i - 1].matrixType = Engine::Graphics::ViewToScreen;
+							else if (strcmp(tempMatrixType, "NormalMatrix") == 0)
+								uniforms[i - 1].matrixType = Engine::Graphics::NormalMatrix;
+							else if (strcmp(tempMatrixType, "ScaleMatrix") == 0)
+								uniforms[i - 1].matrixType = Engine::Graphics::ScaleMatrix;
 							lua_pop(mLuaState, 1);//Popping out matrixType
 						}
 					}

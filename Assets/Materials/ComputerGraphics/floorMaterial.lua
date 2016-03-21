@@ -4,7 +4,7 @@ return
 	map =
 	{
 		{
-			path = "ComputerGraphics/checkerBoard.jpg",
+			path = "ComputerGraphics/plank.png",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",

@@ -50,7 +50,10 @@ namespace Engine
 			Unspecified = 0,
 			LocalToWorld = 1,
 			WorldToView = 2,
-			ViewToScreen = 3
+			ViewToScreen = 3,
+			ScaleMatrix = 4,
+			NormalMatrix = 5,
+			shadowProjectionMatrix = 6
 		};
 
 

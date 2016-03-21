@@ -17,6 +17,7 @@ namespace Engine
 		virtual bool isDebugObject() const = 0;
 		virtual void updateObject() = 0;	
 		virtual void setObjectController(IObjectController* objectController) = 0;
+		virtual void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) = 0;
 		Object() {}
 		virtual ~Object() {}
 	};

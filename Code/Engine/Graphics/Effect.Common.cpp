@@ -194,9 +194,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 				//Handle
 				UniformHandle uniformHandle = getUniformHandle(tempUniformName, tempShaderType);
 				WindowsUtil::Assert(uniformHandle != -1, "Unable to grab handle");
-				tempUniform->setHandle(uniformHandle);
-
-				//uniformNames[tempUniform->prefixUniformName()] = tempUniform;
+				tempUniform->setHandle(uniformHandle);				
 			}
 		}
 
@@ -224,6 +222,14 @@ void Engine::Graphics::Effect::setTransformMatrixExistenceFlag(
 		isViewToScreenTransformExist = true;
 		viewToScreenTransformUniformName = uniformName;
 		break;
+	case ScaleMatrix:
+		isScaleMatrixTransformExist = true;
+		scaleMatrixUniformName = uniformName;
+		break;
+	case NormalMatrix:
+		isNormalMAtrixTransformExist = true;
+		normalMatrixUniformName = uniformName;
+		break;
 	default:
 		break;
 	}
@@ -236,14 +242,15 @@ std::string Engine::Graphics::Effect::getTransformMatrixUniformName(
 	switch (iMatrixType)
 	{
 	case LocalToWorld:
-		return localToWorldTransformUniformName;
-		break;
+		return localToWorldTransformUniformName;		
 	case WorldToView:
-		return worldToViewTransformUniformName;
-		break;
+		return worldToViewTransformUniformName;		
 	case ViewToScreen:
 		return viewToScreenTransformUniformName;
-		break;
+	case NormalMatrix:
+		return normalMatrixUniformName;
+	case ScaleMatrix:
+		return scaleMatrixUniformName;
 	default:
 		break;
 	}

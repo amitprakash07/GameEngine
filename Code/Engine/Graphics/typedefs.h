@@ -4,13 +4,15 @@
 #include <stdint.h>
 
 #include "../Windows/WindowsIncludes.h"
+
 #ifdef PLATFORM_D3D
 #include <d3dx9shader.h>
 #elif PLATFORM_OPEN_GL
 #include <gl/GLU.h>
 #endif
 
-
+#include "../Core/Maths/Vector2.h"
+#include "../Core/Maths/Vector3.h"
 
 namespace Engine
 {
@@ -137,6 +139,19 @@ namespace Engine
 				b = iB;
 				a = iA;
 			}
+		};
+
+		struct vertexTexture
+		{
+			Math::Vector3 position;
+			Math::Vector2 texture;
+		};
+
+		struct VertexTextureNormal
+		{
+			Math::Vector3 position;
+			Math::Vector3 normal;
+			Math::Vector2 texture;
 		};
 
 	}

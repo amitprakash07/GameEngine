@@ -34,6 +34,7 @@ namespace Engine
 			bool isSkyBoxAvailableIntialized()const;
 			void updateObject() override;
 			void setObjectController(IObjectController *)override;
+			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 			void setCurrentSkyBox();
 			static bool isSkyBoxExist(std::string materialName);
 			void HandleMessage(

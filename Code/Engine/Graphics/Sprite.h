@@ -15,11 +15,6 @@
 
 namespace Engine
 {
-	struct vertexTexture
-	{
-		Math::Vector3 position;
-		Math::Vector2 texture;
-	};
 	namespace Graphics
 	{
 		class Sprite :public Engine::Object
@@ -48,6 +43,7 @@ namespace Engine
 			bool isDebugObject() const override;	
 			void updateObject() override;
 			void setObjectController(IObjectController* objectController) override;
+			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 			~Sprite();
 		private:
 			Sprite(std::string spriteName,

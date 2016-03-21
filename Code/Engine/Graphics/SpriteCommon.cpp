@@ -148,7 +148,7 @@ void Engine::Graphics::Sprite::nextCell()
 }
 
 
-Engine::vertexTexture* Engine::Graphics::Sprite::getTextureAndVerticesData() const
+Engine::Graphics::vertexTexture* Engine::Graphics::Sprite::getTextureAndVerticesData() const
 {
 	//leftBottom
 	vertexAttribute[0].position.x = rectLeft;

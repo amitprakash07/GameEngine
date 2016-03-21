@@ -27,6 +27,7 @@ namespace Engine
 			void setDynamicTextureSamplerName(std::string samplerUniformName);	
 			void setObjectController(IObjectController *) override;
 			void updateObject() override;
+			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 		private:
 			ReflectingObject();
 			bool init();

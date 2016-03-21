@@ -406,6 +406,12 @@ void Engine::Scene::updateObject()
 		mObjectController->updateObject(*this, action);
 }
 
+void Engine::Scene::setScale(float x, float y, float z)
+{
+	//Need to implement Later
+}
+
+
 
 void Engine::Scene::setObjectController(IObjectController* iObjectController)
 {

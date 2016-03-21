@@ -141,6 +141,15 @@ void Engine::MeshObject::updateObject()
 }
 
 
+void Engine::MeshObject::setScale(float x, float y, float z)
+{
+	if (x != 1.0f && y == 1.0f && z == 1.0f)
+		y = z = x;
+	Engine::Math::Matrix4x4::CreateScaleMatrix(x, y, z);	
+}
+
+
+
 Engine::Math::Transform Engine::MeshObject::getTransform()
 {
 	return mTransform;

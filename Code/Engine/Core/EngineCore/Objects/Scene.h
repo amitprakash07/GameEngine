@@ -48,6 +48,7 @@ namespace Engine
 		void setObjectController(IObjectController * iObjectController) override;
 		void setTransform(Engine::Math::Vector3,
 			Engine::Math::Quaternion = Engine::Math::Quaternion())override {}
+		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
 		//IMesageHandler override function
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
 		~Scene();
