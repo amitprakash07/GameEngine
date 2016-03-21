@@ -257,7 +257,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{
 		Assets\Materials\ComputerGraphics\environmentMappingSphereMaterial.lua = Assets\Materials\ComputerGraphics\environmentMappingSphereMaterial.lua
 		Assets\Materials\ComputerGraphics\floorMaterial.lua = Assets\Materials\ComputerGraphics\floorMaterial.lua
 		Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua = Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua
-		Assets\Materials\ComputerGraphics\skyBoxMaterial Second.lua = Assets\Materials\ComputerGraphics\skyBoxMaterial Second.lua
 		Assets\Materials\ComputerGraphics\skyBoxMaterial.lua = Assets\Materials\ComputerGraphics\skyBoxMaterial.lua
 	EndProjectSection
 EndProject
@@ -339,6 +338,7 @@ Global
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|Direct3D_64.ActiveCfg = Debug|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|Direct3D_64.Build.0 = Debug|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|OpenGL_32.ActiveCfg = Debug|Win32
+		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|OpenGL_32.Build.0 = Debug|Win32
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|x64.ActiveCfg = Debug|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|x64.Build.0 = Debug|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Debug|x86.ActiveCfg = Debug|Win32
@@ -346,6 +346,7 @@ Global
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|Direct3D_64.ActiveCfg = Release|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|Direct3D_64.Build.0 = Release|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|OpenGL_32.ActiveCfg = Release|Win32
+		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|OpenGL_32.Build.0 = Release|Win32
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|x64.ActiveCfg = Release|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|x64.Build.0 = Release|x64
 		{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}.Release|x86.ActiveCfg = Release|Win32

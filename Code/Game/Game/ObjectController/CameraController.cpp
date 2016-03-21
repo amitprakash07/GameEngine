@@ -4,10 +4,10 @@
 
 
 void Application::CameraController::updateObject(Engine::Object& iObject, 
-	Engine::typedefs::Action iAction)
+	Engine::typedefs::ActionWithKeyBound iAction)
 {
 	Engine::Math::Transform transform = iObject.getTransform();
-	switch (iAction)
+	switch (iAction.action)
 	{
 	case Engine::typedefs::MoveForward:
 		transform.translate(Engine::Math::Vector3(0.0f, 0.0f, -1.0f));

@@ -5,6 +5,7 @@
 #include "Effect.h"
 #include "../Core/Maths/Functions.h"
 #include "Uniform.h"
+#include <limits.h>
 
 Engine::SharedPointer<Engine::Graphics::Sprite>
 Engine::Graphics::Sprite::CreateSprite(std::string iSpriteName,
@@ -126,21 +127,24 @@ uint8_t Engine::Graphics::Sprite::sliceSprite(uint8_t i_rows, uint8_t i_columns)
 
 void Engine::Graphics::Sprite::setCellToRender(uint8_t i_cellToRender)
 {
-	if(!WindowsUtil::Assert((cellToRender < totalCells) && multiple, 
-		"cell To render should be less than the split"))
-		return;
-	cellToRender = i_cellToRender;
+	if (multiple)
+	{
+		if (WindowsUtil::Assert((cellToRender <= totalCells) && multiple,
+			"cell To render should be less than the split"))
+			return;
+		cellToRender = i_cellToRender;
+	}
 }
 
 
 void Engine::Graphics::Sprite::nextCell()
 {
-	if (!WindowsUtil::Assert((cellToRender < totalCells) && multiple,
-		"cell To render should be less than the split or it is not yet slpitted"))
-		return;
-	cellToRender++;
-	if (cellToRender > totalCells)
-		cellToRender = 0;
+	if (multiple)
+	{
+		cellToRender++;
+		if (cellToRender >= totalCells)
+			cellToRender = 0;
+	}
 }
 
 
@@ -231,6 +235,26 @@ void Engine::Graphics::Sprite::debugObject(bool Debug)
 bool Engine::Graphics::Sprite::isRenderable() const
 {
 	return true;
+}
+
+
+void Engine::Graphics::Sprite::setObjectController(IObjectController* i_ObjectController)
+{
+	if (mObjectController)
+		mObjectController = i_ObjectController;
+}
+
+
+void Engine::Graphics::Sprite::updateObject()
+{
+	if (multiple)
+	{
+		if ((currentTick % spriteDelay) == 0)
+			nextCell();
+		currentTick++;
+		if (currentTick == UINT32_MAX)
+			currentTick = 0;
+	}
 }
 
 

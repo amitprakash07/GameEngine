@@ -48,6 +48,8 @@ Engine::Graphics::Sprite::Sprite(std::string iSpriteName,
 	vertexAttribute = new vertexTexture[4];
 	multiple = false;
 	rows = columns = totalCells = cellToRender = 0;
+	spriteDelay = 10;
+	currentTick = 0;
 }
 
 void Engine::Graphics::Sprite::drawSprite()

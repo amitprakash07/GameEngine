@@ -207,6 +207,11 @@ void Engine::Graphics::SkyBox::draw(bool)
 		if (!tempCamera.isNull())
 		{
 			Math::Transform cameraTransform = tempCamera->getTransform();
+			float fieldOfView = tempCamera->getFieldOfView();
+			float aspectRatio = tempCamera->getAspectRatio();
+			float nearPlane = tempCamera->getNearPlane();
+			float farPlane = tempCamera->getFarPlane();
+
 			tempEffect->setShaders();
 
 			SharedPointer<Graphics::Uniform> localToWorld = Graphics::Uniform::getUniform(
@@ -237,7 +242,7 @@ void Engine::Graphics::SkyBox::draw(bool)
 				Graphics::UniformValues worldToViewValues;
 				worldToViewValues.matrixValue.Type = Graphics::WorldToView;
 				/*worldToViewValues.matrixValue.matrix = Engine::Math::Matrix4x4(
-					cameraTransform.getOrientation()).getInverse();*/
+				cameraTransform.getOrientation()).getInverse();*/
 				worldToViewValues.matrixValue.matrix = Engine::Math::Matrix4x4::CreateWorldToViewTransform(
 					cameraTransform.getOrientation(), cameraTransform.getPosition());
 				worldToView->setUniformValue(worldToViewValues);
@@ -267,7 +272,7 @@ void Engine::Graphics::SkyBox::draw(bool)
 			WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to Draw ths SkyBox");
 			glClear(GL_DEPTH_BUFFER_BIT);
 		}
-	}	
+	}
 }
 
 

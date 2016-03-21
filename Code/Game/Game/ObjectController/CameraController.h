@@ -5,6 +5,6 @@ namespace Application
 {
 	class CameraController : public Engine::IObjectController
 	{
-		void updateObject(Engine::Object &, Engine::typedefs::Action iAction) override;
+		void updateObject(Engine::Object &, Engine::typedefs::ActionWithKeyBound iAction) override;
 	};
 }

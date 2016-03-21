@@ -33,18 +33,21 @@ namespace Engine
 				float top,
 				float bottom,
 				Coordinate i_coordinate = SCREEN_COORDINATE);
-			Math::Transform getTransform() override { return Math::Transform(); }
+			
 			uint8_t sliceSprite(uint8_t i_rows, uint8_t i_columns);
 			void setCellToRender(uint8_t cellToRender);
 			bool isMultiple() const;
-			void setTransform(Engine::Math::Vector3,
-				Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
 			void changeSpriteMaterial(std::string);
 			void nextCell();
+			Math::Transform getTransform() override { return Math::Transform(); }
+			void setTransform(Engine::Math::Vector3,
+				Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
 			void draw(bool debug = false) override;
 			void debugObject(bool isDebug = false);
 			bool isRenderable() const override;
-			bool isDebugObject() const override;			
+			bool isDebugObject() const override;	
+			void updateObject() override;
+			void setObjectController(IObjectController* objectController) override;
 			~Sprite();
 		private:
 			Sprite(std::string spriteName,
@@ -66,6 +69,8 @@ namespace Engine
 			uint8_t columns;
 			uint8_t totalCells;
 			uint8_t cellToRender;
+			uint32_t spriteDelay;
+			uint32_t currentTick;
 			float URange;
 			float VRange;
 			bool createBuffers();
@@ -73,6 +78,7 @@ namespace Engine
 			void drawSprite();
 			vertexTexture * vertexAttribute;
 			vertexTexture*  getTextureAndVerticesData()const;
+			IObjectController * mObjectController;
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;
 			GLuint vertexBufferId;
