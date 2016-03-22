@@ -109,8 +109,8 @@ return
 			target = "ComputerGraphics/cubeEffect.effect"
 		},	
 		{
-			src = "ComputerGraphics/floorEffect.lua",
-			target = "ComputerGraphics/floorEffect.effect"
+			src = "ComputerGraphics/planeEffect.lua",
+			target = "ComputerGraphics/planeEffect.effect"
 		},		
 		{
 			src = "ComputerGraphics/reflectiveSphereEffect.lua",
@@ -222,8 +222,8 @@ return
 		},
 		-- *******************************************************************
 		{
-			src = "ComputerGraphics/floorVertex.glsl",
-			target = "ComputerGraphics/floorVertex.glsl",
+			src = "ComputerGraphics/planeVertex.glsl",
+			target = "ComputerGraphics/planeVertex.glsl",
 			optionaltype = "vertex",
 			dependencies =
 			{
@@ -232,8 +232,8 @@ return
 		},
 
 		{
-			src = "ComputerGraphics/floorFragment.glsl",
-			target = "ComputerGraphics/floorFragment.glsl",
+			src = "ComputerGraphics/planeFragment.glsl",
+			target = "ComputerGraphics/planeFragment.glsl",
 			optionaltype = "fragment",
 			dependencies =
 			{

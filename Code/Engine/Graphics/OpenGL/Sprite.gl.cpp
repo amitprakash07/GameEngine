@@ -59,7 +59,7 @@ void Engine::Graphics::Sprite::drawSprite()
 		GLenum errorCode;
 		glBindVertexArray(s_vertexArrayID);
 		errorCode = glGetError();
-		glDrawElements(GL_TRIANGLES, 6/*Only 6 vertices is required for the triangle*/,
+		glDrawElements(GL_TRIANGLES, 6/*Only 6 vertices is required for the quad*/,
 			GL_UNSIGNED_INT, 0);
 		errorCode = glGetError();
 		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unbale to draw the quad");

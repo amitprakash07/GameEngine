@@ -5,10 +5,12 @@
 #include "Camera.h"
 #include "../../../Graphics/Line.h"
 #include "../../../Graphics/Sprite.h"
+#include "../../../Graphics/Plane.h"
 #include "../../../Core/Utilities/SharedPointer.h"
 #include <vector>
 #include "../../../Core/Time/FrameTime.h"
 #include "../../../Graphics/ReflectingObject.h"
+
 
 
 
@@ -33,6 +35,7 @@ namespace Engine
 		std::vector<SharedPointer<Engine::Graphics::Sprite>> getSpriteObjectList() const;
 		std::vector<SharedPointer<Engine::Graphics::Line>> getLineList() const;
 		std::vector<SharedPointer<Engine::Graphics::ReflectingObject>> getReflectingObjectList() const;
+		std::vector<SharedPointer<Engine::Graphics::Plane>> getPlaneList() const;
 		SharedPointer<Camera> getActiveCamera() const;
 		static void deleteAllScene();
 		std::string getTypeInfo() const override { return ""; }
@@ -60,6 +63,7 @@ namespace Engine
 		std::vector<SharedPointer<Engine::Graphics::Line>> mLineListInScene;
 		std::vector<SharedPointer<Engine::Graphics::Sprite>> mSpriteListInScene;
 		std::vector<SharedPointer<Engine::Graphics::ReflectingObject>> mReflectingObjectList;
+		std::vector<SharedPointer<Engine::Graphics::Plane>> mPlaneList;
 		std::map<std::string, SharedPointer<Camera>> mCameraListInScene;
 		static void deactivateAllSceneToRender();
 		void deactivateAllCamera() const;

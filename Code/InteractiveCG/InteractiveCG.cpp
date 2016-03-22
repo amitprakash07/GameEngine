@@ -10,7 +10,7 @@
 #include "../Engine/Core/EngineCore/EngineCore.h"
 #include "ObjectController/WalkController.h"
 #include "ObjectController/LightController.h"
-#include "../Engine/Graphics/SkyBox.h"
+#include "../Engine/Graphics/Plane.h"
 #include "ObjectController/RotateObject.h"
 
 
@@ -27,64 +27,66 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 
 		//GameObjects
 		//floor
-		Engine::SharedPointer<Engine::MeshObject> floor =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/floor.mesh", 
-				"ComputerGraphics/floorMaterial.mat");
-		floor->setTransform(Engine::Math::Vector3(0, -2.5, 0), Engine::Math::Quaternion());
-		scene->addObjectToScene(floor);
+		Engine::SharedPointer<Engine::Graphics::Plane> floor =
+			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/floorMaterial.mat");
+		floor->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		floor->setScale(30.0f, 20.0f, 20.0f);
+		scene->addObjectToScene(floor);;
 
 		//ceiling
-		Engine::SharedPointer<Engine::MeshObject> ceiling =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/floor.mesh",
-				"ComputerGraphics/ceilingMaterial.mat");
-		ceiling->setTransform(Engine::Math::Vector3(0, 7, 0), 
+		Engine::SharedPointer<Engine::Graphics::Plane> ceiling =
+			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/ceilingMaterial.mat");
+		ceiling->setTransform(Engine::Math::Vector3(0, 20, 0), 
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(180.0f),
 				Engine::Math::Vector3(1.0f, 0.0f, 0.0f)));
+		ceiling->setScale(30.0f, 20.0f, 20.0f);
 		scene->addObjectToScene(ceiling);
+
+		Engine::Math::Vector3 normal = ceiling->getNormal();
 
 
 		//rightWall
-		Engine::SharedPointer<Engine::MeshObject> rightWall =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/floor.mesh",
-				"ComputerGraphics/rightWallMaterial.mat");
-		rightWall->setTransform(Engine::Math::Vector3(5, 2, 0), 
+		Engine::SharedPointer<Engine::Graphics::Plane> rightWall =
+			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/rightWallMaterial.mat");
+		rightWall->setTransform(Engine::Math::Vector3(15, 10, 0), 
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90),
 				Engine::Math::Vector3(0.0f, 0.0f, -1.0f)));
+		rightWall->setScale(20.0f, 20.0f, 20.0f);
 		scene->addObjectToScene(rightWall);
 
 		//leftWall
-		Engine::SharedPointer<Engine::MeshObject> leftWall =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/floor.mesh",
-				"ComputerGraphics/leftWallMaterial.mat");
-		leftWall->setTransform(Engine::Math::Vector3(-5, 2, 0), 
+		Engine::SharedPointer<Engine::Graphics::Plane> leftWall =
+			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/leftWallMaterial.mat");
+		leftWall->setTransform(Engine::Math::Vector3(-15, 10, 0), 
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
 				Engine::Math::Vector3(0.0f, 0.0f, -1.0f)));
+		leftWall->setScale(20.0f, 20.0f, 20.0f);
 		scene->addObjectToScene(leftWall);
 
 		//frontWall
-		Engine::SharedPointer<Engine::MeshObject> frontWall =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/floor.mesh",
-				"ComputerGraphics/frontWallMaterial.mat");
-		frontWall->setTransform(Engine::Math::Vector3(0, 2, 6), 
+		Engine::SharedPointer<Engine::Graphics::Plane> frontWall =
+			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/frontWallMaterial.mat");
+		frontWall->setTransform(Engine::Math::Vector3(0, 10, 20), 
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90.0f),
 				Engine::Math::Vector3(1.0f, 0.0f, 0.0f)));
+		frontWall->setScale(20.0f, 20.0f, 20.0f);
 		scene->addObjectToScene(frontWall);
 
 
 		//backWall
-		Engine::SharedPointer<Engine::MeshObject> backWall =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/floor.mesh",
-				"ComputerGraphics/backWallMaterial.mat");
-		backWall->setTransform(Engine::Math::Vector3(0, 2, -4.5), 
+		Engine::SharedPointer<Engine::Graphics::Plane> backWall =
+			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/backWallMaterial.mat");
+		backWall->setTransform(Engine::Math::Vector3(0, 10, -10), 
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
 				Engine::Math::Vector3(1.0f, 0.0f, 0.0f)));
+		backWall->setScale(30.0f, 20.0f, 20.0f);
 		scene->addObjectToScene(backWall);		
 
 		//cube
 		Engine::SharedPointer<Engine::MeshObject> cube =
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Cube.mesh",
 				"ComputerGraphics/cubeMaterial.mat");
-		cube->setTransform(Engine::Math::Vector3(0,-2,0), Engine::Math::Quaternion());
+		cube->setTransform(Engine::Math::Vector3(0,0.5,0), Engine::Math::Quaternion());
 		scene->addObjectToScene(cube);
 
 		////teapot one
@@ -142,7 +144,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		Engine::SharedPointer<Engine::MeshObject> utahTeapot =
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/utahTeapot.mesh",
 				"ComputerGraphics/utahTeapotMaterial.mat");
-		utahTeapot->setTransform(Engine::Math::Vector3(0, -2, 0), Engine::Math::Quaternion());
+		utahTeapot->setTransform(Engine::Math::Vector3(0, 2.5, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(utahTeapot);
 
 		//konvinceTeapot
@@ -156,13 +158,13 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		Engine::SharedPointer<Engine::MeshObject> proxyLightSphere =
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/proxyLightSphere.mesh",
 				"ComputerGraphics/proxyLightSphereMaterial.mat");
-		proxyLightSphere->setTransform(Engine::Math::Vector3(0, 6, 0), Engine::Math::Quaternion());
+		proxyLightSphere->setTransform(Engine::Math::Vector3(0, 18, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(proxyLightSphere);
 		proxyLightSphere->setObjectController(new Application::LightController());
 
 		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
-				Engine::Math::Vector3(0.0f, 3.0f, 12.0f), /*Engine::Math::Quaternion::getIdentityQuartenion());*/
+				Engine::Math::Vector3(0.0f, 10.0f, 25.0f),
 				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0.0f),
 					Engine::Math::Vector3(0.0f, 0.5f, 0.0f)));
 		

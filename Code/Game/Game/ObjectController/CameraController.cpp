@@ -2,28 +2,30 @@
 #include "../../../Engine/Core/EngineCore/Objects/Object.h"
 #include "../../../Engine/Core/Maths/Transform.h"
 
+#include "../../../Engine/Core/EngineCore/Objects/Scene.h"
+
+
 
 void Application::CameraController::updateObject(Engine::Object& iObject, 
 	Engine::typedefs::ActionWithKeyBound iAction)
 {
 	Engine::Math::Transform transform = iObject.getTransform();
-	switch (iAction.action)
+	switch (iAction.keyVal)
 	{
-	case Engine::typedefs::MoveForward:
-		transform.translate(Engine::Math::Vector3(0.0f, 0.0f, -1.0f));
+	case VK_UP:
+		transform.setPosition(transform.getPosition() + Engine::Math::Vector3(0, 0.5, 0));
 		break;
-	case Engine::typedefs::MoveBackWard:
-		transform.translate(Engine::Math::Vector3(0.0f, 0.0f, 1.0f));
+	case VK_DOWN:
+		transform.setPosition(transform.getPosition() + Engine::Math::Vector3(0, -0.5, 0));
 		break;
-	case Engine::typedefs::MoveLeft:
-		transform.translate(Engine::Math::Vector3(-1.0f, 0.0f, 0.0f));
+	case VK_LEFT:
+		transform.setPosition(transform.getPosition() + Engine::Math::Vector3(-0.5, 0, 0));
 		break;
-	case Engine::typedefs::MoveRight:
-		transform.translate(Engine::Math::Vector3(1.0f, 0.0f, 0.0f));
-		break;
-	default:
+	case VK_RIGHT:
+		transform.setPosition(transform.getPosition() + Engine::Math::Vector3(0.5, 0, 0));
 		break;
 	}
+
 	iObject.setTransform(transform.getPosition(), transform.getOrientation());
 }
 

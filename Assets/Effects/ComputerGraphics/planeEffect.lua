@@ -1,7 +1,7 @@
 return
 {
-	vertex = "ComputerGraphics/floorVertex.glsl",
-	fragment = "ComputerGraphics/floorFragment.glsl",
+	vertex = "ComputerGraphics/planeVertex.glsl",
+	fragment = "ComputerGraphics/planeFragment.glsl",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",
@@ -28,6 +28,13 @@ return
 			valType = "Matrix",
 			MatrixType = "ViewToScreen",
 			count = 1,
-		},				
+		},		
+		{
+			name = "g_ScaleTransform",
+			shader = "vertex",
+			valType = "Matrix",
+			MatrixType = "ScaleMatrix",
+			count = 1,
+		},			
 	}
 }

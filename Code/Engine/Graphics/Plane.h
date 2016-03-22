@@ -23,6 +23,8 @@ namespace Engine
 		{
 		public:
 			static SharedPointer<Plane> CreatePlane(std::string iMaterialName);
+			Engine::Math::Vector3 getNormal();
+
 			//Object Ovverriding functions			
 			Math::Transform getTransform() override;
 			void setTransform(Math::Vector3,
@@ -47,7 +49,7 @@ namespace Engine
 			IObjectController * mObjectController;
 			Engine::Math::Vector3 scaleFactor;
 			bool writeToBuffer();
-			bool debugObject;
+			bool debugObject;			
 			VertexTextureNormal * vertexattribute;
 			VertexTextureNormal* getVertexAttributeData();
 #ifdef PLATFORM_OPEN_GL

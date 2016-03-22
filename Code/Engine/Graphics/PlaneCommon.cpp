@@ -98,13 +98,23 @@ Engine::Graphics::VertexTextureNormal*
 	vertexattribute[2].normal = Math::Vector3(0, 1, 0);
 	vertexattribute[3].normal = Math::Vector3(0, 1, 0);
 
-	vertexattribute[0].texture = Math::Vector2(0, 0);
-	vertexattribute[1].texture = Math::Vector2(1, 0);
-	vertexattribute[2].texture = Math::Vector2(1, 1);
-	vertexattribute[3].texture = Math::Vector2(0, 1);
+	vertexattribute[0].texture = Math::Vector2(0, 1);
+	vertexattribute[1].texture = Math::Vector2(1, 1);
+	vertexattribute[2].texture = Math::Vector2(1, 0);
+	vertexattribute[3].texture = Math::Vector2(0, 0);
 
 	return vertexattribute;
 }
+
+
+Engine::Math::Vector3 Engine::Graphics::Plane::getNormal()
+{
+	Engine::Math::Matrix4x4 inverseMatrix = Engine::Math::Matrix4x4(
+		mTransform.getOrientation(), mTransform.getPosition()).getInverse();
+	Math::Vector3 changedNormal = inverseMatrix.mul(Math::Vector3(0, 1, 0), true);
+	return changedNormal;
+}
+
 
 
 

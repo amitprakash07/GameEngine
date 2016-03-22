@@ -7,6 +7,7 @@
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Functions.h" />

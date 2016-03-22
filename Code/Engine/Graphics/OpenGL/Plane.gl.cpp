@@ -154,7 +154,7 @@ void Engine::Graphics::Plane::draw(bool drawDebugObject)
 				scaleMatrixValues.matrixValue.Type = Graphics::ScaleMatrix;
 				scaleMatrixValues.matrixValue.matrix = Engine::Math::Matrix4x4::CreateScaleMatrix(
 					scaleFactor);
-				viewToScreen->setUniformValue(scaleMatrixValues);
+				scaleMatrix->setUniformValue(scaleMatrixValues);
 			}
 
 			if(!normalMatrix.isNull())
@@ -163,7 +163,7 @@ void Engine::Graphics::Plane::draw(bool drawDebugObject)
 				normalMatrixValues.matrixValue.Type = Graphics::NormalMatrix;
 				normalMatrixValues.matrixValue.matrix = Engine::Math::Matrix4x4::CreateNormalMatrix(
 					Math::Matrix4x4(mTransform.getOrientation(), mTransform.getPosition()));
-				viewToScreen->setUniformValue(normalMatrixValues);
+				normalMatrix->setUniformValue(normalMatrixValues);
 			}
 
 			Engine::Graphics::Uniform::setAllUniformToShaderObjects(tempMaterial->getEffectName());
@@ -176,8 +176,7 @@ void Engine::Graphics::Plane::draw(bool drawDebugObject)
 			const GLenum indexType = GL_UNSIGNED_INT;
 			const GLvoid* const offset = 0;
 			glDrawElements(mode, 6, indexType, offset);
-			WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to Draw the plane");
-			glClear(GL_DEPTH_BUFFER_BIT);
+			WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to Draw the plane");		
 		}
 	}
 }
@@ -211,7 +210,7 @@ bool Engine::Graphics::Plane::writeToBuffer()
 			3,/*3 floats are required*/
 			GL_FLOAT,
 			GL_FALSE,
-			stride,/*only position and texture coordinates need to be sent 20 bytes*/
+			stride,/*position, normal and texture coordinates need to be sent */
 			offset
 			);
 

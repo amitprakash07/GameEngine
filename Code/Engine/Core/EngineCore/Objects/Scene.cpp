@@ -92,6 +92,20 @@ bool Engine::Scene::addObjectToScene<Engine::Graphics::Sprite>(
 }
 
 
+//Planes
+template<>
+bool Engine::Scene::addObjectToScene<Engine::Graphics::Plane>(
+	SharedPointer<Engine::Graphics::Plane> & iPlane)
+{
+	if (!iPlane.isNull())
+	{
+		mPlaneList.push_back(iPlane);
+		return true;
+	}
+	return false;
+}
+
+
 //Reflecting Objects - Environment Maps
 template<>
 bool Engine::Scene::addObjectToScene<Engine::Graphics::ReflectingObject>(
@@ -166,6 +180,9 @@ void Engine::Scene::drawScene(bool withDebug)
 
 	for (uint8_t i = 0; i < mSpriteListInScene.size(); i++)
 		mSpriteListInScene[i]->draw(withDebug);
+
+	for (uint8_t i = 0; i < mPlaneList.size(); i++)
+		mPlaneList[i]->draw(withDebug);
 
 	if (Engine::Graphics::Line::containsDebugLine())
 		Engine::Graphics::Line::drawLines(withDebug);
@@ -258,6 +275,13 @@ std::vector<Engine::SharedPointer<Engine::Graphics::ReflectingObject>>
 	Engine::Scene::getReflectingObjectList() const
 {
 	return mReflectingObjectList;
+}
+
+
+std::vector<Engine::SharedPointer<Engine::Graphics::Plane>> 
+	Engine::Scene::getPlaneList() const
+{
+	return mPlaneList;
 }
 
 

@@ -3,7 +3,7 @@ return
 	vertices =
 	{
 		{
-			position = {-0.5,-0.5,0.5},
+			position = {-2.5,-2.5,2.5},
 			normal = {0,0,1},
 			tangent = {1,0,0},
 			bitangent = {0,1,0},
@@ -11,7 +11,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,-0.5,0.5},
+			position = {-2.5,-2.5,2.5},
 			normal = {0,-1,0},
 			tangent = {1,0,0},
 			bitangent = {0,0,1},
@@ -19,7 +19,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,-0.5,0.5},
+			position = {-2.5,-2.5,2.5},
 			normal = {-1,0,0},
 			tangent = {0,-0,1},
 			bitangent = {0,1,0},
@@ -27,7 +27,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,-0.5,0.5},
+			position = {2.5,-2.5,2.5},
 			normal = {0,-1,0},
 			tangent = {1,0,0},
 			bitangent = {0,0,1},
@@ -35,7 +35,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,-0.5,0.5},
+			position = {2.5,-2.5,2.5},
 			normal = {1,0,0},
 			tangent = {0,0,-1},
 			bitangent = {0,1,0},
@@ -43,7 +43,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,-0.5,0.5},
+			position = {2.5,-2.5,2.5},
 			normal = {0,0,1},
 			tangent = {1,-0,0},
 			bitangent = {0,1,0},
@@ -51,7 +51,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,0.5,0.5},
+			position = {-2.5,2.5,2.5},
 			normal = {-1,0,0},
 			tangent = {0,-0,1},
 			bitangent = {0,1,0},
@@ -59,7 +59,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,0.5,0.5},
+			position = {-2.5,2.5,2.5},
 			normal = {0,0,1},
 			tangent = {1,-0,0},
 			bitangent = {0,1,0},
@@ -67,7 +67,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,0.5,0.5},
+			position = {-2.5,2.5,2.5},
 			normal = {0,1,0},
 			tangent = {1,-0,0},
 			bitangent = {0,0,-1},
@@ -75,7 +75,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,0.5,0.5},
+			position = {2.5,2.5,2.5},
 			normal = {1,0,0},
 			tangent = {0,0,-1},
 			bitangent = {0,1,0},
@@ -83,7 +83,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,0.5,0.5},
+			position = {2.5,2.5,2.5},
 			normal = {0,0,1},
 			tangent = {1,-0,0},
 			bitangent = {0,1,0},
@@ -91,7 +91,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,0.5,0.5},
+			position = {2.5,2.5,2.5},
 			normal = {0,1,0},
 			tangent = {1,0,0},
 			bitangent = {0,0,-1},
@@ -99,7 +99,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,0.5,-0.5},
+			position = {-2.5,2.5,-2.5},
 			normal = {-1,0,0},
 			tangent = {0,-0,1},
 			bitangent = {0,1,0},
@@ -107,7 +107,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,0.5,-0.5},
+			position = {-2.5,2.5,-2.5},
 			normal = {0,1,0},
 			tangent = {1,0,0},
 			bitangent = {0,0,-1},
@@ -115,7 +115,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,0.5,-0.5},
+			position = {-2.5,2.5,-2.5},
 			normal = {0,0,-1},
 			tangent = {1,0,0},
 			bitangent = {0,-1,0},
@@ -123,7 +123,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,0.5,-0.5},
+			position = {2.5,2.5,-2.5},
 			normal = {1,0,0},
 			tangent = {0,0,-1},
 			bitangent = {0,1,0},
@@ -131,7 +131,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,0.5,-0.5},
+			position = {2.5,2.5,-2.5},
 			normal = {0,1,0},
 			tangent = {1,0,0},
 			bitangent = {0,0,-1},
@@ -139,7 +139,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,0.5,-0.5},
+			position = {2.5,2.5,-2.5},
 			normal = {0,0,-1},
 			tangent = {1,0,0},
 			bitangent = {0,-1,0},
@@ -147,7 +147,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,-0.5,-0.5},
+			position = {-2.5,-2.5,-2.5},
 			normal = {0,0,-1},
 			tangent = {1,0,0},
 			bitangent = {0,-1,0},
@@ -155,7 +155,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,-0.5,-0.5},
+			position = {-2.5,-2.5,-2.5},
 			normal = {0,-1,0},
 			tangent = {1,0,0},
 			bitangent = {0,0,1},
@@ -163,7 +163,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {-0.5,-0.5,-0.5},
+			position = {-2.5,-2.5,-2.5},
 			normal = {-1,0,0},
 			tangent = {0,-0,1},
 			bitangent = {0,1,0},
@@ -171,7 +171,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,-0.5,-0.5},
+			position = {2.5,-2.5,-2.5},
 			normal = {0,0,-1},
 			tangent = {1,0,0},
 			bitangent = {0,-1,0},
@@ -179,7 +179,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,-0.5,-0.5},
+			position = {2.5,-2.5,-2.5},
 			normal = {0,-1,0},
 			tangent = {1,0,0},
 			bitangent = {0,0,1},
@@ -187,7 +187,7 @@ return
 			color = {1,1,1,1},
 		},
 		{
-			position = {0.5,-0.5,-0.5},
+			position = {2.5,-2.5,-2.5},
 			normal = {1,0,0},
 			tangent = {0,0,-1},
 			bitangent = {0,1,0},

@@ -48,12 +48,18 @@ Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateScaleMatrix(
 	return scaleMatrix;
 }
 
+Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateScaleMatrix(Vector3 iScaleFactor)
+{
+	return CreateScaleMatrix(iScaleFactor.x, iScaleFactor.y, iScaleFactor.z);
+}
+
 
 Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateNormalMatrix(
 	const Matrix4x4 modelMatrix)
 {
 	return (modelMatrix.getTranspose().getInverse());
 }
+
 
 
 
