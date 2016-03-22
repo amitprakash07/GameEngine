@@ -54,6 +54,14 @@ return
 			src = "ComputerGraphics/environmentMappingSphereEffect.lua",
 			target = "ComputerGraphics/environmentMappingSphereEffect.effect"
 		},
+		{
+			src = "Game/lineEffect.lua",
+			target = "Game/lineEffect.effect"
+		},
+		{
+			src = "Game/spriteEffect.lua",
+			target = "Game/spriteEffect.effect"
+		},
 	},
 
 -- =======================================================================
@@ -81,6 +89,14 @@ return
 		{
 			src = "ComputerGraphics/environmentMappingSphereMaterial.lua",
 			target = "ComputerGraphics/environmentMappingSphereMaterial.mat",
+		},
+		{
+			src = "Game/spriteMaterial.lua",
+			target = "Game/spriteMaterial.mat",
+		},	
+		{
+			src = "Game/numbersMaterial.lua",
+			target = "Game/numbersMaterial.mat",
 		},
 	},
 
@@ -196,6 +212,26 @@ return
 
 		},
 	-- *******************************************************************	
+	{
+			src = "Game/spriteVertex.glsl",			
+			target = "Game/spriteVertex.glsl",
+			optionaltype = "vertex",
+			dependencies = 
+			{
+				"Game/shader_common.inc"
+			}
+		},
+		
+		{
+			src = "Game/spriteFragment.glsl",
+			target = "Game/spriteFragment.glsl",
+			optionaltype = "fragment",
+			dependencies = 
+			{
+				"Game/shader_common.inc"
+			}
+		},
+-- *******************************************************************
 	
 	},
 
@@ -229,6 +265,15 @@ return
 		{
 			src = "ComputerGraphics/Test.dds",
 			target = "ComputerGraphics/Test.dds",
+		},
+		{
+			src = "Game/logo.png",
+			target = "Game/logo.png",
+		},
+
+		{
+			src = "Game/numbers.png",
+			target = "Game/numbers.png",
 		},
 	}
 -- ====================================================================

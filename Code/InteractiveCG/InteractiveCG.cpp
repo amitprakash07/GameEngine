@@ -62,6 +62,21 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		cube->setTransform(Engine::Math::Vector3(0, 1, -10), Engine::Math::Quaternion());
 		scene->addObjectToScene(cube);
 
+
+		Engine::SharedPointer<Engine::Graphics::Sprite> logoSprite =
+			Engine::Graphics::Sprite::CreateSprite("EAElogo",
+				"Game/spriteMaterial.mat", 0, 100, 900, 800, Engine::Graphics::VIEWPORT_COORDINATE);
+		scene->addObjectToScene(logoSprite);
+
+
+		Engine::SharedPointer<Engine::Graphics::Sprite> numberSprite =
+			Engine::Graphics::Sprite::CreateSprite("numbers",
+				"Game/numbersMaterial.mat", 1540, 1590, 890, 840, Engine::Graphics::VIEWPORT_COORDINATE);
+		numberSprite->sliceSprite(1, 10);
+		numberSprite->setCellToRender(2);
+		scene->addObjectToScene(numberSprite);
+		numberSprite->setObjectController(new Application::WalkController());
+
 		//Camera
 		/*Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
@@ -87,7 +102,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		mainCamera->activateCamera(true);
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
 		mainCamera->setFieldOfView(60.0f);
-		mainCamera->setObjectController(new Application::WalkController());
+		//mainCamera->setObjectController(new Application::WalkController());
 		scene->addCameraToScene(mainCamera);
 
 
