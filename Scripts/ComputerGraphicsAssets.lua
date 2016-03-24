@@ -148,6 +148,15 @@ return
 			src = "ComputerGraphics/reflectiveSphereMaterial.lua",
 			target = "ComputerGraphics/reflectiveSphereMaterial.mat",
 		},
+		-- sky box Materials
+		{
+			src = "ComputerGraphics/skyBoxMaterialTwo.lua",
+			target = "ComputerGraphics/skyBoxMaterialTwo.mat",
+		},
+		{
+			src = "ComputerGraphics/skyBoxMaterialThree.lua",
+			target = "ComputerGraphics/skyBoxMaterialThree.mat",
+		},
 		{
 			src = "ComputerGraphics/skyBoxMaterial.lua",
 			target = "ComputerGraphics/skyBoxMaterial.mat",
@@ -190,7 +199,7 @@ return
 		{
 			src = "ComputerGraphics/proxyLightSphereMaterial.lua",
 			target = "ComputerGraphics/proxyLightSphereMaterial.mat",
-		},
+		},	
 	},
 
 -- ======================================================================
@@ -346,6 +355,18 @@ return
 		{
 			src = "ComputerGraphics/plank.png",
 			target = "ComputerGraphics/plank.png",
+		},
+		{
+			src = "ComputerGraphics/Yokohama3_Inverted.dds",
+			target = "ComputerGraphics/Yokohama3_Inverted.dds",
+		},
+        {
+			src = "ComputerGraphics/Yokohama2.dds",
+			target = "ComputerGraphics/Yokohama2.dds",
+		},
+        {
+			src = "ComputerGraphics/LancellottiChapel.dds",
+			target = "ComputerGraphics/LancellottiChapel.dds",
 		},
 	}
 -- ====================================================================

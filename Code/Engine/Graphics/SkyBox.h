@@ -24,6 +24,7 @@ namespace Engine
 			static SharedPointer<SkyBox> getCurrentSkyBox();
 			static SharedPointer<SkyBox> getSkyBox(std::string);
 			static SharedPointer<SkyBox> getSkyBox(int index);
+			static void nextSkyBox();
 			Math::Transform getTransform() override;
 			void setTransform(Math::Vector3,
 				Math::Quaternion = Math::Quaternion()) override;

@@ -71,55 +71,16 @@ bool Engine::Graphics::SkyBox::createVertexArray()
 	GLfloat vertexDataForSkyBox[] =
 	{
 
-		/*-50.0f, -50.0f,  50.0f,
-		 50.0f, -50.0f,  50.0f,
-		 50.0f,  50.0f,  50.0f,
-		-50.0f,  50.0f,  50.0f,
-
-		-50.0f, -50.0f, -50.0f,
-		 50.0f, -50.0f, -50.0f,
-		 50.0f,  50.0f, -50.0f,
-		-50.0f,  50.0f, -50.0f*/
-
 		-100.0f, -100.0f,  100.0f,
 		 100.0f, -100.0f,  100.0f,
 	 	 100.0f,  100.0f,  100.0f,
 		-100.0f,  100.0f,  100.0f,
 
-		-100.0f, -100.0f, -100.0f,
-		 100.0f, -100.0f, -100.0f,
-		 100.0f,  100.0f, -100.0f,
-		-100.0f,  100.0f, -100.0f
-
-		/*-500.0f, -500.0f,  500.0f,
-		 500.0f, -500.0f,  500.0f,
-		 500.0f,  500.0f,  500.0f,
-		-500.0f,  500.0f,  500.0f,
+		-100.0f, -100.0f,  -100.0f,
+		 100.0f, -100.0f,  -100.0f,
+		 100.0f,  100.0f,  -100.0f,
+		-100.0f,  100.0f,  -100.0f
 		
-		-500.0f, -500.0f, -500.0f,
-		 500.0f, -500.0f, -500.0f,
-		 500.0f,  500.0f, -500.0f,
-		-500.0f,  500.0f, -500.0f*/
-		
-		/*-1000.0f, -1000.0f,  1000.0f,
-		 1000.0f, -1000.0f,  1000.0f,
-		 1000.0f,  1000.0f,  1000.0f,
-		-1000.0f,  1000.0f,  1000.0f,
-
-		-1000.0f, -1000.0f, -1000.0f,
-		 1000.0f, -1000.0f, -1000.0f,
-		 1000.0f,  1000.0f, -1000.0f,
-		-1000.0f,  1000.0f, -1000.0f*/
-
-		/*-10000.0f, -10000.0f,  10000.0f,
-		 10000.0f, -10000.0f,  10000.0f,
-		 10000.0f,  10000.0f,  10000.0f,
-		-10000.0f,  10000.0f,  10000.0f,
-
-		-10000.0f, -10000.0f, -10000.0f,
-		 10000.0f, -10000.0f, -10000.0f,
-		 10000.0f,  10000.0f, -10000.0f,
-		-10000.0f,  10000.0f, -10000.0f*/
 	};
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexDataForSkyBox),
@@ -158,23 +119,23 @@ bool Engine::Graphics::SkyBox::createVertexArray()
 	}
 
 	/*Allocating the index Buffer in the left winding order for proper face culling*/
-	//GLuint indexDataForTheSkyBox[] = {
-	//	0,3,2,  0,2,1, //Front
-	//	4,7,6,  4,6,5, //Back
-	//	0,3,7,  0,7,6, //Left
-	//	1,2,6,  1,6,5, //Right
-	//	3,7,6,  3,6,2, //Top
-	//	0,4,5,  0,5,1  //Bottom
-	//};
-
 	GLuint indexDataForTheSkyBox[] = {
-		0,2,3,  0,1,2, //Front
+		0,3,2,  0,2,1, //Front
 		4,6,7,  4,5,6, //Back
 		0,7,3,  0,4,7, //Left
-		1,6,2,  1,5,6, //Right
-		3,6,7,  3,2,6, //Top
+		1,2,6,  1,6,5, //Right
+		3,7,6,  3,6,2, //Top
 		0,5,4,  0,1,5  //Bottom
 	};
+
+	//GLuint indexDataForTheSkyBox[] = {
+	//	0,2,3,  0,1,2, //Front
+	//	4,6,7,  4,5,6, //Back
+	//	0,7,3,  0,4,7, //Left
+	//	1,6,2,  1,5,6, //Right
+	//	3,6,7,  3,2,6, //Top
+	//	0,5,4,  0,1,5  //Bottom
+	//};
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexDataForTheSkyBox),
 		indexDataForTheSkyBox, GL_STATIC_DRAW);

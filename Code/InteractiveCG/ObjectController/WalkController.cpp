@@ -3,6 +3,7 @@
 #include "../../Engine/Core/Maths/Vector3.h"
 #include "../../Engine/Core/Maths/Functions.h"
 #include "../../Engine/Core/EngineCore/Objects/Scene.h"
+#include "../../Engine/Graphics/SkyBox.h"
 
 using namespace Engine::Math;
 void Application::WalkController::updateObject(Engine::Object& iObject, Engine::typedefs::ActionWithKeyBound iAction)
@@ -68,6 +69,7 @@ void Application::WalkController::updateObject(Engine::Object& iObject, Engine::
 		//R Key
 		iObject.resetTransform();
 	case VK_NEXT:
+		Engine::Graphics::SkyBox::nextSkyBox();
 		break;
 	case VK_PRIOR:
 		break;

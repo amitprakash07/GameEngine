@@ -2,10 +2,10 @@ return
 {
 	vertex = "ComputerGraphics/skyBoxVertex.glsl",
 	fragment = "ComputerGraphics/skyBoxFragment.glsl",
-	AlphaTransparency = "False",
+	AlphaTransparency = "True",
 	DepthTesting = "False",
 	DepthWriting = "False",
-	FaceCulling = "False",	
+	FaceCulling = "True",	
 	uniforms =
 	{
 		{

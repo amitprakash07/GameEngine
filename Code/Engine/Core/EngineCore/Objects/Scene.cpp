@@ -178,9 +178,6 @@ void Engine::Scene::drawScene(bool withDebug)
 	for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
 		mMeshObjectInSceneList[i]->draw(withDebug);
 
-	for (uint8_t i = 0; i < mSpriteListInScene.size(); i++)
-		mSpriteListInScene[i]->draw(withDebug);
-
 	for (uint8_t i = 0; i < mPlaneList.size(); i++)
 		mPlaneList[i]->draw(withDebug);
 
@@ -196,6 +193,9 @@ void Engine::Scene::drawScene(bool withDebug)
 			mReflectingObjectList[i]->draw(true);
 		}
 	}
+
+	for (uint8_t i = 0; i < mSpriteListInScene.size(); i++)
+		mSpriteListInScene[i]->draw(withDebug);
 
 	mTimer->updateDeltaTime();
 	updateScene();

@@ -23,8 +23,7 @@ void main()
 	vec3 position_view = vec3(position_world) * mat3(g_transform_worldToView);
 	vec4 screenPosition = vec4(position_view,1) * g_transform_viewToScreen;
 	gl_Position = screenPosition;
-	o_local_texture = i_local_position;	
-	//gl_Position = vec4(i_local_position,1.0);
-	//vec4 skyBoxTexture = vec4(i_local_position,1.0) * g_transform_worldToView;
-	//o_local_texture = skyBoxTexture.xyz;
+	vec3 inverted_texture = i_local_position;	
+	inverted_texture.y = inverted_texture.y;
+	o_local_texture = inverted_texture;
 }

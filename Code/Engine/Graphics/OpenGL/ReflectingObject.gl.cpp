@@ -88,26 +88,26 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 				//Positive Z
 				//rotor = Engine::Math::Quaternion::getIdentityQuartenion();
 				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-180.0f),
-					Engine::Math::Vector3(0.0f, -1.0f, 0.0f));
+					Engine::Math::Vector3(0.0f, 1.0f, 0.0f));
 				break;
 			case 3:
 				//Negative Y
-				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90.0f),
+				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
 					Engine::Math::Vector3(1.0f, 0.0f, 0.0f));
 				break;
 			case 2:
 				//Positive Y
-				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90.0f),
+				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
 					Engine::Math::Vector3(1.0f, 0.0f, 0.0f));
 				break;
 			case 1:
 				//Negative X
-				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
+				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90.0f),
 					Engine::Math::Vector3(0.0f, 1.0f, 0.0f));
 				break;
 			case 0:
 				//Positive X
-				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90.0f),
+				rotor = Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
 					Engine::Math::Vector3(0.0f, 1.0f, 0.0f));
 				break;
 			}

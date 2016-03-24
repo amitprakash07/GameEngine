@@ -35,15 +35,43 @@ Engine::SharedPointer<Engine::Graphics::SkyBox>
 
 Engine::SharedPointer<Engine::Graphics::SkyBox> Engine::Graphics::SkyBox::getSkyBox(int index)
 {
-	int counter = 0;
+	int counter = 1;
 	for (std::map<std::string, SharedPointer<SkyBox>>::iterator i = mSkyBoxList.begin();
 	i != mSkyBoxList.end(); ++i)
-	{
+	{		
 		if (index == counter)
 			return i->second;
-		counter++;
+		counter++;		
 	}
 	return SharedPointer<SkyBox>();
+}
+
+
+void Engine::Graphics::SkyBox::nextSkyBox()
+{
+	int count = 0;
+	if(mSkyBoxList.size()>1)
+	{
+		for (std::map<std::string, SharedPointer<SkyBox>>::iterator i = mSkyBoxList.begin();
+		i != mSkyBoxList.end(); ++i)
+		{
+			count++;
+			if(i->second->isCurrent)
+			{
+				if(count <= mSkyBoxList.size())
+				{
+					if (count == mSkyBoxList.size())
+					{
+						count = 1;
+						getSkyBox(count)->setCurrentSkyBox();
+					}
+					else
+						getSkyBox(count+1)->setCurrentSkyBox();
+					break;
+				}
+			}			
+		}
+	}
 }
 
 
@@ -113,6 +141,8 @@ void Engine::Graphics::SkyBox::deactivateAll()
 		i->second->isCurrent = false;
 	}
 }
+
+
 
 
 bool Engine::Graphics::SkyBox::isDebugObject() const
