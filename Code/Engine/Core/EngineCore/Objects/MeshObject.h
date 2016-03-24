@@ -31,6 +31,7 @@ namespace Engine
 		bool isDebugObject() const override;	
 		void updateObject() override;
 		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
+		void resetTransform() override;
 		~MeshObject();
 	private:
 		MeshObject(std::string, std::string);
@@ -41,6 +42,8 @@ namespace Engine
 		IObjectController*							mObjectController;
 		bool										renderable;
 		Math::Transform								mTransform;
+		Math::Transform								mInitialTransform;
+		bool										isInitialTransform;
 		bool										debugObject;
 		Engine::Graphics::RGBAColor					vertexColor;
 		

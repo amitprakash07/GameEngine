@@ -135,6 +135,10 @@ void Engine::Graphics::SkyBox::setTransform(Math::Vector3, Math::Quaternion)
 	
 }
 
+void Engine::Graphics::SkyBox::resetTransform()
+{
+	
+}
 
 void Engine::Graphics::SkyBox::setObjectController(IObjectController* i_ObjectController)
 {

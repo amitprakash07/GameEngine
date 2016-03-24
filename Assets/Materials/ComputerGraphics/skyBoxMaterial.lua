@@ -4,7 +4,8 @@ return
 	map =
 	{
 		{
-			path = "ComputerGraphics/Test.dds",
+--			path = "ComputerGraphics/Test.dds",
+			path = "ComputerGraphics/Yokohama3.dds",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",

@@ -12,6 +12,7 @@ namespace Engine
 		virtual Math::Transform getTransform() = 0;
 		virtual void setTransform(Engine::Math::Vector3,
 			Engine::Math::Quaternion = Engine::Math::Quaternion()) = 0;
+		virtual void resetTransform() = 0;
 		virtual void draw(bool) = 0;
 		virtual bool isRenderable() const = 0;
 		virtual bool isDebugObject() const = 0;

@@ -18,6 +18,7 @@ namespace Engine
 		Math::Transform getTransform() override;
 		void setTransform(Engine::Math::Vector3,
 			Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
+		void resetTransform() override;
 		void draw(bool) override {}
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
 		//void setCameraController(IObjectController*);
@@ -43,6 +44,8 @@ namespace Engine
 
 	private:
 		Engine::Math::Transform mTransform;
+		Math::Transform mInitialTransform;
+		bool isInitialTransform;
 		std::string mCameraName;
 		IObjectController* mObjectController;
 		float fieldOfView;

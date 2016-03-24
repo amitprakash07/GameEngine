@@ -11,6 +11,8 @@
 #include "ObjectController/WalkController.h"
 #include "ObjectController/LightController.h"
 #include "../Engine/Graphics/Plane.h"
+#include "../Engine/Graphics/SkyBox.h"
+#include "../Engine/Graphics/SkyBox.h"
 #include "ObjectController/RotateObject.h"
 
 

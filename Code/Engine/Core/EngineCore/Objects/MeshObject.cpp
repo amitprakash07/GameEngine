@@ -60,11 +60,13 @@ Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialNam
 {
 	renderable = true;
 	mTransform = Math::Transform();
+	mInitialTransform = Math::Transform();
 	mMeshName = i_meshName;
 	mMaterial = i_materialName;
 	mObjectController = nullptr;
 	debugObject = false;
-	vertexModifierUniform = "vertexColorModifier\0";	
+	vertexModifierUniform = "vertexColorModifier\0";
+	isInitialTransform = true;
 }
 
 Engine::MeshObject::MeshObject()
@@ -76,6 +78,7 @@ Engine::MeshObject::MeshObject()
 	mTransform.setOrientation(Engine::Math::Quaternion());
 	mTransform.setPosition(Engine::Math::Vector3());
 	debugObject = false;
+	isInitialTransform = true;
 }
 
 void Engine::MeshObject::EnableDebugging(bool enable)
@@ -119,7 +122,18 @@ void Engine::MeshObject::setTransform(Engine::Math::Vector3 i_positionOffset, En
 {
 	mTransform.setOrientation(i_orientation);
 	mTransform.setPosition(i_positionOffset);
+	if(isInitialTransform)
+	{
+		mInitialTransform = mTransform;
+		isInitialTransform = false;
+	}
 }
+
+void Engine::MeshObject::resetTransform()
+{
+	mTransform = mInitialTransform;
+}
+
 
 void Engine::MeshObject::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i_MessageSender, void* i_pMessageData)
 {
