@@ -30,6 +30,7 @@ namespace Engine
 			bool isDebugObject() const override;
 			bool isRenderable() const override;
 			void draw(bool drawDebugObject) override;
+			void resetTransform() override;
 			void setMaterial(std::string newMaterialName);
 			bool isSkyBoxAvailableIntialized()const;
 			void updateObject() override;
