@@ -47,6 +47,12 @@ Engine::Math::Transform Engine::Graphics::Line::getTransform()
 void Engine::Graphics::Line::setTransform(Math::Vector3, Math::Quaternion)
 {}
 
+void Engine::Graphics::Line::resetTransform()
+{
+	
+}
+
+
 
 bool Engine::Graphics::Line::isDebugObject() const
 {

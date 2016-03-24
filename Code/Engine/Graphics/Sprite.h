@@ -42,6 +42,7 @@ namespace Engine
 			Math::Transform getTransform() override { return Math::Transform(); }
 			void setTransform(Engine::Math::Vector3,
 				Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
+			void resetTransform() override {}
 			void draw(bool debug = false) override;
 			void debugObject(bool isDebug = false);
 			bool isRenderable() const override;

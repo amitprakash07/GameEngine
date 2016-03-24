@@ -37,6 +37,8 @@ Engine::Camera::Camera()
 	active = false;
 	nearPlane = 0.0f;
 	farPlane = 0.0f;
+	mInitialTransform = Math::Transform();
+	isInitialTransform = true;
 }
 
 
@@ -58,6 +60,7 @@ Engine::Camera::Camera(std::string i_name, Math::Vector3 i_position,
 	active = false;
 	nearPlane = i_nearPlane;
 	farPlane = i_farPlane;
+	isInitialTransform = true;
 }
 
 void Engine::Camera::setFieldOfView(float i_fieldOfView)
@@ -104,6 +107,17 @@ void Engine::Camera::setTransform(Engine::Math::Vector3 i_positionOffset,
 {
 	mTransform.setOrientation(i_orientation);
 	mTransform.setPosition(i_positionOffset);
+	if(isInitialTransform)
+	{
+		isInitialTransform = false;
+		mInitialTransform = mTransform;
+	}
+}
+
+
+void Engine::Camera::resetTransform()
+{
+	mTransform = mInitialTransform;
 }
 
 

@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/reflectiveSphere.mesh", 
 				"ComputerGraphics/reflectiveSphereMaterial.mat");
 		reflectivesphereWithBlend->setTransform(
-			Engine::Math::Vector3(0, 5, -10), Engine::Math::Quaternion());
+			Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(reflectivesphereWithBlend);
 		reflectivesphereWithBlend->setObjectController(new Application::ObjectRotateController());
 
@@ -59,7 +59,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		Engine::SharedPointer<Engine::MeshObject> cube =
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Cube.mesh",
 				"ComputerGraphics/cubeMaterial.mat");
-		cube->setTransform(Engine::Math::Vector3(0, 1, -10), Engine::Math::Quaternion());
+		cube->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(cube);
 
 
@@ -75,7 +75,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		numberSprite->sliceSprite(1, 10);
 		numberSprite->setCellToRender(2);
 		scene->addObjectToScene(numberSprite);
-		numberSprite->setObjectController(new Application::WalkController());
+		//numberSprite->setObjectController(new Application::WalkController());
 
 		//Camera
 		/*Engine::SharedPointer<Engine::Camera> mainCamera =
@@ -86,7 +86,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 
 		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
-				Engine::Math::Vector3(0.532f, 48.008f, 152.492f), /*Engine::Math::Quaternion::getIdentityQuartenion());*/
+				Engine::Math::Vector3(0.0f, 0.0f, 5.0f), /*Engine::Math::Quaternion::getIdentityQuartenion());*/
 				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0.0f),
 					Engine::Math::Vector3(0.0f, 1.0f, 0.0f)));
 				
@@ -102,7 +102,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		mainCamera->activateCamera(true);
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
 		mainCamera->setFieldOfView(60.0f);
-		//mainCamera->setObjectController(new Application::WalkController());
+		mainCamera->setObjectController(new Application::WalkController());
 		scene->addCameraToScene(mainCamera);
 
 

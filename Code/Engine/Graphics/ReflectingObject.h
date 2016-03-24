@@ -22,7 +22,8 @@ namespace Engine
 				Engine::Math::Quaternion rotation) override;
 			bool isRenderable() const override;
 			bool isDebugObject() const override;
-			void draw(bool) override;			
+			void draw(bool) override;	
+			void resetTransform() override;
 			void generateCubeMap();
 			void setDynamicTextureSamplerName(std::string samplerUniformName);	
 			void setObjectController(IObjectController *) override;
@@ -45,6 +46,8 @@ namespace Engine
 			GLuint frameBuffer[6];
 #endif
 			Engine::Math::Transform mTransform;
+			Math::Transform mInitialTransform;
+			bool isInitialTransform;
 		};
 	}
 }

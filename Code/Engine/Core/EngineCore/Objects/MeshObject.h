@@ -30,6 +30,7 @@ namespace Engine
 		void EnableDebugging(bool enable = false);
 		bool isDebugObject() const override;	
 		void updateObject() override;
+		void resetTransform() override;
 		~MeshObject();
 	private:
 		MeshObject(std::string, std::string);
@@ -40,6 +41,8 @@ namespace Engine
 		IObjectController*							mObjectController;
 		bool										renderable;
 		Math::Transform								mTransform;
+		Math::Transform								mInitialTransform;
+		bool										isInitialTransform;
 		bool										debugObject;
 		Engine::Graphics::RGBAColor					vertexColor;
 		

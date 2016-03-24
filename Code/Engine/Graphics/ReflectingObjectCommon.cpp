@@ -84,7 +84,18 @@ void Engine::Graphics::ReflectingObject::setTransform(
 {
 	mTransform.setPosition(position);
 	mTransform.setOrientation(rotation);
+	if(isInitialTransform)
+	{
+		isInitialTransform = false;
+		mInitialTransform = mTransform;
+	}
 }
+
+void Engine::Graphics::ReflectingObject::resetTransform()
+{
+	mTransform = mInitialTransform;
+}
+
 
 void Engine::Graphics::ReflectingObject::setDynamicTextureSamplerName(
 	std::string samplerUniformName)
