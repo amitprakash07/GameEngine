@@ -258,6 +258,45 @@ std::string Engine::Graphics::Effect::getTransformMatrixUniformName(
 }
 
 
+Engine::SharedPointer<Engine::Graphics::Uniform> 
+Engine::Graphics::Effect::addUniform(std::string iUniformName,
+	ShaderType iShaderType,
+	UniformDataType iDataType, 
+	uint8_t iDataCount, 
+	UniformValues& iData)
+{
+	SharedPointer<Uniform> newUniform =
+		Uniform::addUniform(iUniformName, effectName, iShaderType);
+
+	//ValType
+	newUniform->setValType(iDataType);
+	newUniform->setValCount(iDataCount);
+
+	//Handle
+	UniformHandle uniformHandle = getUniformHandle(iUniformName.c_str(), iShaderType);
+	WindowsUtil::Assert(uniformHandle != -1, "Unable to grab handle");
+	newUniform->setHandle(uniformHandle);
+
+	newUniform->setUniformValue(iData);
+	return newUniform;
+}
+
+void Engine::Graphics::Effect::changeUniformData(
+	std::string iUniformName, 
+	ShaderType iShaderType, 
+	UniformValues& iNewValues)
+{
+	SharedPointer<Uniform> tempUniform=
+		Uniform::getUniform(iUniformName, effectName, iShaderType);
+	if(!tempUniform.isNull())
+	{
+		tempUniform->setUniformValue(iNewValues);
+	}
+}
+
+
+
+
 
 
 

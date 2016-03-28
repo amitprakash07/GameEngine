@@ -82,6 +82,13 @@
       <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="UniformBlock.common.cpp" />
+    <ClCompile Include="OpenGL\UniformBlock.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct3D\UniformBlock.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
@@ -99,5 +106,6 @@
     <ClInclude Include="ReflectingObject.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="UniformBlock.h" />
   </ItemGroup>
 </Project>

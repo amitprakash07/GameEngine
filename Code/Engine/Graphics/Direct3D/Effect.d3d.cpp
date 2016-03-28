@@ -213,7 +213,7 @@ Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle
 }
 
 
-const ID3DXConstantTable* Engine::Graphics::Effect::getConstantTable(ShaderType iType) const
+const Engine::Graphics::ConstantTable Engine::Graphics::Effect::getConstantTable(ShaderType iType) const
 {
 	switch(iType)
 	{

@@ -11,6 +11,9 @@ Engine::Scene::Scene(std::string i_sceneName) :
 	mMeshObjectInSceneList.reserve(20);
 	mLineListInScene.reserve(20);
 	mSpriteListInScene.reserve(20);
+	mReflectingObjectList.reserve(20);
+	mPlaneList.reserve(20);
+	mLightList.reserve(10);
 	sceneName = i_sceneName;
 	render = false;
 	renderDebug = true;
@@ -125,6 +128,17 @@ bool Engine::Scene::addCameraToScene(SharedPointer<Camera>& i_camera)
 	if (!i_camera.isNull())
 	{
 		mCameraListInScene[i_camera->getCameraName()] = i_camera;
+		return true;
+	}
+	return false;
+}
+
+//Light
+bool Engine::Scene::addLightToScene(SharedPointer<Graphics::Light>& iLight)
+{
+	if(!iLight.isNull())
+	{
+		mLightList.push_back(iLight);
 		return true;
 	}
 	return false;

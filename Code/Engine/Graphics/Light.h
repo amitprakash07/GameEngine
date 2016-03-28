@@ -5,6 +5,8 @@
 #include "typedefs.h"
 #include "../Core/EngineCore/Objects/Object.h"
 #include "../Core/Utilities/IMessageHandler.h"
+#include "uniformdefs.h"
+#include <vector>
 
 namespace Engine
 {
@@ -19,6 +21,10 @@ namespace Engine
 			void setMeshName(std::string iMeshName, std::string iMaterialName);
 			void enableShadow(bool enableShadow);
 			bool isShadowCastingEnabled() const;
+			float getLightIntensity() const;
+			Engine::Math::Vector3 getLightColor()const;
+			void addLightToObjectEffect(std::string iEffectFileName, ShaderType iShaderType);
+			void setLightUniformsInShader();
 
 			//Object functions
 			Math::Transform getTransform() override;
@@ -51,6 +57,7 @@ namespace Engine
 
 		private:
 			Light(std::string);
+			std::vector<UniformData> effectFileNames;
 			std::string lightName;
 			char* meshName;
 			char* mMaterialName;

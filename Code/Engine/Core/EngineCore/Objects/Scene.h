@@ -10,6 +10,7 @@
 #include <vector>
 #include "../../../Core/Time/FrameTime.h"
 #include "../../../Graphics/ReflectingObject.h"
+#include "../../../Graphics/Light.h"
 
 
 
@@ -25,6 +26,7 @@ namespace Engine
 		template<typename T>
 		bool addObjectToScene(SharedPointer<T>&);
 		bool addCameraToScene(SharedPointer<Camera>&);
+		bool addLightToScene(SharedPointer<Graphics::Light>&);
 		void useCamera(const std::string) const;
 		void useCamera(SharedPointer<Camera>) const;
 		void drawScene(bool withDebug = true);
@@ -74,6 +76,7 @@ namespace Engine
 		std::vector<SharedPointer<Engine::Graphics::Sprite>> mSpriteListInScene;
 		std::vector<SharedPointer<Engine::Graphics::ReflectingObject>> mReflectingObjectList;
 		std::vector<SharedPointer<Engine::Graphics::Plane>> mPlaneList;
+		std::vector<SharedPointer<Engine::Graphics::Light>> mLightList;
 		std::map<std::string, SharedPointer<Camera>> mCameraListInScene;
 		static void deactivateAllSceneToRender();
 		void deactivateAllCamera() const;

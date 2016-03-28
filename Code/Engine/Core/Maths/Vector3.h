@@ -52,6 +52,8 @@ namespace Engine
 
 			void printVector() const;
 
+			float* toFloatArray() const;
+
 			Vector3( const float i_x = 0.0f, const float i_y = 0.0f, const float i_z = 0.0f );			
 
 			// Data

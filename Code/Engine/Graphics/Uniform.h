@@ -4,7 +4,7 @@
 #include "uniformdefs.h"
 #include <map>
 #include "../Core/Utilities/SharedPointer.h"
-
+#include <vector>
 
 
 namespace Engine
@@ -26,6 +26,8 @@ namespace Engine
 			static void setUniformValueToShaderObject(
 				std::string effect, std::string uniformName,
 				ShaderType iShaderType);
+			static SharedPointer<Uniform> addUniformBlock(std::string iUniformName,
+				std::vector<UniformData>);
 			void setUniformValue(UniformValues& iinitialValue);			
 			void setValType(UniformDataType iDataType);
 			void setMatrixType(Transform_Matrix_Type iMatrixType);

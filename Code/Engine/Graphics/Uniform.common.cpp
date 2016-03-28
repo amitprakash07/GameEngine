@@ -1,6 +1,6 @@
 #include "Uniform.h"
 #include "../Windows/WindowsFunctions.h"
-
+#include "Effect.h"
 
 std::map<std::string, Engine::SharedPointer<Engine::Graphics::Uniform>>
 Engine::Graphics::Uniform::mUniformListInSystem;
@@ -260,8 +260,6 @@ uint8_t Engine::Graphics::Uniform::getValueCount() const
 }
 
 
-
-
 void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 	std::string effect, 
 	std::string uniformName,
@@ -271,132 +269,7 @@ void Engine::Graphics::Uniform::setUniformValueToShaderObject(
 }
 
 
-//void Engine::Graphics::Uniform::setLocalToWorldMatrrixTransformValue(
-//	Transform iObject)const
-//{
-//	if (isLocalToWorldTransformExist)
-//	{
-//		Engine::Math::Matrix4x4 tempLocal =
-//			Math::Matrix4x4(iObject.mOrientation, iObject.mPositionOffset);
-//		SharedPointer<Uniform> localToWorld = getTransformMatrix(LocalToWorld);
-//		if (!localToWorld.isNull())
-//		{
-//			UniformValues tempValue;
-//			tempValue.matrixValue.matrix = tempLocal;
-//			tempValue.matrixValue.Type = LocalToWorld;
-//			localToWorld->setUniformValue(tempValue);
-//		}
-//	}
-//}
-//
-//void Engine::Graphics::Uniform::setWorldToViewTransformValue(
-//	Transform cameraTransform)const
-//{
-//	if (isWorldToViewTransformExist)
-//	{
-//		Engine::Math::Matrix4x4 tempLocal =
-//			Math::Matrix4x4::CreateWorldToViewTransform(cameraTransform.mOrientation,
-//				cameraTransform.mPositionOffset);
-//		SharedPointer<Uniform> worldToView = getTransformMatrix(WorldToView);
-//		if (!worldToView.isNull())
-//		{
-//			UniformValues tempValue;
-//			tempValue.matrixValue.matrix = tempLocal;
-//			tempValue.matrixValue.Type = WorldToView;
-//			worldToView->setUniformValue(tempValue);
-//		}
-//	}
-//}
-//
-//void Engine::Graphics::Uniform::setViewToScreenTransformValue(float fieldOfView,
-//	float aspectRatio, 
-//	float nearPlane, 
-//	float farPlane)const
-//{
-//	if (isViewToScreenTransformExist)
-//	{
-//		Engine::Math::Matrix4x4 tempLocal =
-//			Math::Matrix4x4::CreateViewToScreenTransform(
-//				fieldOfView, aspectRatio, nearPlane, farPlane);
-//		SharedPointer<Uniform> viewToScreen = getTransformMatrix(ViewToScreen);
-//		if (!viewToScreen.isNull())
-//		{
-//			UniformValues tempValue;
-//			tempValue.matrixValue.matrix = tempLocal;
-//			tempValue.matrixValue.Type = ViewToScreen;
-//			viewToScreen->setUniformValue(tempValue);
-//		}
-//	}
-//}
-//
-//
-//Engine::SharedPointer<Engine::Graphics::Uniform>
-//Engine::Graphics::Uniform::getTransformMatrix(
-//	std::string i_effectName,
-//	ShaderType i_shaderType,
-//	Transform_Matrix_Type i_MatrixType)
-//{
-//	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = mUniformListInSystem.begin();
-//	i != mUniformListInSystem.end(); ++i)
-//	{
-//		if (i->second->effectName.compare(i_effectName) == 0 &&
-//			i->second->getShaderType() == i_shaderType &&
-//			i->second->getMatrixType() == i_MatrixType)
-//			return i->second;
-//	}
-//
-//	return SharedPointer<Uniform>();
-//}
-//
-//
-//Engine::SharedPointer<Engine::Graphics::Uniform> 
-//Engine::Graphics::Uniform::getLocalToWorldMatrixTransformUniform(
-//	std::string effectName,
-//	ShaderType iShaderType)
-//{
-//	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = mUniformListInSystem.begin();
-//	i!= mUniformListInSystem.end(); ++i)
-//	{
-//		if(i->second->effectName.compare(effectName) == 0 && i->second->getShaderType() == iShaderType)
-//		{
-//			return i->second->getTransformMatrix(LocalToWorld);
-//		}
-//	}
-//	return SharedPointer<Uniform>();
-//}
-//
-//
-//Engine::SharedPointer<Engine::Graphics::Uniform>
-//Engine::Graphics::Uniform::getWorldToViewMatrixTransformUniform(
-//	std::string effectName,
-//	ShaderType iShaderType)
-//{
-//	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = mUniformListInSystem.begin();
-//	i != mUniformListInSystem.end(); ++i)
-//	{
-//		if (i->second->effectName.compare(effectName) == 0 && i->second->getShaderType() == iShaderType)
-//		{
-//			return i->second->getTransformMatrix(WorldToView);
-//		}
-//	}
-//	return SharedPointer<Uniform>();
-//}
-//
-//Engine::SharedPointer<Engine::Graphics::Uniform> 
-//Engine::Graphics::Uniform::getViewToScreenMatrixTransformUniform(
-//	std::string effectName,
-//	ShaderType iShaderType)
-//{
-//	for (std::map<std::string, SharedPointer<Uniform>>::iterator i = mUniformListInSystem.begin();
-//	i != mUniformListInSystem.end(); ++i)
-//	{
-//		if (i->second->effectName.compare(effectName) == 0 && i->second->getShaderType() == iShaderType)
-//		{
-//			return i->second->getTransformMatrix(ViewToScreen);
-//		}
-//	}
-//	return SharedPointer<Uniform>();
-//}
+
 
 
 

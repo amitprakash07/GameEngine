@@ -146,6 +146,27 @@ void Engine::Graphics::Plane::receiveShadow(bool)
 
 }
 
+bool Engine::Graphics::Plane::receivingShadowEnabled()
+{
+	//To do 
+	return false;
+}
+
+void Engine::Graphics::Plane::castShadow(bool, Graphics::ShadowMethod)
+{
+	//To do
+}
+
+
+bool Engine::Graphics::Plane::castingShadowEnabled()
+{
+	//To do
+	return false;
+}
+
+
+
+
 
 
 

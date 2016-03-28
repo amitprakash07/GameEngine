@@ -17,6 +17,7 @@ Engine::Graphics::Light::Light(std::string iLightName)
 	mLightColor = Math::Vector3(1.0f);	
 	mObjectController = nullptr;
 	mLightType = LightType::Directional;
+	effectFileNames.reserve(20);
 }
 
 void Engine::Graphics::Light::updateObject()
@@ -166,6 +167,28 @@ void Engine::Graphics::Light::setTransform(Engine::Math::Vector3 iPosition, Engi
 	}
 	
 }
+
+
+Engine::Math::Vector3 Engine::Graphics::Light::getLightColor() const
+{
+	return mLightColor;
+}
+
+float Engine::Graphics::Light::getLightIntensity() const
+{
+	return mIntensity;
+}
+
+
+void Engine::Graphics::Light::addLightToObjectEffect
+(std::string iEffectFileName, ShaderType iShaderType)
+{
+	EffectStruct tempEffectStruct;
+	tempEffectStruct.effectName = iEffectFileName;
+	tempEffectStruct.shaderType = iShaderType;
+	effectFileNames.push_back(tempEffectStruct);
+}
+
 
 
 

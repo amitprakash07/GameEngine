@@ -4,7 +4,8 @@
 #include "typedefs.h"
 #include "../Core/Maths/Matrix4x4.h"
 #include <stdint.h>
-
+#include <string>
+#include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 
 
 namespace Engine
@@ -33,8 +34,274 @@ namespace Engine
 			MatrixArray = 7,
 			Vector = 8,
 			VectorArray = 9,
-			NotKnown = 10
+			UniformBlock = 10,
+			NotKnown = 11
 		};
+
+
+		enum class DataTypeOfUniformInIniformBlockData
+		{
+#ifdef  PLATFORM_OPEN_GL
+			glfloat = GL_FLOAT,
+			vec2 = GL_FLOAT_VEC2,
+			vec3 = GL_FLOAT_VEC3,
+			vec4 = GL_FLOAT_VEC4,
+			
+			glDouble = GL_DOUBLE,
+			dvec2 = GL_DOUBLE_VEC2,
+			dvec3 = GL_DOUBLE_VEC3,
+			dvec4 = GL_DOUBLE_VEC4,
+			
+			glInt = GL_INT,
+			ivec2 = GL_INT_VEC2,
+			ivec3 = GL_INT_VEC3,
+			ivec4 = GL_INT_VEC4,
+
+			unsignedint = GL_UNSIGNED_INT,
+			uvec2 = GL_UNSIGNED_INT_VEC2,
+			uvec3 = GL_UNSIGNED_INT_VEC3,
+			uvec4 = GL_UNSIGNED_INT_VEC4,
+
+			glBool = GL_BOOL,
+			bvec2 = GL_BOOL_VEC2,
+			bvec3 = GL_BOOL_VEC3,
+			bvec4 = GL_BOOL_VEC4,
+
+			mat2 = GL_FLOAT_MAT2,
+			mat3 = GL_FLOAT_MAT3,
+			mat4 = GL_FLOAT_MAT4,
+
+			mat2x3 = GL_FLOAT_MAT2x3,
+			mat2x4 = GL_FLOAT_MAT2x4,
+			mat3x2 = GL_FLOAT_MAT3x2,
+			mat3x4 = GL_FLOAT_MAT3x4,
+			mat4x2 = GL_FLOAT_MAT4x2,
+			mat4x3 = GL_FLOAT_MAT4x3,
+
+			dmat2 = GL_DOUBLE_MAT2,
+			dmat3 = GL_DOUBLE_MAT3,
+			dmat4 = GL_DOUBLE_MAT4,
+
+			dmat2x3 = GL_DOUBLE_MAT2x3,
+			dmat2x4 = GL_DOUBLE_MAT2x4,
+			dmat3x2 = GL_DOUBLE_MAT3x2,
+			dmat3x4 = GL_DOUBLE_MAT3x4,
+			dmat4x2 = GL_DOUBLE_MAT4x2,
+			dmat4x3 = GL_DOUBLE_MAT4x3,
+
+			sampler1D = GL_SAMPLER_1D,
+			sampler2D = GL_SAMPLER_2D,
+			sampler3D = GL_SAMPLER_3D,
+			samplerCube = GL_SAMPLER_CUBE,
+			sampler1DShadow = GL_SAMPLER_1D_SHADOW,
+			sampler2DShadow = GL_SAMPLER_2D_SHADOW,
+			sampler1DArray = GL_SAMPLER_1D_ARRAY,
+			sampler2DArray = GL_SAMPLER_2D_ARRAY,
+			sampler1DArrayShadow = GL_SAMPLER_1D_ARRAY_SHADOW,
+			sampler2DArrayShadow = GL_SAMPLER_2D_ARRAY_SHADOW,
+			sampler2DMS = GL_SAMPLER_2D_MULTISAMPLE,
+			sampler2DMSArray = GL_SAMPLER_2D_MULTISAMPLE_ARRAY,
+			samplerCubeShadow = GL_SAMPLER_CUBE_SHADOW,
+			samplerBuffer = GL_SAMPLER_BUFFER,
+			sampler2DRect = GL_SAMPLER_2D_RECT,
+			sampler2DRectShadow = GL_SAMPLER_2D_RECT_SHADOW,
+			isampler1D = GL_INT_SAMPLER_1D,
+			isampler2D = GL_INT_SAMPLER_2D,
+			isampler3D = GL_INT_SAMPLER_3D,
+			isamplerCube = GL_INT_SAMPLER_CUBE,
+			isampler1DArray = GL_INT_SAMPLER_1D_ARRAY,
+			isampler2DArray = GL_INT_SAMPLER_2D_ARRAY,
+			isampler2DMS = GL_INT_SAMPLER_2D_MULTISAMPLE,
+			isampler2DMSArray = GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY,
+			isamplerBuffer = GL_INT_SAMPLER_BUFFER,
+			isampler2DRect = GL_INT_SAMPLER_2D_RECT,
+			usampler1D = GL_UNSIGNED_INT_SAMPLER_1D,
+			usampler2D = GL_UNSIGNED_INT_SAMPLER_2D,
+			usampler3D = GL_UNSIGNED_INT_SAMPLER_3D,
+			usamplerCube = GL_UNSIGNED_INT_SAMPLER_CUBE,
+			usampler1DArray = GL_UNSIGNED_INT_SAMPLER_1D_ARRAY,
+			usampler2DArray = GL_UNSIGNED_INT_SAMPLER_2D_ARRAY,
+			usampler2DMS = GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE,
+			usampler2DMSArray = GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY,
+			usamplerBuffer = GL_UNSIGNED_INT_SAMPLER_BUFFER,
+			usampler2DRect = GL_UNSIGNED_INT_SAMPLER_2D_RECT,
+			glUnknown = GL_INVALID_INDEX
+#endif
+		};
+
+		union DataOfUniformInUniformBlock
+		{
+			float floatVal = 0;
+			float vec2[2];
+			float vec3[3];
+			float vec4[4];
+			
+			int iVal;
+			int iVec2[2];
+			int iVec3[3];
+			int iVec4[4];
+
+			double dVal;
+			double dVal2[2];
+			double dVal3[3];
+			double dVal4[4];
+
+			unsigned int uiVal;
+			unsigned int uiVal2[2];
+			unsigned int uiVal3[3];
+			unsigned int uiVal4[4];
+
+			bool boolVal;
+			bool boolVal2[2];
+			bool boolVal3[3];
+			bool boolVAl4[4];
+
+			float mat2[4];
+			float mat3[9];
+			float mat4[16];
+
+			double dmat2[4];
+			double dmat3[9];
+			double dmat4[16];
+
+			double dmat2x3[6];
+			double dmat2x4[8];
+			double dmat3x2[6];
+			double dmat3x4[12];
+			double dmat4x2[8];
+			double dmat4x3[12];
+
+			DataOfUniformInUniformBlock();
+
+		};
+
+
+		inline size_t getGLDataTypeSize(DataTypeOfUniformInIniformBlockData iType)
+		{
+			size_t typeSize = 0;
+			switch(iType)
+			{
+			case DataTypeOfUniformInIniformBlockData::glfloat:  
+				typeSize = sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::vec2:  
+				typeSize = 2 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::vec3:  
+				typeSize = 3 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::vec4:  
+				typeSize = 4 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::glDouble:  
+				typeSize = sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dvec2: 
+				typeSize = 2 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dvec3:  
+				typeSize = 3 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dvec4:  
+				typeSize =  4 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::glInt:  
+				typeSize = sizeof(int);
+				break;
+			case DataTypeOfUniformInIniformBlockData::ivec2:  
+				typeSize = 2 * sizeof(int);
+				break;
+			case DataTypeOfUniformInIniformBlockData::ivec3:  
+				typeSize = 3 * sizeof(int);
+				break;
+			case DataTypeOfUniformInIniformBlockData::ivec4: 
+				typeSize = 4 * sizeof(int);
+				break;
+			case DataTypeOfUniformInIniformBlockData::unsignedint:  
+				typeSize = sizeof(unsigned int);
+				break;
+			case DataTypeOfUniformInIniformBlockData::uvec2:  
+				typeSize = 2* sizeof(unsigned int);
+				break;
+			case DataTypeOfUniformInIniformBlockData::uvec3:  
+				typeSize = 3 * sizeof(unsigned int);
+				break;
+			case DataTypeOfUniformInIniformBlockData::uvec4: 
+				typeSize = 4 * sizeof(unsigned int);
+				break;
+			case DataTypeOfUniformInIniformBlockData::glBool: 
+				typeSize = sizeof(bool);
+				break;
+			case DataTypeOfUniformInIniformBlockData::bvec2: 
+				typeSize = 2 * sizeof(bool);
+				break;
+			case DataTypeOfUniformInIniformBlockData::bvec3:  
+				typeSize = 3 * sizeof(bool);
+				break;
+			case DataTypeOfUniformInIniformBlockData::bvec4: 
+				typeSize = 4 * sizeof(bool);
+				break;
+			case DataTypeOfUniformInIniformBlockData::mat2: 
+				typeSize = 4 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::mat3:  
+				typeSize = 9 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::mat4: 
+				typeSize = 16 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::mat2x3:  
+				typeSize = 6 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::mat2x4: 
+				typeSize = 8 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::mat3x2: 
+				typeSize = 6 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::mat3x4:  
+				typeSize = 12 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::mat4x2:  
+				typeSize = 8 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::mat4x3:  
+				typeSize = 12 * sizeof(float);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dmat2: 
+				typeSize = 4 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dmat3: 
+				typeSize = 9 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dmat4:  
+				typeSize = 16 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dmat2x3: 
+				typeSize = 6 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dmat2x4:  
+				typeSize = 8 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dmat3x2:  
+				typeSize = 6 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dmat3x4: 
+				typeSize = 12 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dmat4x2: 
+				typeSize = 8 * sizeof(double);
+				break;
+			case DataTypeOfUniformInIniformBlockData::dmat4x3: 
+				typeSize = 12 * sizeof(double);
+				break;
+			default:
+				break;
+
+			}
+			return typeSize;
+		}
+
 
 		enum ShaderType :uint8_t
 		{
@@ -75,10 +342,11 @@ namespace Engine
 			MatrixStruct matrixValue;
 			MatrixStruct *matrixArray;
 			VectorStruct vectorValue;
-			VectorStruct * vectorArray;
-			
+			VectorStruct * vectorArray;			
 			UniformValues();		
 		};
+
+
 
 		struct UniformData
 		{
@@ -91,6 +359,28 @@ namespace Engine
 			UniformData();			
 			
 		};
+
+
+		struct UniformBlockStruct
+		{
+			std::string uniformName;
+			GLuint index;
+			GLint size;
+			GLint offset;
+			DataTypeOfUniformInIniformBlockData type;
+			DataOfUniformInUniformBlock data;
+			
+			UniformBlockStruct()
+			{
+				index = 0;
+				size = -1;
+				offset = -1;
+				type = DataTypeOfUniformInIniformBlockData::glUnknown;
+				data = DataOfUniformInUniformBlock();
+			}			
+		};
+
+		
 
 		struct MaterialUniform
 		{
@@ -128,6 +418,12 @@ namespace Engine
 			char *uniform; //Uniform Name			
 			ShaderType shaderType;
 			MapType mapType;
+		};
+
+		struct EffectStruct
+		{
+			std::string effectName;
+			ShaderType shaderType;
 		};
 
 

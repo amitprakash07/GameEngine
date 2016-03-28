@@ -680,6 +680,8 @@ Engine::Graphics::Effect::Effect(std::string i_effectFileName)
 	isLocalToWorldTransformExist = false;
 	isWorldToViewTransformExist = false;
 	isViewToScreenTransformExist = false;
+	isScaleMatrixTransformExist = false;
+	isNormalMAtrixTransformExist = false;
 	s_programId = 0;
 }
 
@@ -755,6 +757,12 @@ Engine::Graphics::SamplerID Engine::Graphics::Effect::getSamplerID(UniformHandle
 }
 
 
+
+const Engine::Graphics::ConstantTable 
+		Engine::Graphics::Effect::getConstantTable(ShaderType iType) const
+{
+	return s_programId;
+}
 
 
 

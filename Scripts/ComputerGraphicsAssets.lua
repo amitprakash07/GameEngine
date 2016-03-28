@@ -128,6 +128,14 @@ return
 			src = "ComputerGraphics/blueEffect.lua",
 			target = "ComputerGraphics/blueEffect.effect"
 		},
+		{
+			src = "ComputerGraphics/utahTeapotEffect.lua",
+			target = "ComputerGraphics/utahTeapotEffect.effect"
+		},
+		{
+			src = "ComputerGraphics/proxyLightEffect.lua",
+			target = "ComputerGraphics/proxyLightEffect.effect"
+		},
 	},
 
 -- =======================================================================
@@ -306,6 +314,48 @@ return
 		{
 			src = "ComputerGraphics/environmentMappingSphereFragment.glsl",
 			target = "ComputerGraphics/environmentMappingSphereFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************	
+	{
+			src = "ComputerGraphics/teapotVertex.glsl",
+			target = "ComputerGraphics/teapotVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/teapotFragment.glsl",
+			target = "ComputerGraphics/teapotFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************	
+	{
+			src = "ComputerGraphics/proxyLightVertex.glsl",
+			target = "ComputerGraphics/proxyLightVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/proxyLightFragment.glsl",
+			target = "ComputerGraphics/proxyLightFragment.glsl",
 			optionaltype = "fragment",
 			dependencies =
 			{

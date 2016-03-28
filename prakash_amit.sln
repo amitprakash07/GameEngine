@@ -250,6 +250,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{7FA5
 		Assets\Effects\ComputerGraphics\planeEffect.lua = Assets\Effects\ComputerGraphics\planeEffect.lua
 		Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua = Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua
 		Assets\Effects\ComputerGraphics\skyBoxEffect.lua = Assets\Effects\ComputerGraphics\skyBoxEffect.lua
+		Assets\Effects\ComputerGraphics\utahTeapotEffect.lua = Assets\Effects\ComputerGraphics\utahTeapotEffect.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{EBF44EFF-3961-484B-A0F8-A62D333F56F7}"
@@ -278,10 +279,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{EA91
 		Assets\Shaders\ComputerGraphics\environmentMappingSphereVertex.glsl = Assets\Shaders\ComputerGraphics\environmentMappingSphereVertex.glsl
 		Assets\Shaders\ComputerGraphics\planeFragment.glsl = Assets\Shaders\ComputerGraphics\planeFragment.glsl
 		Assets\Shaders\ComputerGraphics\planeVertex.glsl = Assets\Shaders\ComputerGraphics\planeVertex.glsl
+		Assets\Shaders\ComputerGraphics\proxyLightFragment.glsl = Assets\Shaders\ComputerGraphics\proxyLightFragment.glsl
+		Assets\Shaders\ComputerGraphics\proxyLightVertex.glsl = Assets\Shaders\ComputerGraphics\proxyLightVertex.glsl
 		Assets\Shaders\ComputerGraphics\reflectiveSphereFragment.glsl = Assets\Shaders\ComputerGraphics\reflectiveSphereFragment.glsl
 		Assets\Shaders\ComputerGraphics\reflectiveSphereVertex.glsl = Assets\Shaders\ComputerGraphics\reflectiveSphereVertex.glsl
 		Assets\Shaders\ComputerGraphics\skyBoxFragment.glsl = Assets\Shaders\ComputerGraphics\skyBoxFragment.glsl
 		Assets\Shaders\ComputerGraphics\skyBoxVertex.glsl = Assets\Shaders\ComputerGraphics\skyBoxVertex.glsl
+		Assets\Shaders\ComputerGraphics\teapotFragment.glsl = Assets\Shaders\ComputerGraphics\teapotFragment.glsl
+		Assets\Shaders\ComputerGraphics\teapotVertex.glsl = Assets\Shaders\ComputerGraphics\teapotVertex.glsl
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meshes", "Meshes", "{5EF8A44E-593F-45D7-B9C3-4D7130965DEA}"

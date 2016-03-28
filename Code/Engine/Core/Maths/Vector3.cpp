@@ -165,6 +165,17 @@ Engine::Math::Vector3::Vector3( const float i_x, const float i_y, const float i_
 }
 
 
+float* Engine::Math::Vector3::toFloatArray() const
+{
+	float floatArray[3];
+	floatArray[0] = x;
+	floatArray[1] = y;
+	floatArray[2] = z;
+	return floatArray;
+}
+
+
+
 void Engine::Math::Vector3::printVector() const
 {
 	std::cout << "x = " << x << ", y = " << y << ", z= " << z;

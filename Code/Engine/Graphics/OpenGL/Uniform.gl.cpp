@@ -1,7 +1,7 @@
 #include "../Uniform.h"
 #include "../../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 #include "../../Windows/WindowsFunctions.h"
-#include "../Effect.h"
+
 
 Engine::Graphics::UniformData::UniformData()
 {

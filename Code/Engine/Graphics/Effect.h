@@ -1,8 +1,6 @@
 #ifndef _EFECTS_H
 #define _EFECTS_H
 
-#include "../Windows/WindowsIncludes.h"
-
 #ifdef PLATFORM_D3D
 #include <d3dx9shader.h>
 #elif PLATFORM_OPEN_GL
@@ -33,12 +31,16 @@ namespace Engine
 			std::string getTypeInfo() const override { return ""; }
 			bool isBothSameType(RTTI*, std::string) const  override { return true; }						
 			void setMaterialUniformValue(char*, MaterialUniform) const;
-			//void setTextureUniform(TextureResource, SamplerID, int i_textureUnit = 0);
 			UniformHandle getUniformHandle(const char *, ShaderType) const;
-			SamplerID getSamplerID(UniformHandle, ShaderType);			
-#ifdef PLATFORM_D3D
-			const ID3DXConstantTable* getConstantTable(ShaderType iType) const;
-#endif
+			SamplerID getSamplerID(UniformHandle, ShaderType);		
+			SharedPointer<Uniform> addUniform(std::string iUniformName, 
+				ShaderType iShaderType, 
+				UniformDataType iDataType, 
+				uint8_t iDataCount, UniformValues& iData);
+			
+			void changeUniformData(std::string iUniformName,
+				ShaderType iShaderType, UniformValues& iNewValues);
+			const ConstantTable getConstantTable(ShaderType iType) const;
 			~Effect();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Effect>> mEffectList;

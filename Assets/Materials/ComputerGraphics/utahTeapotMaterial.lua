@@ -1,6 +1,6 @@
 return 
 {
-	effect = "ComputerGraphics/floorEffect.effect",
+	effect = "ComputerGraphics/utahTeapotEffect.effect",
 	map =
 	{
 		{
