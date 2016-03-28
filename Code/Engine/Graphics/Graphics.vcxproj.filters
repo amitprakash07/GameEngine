@@ -97,5 +97,7 @@
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="ReflectingObject.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="PlatformDependentTypedefs.h" />
   </ItemGroup>
 </Project>

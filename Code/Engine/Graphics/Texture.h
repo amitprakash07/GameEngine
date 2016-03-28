@@ -45,6 +45,7 @@ namespace Engine
 			void setTextureResource(TextureResource textureResource);
 			void setSamplerID(SamplerID sampleID);
 			void setTextureInShaderObject(int i_textureUnit);
+			void changeTextureFilter(MinFilter iMinFilter, MagFilter iMagFilter);
 			~Texture();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Texture>> mTextureList;
@@ -55,6 +56,8 @@ namespace Engine
 			TextureResource texture;
 			SamplerID textureSamplerID;
 			TextureType textureType;
+			MagFilter magFilter;
+			MinFilter minFilter;
 			void associateSamplerDataFromShader();
 			Texture(char* i_effectName, 
 				char* i_textureName,

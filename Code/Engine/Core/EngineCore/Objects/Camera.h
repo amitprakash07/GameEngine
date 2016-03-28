@@ -41,7 +41,7 @@ namespace Engine
 		void updateObject() override;
 		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{/*Stub*/};
 		void setObjectController(IObjectController* objectController) override;
-
+		std::string getMaterialName() override { return "NO Material"; }
 	private:
 		Engine::Math::Transform mTransform;
 		Math::Transform mInitialTransform;

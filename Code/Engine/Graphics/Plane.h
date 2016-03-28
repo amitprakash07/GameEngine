@@ -36,6 +36,7 @@ namespace Engine
 			void updateObject() override;
 			void setObjectController(IObjectController *)override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
+			std::string getMaterialName() override { return mMaterialName; }
 			//IMessageHandler
 			void HandleMessage(
 				Engine::utils::StringHash &,

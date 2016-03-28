@@ -29,5 +29,12 @@ return
 			MatrixType = "ViewToScreen",
 			count = 1,
 		},		
+		{
+			name = "g_ScaleTransform",
+			shader = "vertex",
+			valType = "Matrix",
+			MatrixType = "ScaleMatrix",
+			count = 1,
+		},
 	}
 }

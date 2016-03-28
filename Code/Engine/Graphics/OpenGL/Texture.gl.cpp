@@ -11,6 +11,8 @@ Engine::Graphics::Texture::Texture()
 	textureSamplerID = -1;
 	textureType = TEXTURE_2D;
 	//samplerName = nullptr;
+	magFilter = MagFilter::LINEAR;
+	minFilter = MinFilter::LINEAR_LINEAR;
 }
 
 Engine::Graphics::Texture::Texture(char* i_effectName,
@@ -304,8 +306,8 @@ bool Engine::Graphics::Texture::loadTexture()
 			}
 		}
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<int>(magFilter));
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<int>(minFilter));
 	}
 		break;
 	case GL_TEXTURE_CUBE_MAP:
@@ -410,6 +412,26 @@ OnExit:
 	}
 	return !wereThereErrors;
 }
+
+void Engine::Graphics::Texture::changeTextureFilter(MinFilter iMinFilter, MagFilter iMagFilter)
+{
+	GLenum errorCode;	
+	switch(textureType)
+	{
+	case TEXTURE_2D:
+		glBindTexture(GL_TEXTURE_2D, texture);
+		errorCode = glGetError();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<int>(iMagFilter));
+		errorCode = glGetError();
+		glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER,static_cast<int>( iMinFilter));
+		errorCode = glGetError();
+	case TEXTURE_3D:
+		break;
+	case TEXTURE_CUBE:
+		break;
+	}
+}
+
 
 Engine::Graphics::Texture::~Texture()
 {

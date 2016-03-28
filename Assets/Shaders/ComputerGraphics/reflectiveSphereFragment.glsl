@@ -6,7 +6,7 @@ Fragment shader
 
 uniform vec3 g_PixelColorModifier;
 uniform samplerCube g_TextureSampler;
-uniform float g_intensity;
+uniform float g_intensity=1.5;
 
 //Input
 layout(location = 0) in vec4 i_color;

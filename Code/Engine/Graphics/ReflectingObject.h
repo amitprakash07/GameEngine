@@ -29,6 +29,7 @@ namespace Engine
 			void setObjectController(IObjectController *) override;
 			void updateObject() override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
+			std::string getMaterialName() override { return materialName; }
 		private:
 			ReflectingObject();
 			bool init();

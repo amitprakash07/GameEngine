@@ -114,7 +114,9 @@
     <ClCompile Include="uniformdefs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="PlatformDependentTypedefs.h" />
     <ClInclude Include="ReflectingObject.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Graphics.h" />

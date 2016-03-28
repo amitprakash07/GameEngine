@@ -44,6 +44,7 @@ namespace Engine
 			void updateObject() override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 			void setObjectController(IObjectController *i_ObjectControlller) override;
+			std::string getMaterialName() override { return materialName; }
 		private:
 			static std::vector<SharedPointer<Line>> mLineList;
 			static bool setUniforms();

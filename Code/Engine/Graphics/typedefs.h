@@ -100,6 +100,25 @@ namespace Engine
 			TEXTURE_3D = 2		
 		};
 
+		enum class MinFilter
+		{
+#ifdef PLATFORM_OPEN_GL
+			NEAREST_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
+			LINEAR_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
+			NEAREST_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
+			LINEAR_LINEAR = GL_LINEAR_MIPMAP_LINEAR
+#endif
+		};
+
+		enum class MagFilter
+		{
+#ifdef PLATFORM_OPEN_GL
+			LINEAR = GL_LINEAR,
+			NEAREST = GL_NEAREST,
+#endif
+		};
+
+
 		struct RGBColor
 		{
 			float r;
@@ -152,6 +171,27 @@ namespace Engine
 			Math::Vector3 position;
 			Math::Vector3 normal;
 			Math::Vector2 texture;
+		};
+
+		enum class LightType
+		{
+			Directional,
+			Point,
+			Area,
+			Spot
+		};
+
+		enum class ShadowType
+		{
+			HardShadow,
+			SoftShadow
+		};
+
+		enum class ShadowMethod
+		{
+			Projective,
+			ShadowMap,
+			ShadowVolume
 		};
 
 	}

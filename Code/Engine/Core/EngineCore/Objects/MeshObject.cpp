@@ -67,6 +67,7 @@ Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialNam
 	debugObject = false;
 	vertexModifierUniform = "vertexColorModifier\0";
 	isInitialTransform = true;
+	scaleFactor = Math::Vector3(1.0, 1.0, 1.0);
 }
 
 Engine::MeshObject::MeshObject()
@@ -157,9 +158,7 @@ void Engine::MeshObject::updateObject()
 
 void Engine::MeshObject::setScale(float x, float y, float z)
 {
-	if (x != 1.0f && y == 1.0f && z == 1.0f)
-		y = z = x;
-	Engine::Math::Matrix4x4::CreateScaleMatrix(x, y, z);	
+	scaleFactor = Math::Vector3(x, y, z);
 }
 
 
@@ -181,6 +180,9 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 	{
 		SharedPointer<Scene> activeScene = Scene::getRenderableScene();
 		SharedPointer<Camera> tempCamera = activeScene->getActiveCamera();
+		Engine::SharedPointer<Graphics::Material> tempMaterial =
+			Engine::Graphics::Material::getMaterial(mMaterial.c_str());
+		WindowsUtil::Assert(!tempMaterial.isNull(), "Material for the skybox is not available");
 		Scene::applyPaintersAlgorithmForTransparency();
 		if (!tempCamera.isNull())
 		{
@@ -210,6 +212,16 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 				getEffect()->getTransformMatrixUniformName(
 					Graphics::Vertex,
 					Graphics::ViewToScreen), effectFile, Graphics::Vertex);
+
+			SharedPointer<Graphics::Uniform> scaleMatrix = Graphics::Uniform::getUniform(
+				getEffect()->getTransformMatrixUniformName(
+					Graphics::Vertex,
+					Graphics::ScaleMatrix), tempMaterial->getEffectName(), Graphics::Vertex);
+
+			SharedPointer<Graphics::Uniform> normalMatrix = Graphics::Uniform::getUniform(
+				getEffect()->getTransformMatrixUniformName(
+					Graphics::Vertex,
+					Graphics::NormalMatrix), tempMaterial->getEffectName(), Graphics::Vertex);
 			
 			if (!localToWorldUniform.isNull())
 			{
@@ -230,6 +242,24 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 						cameraTransform.getOrientation(),
 						cameraTransform.getPosition());
 				worldToView->setUniformValue(worldToViewValues);
+			}
+
+			if (!scaleMatrix.isNull())
+			{
+				Graphics::UniformValues scaleMatrixValues;
+				scaleMatrixValues.matrixValue.Type = Graphics::ScaleMatrix;
+				scaleMatrixValues.matrixValue.matrix = Engine::Math::Matrix4x4::CreateScaleMatrix(
+					scaleFactor);
+				scaleMatrix->setUniformValue(scaleMatrixValues);
+			}
+
+			if (!normalMatrix.isNull())
+			{
+				Graphics::UniformValues normalMatrixValues;
+				normalMatrixValues.matrixValue.Type = Graphics::NormalMatrix;
+				normalMatrixValues.matrixValue.matrix = Engine::Math::Matrix4x4::CreateNormalMatrix(
+					Math::Matrix4x4(mTransform.getOrientation(), mTransform.getPosition()));
+				normalMatrix->setUniformValue(normalMatrixValues);
 			}
 
 			if (!viewToScreen.isNull())

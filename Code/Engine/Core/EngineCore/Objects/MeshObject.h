@@ -32,6 +32,7 @@ namespace Engine
 		void updateObject() override;
 		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
 		void resetTransform() override;
+		std::string getMaterialName() override { return mMaterial; }
 		~MeshObject();
 	private:
 		MeshObject(std::string, std::string);
@@ -44,6 +45,7 @@ namespace Engine
 		Math::Transform								mTransform;
 		Math::Transform								mInitialTransform;
 		bool										isInitialTransform;
+		Math::Vector3								scaleFactor;
 		bool										debugObject;
 		Engine::Graphics::RGBAColor					vertexColor;
 		

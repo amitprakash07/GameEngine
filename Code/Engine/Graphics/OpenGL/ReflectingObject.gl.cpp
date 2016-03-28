@@ -148,7 +148,7 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 		Texture::addTextureToList(Material::getMaterial(materialName.c_str())->getEffectName(),
 			textureName.c_str(), 
 			texture, dynamicTextureSamplerName.c_str(),
-			Fragment, TEXTURE_CUBE);
+			Fragment, TextureType::TEXTURE_CUBE);
 	}
 	else
 	{

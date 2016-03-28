@@ -20,6 +20,7 @@ namespace Engine
 			void setMaterialUniformParameters() const;
 			void changeMaterialColor(float i_R, float i_G, float i_b, float i_A = 1.0f) const;
 			void setTextureUniform() const;
+			std::string getMap(MapType iMapType, ShaderType iShaderType)const ;
 			~Material();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Material>> mMaterialList;

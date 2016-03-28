@@ -17,7 +17,7 @@ return
 			name = "g_PixelColorModifier",
 			shader = "fragment",
 			valtype = "Float",
-			value = {0.2,0.5,0.7},
+			value = {0.2,0.5,1.0},
 		},		
 	},
 

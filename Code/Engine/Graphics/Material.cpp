@@ -256,6 +256,18 @@ void Engine::Graphics::Material::setTextureUniform() const
 }
 
 
+std::string Engine::Graphics::Material::getMap(MapType iMapType, ShaderType iShaderType)const
+{
+	for (int i = 0; i < mapCount; i++)
+	{
+		if (mTextureMaps[i].mapType == iMapType && mTextureMaps[i].shaderType == iShaderType)
+			return mTextureMaps[i].file;
+	}
+	return "Not Found";
+}
+
+
+
 Engine::Graphics::Material::Material(char* i_materialName)
 {
 	size_t length = strlen(i_materialName);

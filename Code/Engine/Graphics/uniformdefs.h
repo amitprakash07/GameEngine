@@ -4,6 +4,7 @@
 #include "typedefs.h"
 #include "../Core/Maths/Matrix4x4.h"
 #include <stdint.h>
+#include "PlatformDependentTypedefs.h"
 
 
 namespace Engine
