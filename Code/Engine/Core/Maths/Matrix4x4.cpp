@@ -388,3 +388,45 @@ void Engine::Math::Matrix4x4::printMatrix4x4() const
 	std::cout << m_30 << ", " << m_31 << ", " << m_32 << ", " << m_33 << std::endl;
 }
 
+Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateShadowMatrix(
+	const Math::Vector3 iLightPosition, const ParametricPlane iPlane)
+{
+	Matrix4x4 shadowMatrix;
+	float nDotL = iLightPosition.dot(iPlane.getPlaneNormal());
+	float d = iPlane.getDistanceFromOrigin();
+	Vector3 l = iLightPosition;
+	Vector3 n = iPlane.getPlaneNormal();
+	
+	/*
+		n = plane normal, d = distance from origin, l= light position
+		
+		n.l + d - l.x*n.x		  -l.x*n.y			   -l.x*n.z			-l.x * d
+		    -l.y*n.x			n.l + d - l.y*n.y      -l.y*n.z			-l.y * d
+			-l.z*n.x			  -l.z*n.y			n.l + d -l.z*n.z	-l.z * d
+			-n.x					-n.y				-n.z			 n.l
+	*/
+
+	shadowMatrix.m_00 = nDotL + d - (l.x*n.x);
+	shadowMatrix.m_01 = -(l.x * n.y);
+	shadowMatrix.m_02 = -(l.x * n.z);
+	shadowMatrix.m_03 = -(l.x * d);
+
+	shadowMatrix.m_10 = -(l.y * n.x);
+	shadowMatrix.m_11 = nDotL + d - (l.y * n.y);
+	shadowMatrix.m_12 = -(l.y * n.z);
+	shadowMatrix.m_13 = -(l.y * d);
+
+	shadowMatrix.m_20 = -(l.z * n.x);
+	shadowMatrix.m_21 = -(l.z * n.y);
+	shadowMatrix.m_22 = nDotL + d - (l.z * n.z);
+	shadowMatrix.m_23 = -(l.z * d);
+
+	shadowMatrix.m_30 = -n.x;
+	shadowMatrix.m_31 = -n.y;
+	shadowMatrix.m_32 = -n.z;
+	shadowMatrix.m_33 = nDotL;
+
+	return shadowMatrix;
+}
+
+

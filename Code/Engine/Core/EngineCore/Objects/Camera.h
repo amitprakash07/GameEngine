@@ -42,6 +42,14 @@ namespace Engine
 		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{/*Stub*/};
 		void setObjectController(IObjectController* objectController) override;
 		std::string getMaterialName() override { return "NO Material"; }
+		bool isCollidable() override;
+		bool isPhysicsEnabled() override;
+		void enableCollision(bool) override;
+		void enablePhysics(bool) override;
+		void castShadow(bool, Graphics::ShadowMethod) override;
+		bool castingShadowEnabled() override;
+		void receiveShadow(bool) override;
+		bool receivingShadowEnabled() override;
 	private:
 		Engine::Math::Transform mTransform;
 		Math::Transform mInitialTransform;

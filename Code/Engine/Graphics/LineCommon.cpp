@@ -155,6 +155,62 @@ void Engine::Graphics::Line::setObjectController(IObjectController* i_ObjectCont
 }
 
 
+void Engine::Graphics::Line::castShadow(bool, Graphics::ShadowMethod)
+{
+	//To do Stub
+}
+
+bool Engine::Graphics::Line::castingShadowEnabled()
+{
+	//To do
+	return false;
+}
+
+void Engine::Graphics::Line::enablePhysics(bool)
+{
+	//To do
+}
+
+void Engine::Graphics::Line::receiveShadow(bool)
+{
+	//To do
+}
+
+bool Engine::Graphics::Line::receivingShadowEnabled()
+{
+	//To do
+	return false;
+}
+
+bool Engine::Graphics::Line::isCollidable()
+{
+	//to do 
+	return false;
+}
+
+bool Engine::Graphics::Line::isPhysicsEnabled()
+{
+	//To do 
+	return false;
+}
+
+
+void Engine::Graphics::Line::enableCollision(bool)
+{
+	//To do - stub
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

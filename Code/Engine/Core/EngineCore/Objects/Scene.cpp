@@ -456,6 +456,56 @@ void Engine::Scene::HandleMessage(Engine::utils::StringHash& i_message,
 }
 
 
+bool Engine::Scene::isCollidable()
+{
+	return false;
+}
+
+bool Engine::Scene::isPhysicsEnabled()
+{
+	return false;
+}
+
+void Engine::Scene::enableCollision(bool)
+{
+	//Stub
+}
+
+void Engine::Scene::enablePhysics(bool)
+{
+	//Stub
+}
+
+void Engine::Scene::receiveShadow(bool)
+{
+	//Stub
+}
+
+bool Engine::Scene::receivingShadowEnabled()
+{
+	return false;
+}
+
+
+void Engine::Scene::castShadow(bool, Graphics::ShadowMethod)
+{
+	//Stub
+}
+
+bool Engine::Scene::castingShadowEnabled()
+{
+	return false;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -8,8 +8,16 @@ namespace Engine
 {
 	namespace Math
 	{
-		float getPlaneDistanceFromOrigin(Vector3 iNormal, 
-			Vector3 iPointOnPlane);
+		class ParametricPlane
+		{
+		public:
+			Math::Vector3 getPlaneNormal() const;
+			float getDistanceFromOrigin() const;
+			ParametricPlane(Vector3 iNormal,Vector3 iPointOnPlane);
+		private:
+			Vector3 normal;
+			float distance;
+		};
 	}
 }
 

@@ -57,6 +57,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="OpenGL\Plane.gl.cpp" />
     <ClCompile Include="OpenGL\ReflectingObject.d3d.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -116,7 +117,6 @@
   <ItemGroup>
     <ClInclude Include="Light.h" />
     <ClInclude Include="Plane.h" />
-    <ClInclude Include="PlatformDependentTypedefs.h" />
     <ClInclude Include="ReflectingObject.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Graphics.h" />

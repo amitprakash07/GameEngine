@@ -197,6 +197,57 @@ void Engine::Graphics::SkyBox::HandleMessage(Engine::utils::StringHash& i_messag
 	}
 }
 
+void Engine::Graphics::SkyBox::enableCollision(bool)
+{
+	//Nothing to do	- stub
+}
+
+void Engine::Graphics::SkyBox::enablePhysics(bool)
+{
+	//Stub
+}
+
+bool Engine::Graphics::SkyBox::isCollidable()
+{
+	return false;
+}
+
+bool Engine::Graphics::SkyBox::isPhysicsEnabled()
+{
+	return false;
+}
+
+void Engine::Graphics::SkyBox::receiveShadow(bool)
+{
+	//Stub
+}
+
+bool Engine::Graphics::SkyBox::receivingShadowEnabled()
+{
+	return false;
+}
+
+void Engine::Graphics::SkyBox::castShadow(bool, Graphics::ShadowMethod)
+{
+	//Stub
+}
+
+bool Engine::Graphics::SkyBox::castingShadowEnabled()
+{
+	return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

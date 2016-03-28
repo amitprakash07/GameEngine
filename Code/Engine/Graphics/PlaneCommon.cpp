@@ -116,6 +116,44 @@ Engine::Math::Vector3 Engine::Graphics::Plane::getNormal()
 }
 
 
+void Engine::Graphics::Plane::enableCollision(bool)
+{
+	//To do
+}
+
+
+void Engine::Graphics::Plane::enablePhysics(bool)
+{
+	//To do
+}
+
+bool Engine::Graphics::Plane::isCollidable()
+{
+	//To do
+	return false;
+}
+
+
+bool Engine::Graphics::Plane::isPhysicsEnabled()
+{
+	//To do
+	return false;
+}
+
+void Engine::Graphics::Plane::receiveShadow(bool)
+{
+	//To Do 
+
+}
+
+
+
+
+
+
+
+
+
 
 
 

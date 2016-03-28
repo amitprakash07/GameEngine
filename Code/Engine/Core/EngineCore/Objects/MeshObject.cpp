@@ -304,3 +304,58 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 		}
 	}
 }
+
+
+void Engine::MeshObject::castShadow(bool, Graphics::ShadowMethod)
+{
+	//To do	
+}
+
+
+bool Engine::MeshObject::castingShadowEnabled()
+{
+	//to do 
+	return true;
+}
+
+void Engine::MeshObject::enablePhysics(bool)
+{
+	//To do
+}
+
+
+void Engine::MeshObject::receiveShadow(bool)
+{
+	//To do
+}
+
+bool Engine::MeshObject::receivingShadowEnabled()
+{
+	//to do
+	return false;
+}
+
+
+bool Engine::MeshObject::isCollidable()
+{
+	//To do
+	return false;
+}
+
+bool Engine::MeshObject::isPhysicsEnabled()
+{
+	//to do
+	return false;
+}
+
+void Engine::MeshObject::enableCollision(bool)
+{
+	//to do
+}
+
+
+
+
+
+
+

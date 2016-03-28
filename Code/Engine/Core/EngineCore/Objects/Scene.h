@@ -54,6 +54,14 @@ namespace Engine
 		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
 		void resetTransform() override {}
 		std::string getMaterialName() override { return "NO Material"; }
+		bool isCollidable() override;
+		bool isPhysicsEnabled() override;
+		void enableCollision(bool) override;
+		void enablePhysics(bool) override;
+		void castShadow(bool, Graphics::ShadowMethod) override;
+		bool castingShadowEnabled() override;
+		void receiveShadow(bool) override;
+		bool receivingShadowEnabled() override;
 		//IMesageHandler override function
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
 		~Scene();

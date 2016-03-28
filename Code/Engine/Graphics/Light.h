@@ -13,14 +13,17 @@ namespace Engine
 		class Light:public IMessageHandler, Engine::Object
 		{
 		public:
-			static SharedPointer<Light> addLight(std::string iLightName, LightType iLightType);
-			static SharedPointer<Light> getLight(std::string iLightName, LightType);
+			static SharedPointer<Light> createLight(std::string iLightName, LightType iLightType);			
 			void setIntensity(float iIntensity);
 			void setColor(Math::Vector3 iColor);
+			void setMeshName(std::string iMeshName, std::string iMaterialName);
+			void enableShadow(bool enableShadow);
+			bool isShadowCastingEnabled() const;
 
 			//Object functions
 			Math::Transform getTransform() override;
-			void setTransform(Engine::Math::Vector3 iPosition, Engine::Math::Quaternion iRotation) override;
+			void setTransform(Engine::Math::Vector3 iPosition, 
+				Engine::Math::Quaternion iRotation) override;
 			void resetTransform() override;
 			void draw(bool drawable) override;
 			bool isRenderable() const override;
@@ -28,14 +31,37 @@ namespace Engine
 			void updateObject() override;
 			void setObjectController(IObjectController* iObjectController) override;
 			void setScale(float iX, float iY, float iZ) override;
+			std::string getMaterialName() override;
+			bool isCollidable() override { return false; }
+			bool isPhysicsEnabled() override { return false; }
+			void enableCollision(bool) override {}
+			void enablePhysics(bool) override {}
+			void castShadow(bool, ShadowMethod) override{}
+			bool castingShadowEnabled() override { return false; }
+			void receiveShadow(bool) override {}
+			bool receivingShadowEnabled() override { return false; }
+
 
 			//IMessageHandler functions
 			void HandleMessage(
 				Engine::utils::StringHash &,
 				RTTI* i_MessageSender, void* i_pMessageData) override;
 			std::string getTypeInfo() const override;
+			bool isBothSameType(RTTI*, std::string) const override;
 
-			
+		private:
+			Light(std::string);
+			std::string lightName;
+			char* meshName;
+			char* mMaterialName;
+			Engine::Math::Transform mTransform;
+			Engine::Math::Transform mInitialTransform;
+			bool isInitialTransform;
+			bool castShadowFlag;		
+			float mIntensity;
+			Engine::Math::Vector3 mLightColor;
+			IObjectController * mObjectController;
+			LightType mLightType;
 		};
 	}
 }

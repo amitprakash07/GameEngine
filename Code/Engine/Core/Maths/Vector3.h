@@ -52,7 +52,7 @@ namespace Engine
 
 			void printVector() const;
 
-			Vector3( const float i_x = 0.0f, const float i_y = 0.0f, const float i_z = 0.0f );
+			Vector3( const float i_x = 0.0f, const float i_y = 0.0f, const float i_z = 0.0f );			
 
 			// Data
 			//=====

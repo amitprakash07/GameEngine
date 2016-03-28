@@ -121,6 +121,63 @@ void Engine::Graphics::ReflectingObject::updateObject()
 }
 
 
+void Engine::Graphics::ReflectingObject::castShadow(bool, Graphics::ShadowMethod)
+{
+	//To Do
+}
+
+bool Engine::Graphics::ReflectingObject::castingShadowEnabled()
+{
+	//To Do
+	return false;
+}
+
+
+bool Engine::Graphics::ReflectingObject::isPhysicsEnabled()
+{
+	//To do
+	return false;
+}
+
+void Engine::Graphics::ReflectingObject::receiveShadow(bool)
+{
+	//To do
+}
+
+bool Engine::Graphics::ReflectingObject::receivingShadowEnabled()
+{
+	//To do
+	return false;
+}
+
+void Engine::Graphics::ReflectingObject::enableCollision(bool)
+{
+	//To Do	
+}
+
+void Engine::Graphics::ReflectingObject::enablePhysics(bool)
+{
+	//to Do
+}
+
+
+bool Engine::Graphics::ReflectingObject::isCollidable()
+{
+	//to Do
+	return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

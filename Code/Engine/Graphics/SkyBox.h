@@ -3,13 +3,6 @@
 
 #include "../Core/EngineCore/Objects/Object.h"
 #include "../Core/Utilities/SharedPointer.h"
-
-#ifdef PLATFORM_OPEN_GL
-#include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
-#elif PLATFORM_D3D
-#include <d3d9.h>
-#endif
-
 #include "../../Engine/Core/Utilities/IMessageHandler.h"
 #include <map>
 
@@ -38,6 +31,17 @@ namespace Engine
 			void setObjectController(IObjectController *)override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 			std::string getMaterialName() override { return mMaterialName; }
+			bool isCollidable() override;
+			bool isPhysicsEnabled() override;
+			void enableCollision(bool) override;
+			void enablePhysics(bool) override;
+			void castShadow(bool, Graphics::ShadowMethod) override;
+			bool castingShadowEnabled() override;
+			void receiveShadow(bool) override;
+			bool receivingShadowEnabled() override;
+
+
+
 			void setCurrentSkyBox();
 			static bool isSkyBoxExist(std::string materialName);
 			void HandleMessage(

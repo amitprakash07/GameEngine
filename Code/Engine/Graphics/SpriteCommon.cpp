@@ -257,5 +257,58 @@ void Engine::Graphics::Sprite::updateObject()
 	}
 }
 
+void Engine::Graphics::Sprite::castShadow(bool, Graphics::ShadowMethod)
+{
+	
+}
+
+
+bool Engine::Graphics::Sprite::castingShadowEnabled()
+{
+	return false;
+}
+
+
+void Engine::Graphics::Sprite::enableCollision(bool)
+{
+	//Nothing to do
+}
+
+void Engine::Graphics::Sprite::enablePhysics(bool)
+{
+	//NMothing to do right now
+}
+
+
+bool Engine::Graphics::Sprite::isCollidable()
+{
+	return false;
+}
+
+
+bool Engine::Graphics::Sprite::isPhysicsEnabled()
+{
+	return false;
+}
+
+
+void Engine::Graphics::Sprite::receiveShadow(bool)
+{
+	//Nothinf to do right now
+}
+
+
+bool Engine::Graphics::Sprite::receivingShadowEnabled()
+{
+	return false;
+}
+
+
+
+
+
+
+
+
 
 

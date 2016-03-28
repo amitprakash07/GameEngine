@@ -176,6 +176,57 @@ void Engine::Camera::setObjectController(IObjectController* i_objectController)
 }
 
 
+bool Engine::Camera::isCollidable()
+{
+	return false;
+}
+
+bool Engine::Camera::isPhysicsEnabled()
+{
+	return false;
+}
+
+void Engine::Camera::enableCollision(bool)
+{
+	//Stub
+}
+
+void Engine::Camera::enablePhysics(bool)
+{
+	//Stub
+}
+
+void Engine::Camera::receiveShadow(bool)
+{
+	//Stub
+}
+
+void Engine::Camera::castShadow(bool, Graphics::ShadowMethod)
+{
+	//stub
+}
+
+bool Engine::Camera::castingShadowEnabled()
+{
+	return false;
+}
+
+bool Engine::Camera::receivingShadowEnabled()
+{
+	return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

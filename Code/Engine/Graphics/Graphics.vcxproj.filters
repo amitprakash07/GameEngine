@@ -81,6 +81,7 @@
     <ClCompile Include="OpenGL\Plane.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
@@ -98,6 +99,5 @@
     <ClInclude Include="ReflectingObject.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="PlatformDependentTypedefs.h" />
   </ItemGroup>
 </Project>

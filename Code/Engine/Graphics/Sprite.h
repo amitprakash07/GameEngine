@@ -46,6 +46,15 @@ namespace Engine
 			void setObjectController(IObjectController* objectController) override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 			std::string getMaterialName() override { return mMaterial; }
+			bool isCollidable() override;
+			bool isPhysicsEnabled() override;
+			void enableCollision(bool) override;
+			void enablePhysics(bool) override;
+			void castShadow(bool, Graphics::ShadowMethod) override;
+			bool castingShadowEnabled() override;
+			void receiveShadow(bool) override;
+			bool receivingShadowEnabled() override;
+
 			~Sprite();
 		private:
 			Sprite(std::string spriteName,

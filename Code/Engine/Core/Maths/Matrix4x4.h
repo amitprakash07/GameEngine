@@ -32,6 +32,8 @@ namespace Engine
 	}
 }
 
+#include "Math.h"
+
 // Class Declaration
 //==================
 
@@ -42,7 +44,6 @@ namespace Engine
 		class Matrix4x4
 		{			
 		public:
-
 			static Matrix4x4 CreateWorldToViewTransform(
 				const Quaternion& i_cameraOrientation, const Vector3& i_cameraPosition );
 			static Matrix4x4 CreateViewToScreenTransform(
@@ -53,6 +54,7 @@ namespace Engine
 				const float scaleY, const float scaleZ);
 			static Matrix4x4 CreateScaleMatrix(Vector3 iScaleFactor);
 			static Matrix4x4 CreateNormalMatrix(const Matrix4x4 modelMatrix);
+			static Matrix4x4 CreateShadowMatrix(const Math::Vector3 iLightPosition, const ParametricPlane);
 			Matrix4x4 operator*(double scalar)const;
 			Matrix4x4 operator*(Matrix4x4 i_rhs)const;
 			Vector3 mul(Vector3 vector, bool isVector = false)const;

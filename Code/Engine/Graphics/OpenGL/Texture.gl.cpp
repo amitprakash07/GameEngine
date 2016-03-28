@@ -23,23 +23,15 @@ Engine::Graphics::Texture::Texture(char* i_effectName,
 	if (i_textureName)
 	{
 		textureName = i_textureName;
-		/*size_t length = strlen(i_textureName);
-		textureName = new char[length];
-		memcpy(textureName, i_textureName, length);*/
+		
 	}
 	if (i_effectName)
 	{
-		effectName = i_effectName;
-		//size_t length = strlen(i_effectName);
-		//effectName = reinterpret_cast<char*>(malloc(length));// new char[length];
-		//memcpy(effectName, i_effectName, length);
+		effectName = i_effectName;		
 	}
 	if (i_samplerName)
 	{
-		samplerName = i_samplerName;
-		/*size_t length = strlen(i_samplerName);
-		samplerName = new char[length];
-		memcpy(samplerName, i_samplerName, length);*/
+		samplerName = i_samplerName;		
 	}
 	texture = -1;
 	textureSamplerID = -1;
@@ -413,7 +405,8 @@ OnExit:
 	return !wereThereErrors;
 }
 
-void Engine::Graphics::Texture::changeTextureFilter(MinFilter iMinFilter, MagFilter iMagFilter)
+void Engine::Graphics::Texture::changeTextureFilter(
+	MinFilter iMinFilter, MagFilter iMagFilter) const
 {
 	GLenum errorCode;	
 	switch(textureType)
