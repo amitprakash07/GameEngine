@@ -1,7 +1,7 @@
 return
 {
-	vertex = "ComputerGraphics/planeVertex.glsl",
-	fragment = "ComputerGraphics/planeFragment.glsl",
+	vertex = "ComputerGraphics/floorVertex.glsl",
+	fragment = "ComputerGraphics/floorFragment.glsl",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",

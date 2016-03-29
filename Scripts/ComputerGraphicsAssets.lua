@@ -111,7 +111,11 @@ return
 		{
 			src = "ComputerGraphics/planeEffect.lua",
 			target = "ComputerGraphics/planeEffect.effect"
-		},		
+		},	
+		{
+			src = "ComputerGraphics/floorEffect.lua",
+			target = "ComputerGraphics/floorEffect.effect"
+		},	
 		{
 			src = "ComputerGraphics/reflectiveSphereEffect.lua",
 			target = "ComputerGraphics/reflectiveSphereEffect.effect"
@@ -364,6 +368,27 @@ return
 
 		},
 	-- *******************************************************************	
+	{
+			src = "ComputerGraphics/floorVertex.glsl",
+			target = "ComputerGraphics/floorVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/floorFragment.glsl",
+			target = "ComputerGraphics/floorFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
 	
 	},
 
@@ -377,7 +402,11 @@ return
 		{
 			src = "ComputerGraphics/borgTexture.jpg",
 			target = "ComputerGraphics/borgTexture.jpg",
-		},				
+		},		
+		{
+			src = "ComputerGraphics/myFace.dds",
+			target = "ComputerGraphics/myFace.dds",
+		},		
 		{
 			src = "ComputerGraphics/marbleTexture.jpg",
 			target = "ComputerGraphics/marbleTexture.jpg",
