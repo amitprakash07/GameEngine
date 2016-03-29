@@ -24,7 +24,7 @@ namespace Engine
 			float getLightIntensity() const;
 			Engine::Math::Vector3 getLightColor()const;
 			void addLightToObjectEffect(std::string iEffectFileName, ShaderType iShaderType);
-			void setLightUniformsInShader();
+			void setLightUniformsInShader(){/*To do*/}
 
 			//Object functions
 			Math::Transform getTransform() override;
@@ -57,7 +57,7 @@ namespace Engine
 
 		private:
 			Light(std::string);
-			std::vector<UniformData> effectFileNames;
+			std::vector<EffectStruct> effectFileNames;
 			std::string lightName;
 			char* meshName;
 			char* mMaterialName;

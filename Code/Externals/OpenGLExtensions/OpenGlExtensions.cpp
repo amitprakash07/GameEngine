@@ -95,6 +95,13 @@ PFNGLFRAMEBUFFERRENDERBUFFERPROC glFramebufferRenderbuffer = nullptr;
 
 PFNGLGENERATEMIPMAPPROC glGenerateMipmap = nullptr;
 
+//Uniform Interface functions
+PFNGLGETUNIFORMBLOCKINDEXPROC glGetUniformBlockIndex = nullptr;
+PFNGLGETACTIVEUNIFORMBLOCKIVPROC glGetActiveUniformBlockiv = nullptr;
+PFNGLGETUNIFORMINDICESPROC glGetUniformIndices = nullptr;
+PFNGLGETACTIVEUNIFORMSIVPROC glGetActiveUniformsiv = nullptr;
+PFNGLBINDBUFFERBASEPROC glBindBufferBase = nullptr;
+
 // Initialization
 //---------------
 
@@ -193,6 +200,14 @@ bool OpenGlExtensions::Load(std::string* o_errorMessage)
 	LOADGLFUNCTION(glFramebufferRenderbuffer, PFNGLFRAMEBUFFERRENDERBUFFERPROC);
 
 	LOADGLFUNCTION(glGenerateMipmap, PFNGLGENERATEMIPMAPPROC);
+
+	//Uniform Interface Block functions
+	LOADGLFUNCTION(glGetUniformBlockIndex, PFNGLGETUNIFORMBLOCKINDEXPROC);
+	LOADGLFUNCTION(glGetActiveUniformBlockiv, PFNGLGETACTIVEUNIFORMBLOCKIVPROC);
+	LOADGLFUNCTION(glGetUniformIndices, PFNGLGETUNIFORMINDICESPROC);
+	LOADGLFUNCTION(glGetActiveUniformsiv, PFNGLGETACTIVEUNIFORMSIVPROC);
+	LOADGLFUNCTION(glBindBufferBase, PFNGLBINDBUFFERBASEPROC);
+
 
 #undef LOADGLFUNCTION
 

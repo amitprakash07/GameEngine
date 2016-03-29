@@ -208,7 +208,7 @@ bool Engine::Graphics::ReflectingObject::init()
 					glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 						0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, nullptr);
 					errorCode = glGetError();
-					WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to create immutable texture");
+					WindowsUtil::Assert(glGetError() == GL_NO_ERROR, "Unable to create mutable texture");
 				}
 			}
 			else

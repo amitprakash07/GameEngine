@@ -33,8 +33,11 @@ namespace Engine
 			std::string getUniformBlockName() const;
 			std::string getEffectFileName() const;
 			ShaderType getShaderType() const;
+			void writeDataToShader();
 		private:
-			UniformBlock(std::string, std::string,ShaderType);
+			UniformBlock(std::string iEffectFileName, 
+				std::string iUniformName,
+				ShaderType iShaderType);
 			void initialize(std::vector<std::string> iUniformNamesInBlock);
 			void populateInformationForUniformBlock();
 			static std::map<std::string,SharedPointer<UniformBlock>> mUniformBlockList;
@@ -43,6 +46,7 @@ namespace Engine
 			ShaderType mShaderType;
 			UniformHandle mHandle;
 			std::string mUniformName;
+			int uniformBlockSizeInShader;
 #ifdef PLATFORM_OPEN_GL
 			GLuint bufferObject;			
 #endif

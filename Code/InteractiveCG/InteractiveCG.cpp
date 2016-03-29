@@ -158,6 +158,18 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		cube->setScale(4,4,4);
 		scene->addObjectToScene(cube);
 
+		std::vector<std::string> lightUniforms;
+		lightUniforms.push_back("lightPosition");
+		lightUniforms.push_back("intensity");
+		lightUniforms.push_back("lightColor");
+
+		Engine::SharedPointer<Engine::Graphics::Effect> cubeEffect = cube->getEffect();
+
+		cubeEffect->addUniformBlock("lightUniforms",
+			Engine::Graphics::Fragment,
+			Engine::Graphics::Block,
+			lightUniforms);
+
 		//utah teapot
 		Engine::SharedPointer<Engine::MeshObject> utahTeapot =
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/utahTeapot.mesh",
@@ -188,18 +200,8 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		lightUniform.floatArray = mainLight->getTransform().getPosition().toFloatArray();
 		Engine::SharedPointer<Engine::Graphics::Effect> utahTeapotEffect = utahTeapot->getEffect();
 		
-		utahTeapotEffect->addUniform("lightPosition", Engine::Graphics::Vertex, Engine::Graphics::FloatArray,
-			3, lightUniform);
 		
-		Engine::Graphics::UniformValues lightIntensity;
-		lightIntensity.floatValue = mainLight->
-		utahTeapotEffect->addUniform("lightIntensity", Engine::Graphics::Vertex, Engine::Graphics::Float,
-			3, lightUniform);
-		utahTeapotEffect->addUniform("lightPosition", Engine::Graphics::Vertex, Engine::Graphics::FloatArray,
-			3, lightUniform);
-
-
-
+		
 		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
 				Engine::Math::Vector3(0.0f, 10.0f, 25.0f),

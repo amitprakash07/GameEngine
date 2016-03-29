@@ -97,9 +97,13 @@ extern PFNGLFRAMEBUFFERRENDERBUFFERPROC glFramebufferRenderbuffer;
 
 extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 
-extern PFNGLGETUNIFORMBLOCKINDEXPROC glGetUniformBlockIndex;
 
+//Uniform Interfaces 
+extern PFNGLGETUNIFORMBLOCKINDEXPROC glGetUniformBlockIndex;
 extern PFNGLGETACTIVEUNIFORMBLOCKIVPROC glGetActiveUniformBlockiv;
+extern PFNGLGETUNIFORMINDICESPROC glGetUniformIndices;
+extern PFNGLGETACTIVEUNIFORMSIVPROC glGetActiveUniformsiv;
+extern PFNGLBINDBUFFERBASEPROC glBindBufferBase;
 
 // Initialization
 //---------------

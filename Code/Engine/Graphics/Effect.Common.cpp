@@ -281,6 +281,18 @@ Engine::Graphics::Effect::addUniform(std::string iUniformName,
 	return newUniform;
 }
 
+
+Engine::SharedPointer<Engine::Graphics::UniformBlock> 
+Engine::Graphics::Effect::addUniformBlock(
+	std::string iUniformName, 
+	ShaderType iShaderType, 
+	UniformDataType iDataType, 
+	std::vector<std::string> i_uniformInBlockNames)
+{
+	return UniformBlock::addUniformBlock(effectName, iUniformName, iShaderType, i_uniformInBlockNames);
+}
+
+
 void Engine::Graphics::Effect::changeUniformData(
 	std::string iUniformName, 
 	ShaderType iShaderType, 

@@ -34,7 +34,7 @@ namespace Engine
 			MatrixArray = 7,
 			Vector = 8,
 			VectorArray = 9,
-			UniformBlock = 10,
+			Block = 10,
 			NotKnown = 11
 		};
 
@@ -89,7 +89,7 @@ namespace Engine
 			dmat4x2 = GL_DOUBLE_MAT4x2,
 			dmat4x3 = GL_DOUBLE_MAT4x3,
 
-			sampler1D = GL_SAMPLER_1D,
+			/*sampler1D = GL_SAMPLER_1D,
 			sampler2D = GL_SAMPLER_2D,
 			sampler3D = GL_SAMPLER_3D,
 			samplerCube = GL_SAMPLER_CUBE,
@@ -124,8 +124,8 @@ namespace Engine
 			usampler2DMS = GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE,
 			usampler2DMSArray = GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY,
 			usamplerBuffer = GL_UNSIGNED_INT_SAMPLER_BUFFER,
-			usampler2DRect = GL_UNSIGNED_INT_SAMPLER_2D_RECT,
-			glUnknown = GL_INVALID_INDEX
+			usampler2DRect = GL_UNSIGNED_INT_SAMPLER_2D_RECT,*/
+			glUnknown = -1
 #endif
 		};
 
@@ -171,7 +171,8 @@ namespace Engine
 			double dmat4x2[8];
 			double dmat4x3[12];
 
-			DataOfUniformInUniformBlock();
+			DataOfUniformInUniformBlock()
+			{}
 
 		};
 
@@ -300,6 +301,132 @@ namespace Engine
 
 			}
 			return typeSize;
+		}
+
+		inline DataTypeOfUniformInIniformBlockData getGLDataType(int iType)
+		{
+			DataTypeOfUniformInIniformBlockData type = DataTypeOfUniformInIniformBlockData::glUnknown;
+			switch (iType)
+			{
+			case GL_FLOAT:  
+				type = DataTypeOfUniformInIniformBlockData::glfloat;
+				break;
+			case GL_FLOAT_VEC2: 
+				type = DataTypeOfUniformInIniformBlockData::vec2;
+				break;
+			case GL_FLOAT_VEC3: 
+				type = DataTypeOfUniformInIniformBlockData::vec3;
+				break;
+			case GL_FLOAT_VEC4:  
+				type = DataTypeOfUniformInIniformBlockData::vec4;
+				break;
+			case GL_DOUBLE:  
+				type = DataTypeOfUniformInIniformBlockData::glDouble;
+				break;
+			case GL_DOUBLE_VEC2:  
+				type = DataTypeOfUniformInIniformBlockData::dvec2;
+				break;
+			case GL_DOUBLE_VEC3: 
+				type = DataTypeOfUniformInIniformBlockData::dvec3;
+				break;
+			case GL_DOUBLE_VEC4:  
+				type = DataTypeOfUniformInIniformBlockData::dvec4;
+				break;
+			case GL_INT:  
+				type = DataTypeOfUniformInIniformBlockData::glInt;
+				break;
+			case GL_INT_VEC2: 
+				type = DataTypeOfUniformInIniformBlockData::ivec2;
+				break;
+			case GL_INT_VEC3:  
+				type = DataTypeOfUniformInIniformBlockData::ivec3;
+				break;
+			case GL_INT_VEC4:  
+				type = DataTypeOfUniformInIniformBlockData::ivec4;
+				break;
+			case GL_UNSIGNED_INT:  
+				type = DataTypeOfUniformInIniformBlockData::unsignedint;
+				break;
+			case GL_UNSIGNED_INT_VEC2: 
+				type = DataTypeOfUniformInIniformBlockData::uvec2;
+				break;
+			case GL_UNSIGNED_INT_VEC3: 
+				type = DataTypeOfUniformInIniformBlockData::uvec3;
+				break;
+			case GL_UNSIGNED_INT_VEC4:  
+				type = DataTypeOfUniformInIniformBlockData::uvec4;
+				break;
+			case GL_BOOL:  
+				type = DataTypeOfUniformInIniformBlockData::glBool;
+				break;
+			case GL_BOOL_VEC2:  
+				type = DataTypeOfUniformInIniformBlockData::bvec2;
+				break;
+			case GL_BOOL_VEC3:  
+				type = DataTypeOfUniformInIniformBlockData::bvec3;
+				break;
+			case GL_BOOL_VEC4:  
+				type = DataTypeOfUniformInIniformBlockData::bvec4;
+				break;
+			case GL_FLOAT_MAT2:  
+				type = DataTypeOfUniformInIniformBlockData::mat2;
+				break;
+			case GL_FLOAT_MAT3:  
+				type = DataTypeOfUniformInIniformBlockData::mat3;
+				break;
+			case GL_FLOAT_MAT4:  
+				type = DataTypeOfUniformInIniformBlockData::mat4;
+				break;
+			case GL_FLOAT_MAT2x3: 
+				type = DataTypeOfUniformInIniformBlockData::mat2x3;
+				break;
+			case GL_FLOAT_MAT2x4: 
+				type = DataTypeOfUniformInIniformBlockData::mat2x4;
+				break;
+			case GL_FLOAT_MAT3x2: 
+				type = DataTypeOfUniformInIniformBlockData::mat3x2;
+				break;
+			case GL_FLOAT_MAT3x4: 
+				type = DataTypeOfUniformInIniformBlockData::mat3x4;
+				break;
+			case GL_FLOAT_MAT4x2:  
+				type = DataTypeOfUniformInIniformBlockData::mat4x2;
+				break;
+			case GL_FLOAT_MAT4x3: 
+				type = DataTypeOfUniformInIniformBlockData::mat4x3;
+				break;
+			case GL_DOUBLE_MAT2:  
+				type = DataTypeOfUniformInIniformBlockData::dmat2;
+				break;
+			case GL_DOUBLE_MAT3: 
+				type = DataTypeOfUniformInIniformBlockData::dmat3;
+				break;
+			case GL_DOUBLE_MAT4:  
+				type = DataTypeOfUniformInIniformBlockData::dmat4;
+				break;
+			case GL_DOUBLE_MAT2x3: 
+				type = DataTypeOfUniformInIniformBlockData::dmat2x3;
+				break;
+			case GL_DOUBLE_MAT2x4:  
+				type = DataTypeOfUniformInIniformBlockData::dmat2x4;
+				break;
+			case GL_DOUBLE_MAT3x2:  
+				type = DataTypeOfUniformInIniformBlockData::dmat3x2;
+				break;
+			case GL_DOUBLE_MAT3x4: 
+				type = DataTypeOfUniformInIniformBlockData::dmat3x4;
+				break;
+			case GL_DOUBLE_MAT4x2:  
+				type = DataTypeOfUniformInIniformBlockData::dmat4x2;
+				break;
+			case GL_DOUBLE_MAT4x3:  
+				type = DataTypeOfUniformInIniformBlockData::dmat4x3;
+				break;		
+			default:
+				break;
+
+			}
+			return type;
 		}
 
 

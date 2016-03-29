@@ -11,6 +11,7 @@
 #include <map>
 #include "../Core/Utilities/SharedPointer.h"
 #include "Uniform.h"
+#include "UniformBlock.h"
 
 
 namespace Engine
@@ -37,7 +38,10 @@ namespace Engine
 				ShaderType iShaderType, 
 				UniformDataType iDataType, 
 				uint8_t iDataCount, UniformValues& iData);
-			
+			SharedPointer<UniformBlock> addUniformBlock(std::string iUniformName,
+				ShaderType iShaderType,
+				UniformDataType iDataType,
+				std::vector<std::string> i_uniformInBlockNames);
 			void changeUniformData(std::string iUniformName,
 				ShaderType iShaderType, UniformValues& iNewValues);
 			const ConstantTable getConstantTable(ShaderType iType) const;

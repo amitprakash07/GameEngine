@@ -1,6 +1,10 @@
 #include "UniformBlock.h"
 
 
+std::map<std::string, Engine::SharedPointer<Engine::Graphics::UniformBlock>>
+Engine::Graphics::UniformBlock::mUniformBlockList;
+
+
 Engine::SharedPointer<class Engine::Graphics::UniformBlock> 
 Engine::Graphics::UniformBlock::addUniformBlock(
 	std::string effectFileName, 
@@ -11,12 +15,8 @@ Engine::Graphics::UniformBlock::addUniformBlock(
 	if (!isExist(effectFileName, iUniformName, iShaderType))
 	{
 		SharedPointer<UniformBlock> tempUniform =
-			SharedPointer<UniformBlock>(new UniformBlock(), "Engine::Graphics::UniformBlock");
-		char * tempUniformName = new char[iUniformName.size()];
-		strcpy(tempUniformName, iUniformName.c_str());
-		tempUniform->setUniformBlockName(tempUniformName);
-		tempUniform->effectFileName = effectFileName;
-		tempUniform->setShaderType(iShaderType);
+			SharedPointer<UniformBlock>(new UniformBlock(effectFileName,
+				iUniformName, iShaderType), "Engine::Graphics::UniformBlock");
 		tempUniform->initialize(iUniforms);
 		tempUniform->populateInformationForUniformBlock();
 		mUniformBlockList[tempUniform->prefixUniformName()] = tempUniform;		
@@ -142,7 +142,7 @@ Engine::Graphics::UniformBlock::getUniformBlockData(
 std::vector<std::string> Engine::Graphics::UniformBlock::getUniformNames() const
 {
 	std::vector<std::string> tempNames;
-	for (int i = 0; i < mUniformsInBLock.size(); i+)
+	for (int i = 0; i < mUniformsInBLock.size(); i++)
 	{
 		tempNames.push_back(mUniformsInBLock[i].uniformName);
 	}
@@ -153,9 +153,11 @@ std::vector<std::string> Engine::Graphics::UniformBlock::getUniformNames() const
 void Engine::Graphics::UniformBlock::initialize(
 	std::vector<std::string> iUniformNamesInBlock)
 {
+	UniformBlockStruct temp;
 	for (int i = 0; i < iUniformNamesInBlock.size(); i++)
 	{
-		mUniformsInBLock[i].uniformName = iUniformNamesInBlock[i];
+		temp.uniformName = iUniformNamesInBlock[i];
+		mUniformsInBLock.push_back(temp);
 	}
 }
 
