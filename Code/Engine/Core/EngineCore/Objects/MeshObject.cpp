@@ -288,6 +288,7 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 			
 
 			Engine::Graphics::Uniform::setAllUniformToShaderObjects(effectFile);
+			Engine::Graphics::UniformBlock::setAllUniformBlockForTheEffectInShader(effectFile);
 
 			getMaterial()->setMaterialUniformParameters();
 			getMaterial()->setTextureUniform();

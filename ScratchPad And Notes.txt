@@ -1,0 +1,39 @@
+			floatVal ;
+			vec2;
+			vec3;
+			vec4;
+			
+			iVal;
+			iVec2;
+			iVec3;
+			iVec4;
+
+			dVal;
+			dVal2;
+			dVal3;
+			dVal4;
+
+			uiVal;
+			uiVal2;
+			uiVal3;
+			uiVal4;
+
+			boolVal;
+			boolVal2;
+			boolVal3;
+			boolVAl4;
+
+			mat2;
+			mat3;
+			mat4;
+
+			dmat2;
+			dmat3;
+			dmat4;
+
+			dmat2x3;
+			dmat2x4;
+			dmat3x2;
+			dmat3x4;
+			dmat4x2;
+			dmat4x3;

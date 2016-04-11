@@ -4,7 +4,7 @@ return
 	map =
 	{
 		{
-			path = "ComputerGraphics/defaultTexture.png",
+			path = "ComputerGraphics/brickWall_3.dds",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",
@@ -16,7 +16,7 @@ return
 			name = "g_PixelColorModifier",
 			shader = "fragment",
 			valtype = "Float",
-			value = {0.119,0.259,0.358},
+			value = {1.0,1.0,1.0},
 		}
 	},		
 }

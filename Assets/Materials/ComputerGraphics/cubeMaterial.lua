@@ -4,8 +4,8 @@ return
 	map =
 	{
 		{
-		--	path = "ComputerGraphics/borgTexture.jpg",
-			path = "ComputerGraphics/myFace.dds",
+			path = "ComputerGraphics/borgTexture.jpg",
+		--	path = "ComputerGraphics/myFace.dds",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",

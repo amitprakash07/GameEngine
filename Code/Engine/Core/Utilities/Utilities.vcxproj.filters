@@ -11,6 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedPointer.inl" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HashedString.cpp" />

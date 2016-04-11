@@ -22,6 +22,7 @@ void Engine::Graphics::UniformBlock::populateInformationForUniformBlock()
 	ConstantTable programId =
 		Engine::Graphics::Effect::getEffect(effectFileName)->getConstantTable(mShaderType);
 	glGenBuffers(1, &bufferObject);
+	glBindBuffer(GL_UNIFORM_BUFFER, bufferObject);
 	GLenum errorCode = glGetError();
 	
 	mHandle = glGetUniformBlockIndex(programId, mUniformName.c_str());
@@ -39,7 +40,7 @@ void Engine::Graphics::UniformBlock::populateInformationForUniformBlock()
 	GLint * type = new GLint[NumUniforms];
 	GLchar ** names = nullptr;
 	names = new char*[NumUniforms];
-	for (int i = 0; i < mUniformsInBLock.size(); i++)
+	for (unsigned int i = 0; i < mUniformsInBLock.size(); i++)
 	{
 		int uniformNameLength = mUniformsInBLock[i].uniformName.size();
 		names[i] = new char[uniformNameLength];
@@ -64,24 +65,31 @@ void Engine::Graphics::UniformBlock::populateInformationForUniformBlock()
 	{
 		mUniformsInBLock[i].index = indices[i];
 		mUniformsInBLock[i].offset = offset[i];
-		mUniformsInBLock[i].type = Graphics::getGLDataType(type[i]);
-		mUniformsInBLock[i].size = Graphics::getGLDataTypeSize(mUniformsInBLock[i].type);
+		mUniformsInBLock[i].type = Graphics::getDataType(type[i]);
+		mUniformsInBLock[i].size = Graphics::getDataTypeSize(mUniformsInBLock[i].type);
 	}
 }
 
 
 void Engine::Graphics::UniformBlock::writeDataToShader()
 {
-	glBindBuffer(GL_UNIFORM_BLOCK, bufferObject);
+	glBindBuffer(GL_UNIFORM_BUFFER, bufferObject);
 	GLenum errorCode;
 	errorCode = glGetError();
 	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to bind the uniform buffer");
 	GLvoid* buffer = malloc(uniformBlockSizeInShader);
-	
-	for (int i = 0; i < mUniformsInBLock.size(); i++)
+
+	for (unsigned int i = 0; i < mUniformsInBLock.size(); i++)
 	{
 		memcpy(static_cast<char*>(buffer) + mUniformsInBLock[i].offset, &mUniformsInBLock[i].data, mUniformsInBLock[i].size);
 	}
+
+	glBufferData(GL_UNIFORM_BUFFER, uniformBlockSizeInShader, buffer, GL_DYNAMIC_DRAW);
+	errorCode = glGetError();
+	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to write data to shader");
+	glBindBufferBase(GL_UNIFORM_BUFFER, mHandle, bufferObject);
+	errorCode = glGetError();
+	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to Bind the uniform buffer base");
 }
 
 

@@ -167,6 +167,7 @@ void Engine::Graphics::Plane::draw(bool drawDebugObject)
 			}
 
 			Engine::Graphics::Uniform::setAllUniformToShaderObjects(tempMaterial->getEffectName());
+			UniformBlock::setAllUniformBlockForTheEffectInShader(tempMaterial->getEffectName());
 			tempMaterial->setMaterialUniformParameters();
 			tempMaterial->setTextureUniform();
 			glBindVertexArray(s_vertexArrayID);

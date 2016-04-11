@@ -172,6 +172,14 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 
 void Engine::Scene::drawScene(bool withDebug)
 {
+	if(mLightList.size()>0)
+	{
+		for (std::vector<SharedPointer<Graphics::Light>>::iterator iL = mLightList.begin();
+		iL!=mLightList.end(); ++iL)
+		{
+			(*iL)->setLightParameterValueToShaderObject();
+		}
+	}
 	//Generate dynamic Cube Maps
 	if(mReflectingObjectList.size()>0)
 	{

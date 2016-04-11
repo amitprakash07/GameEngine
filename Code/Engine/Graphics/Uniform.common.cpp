@@ -260,13 +260,6 @@ uint8_t Engine::Graphics::Uniform::getValueCount() const
 }
 
 
-void Engine::Graphics::Uniform::setUniformValueToShaderObject(
-	std::string effect, 
-	std::string uniformName,
-	ShaderType iShaderType)
-{
-	
-}
 
 
 

@@ -39,19 +39,20 @@ namespace Engine
 		};
 
 
-		enum class DataTypeOfUniformInIniformBlockData
+		enum class DataTypes
 		{
+			glUnknown = -1,
 #ifdef  PLATFORM_OPEN_GL
 			glfloat = GL_FLOAT,
 			vec2 = GL_FLOAT_VEC2,
 			vec3 = GL_FLOAT_VEC3,
 			vec4 = GL_FLOAT_VEC4,
-			
+
 			glDouble = GL_DOUBLE,
 			dvec2 = GL_DOUBLE_VEC2,
 			dvec3 = GL_DOUBLE_VEC3,
 			dvec4 = GL_DOUBLE_VEC4,
-			
+
 			glInt = GL_INT,
 			ivec2 = GL_INT_VEC2,
 			ivec3 = GL_INT_VEC3,
@@ -89,7 +90,7 @@ namespace Engine
 			dmat4x2 = GL_DOUBLE_MAT4x2,
 			dmat4x3 = GL_DOUBLE_MAT4x3,
 
-			/*sampler1D = GL_SAMPLER_1D,
+			sampler1D = GL_SAMPLER_1D,
 			sampler2D = GL_SAMPLER_2D,
 			sampler3D = GL_SAMPLER_3D,
 			samplerCube = GL_SAMPLER_CUBE,
@@ -124,15 +125,20 @@ namespace Engine
 			usampler2DMS = GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE,
 			usampler2DMSArray = GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY,
 			usamplerBuffer = GL_UNSIGNED_INT_SAMPLER_BUFFER,
-			usampler2DRect = GL_UNSIGNED_INT_SAMPLER_2D_RECT,*/
-			glUnknown = -1
-#endif
+			usampler2DRect = GL_UNSIGNED_INT_SAMPLER_2D_RECT,			
+			CHAR = 36310,
+			STRING = 36311,
+#endif			
 		};
 
-		union DataOfUniformInUniformBlock
+		size_t getDataTypeSize(DataTypes iType);
+
+		DataTypes getDataType(int iType);
+
+		union Data
 		{
-			float floatVal = 0;
-			float vec2[2];
+			float floatVal;
+			float vec2[2] ;
 			float vec3[3];
 			float vec4[4];
 			
@@ -154,11 +160,18 @@ namespace Engine
 			bool boolVal;
 			bool boolVal2[2];
 			bool boolVal3[3];
-			bool boolVAl4[4];
+			bool boolVal4[4];
 
 			float mat2[4];
 			float mat3[9];
 			float mat4[16];
+
+			float mat2x3[6];
+			float mat2x4[8];
+			float mat3x2[6];
+			float mat3x4[12];
+			float mat4x2[8];
+			float mat4x3[12];
 
 			double dmat2[4];
 			double dmat3[9];
@@ -171,264 +184,12 @@ namespace Engine
 			double dmat4x2[8];
 			double dmat4x3[12];
 
-			DataOfUniformInUniformBlock()
-			{}
-
+			Data();	
+			~Data(){}
+			//Data(const Data & iData);
+			//Data& operator=(Data iData);
+			void assignData(DataTypes iDataType, Data iData);
 		};
-
-
-		inline size_t getGLDataTypeSize(DataTypeOfUniformInIniformBlockData iType)
-		{
-			size_t typeSize = 0;
-			switch(iType)
-			{
-			case DataTypeOfUniformInIniformBlockData::glfloat:  
-				typeSize = sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::vec2:  
-				typeSize = 2 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::vec3:  
-				typeSize = 3 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::vec4:  
-				typeSize = 4 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::glDouble:  
-				typeSize = sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dvec2: 
-				typeSize = 2 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dvec3:  
-				typeSize = 3 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dvec4:  
-				typeSize =  4 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::glInt:  
-				typeSize = sizeof(int);
-				break;
-			case DataTypeOfUniformInIniformBlockData::ivec2:  
-				typeSize = 2 * sizeof(int);
-				break;
-			case DataTypeOfUniformInIniformBlockData::ivec3:  
-				typeSize = 3 * sizeof(int);
-				break;
-			case DataTypeOfUniformInIniformBlockData::ivec4: 
-				typeSize = 4 * sizeof(int);
-				break;
-			case DataTypeOfUniformInIniformBlockData::unsignedint:  
-				typeSize = sizeof(unsigned int);
-				break;
-			case DataTypeOfUniformInIniformBlockData::uvec2:  
-				typeSize = 2* sizeof(unsigned int);
-				break;
-			case DataTypeOfUniformInIniformBlockData::uvec3:  
-				typeSize = 3 * sizeof(unsigned int);
-				break;
-			case DataTypeOfUniformInIniformBlockData::uvec4: 
-				typeSize = 4 * sizeof(unsigned int);
-				break;
-			case DataTypeOfUniformInIniformBlockData::glBool: 
-				typeSize = sizeof(bool);
-				break;
-			case DataTypeOfUniformInIniformBlockData::bvec2: 
-				typeSize = 2 * sizeof(bool);
-				break;
-			case DataTypeOfUniformInIniformBlockData::bvec3:  
-				typeSize = 3 * sizeof(bool);
-				break;
-			case DataTypeOfUniformInIniformBlockData::bvec4: 
-				typeSize = 4 * sizeof(bool);
-				break;
-			case DataTypeOfUniformInIniformBlockData::mat2: 
-				typeSize = 4 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::mat3:  
-				typeSize = 9 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::mat4: 
-				typeSize = 16 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::mat2x3:  
-				typeSize = 6 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::mat2x4: 
-				typeSize = 8 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::mat3x2: 
-				typeSize = 6 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::mat3x4:  
-				typeSize = 12 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::mat4x2:  
-				typeSize = 8 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::mat4x3:  
-				typeSize = 12 * sizeof(float);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dmat2: 
-				typeSize = 4 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dmat3: 
-				typeSize = 9 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dmat4:  
-				typeSize = 16 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dmat2x3: 
-				typeSize = 6 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dmat2x4:  
-				typeSize = 8 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dmat3x2:  
-				typeSize = 6 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dmat3x4: 
-				typeSize = 12 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dmat4x2: 
-				typeSize = 8 * sizeof(double);
-				break;
-			case DataTypeOfUniformInIniformBlockData::dmat4x3: 
-				typeSize = 12 * sizeof(double);
-				break;
-			default:
-				break;
-
-			}
-			return typeSize;
-		}
-
-		inline DataTypeOfUniformInIniformBlockData getGLDataType(int iType)
-		{
-			DataTypeOfUniformInIniformBlockData type = DataTypeOfUniformInIniformBlockData::glUnknown;
-			switch (iType)
-			{
-			case GL_FLOAT:  
-				type = DataTypeOfUniformInIniformBlockData::glfloat;
-				break;
-			case GL_FLOAT_VEC2: 
-				type = DataTypeOfUniformInIniformBlockData::vec2;
-				break;
-			case GL_FLOAT_VEC3: 
-				type = DataTypeOfUniformInIniformBlockData::vec3;
-				break;
-			case GL_FLOAT_VEC4:  
-				type = DataTypeOfUniformInIniformBlockData::vec4;
-				break;
-			case GL_DOUBLE:  
-				type = DataTypeOfUniformInIniformBlockData::glDouble;
-				break;
-			case GL_DOUBLE_VEC2:  
-				type = DataTypeOfUniformInIniformBlockData::dvec2;
-				break;
-			case GL_DOUBLE_VEC3: 
-				type = DataTypeOfUniformInIniformBlockData::dvec3;
-				break;
-			case GL_DOUBLE_VEC4:  
-				type = DataTypeOfUniformInIniformBlockData::dvec4;
-				break;
-			case GL_INT:  
-				type = DataTypeOfUniformInIniformBlockData::glInt;
-				break;
-			case GL_INT_VEC2: 
-				type = DataTypeOfUniformInIniformBlockData::ivec2;
-				break;
-			case GL_INT_VEC3:  
-				type = DataTypeOfUniformInIniformBlockData::ivec3;
-				break;
-			case GL_INT_VEC4:  
-				type = DataTypeOfUniformInIniformBlockData::ivec4;
-				break;
-			case GL_UNSIGNED_INT:  
-				type = DataTypeOfUniformInIniformBlockData::unsignedint;
-				break;
-			case GL_UNSIGNED_INT_VEC2: 
-				type = DataTypeOfUniformInIniformBlockData::uvec2;
-				break;
-			case GL_UNSIGNED_INT_VEC3: 
-				type = DataTypeOfUniformInIniformBlockData::uvec3;
-				break;
-			case GL_UNSIGNED_INT_VEC4:  
-				type = DataTypeOfUniformInIniformBlockData::uvec4;
-				break;
-			case GL_BOOL:  
-				type = DataTypeOfUniformInIniformBlockData::glBool;
-				break;
-			case GL_BOOL_VEC2:  
-				type = DataTypeOfUniformInIniformBlockData::bvec2;
-				break;
-			case GL_BOOL_VEC3:  
-				type = DataTypeOfUniformInIniformBlockData::bvec3;
-				break;
-			case GL_BOOL_VEC4:  
-				type = DataTypeOfUniformInIniformBlockData::bvec4;
-				break;
-			case GL_FLOAT_MAT2:  
-				type = DataTypeOfUniformInIniformBlockData::mat2;
-				break;
-			case GL_FLOAT_MAT3:  
-				type = DataTypeOfUniformInIniformBlockData::mat3;
-				break;
-			case GL_FLOAT_MAT4:  
-				type = DataTypeOfUniformInIniformBlockData::mat4;
-				break;
-			case GL_FLOAT_MAT2x3: 
-				type = DataTypeOfUniformInIniformBlockData::mat2x3;
-				break;
-			case GL_FLOAT_MAT2x4: 
-				type = DataTypeOfUniformInIniformBlockData::mat2x4;
-				break;
-			case GL_FLOAT_MAT3x2: 
-				type = DataTypeOfUniformInIniformBlockData::mat3x2;
-				break;
-			case GL_FLOAT_MAT3x4: 
-				type = DataTypeOfUniformInIniformBlockData::mat3x4;
-				break;
-			case GL_FLOAT_MAT4x2:  
-				type = DataTypeOfUniformInIniformBlockData::mat4x2;
-				break;
-			case GL_FLOAT_MAT4x3: 
-				type = DataTypeOfUniformInIniformBlockData::mat4x3;
-				break;
-			case GL_DOUBLE_MAT2:  
-				type = DataTypeOfUniformInIniformBlockData::dmat2;
-				break;
-			case GL_DOUBLE_MAT3: 
-				type = DataTypeOfUniformInIniformBlockData::dmat3;
-				break;
-			case GL_DOUBLE_MAT4:  
-				type = DataTypeOfUniformInIniformBlockData::dmat4;
-				break;
-			case GL_DOUBLE_MAT2x3: 
-				type = DataTypeOfUniformInIniformBlockData::dmat2x3;
-				break;
-			case GL_DOUBLE_MAT2x4:  
-				type = DataTypeOfUniformInIniformBlockData::dmat2x4;
-				break;
-			case GL_DOUBLE_MAT3x2:  
-				type = DataTypeOfUniformInIniformBlockData::dmat3x2;
-				break;
-			case GL_DOUBLE_MAT3x4: 
-				type = DataTypeOfUniformInIniformBlockData::dmat3x4;
-				break;
-			case GL_DOUBLE_MAT4x2:  
-				type = DataTypeOfUniformInIniformBlockData::dmat4x2;
-				break;
-			case GL_DOUBLE_MAT4x3:  
-				type = DataTypeOfUniformInIniformBlockData::dmat4x3;
-				break;		
-			default:
-				break;
-
-			}
-			return type;
-		}
-
 
 		enum ShaderType :uint8_t
 		{
@@ -451,7 +212,6 @@ namespace Engine
 			shadowProjectionMatrix = 6
 		};
 
-
 		struct MatrixStruct
 		{
 			Math::Matrix4x4 matrix;
@@ -473,7 +233,12 @@ namespace Engine
 			UniformValues();		
 		};
 
-
+		struct Parameter
+		{
+			std::string mParameterName;
+			DataTypes mDataType;
+			Data mParameterData;
+		};
 
 		struct UniformData
 		{
@@ -483,8 +248,7 @@ namespace Engine
 			uint8_t valCount;
 			ShaderType shaderType;
 			UniformValues value;
-			UniformData();			
-			
+			UniformData();					
 		};
 
 
@@ -494,16 +258,16 @@ namespace Engine
 			GLuint index;
 			GLint size;
 			GLint offset;
-			DataTypeOfUniformInIniformBlockData type;
-			DataOfUniformInUniformBlock data;
+			DataTypes type;
+			Data data;
 			
 			UniformBlockStruct()
 			{
 				index = 0;
 				size = -1;
 				offset = -1;
-				type = DataTypeOfUniformInIniformBlockData::glUnknown;
-				data = DataOfUniformInUniformBlock();
+				type = DataTypes::glUnknown;
+				data = Data();
 			}			
 		};
 
@@ -551,13 +315,8 @@ namespace Engine
 		{
 			std::string effectName;
 			ShaderType shaderType;
+			bool uniformBlockSet;
 		};
-
-
-
-		
-
-
 	}
 }
 

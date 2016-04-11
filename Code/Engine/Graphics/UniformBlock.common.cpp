@@ -1,4 +1,5 @@
 #include "UniformBlock.h"
+#include "../Windows/WindowsFunctions.h"
 
 
 std::map<std::string, Engine::SharedPointer<Engine::Graphics::UniformBlock>>
@@ -139,6 +140,22 @@ Engine::Graphics::UniformBlock::getUniformBlockData(
 }
 
 
+void Engine::Graphics::UniformBlock::setUniformBlockData(std::string iUniformName, 
+	DataTypes iUniformDataType, 
+	Data iUniformBlockData){
+	for (std::vector<UniformBlockStruct>::iterator i = mUniformsInBLock.begin();
+	i!= mUniformsInBLock.end(); ++i)
+	{
+		if(i->uniformName == iUniformName
+			&& WindowsUtil::Assert(i->type == iUniformDataType, 
+				"Data Type Mismatch in Parameter and Shader"))
+		{
+			i->data.assignData(iUniformDataType,iUniformBlockData);
+		}
+	}
+}
+
+
 std::vector<std::string> Engine::Graphics::UniformBlock::getUniformNames() const
 {
 	std::vector<std::string> tempNames;
@@ -160,6 +177,20 @@ void Engine::Graphics::UniformBlock::initialize(
 		mUniformsInBLock.push_back(temp);
 	}
 }
+
+
+void Engine::Graphics::UniformBlock::setAllUniformBlockForTheEffectInShader(std::string iEffectFileName)
+{
+	for (std::map<std::string, SharedPointer<UniformBlock>>::iterator i = mUniformBlockList.begin();
+	i!= mUniformBlockList.end(); ++i)
+	{
+		if(i->second->effectFileName == iEffectFileName)
+		{
+			i->second->writeDataToShader();
+		}
+	}
+}
+
 
 
 

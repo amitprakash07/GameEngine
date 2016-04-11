@@ -49,7 +49,7 @@ namespace Engine
 				GL_CCW
 #endif
 				);
-
+			static void graphicsTest();
 
 #ifdef PLATFORM_D3D
 			static IDirect3DDevice9* getDevice();

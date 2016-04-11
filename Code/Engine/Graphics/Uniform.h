@@ -22,12 +22,7 @@ namespace Engine
 			static bool isUnformExist(
 				std::string i_UniformNamae, std::string effectName,
 				ShaderType iShaderType);			
-			static void setAllUniformToShaderObjects(std::string effectName);
-			static void setUniformValueToShaderObject(
-				std::string effect, std::string uniformName,
-				ShaderType iShaderType);
-			static SharedPointer<Uniform> addUniformBlock(std::string iUniformName,
-				std::vector<UniformData>);
+			static void setAllUniformToShaderObjects(std::string effectName);						
 			void setUniformValue(UniformValues& iinitialValue);			
 			void setValType(UniformDataType iDataType);
 			void setMatrixType(Transform_Matrix_Type iMatrixType);

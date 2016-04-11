@@ -2,6 +2,8 @@
 #include "../Core/Utilities/additionaltypes.h"
 #include "../Core/Utilities/IObjectController.h"
 #include "Mesh.h"
+#include "UniformBlock.h"
+#include "Effect.h"
 
 
 Engine::Graphics::Light::Light(std::string iLightName)
@@ -18,6 +20,8 @@ Engine::Graphics::Light::Light(std::string iLightName)
 	mObjectController = nullptr;
 	mLightType = LightType::Directional;
 	effectFileNames.reserve(20);
+	lightParameterInitialized = false;
+	lightEnabled = true;
 }
 
 void Engine::Graphics::Light::updateObject()
@@ -180,14 +184,111 @@ float Engine::Graphics::Light::getLightIntensity() const
 }
 
 
-void Engine::Graphics::Light::addLightToObjectEffect
+void Engine::Graphics::Light::addLightToEffect
 (std::string iEffectFileName, ShaderType iShaderType)
 {
-	EffectStruct tempEffectStruct;
-	tempEffectStruct.effectName = iEffectFileName;
-	tempEffectStruct.shaderType = iShaderType;
-	effectFileNames.push_back(tempEffectStruct);
+	bool isEffectAlreadyAdded = false;
+	for (std::vector<EffectStruct>::iterator i = effectFileNames.begin();
+	i!= effectFileNames.end(); ++i)
+	{
+		if(i->effectName == iEffectFileName && i->shaderType == iShaderType)
+		{
+			isEffectAlreadyAdded = true;
+			break;
+		}
+	}	
+	if(!isEffectAlreadyAdded)
+	{
+		EffectStruct tempStruct;
+		tempStruct.effectName = iEffectFileName;
+		tempStruct.shaderType = iShaderType;
+		tempStruct.uniformBlockSet = true;
+		effectFileNames.push_back(tempStruct);
+	}
 }
+
+
+void Engine::Graphics::Light::addLightParameter(std::string iLightParameterName, 
+	DataTypes iLightParameterDataType, 
+	Data iParameterValue)
+{
+	Parameter tempParameter;
+	tempParameter.mParameterName = iLightParameterName;
+	tempParameter.mDataType = iLightParameterDataType;
+	tempParameter.mParameterData = iParameterValue;
+	mLightParameters.push_back(tempParameter);
+}
+
+
+void Engine::Graphics::Light::setLightParameterValue(std::string iLightParameterName, 
+	DataTypes iLightParameterDataType, 
+	Data iParameterValue)
+{
+	for (std::vector<Parameter>::iterator i = mLightParameters.begin();
+	i!= mLightParameters.end(); ++i)
+	{
+		if (i->mParameterName == iLightParameterName)
+			i->mParameterData = iParameterValue;
+	}
+}
+
+
+void Engine::Graphics::Light::createLightParametersUniformBlock()
+{	
+	if(!lightParameterInitialized && lightEnabled)
+	{
+		std::vector<std::string> lightUniforms;
+		for (std::vector<Parameter>::iterator j = mLightParameters.begin();
+		j != mLightParameters.end(); ++j)
+		{
+			lightUniforms.push_back(j->mParameterName);
+		}
+
+		for (std::vector<EffectStruct>::iterator i = effectFileNames.begin();
+		i != effectFileNames.end(); ++i)
+		{
+			Engine::SharedPointer<Engine::Graphics::Effect>
+				tempEffect = Effect::getEffect(i->effectName);			
+			tempEffect->addUniformBlock("lightUniforms",
+				Engine::Graphics::Fragment,
+				Engine::Graphics::Block,
+				lightUniforms);
+		}
+		lightParameterInitialized = true;
+	}
+}
+
+void Engine::Graphics::Light::enableLight(bool iRequest)
+{
+	lightEnabled = iRequest;
+}
+
+
+void Engine::Graphics::Light::setLightParameterValueToShaderObject()
+{
+	createLightParametersUniformBlock();
+	if(lightParameterInitialized && lightEnabled)
+	{
+		for (std::vector<EffectStruct>::iterator i = effectFileNames.begin();
+		i != effectFileNames.end(); ++i)
+		{
+			SharedPointer<UniformBlock> tempUniformBlock =
+				UniformBlock::getUniformBlock(i->effectName, "lightUniforms",
+					Fragment);
+			for (std::vector<Parameter>::iterator j = mLightParameters.begin();
+			j!=mLightParameters.end(); ++j)
+			{
+				tempUniformBlock->setUniformBlockData(j->mParameterName,
+					j->mDataType, j->mParameterData);
+			}
+		}
+	}
+}
+
+
+
+
+
 
 
 

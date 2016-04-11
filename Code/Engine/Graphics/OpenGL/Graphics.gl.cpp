@@ -298,6 +298,16 @@ void Engine::Graphics::GraphicsSystem::EnableWireFrame(bool iRequest)
 }
 
 
+void Engine::Graphics::GraphicsSystem::graphicsTest()
+{
+	glEnable(GL_STENCIL_TEST);
+	glStencilMask(0xf);
+	glStencilFunc(GL_ALWAYS, 0xff, 0xff);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+}
+
+
+
 
 
 

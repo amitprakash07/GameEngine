@@ -1,12 +1,13 @@
 return 
 {
-	--effect = "ComputerGraphics/planeEffect.effect",
-	effect = "ComputerGraphics/floorEffect.effect",
+	effect = "ComputerGraphics/planeEffect.effect",
+	--effect = "ComputerGraphics/floorEffect.effect",
 	map =
 	{
 		{
 			--path = "ComputerGraphics/plank.png",
-			path = "ComputerGraphics/checkerBoard.jpg",
+			path = "ComputerGraphics/sandDrune.dds",
+			--path = "ComputerGraphics/checkerBoard.jpg",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",

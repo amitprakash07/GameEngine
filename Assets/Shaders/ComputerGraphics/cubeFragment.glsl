@@ -4,7 +4,7 @@ Fragment shader
 
 #version 410 core
 
-uniform vec3 g_PixelColorModifier;
+uniform vec3 g_PixelColorModifier = vec3(1.0);
 uniform sampler2D g_TextureSampler;
 
 uniform lightUniforms

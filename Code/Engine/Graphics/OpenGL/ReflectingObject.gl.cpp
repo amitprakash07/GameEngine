@@ -331,10 +331,11 @@ void Engine::Graphics::ReflectingObject::draw(bool)
 		vertexColorUiform->setUniformValue(tempColor);
 		Engine::Graphics::Material::getMaterial(materialName.c_str())->changeMaterialColor(1.0f, 1.0f, 1.0f);
 		Engine::Graphics::Uniform::setAllUniformToShaderObjects(effectFile);
+		UniformBlock::setAllUniformBlockForTheEffectInShader(effectFile);
 		Engine::Graphics::Material::getMaterial(materialName.c_str())->setMaterialUniformParameters();
 		Engine::Graphics::Texture::getTexture(textureName.c_str())->setTextureInShaderObject(0);
 		Engine::Graphics::Mesh::getMesh(meshName)->drawMesh();
-		/*jshdkjfhsdkjhfkj*/
+		
 	}
 	else
 	{

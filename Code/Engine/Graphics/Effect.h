@@ -25,6 +25,7 @@ namespace Engine
 			static Engine::SharedPointer<Effect> getEffect(std::string);
 			static void deleteAllEffect();
 			static bool isEffectExist(std::string);
+			std::string getEffectName()const;
 			std::string getTransformMatrixUniformName(ShaderType iShaderType,
 				Transform_Matrix_Type iMatrixType) const;
 			bool LoadEffect();

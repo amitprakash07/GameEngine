@@ -102,6 +102,7 @@ void Engine::Graphics::Sprite::draw(bool drawDebugObject)
 
 		spriteEffect->setShaders();
 		Engine::Graphics::Uniform::setAllUniformToShaderObjects(spriteMaterial->getEffectName());
+		UniformBlock::setAllUniformBlockForTheEffectInShader(spriteMaterial->getEffectName());
 		spriteMaterial->setMaterialUniformParameters();
 		spriteMaterial->setTextureUniform();
 		drawSprite();

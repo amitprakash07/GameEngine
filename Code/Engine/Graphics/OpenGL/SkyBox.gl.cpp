@@ -221,6 +221,7 @@ void Engine::Graphics::SkyBox::draw(bool)
 			}
 
 			Engine::Graphics::Uniform::setAllUniformToShaderObjects(tempMaterial->getEffectName());
+			UniformBlock::setAllUniformBlockForTheEffectInShader(tempMaterial->getEffectName());
 			tempMaterial->setMaterialUniformParameters();
 			tempMaterial->setTextureUniform();
 			glBindVertexArray(s_vertexArrayID);

@@ -98,6 +98,11 @@ return
 			src = "ComputerGraphics/proxyLightSphere.lua",
 			target = "ComputerGraphics/proxyLightSphere.mesh",
 		},
+	-- Sphere
+		{
+			src = "ComputerGraphics/sphere.lua",
+			target = "ComputerGraphics/sphere.mesh",
+		},
 	},
 -- =====================================================================
 
@@ -139,6 +144,10 @@ return
 		{
 			src = "ComputerGraphics/proxyLightEffect.lua",
 			target = "ComputerGraphics/proxyLightEffect.effect"
+		},
+		{
+			src = "ComputerGraphics/sphereEffect.lua",
+			target = "ComputerGraphics/sphereEffect.effect"
 		},
 	},
 
@@ -212,6 +221,11 @@ return
 			src = "ComputerGraphics/proxyLightSphereMaterial.lua",
 			target = "ComputerGraphics/proxyLightSphereMaterial.mat",
 		},	
+	-- sphereMaterial
+		{
+			src = "ComputerGraphics/sphereMaterial.lua",
+			target = "ComputerGraphics/sphereMaterial.mat",
+		},
 	},
 
 -- ======================================================================
@@ -389,6 +403,27 @@ return
 
 		},
 	-- *******************************************************************
+	{
+			src = "ComputerGraphics/sphereVertex.glsl",
+			target = "ComputerGraphics/sphereVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/sphereFragment.glsl",
+			target = "ComputerGraphics/sphereFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
 	
 	},
 
@@ -402,7 +437,15 @@ return
 		{
 			src = "ComputerGraphics/borgTexture.jpg",
 			target = "ComputerGraphics/borgTexture.jpg",
-		},		
+		},	
+		{
+			src = "ComputerGraphics/borgTexture_Bump.jpg",
+			target = "ComputerGraphics/borgTexture_Bump.jpg",
+		},
+		{
+			src = "ComputerGraphics/borgTexture_normal.jpg",
+			target = "ComputerGraphics/borgTexture_normal.jpg",
+		},	
 		{
 			src = "ComputerGraphics/myFace.dds",
 			target = "ComputerGraphics/myFace.dds",
@@ -446,6 +489,71 @@ return
         {
 			src = "ComputerGraphics/LancellottiChapel.dds",
 			target = "ComputerGraphics/LancellottiChapel.dds",
+		},
+	--Basket Texture For Sphere
+		{
+			src = "ComputerGraphics/basketDiffuse.dds",
+			target = "ComputerGraphics/basketDiffuse.dds",
+		},
+		{
+			src = "ComputerGraphics/basketNormal.dds",
+			target = "ComputerGraphics/basketNormal.dds",
+		},
+		{
+			src = "ComputerGraphics/basketBump.dds",
+			target = "ComputerGraphics/basketBump.dds",
+		},		
+	--Wall Textures
+		{
+			src = "ComputerGraphics/brickWall_1.dds",
+			target = "ComputerGraphics/brickWall_1.dds",
+		},
+		{
+			src = "ComputerGraphics/brickWall_1_bump.dds",
+			target = "ComputerGraphics/brickWall_1_bump.dds",
+		},
+		{
+			src = "ComputerGraphics/brickWall_1_normal.dds",
+			target = "ComputerGraphics/brickWall_1_normal.dds",
+		},
+
+		{
+			src = "ComputerGraphics/brickWall_2.dds",
+			target = "ComputerGraphics/brickWall_2.dds",
+		},
+		{
+			src = "ComputerGraphics/brickWall_2_bump_map.dds",
+			target = "ComputerGraphics/brickWall_2_bump_map.dds",
+		},
+		{
+			src = "ComputerGraphics/brickWall_2_normal.dds",
+			target = "ComputerGraphics/brickWall_2_normal.dds",
+		},
+
+		{
+			src = "ComputerGraphics/brickWall_3.dds",
+			target = "ComputerGraphics/brickWall_3.dds",
+		},
+		{
+			src = "ComputerGraphics/brickWall_3_bump.dds",
+			target = "ComputerGraphics/brickWall_3_bump.dds",
+		},
+		{
+			src = "ComputerGraphics/brickWall_3_normal.dds",
+			target = "ComputerGraphics/brickWall_3_normal.dds",
+		},
+	--Sand drune Texture
+		{
+			src = "ComputerGraphics/sandDrune.dds",
+			target = "ComputerGraphics/sandDrune.dds",
+		},
+		{
+			src = "ComputerGraphics/sandDrune_bump.dds",
+			target = "ComputerGraphics/sandDrune_bump.dds",
+		},
+		{
+			src = "ComputerGraphics/sandDruneNormalMap.dds",
+			target = "ComputerGraphics/sandDruneNormalMap.dds",
 		},
 	}
 -- ====================================================================

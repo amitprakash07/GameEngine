@@ -257,6 +257,12 @@ std::string Engine::Graphics::Effect::getTransformMatrixUniformName(
 	return "";
 }
 
+std::string Engine::Graphics::Effect::getEffectName() const
+{
+	return effectName;
+}
+
+
 
 Engine::SharedPointer<Engine::Graphics::Uniform> 
 Engine::Graphics::Effect::addUniform(std::string iUniformName,

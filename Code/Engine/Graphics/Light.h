@@ -15,7 +15,8 @@ namespace Engine
 		class Light:public IMessageHandler, Engine::Object
 		{
 		public:
-			static SharedPointer<Light> createLight(std::string iLightName, LightType iLightType);			
+			static SharedPointer<Light> createLight(std::string iLightName, LightType iLightType);				
+			void setLightParameterValueToShaderObject();
 			void setIntensity(float iIntensity);
 			void setColor(Math::Vector3 iColor);
 			void setMeshName(std::string iMeshName, std::string iMaterialName);
@@ -23,8 +24,12 @@ namespace Engine
 			bool isShadowCastingEnabled() const;
 			float getLightIntensity() const;
 			Engine::Math::Vector3 getLightColor()const;
-			void addLightToObjectEffect(std::string iEffectFileName, ShaderType iShaderType);
-			void setLightUniformsInShader(){/*To do*/}
+			void addLightParameter(std::string iLightParameterName,
+				DataTypes iLightParameterDataType, Data iParameterValue = Data());
+			void setLightParameterValue(std::string iLightParameterName,
+				DataTypes iLightParameterDataType, Data iParameterValue);
+			void addLightToEffect(std::string iEffectFileName, ShaderType iShaderType);	
+			void enableLight(bool iRequest);
 
 			//Object functions
 			Math::Transform getTransform() override;
@@ -47,7 +52,6 @@ namespace Engine
 			void receiveShadow(bool) override {}
 			bool receivingShadowEnabled() override { return false; }
 
-
 			//IMessageHandler functions
 			void HandleMessage(
 				Engine::utils::StringHash &,
@@ -56,9 +60,11 @@ namespace Engine
 			bool isBothSameType(RTTI*, std::string) const override;
 
 		private:
+			void createLightParametersUniformBlock();
 			Light(std::string);
-			std::vector<EffectStruct> effectFileNames;
 			std::string lightName;
+			std::vector<EffectStruct> effectFileNames;			
+			std::vector<Parameter> mLightParameters;
 			char* meshName;
 			char* mMaterialName;
 			Engine::Math::Transform mTransform;
@@ -69,6 +75,8 @@ namespace Engine
 			Engine::Math::Vector3 mLightColor;
 			IObjectController * mObjectController;
 			LightType mLightType;
+			bool lightParameterInitialized;
+			bool lightEnabled;
 		};
 	}
 }

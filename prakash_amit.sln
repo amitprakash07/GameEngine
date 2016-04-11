@@ -158,6 +158,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestCase", "Code\TestCase\T
 		{37273532-5767-4369-B6D7-C10F81AE4282} = {37273532-5767-4369-B6D7-C10F81AE4282}
 		{E4154547-FDAC-4B90-979D-BDF433C87597} = {E4154547-FDAC-4B90-979D-BDF433C87597}
 		{CC853871-E1C2-442D-A66A-CF326121BD90} = {CC853871-E1C2-442D-A66A-CF326121BD90}
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527} = {012D9A9E-A662-4D8C-8F2C-C7D66BA29527}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SetAssetFile", "Code\Game\SetAssetFile\SetAssetFile.vcxproj", "{668DCA77-813C-4A0E-820C-4CA6FDEB1FDF}"
@@ -249,8 +250,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{7FA5
 		Assets\Effects\ComputerGraphics\environmentMappingSphereEffect.lua = Assets\Effects\ComputerGraphics\environmentMappingSphereEffect.lua
 		Assets\Effects\ComputerGraphics\floorEffect.lua = Assets\Effects\ComputerGraphics\floorEffect.lua
 		Assets\Effects\ComputerGraphics\planeEffect.lua = Assets\Effects\ComputerGraphics\planeEffect.lua
+		Assets\Effects\ComputerGraphics\proxyLightEffect.lua = Assets\Effects\ComputerGraphics\proxyLightEffect.lua
 		Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua = Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua
 		Assets\Effects\ComputerGraphics\skyBoxEffect.lua = Assets\Effects\ComputerGraphics\skyBoxEffect.lua
+		Assets\Effects\ComputerGraphics\sphereEffect.lua = Assets\Effects\ComputerGraphics\sphereEffect.lua
 		Assets\Effects\ComputerGraphics\utahTeapotEffect.lua = Assets\Effects\ComputerGraphics\utahTeapotEffect.lua
 	EndProjectSection
 EndProject
@@ -269,6 +272,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{
 		Assets\Materials\ComputerGraphics\rightWallMaterial.lua = Assets\Materials\ComputerGraphics\rightWallMaterial.lua
 		Assets\Materials\ComputerGraphics\skyBoxMaterial Second.lua = Assets\Materials\ComputerGraphics\skyBoxMaterial Second.lua
 		Assets\Materials\ComputerGraphics\skyBoxMaterial.lua = Assets\Materials\ComputerGraphics\skyBoxMaterial.lua
+		Assets\Materials\ComputerGraphics\skyBoxMaterialThree.lua = Assets\Materials\ComputerGraphics\skyBoxMaterialThree.lua
+		Assets\Materials\ComputerGraphics\skyBoxMaterialTwo.lua = Assets\Materials\ComputerGraphics\skyBoxMaterialTwo.lua
+		Assets\Materials\ComputerGraphics\sphereMaterial.lua = Assets\Materials\ComputerGraphics\sphereMaterial.lua
 		Assets\Materials\ComputerGraphics\utahTeapotMaterial.lua = Assets\Materials\ComputerGraphics\utahTeapotMaterial.lua
 	EndProjectSection
 EndProject
@@ -288,6 +294,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{EA91
 		Assets\Shaders\ComputerGraphics\reflectiveSphereVertex.glsl = Assets\Shaders\ComputerGraphics\reflectiveSphereVertex.glsl
 		Assets\Shaders\ComputerGraphics\skyBoxFragment.glsl = Assets\Shaders\ComputerGraphics\skyBoxFragment.glsl
 		Assets\Shaders\ComputerGraphics\skyBoxVertex.glsl = Assets\Shaders\ComputerGraphics\skyBoxVertex.glsl
+		Assets\Shaders\ComputerGraphics\sphereFragment.glsl = Assets\Shaders\ComputerGraphics\sphereFragment.glsl
+		Assets\Shaders\ComputerGraphics\sphereVertex.glsl = Assets\Shaders\ComputerGraphics\sphereVertex.glsl
 		Assets\Shaders\ComputerGraphics\teapotFragment.glsl = Assets\Shaders\ComputerGraphics\teapotFragment.glsl
 		Assets\Shaders\ComputerGraphics\teapotVertex.glsl = Assets\Shaders\ComputerGraphics\teapotVertex.glsl
 	EndProjectSection
@@ -300,16 +308,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meshes", "Meshes", "{5EF8A4
 		Assets\Meshes\ComputerGraphics\environmentMappingSphere.lua = Assets\Meshes\ComputerGraphics\environmentMappingSphere.lua
 		Assets\Meshes\ComputerGraphics\floor.lua = Assets\Meshes\ComputerGraphics\floor.lua
 		Assets\Meshes\ComputerGraphics\frontWall.lua = Assets\Meshes\ComputerGraphics\frontWall.lua
+		Assets\Meshes\ComputerGraphics\konvinceTeapot.lua = Assets\Meshes\ComputerGraphics\konvinceTeapot.lua
 		Assets\Meshes\ComputerGraphics\leftWall.lua = Assets\Meshes\ComputerGraphics\leftWall.lua
+		Assets\Meshes\ComputerGraphics\proxyLight.lua = Assets\Meshes\ComputerGraphics\proxyLight.lua
+		Assets\Meshes\ComputerGraphics\proxyLightSphere.lua = Assets\Meshes\ComputerGraphics\proxyLightSphere.lua
 		Assets\Meshes\ComputerGraphics\reflectiveSphere.lua = Assets\Meshes\ComputerGraphics\reflectiveSphere.lua
 		Assets\Meshes\ComputerGraphics\rightWall.lua = Assets\Meshes\ComputerGraphics\rightWall.lua
+		Assets\Meshes\ComputerGraphics\sphere.lua = Assets\Meshes\ComputerGraphics\sphere.lua
+		Assets\Meshes\ComputerGraphics\teapot1_circum.lua = Assets\Meshes\ComputerGraphics\teapot1_circum.lua
+		Assets\Meshes\ComputerGraphics\teapot1_handle.lua = Assets\Meshes\ComputerGraphics\teapot1_handle.lua
+		Assets\Meshes\ComputerGraphics\teapot1_lid.lua = Assets\Meshes\ComputerGraphics\teapot1_lid.lua
+		Assets\Meshes\ComputerGraphics\teapot2_circum.lua = Assets\Meshes\ComputerGraphics\teapot2_circum.lua
+		Assets\Meshes\ComputerGraphics\teapot2_handle01.lua = Assets\Meshes\ComputerGraphics\teapot2_handle01.lua
+		Assets\Meshes\ComputerGraphics\teapot2_handle02.lua = Assets\Meshes\ComputerGraphics\teapot2_handle02.lua
+		Assets\Meshes\ComputerGraphics\teapot2_lid.lua = Assets\Meshes\ComputerGraphics\teapot2_lid.lua
 		Assets\Meshes\ComputerGraphics\TestSphere.lua = Assets\Meshes\ComputerGraphics\TestSphere.lua
 		Assets\Meshes\ComputerGraphics\Torus.lua = Assets\Meshes\ComputerGraphics\Torus.lua
+		Assets\Meshes\ComputerGraphics\tray.lua = Assets\Meshes\ComputerGraphics\tray.lua
+		Assets\Meshes\ComputerGraphics\utahTeapot.lua = Assets\Meshes\ComputerGraphics\utahTeapot.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{FC71BA55-020A-4A1D-B503-4DB8A34E55A9}"
 	ProjectSection(SolutionItems) = preProject
+		Assets\Textures\ComputerGraphics\basketBump.dds = Assets\Textures\ComputerGraphics\basketBump.dds
+		Assets\Textures\ComputerGraphics\basketDiffuse.dds = Assets\Textures\ComputerGraphics\basketDiffuse.dds
+		Assets\Textures\ComputerGraphics\basketNormal.dds = Assets\Textures\ComputerGraphics\basketNormal.dds
 		Assets\Textures\ComputerGraphics\Beveled_Checker_Board_Seamless_by_FantasyStock.jpg = Assets\Textures\ComputerGraphics\Beveled_Checker_Board_Seamless_by_FantasyStock.jpg
+		Assets\Textures\ComputerGraphics\borgTexture.jpg = Assets\Textures\ComputerGraphics\borgTexture.jpg
+		Assets\Textures\ComputerGraphics\borgTexture_Bump.jpg = Assets\Textures\ComputerGraphics\borgTexture_Bump.jpg
+		Assets\Textures\ComputerGraphics\borgTexture_normal.jpg = Assets\Textures\ComputerGraphics\borgTexture_normal.jpg
+		Assets\Textures\ComputerGraphics\brickWall_1.dds = Assets\Textures\ComputerGraphics\brickWall_1.dds
+		Assets\Textures\ComputerGraphics\brickWall_1_bump.dds = Assets\Textures\ComputerGraphics\brickWall_1_bump.dds
+		Assets\Textures\ComputerGraphics\brickWall_1_normal.dds = Assets\Textures\ComputerGraphics\brickWall_1_normal.dds
+		Assets\Textures\ComputerGraphics\brickWall_2.dds = Assets\Textures\ComputerGraphics\brickWall_2.dds
+		Assets\Textures\ComputerGraphics\brickWall_2_bump_map.dds = Assets\Textures\ComputerGraphics\brickWall_2_bump_map.dds
+		Assets\Textures\ComputerGraphics\brickWall_2_normal.dds = Assets\Textures\ComputerGraphics\brickWall_2_normal.dds
+		Assets\Textures\ComputerGraphics\brickWall_2_normal_TS.dds = Assets\Textures\ComputerGraphics\brickWall_2_normal_TS.dds
+		Assets\Textures\ComputerGraphics\brickWall_3.dds = Assets\Textures\ComputerGraphics\brickWall_3.dds
+		Assets\Textures\ComputerGraphics\brickWall_3_bump.dds = Assets\Textures\ComputerGraphics\brickWall_3_bump.dds
+		Assets\Textures\ComputerGraphics\brickWall_3_normal.dds = Assets\Textures\ComputerGraphics\brickWall_3_normal.dds
 		Assets\Textures\ComputerGraphics\checkerBoard.jpg = Assets\Textures\ComputerGraphics\checkerBoard.jpg
 		Assets\Textures\ComputerGraphics\cm_back.tga = Assets\Textures\ComputerGraphics\cm_back.tga
 		Assets\Textures\ComputerGraphics\cm_bottom.tga = Assets\Textures\ComputerGraphics\cm_bottom.tga
@@ -335,17 +372,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{FC
 		Assets\Textures\ComputerGraphics\environment.dds = Assets\Textures\ComputerGraphics\environment.dds
 		Assets\Textures\ComputerGraphics\example_cube_map_environment.png = Assets\Textures\ComputerGraphics\example_cube_map_environment.png
 		Assets\Textures\ComputerGraphics\i3dp_0807.png = Assets\Textures\ComputerGraphics\i3dp_0807.png
+		Assets\Textures\ComputerGraphics\LancellottiChapel.dds = Assets\Textures\ComputerGraphics\LancellottiChapel.dds
+		Assets\Textures\ComputerGraphics\marbleTexture.jpg = Assets\Textures\ComputerGraphics\marbleTexture.jpg
+		Assets\Textures\ComputerGraphics\myFace.dds = Assets\Textures\ComputerGraphics\myFace.dds
+		Assets\Textures\ComputerGraphics\MyFace.png = Assets\Textures\ComputerGraphics\MyFace.png
+		Assets\Textures\ComputerGraphics\myFace.psd = Assets\Textures\ComputerGraphics\myFace.psd
 		Assets\Textures\ComputerGraphics\nebula_tut10.jpg = Assets\Textures\ComputerGraphics\nebula_tut10.jpg
 		Assets\Textures\ComputerGraphics\nvlobby_all6.jpg = Assets\Textures\ComputerGraphics\nvlobby_all6.jpg
 		Assets\Textures\ComputerGraphics\Photoshop_cube_maps_in_Fallout_3_image_2.jpg = Assets\Textures\ComputerGraphics\Photoshop_cube_maps_in_Fallout_3_image_2.jpg
+		Assets\Textures\ComputerGraphics\plank.png = Assets\Textures\ComputerGraphics\plank.png
+		Assets\Textures\ComputerGraphics\sandDrune.dds = Assets\Textures\ComputerGraphics\sandDrune.dds
+		Assets\Textures\ComputerGraphics\sandDrune_bump.dds = Assets\Textures\ComputerGraphics\sandDrune_bump.dds
+		Assets\Textures\ComputerGraphics\sandDruneNormalMap.dds = Assets\Textures\ComputerGraphics\sandDruneNormalMap.dds
+		Assets\Textures\ComputerGraphics\secondEnvironment.dds = Assets\Textures\ComputerGraphics\secondEnvironment.dds
 		Assets\Textures\ComputerGraphics\singlelayershadowmask.png = Assets\Textures\ComputerGraphics\singlelayershadowmask.png
 		Assets\Textures\ComputerGraphics\sistine_cubemap.jpg = Assets\Textures\ComputerGraphics\sistine_cubemap.jpg
 		Assets\Textures\ComputerGraphics\stormydays_large.jpg = Assets\Textures\ComputerGraphics\stormydays_large.jpg
 		Assets\Textures\ComputerGraphics\stretching-the-cubic-projection-to-a-virtual-3d-cube.png = Assets\Textures\ComputerGraphics\stretching-the-cubic-projection-to-a-virtual-3d-cube.png
+		Assets\Textures\ComputerGraphics\Test.dds = Assets\Textures\ComputerGraphics\Test.dds
 		Assets\Textures\ComputerGraphics\Unfolded CubeMap.jpg = Assets\Textures\ComputerGraphics\Unfolded CubeMap.jpg
 		Assets\Textures\ComputerGraphics\UV_Checker_Map.jpg = Assets\Textures\ComputerGraphics\UV_Checker_Map.jpg
 		Assets\Textures\ComputerGraphics\Vs2Uha6.png = Assets\Textures\ComputerGraphics\Vs2Uha6.png
+		Assets\Textures\ComputerGraphics\Yokohama2.dds = Assets\Textures\ComputerGraphics\Yokohama2.dds
+		Assets\Textures\ComputerGraphics\Yokohama3.dds = Assets\Textures\ComputerGraphics\Yokohama3.dds
+		Assets\Textures\ComputerGraphics\Yokohama3_DX.dds = Assets\Textures\ComputerGraphics\Yokohama3_DX.dds
+		Assets\Textures\ComputerGraphics\Yokohama3_Inverted.dds = Assets\Textures\ComputerGraphics\Yokohama3_Inverted.dds
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07FF83DF-8928-4595-8EDE-423D6CE130A1}"
+	ProjectSection(SolutionItems) = preProject
+		ScratchPad And Notes.txt = ScratchPad And Notes.txt
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Raknet", "Code\Externals\Raknet\Raknet.vcxproj", "{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -813,6 +872,18 @@ Global
 		{668DCA77-813C-4A0E-820C-4CA6FDEB1FDF}.Release|x64.Build.0 = Release|x64
 		{668DCA77-813C-4A0E-820C-4CA6FDEB1FDF}.Release|x86.ActiveCfg = Release|Win32
 		{668DCA77-813C-4A0E-820C-4CA6FDEB1FDF}.Release|x86.Build.0 = Release|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|Direct3D_64.ActiveCfg = Debug|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|OpenGL_32.ActiveCfg = Debug|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|x64.ActiveCfg = Debug|x64
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|x64.Build.0 = Debug|x64
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|x86.ActiveCfg = Debug|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|x86.Build.0 = Debug|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|Direct3D_64.ActiveCfg = Release|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|OpenGL_32.ActiveCfg = Release|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|x64.ActiveCfg = Release|x64
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|x64.Build.0 = Release|x64
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|x86.ActiveCfg = Release|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -859,5 +930,6 @@ Global
 		{EA91C87F-C090-4591-900B-DB3409264710} = {C121E793-3704-41FD-8651-61C43E64D057}
 		{5EF8A44E-593F-45D7-B9C3-4D7130965DEA} = {C121E793-3704-41FD-8651-61C43E64D057}
 		{FC71BA55-020A-4A1D-B503-4DB8A34E55A9} = {C121E793-3704-41FD-8651-61C43E64D057}
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527} = {A38CE98B-1752-4FA7-8FB5-66B33107C40F}
 	EndGlobalSection
 EndGlobal

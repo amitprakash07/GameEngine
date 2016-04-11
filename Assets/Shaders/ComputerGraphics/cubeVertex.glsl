@@ -17,6 +17,13 @@ uniform mat4  g_transform_worldToView;
 uniform mat4  g_transform_viewToScreen;
 uniform vec4 vertexColorModifier = vec4(1.0);
 
+uniform lightUniforms
+{
+	vec3 lightPosition;
+	float intensity;
+	vec3 lightColor;
+};
+
 //Input
 layout(location = 0) in vec3 i_local_position;
 layout(location = 1) in vec3 i_local_normal;
