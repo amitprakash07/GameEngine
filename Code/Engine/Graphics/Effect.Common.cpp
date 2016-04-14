@@ -58,6 +58,20 @@ Engine::SharedPointer<Engine::Graphics::Effect> Engine::Graphics::Effect::getEff
 	return SharedPointer<Engine::Graphics::Effect>();
 }
 
+
+std::vector<Engine::SharedPointer<Engine::Graphics::Effect>> 
+	Engine::Graphics::Effect::getAllEfects()
+{
+	std::vector<SharedPointer<Effect>> returningEffectList;
+	for (std::map<std::string, SharedPointer<Effect>>::iterator i = mEffectList.begin();
+	i!=mEffectList.end(); ++i)
+	{
+		returningEffectList.push_back(i->second);
+	}
+	return returningEffectList;
+}
+
+
 void Engine::Graphics::Effect::deleteAllEffect()
 {
 	for (std::map<std::string, Engine::SharedPointer<Engine::Graphics::Effect>>::iterator i = mEffectList.begin(); i != mEffectList.end(); ++i)

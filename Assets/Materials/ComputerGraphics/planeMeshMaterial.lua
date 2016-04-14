@@ -1,22 +1,20 @@
 return 
 {
-	effect = "ComputerGraphics/cubeEffect.effect",
+	effect = "ComputerGraphics/planeMeshEffect.effect",
 	map =
 	{
 		{
-			path = "ComputerGraphics/brickWall_2.dds",
-		--	path = "ComputerGraphics/myFace.dds",
+			path = "ComputerGraphics/sandDrune.dds",		
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",
-		},	
-		{
-			path = "ComputerGraphics/brickWall_2_normal.dds",
-		--	path = "ComputerGraphics/myFace.dds",
+		},
+        {
+			path = "ComputerGraphics/sandDruneNormalMap.dds",		
 			uniformName = "g_NormalMapSampler",
 			shader = "Fragment",
 			mapType = "normal",
-		},			
+		},				
 	},
 	uniforms =
 	{

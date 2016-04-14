@@ -5,10 +5,18 @@ attribute modifier
 
 #version 410 core
 
+uniform mat4 g_ScaleTransform = mat4(1.0, 0.0, 0.0, 0.0,
+	0.0, 1.0, 0.0, 0.0,
+	0.0, 0.0, 1.0, 0.0,
+	0.0, 0.0, 0.0, 1.0);
+uniform mat4  g_normalMatrix = mat4(1.0, 0.0, 0.0, 0.0,
+	0.0, 1.0, 0.0, 0.0,
+	0.0, 0.0, 1.0, 0.0,
+	0.0, 0.0, 0.0, 1.0);
 uniform mat4  g_transform_localToWorld;
 uniform mat4  g_transform_worldToView;
 uniform mat4  g_transform_viewToScreen;
-uniform vec4 vertexColorModifier;
+uniform vec4 vertexColorModifier = vec4(1.0);
 
 
 //Input
@@ -32,7 +40,8 @@ layout(location = 6) out vec3 o_position_in_eye;
 
 void main()
 {
-	vec4 position_world = vec4(i_local_position, 1.0) * g_transform_localToWorld;
+	vec4 scaledPosition = vec4(i_local_position, 1.0) * g_ScaleTransform;
+	vec4 position_world = scaledPosition * g_transform_localToWorld;
 	vec4 o_position_in_eye = position_world * g_transform_worldToView;
 	vec4 screenPosition = o_position_in_eye * g_transform_viewToScreen;
 	gl_Position = screenPosition;

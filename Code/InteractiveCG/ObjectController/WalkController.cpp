@@ -15,29 +15,33 @@ void Application::WalkController::updateObject(Engine::Object& iObject, Engine::
 	Quaternion downRotor = Quaternion(ConvertDegreesToRadians(3), Vector3(1, 0, 0));
 	switch (iAction.keyVal)
 	{
-	case VK_UP:
+	case VK_PRIOR:
+		//Page up - camera up
 		transform.setPosition(transform.getPosition() + Vector3(0, 0.5, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
-	case VK_DOWN:
+	case VK_NEXT:
+		//Page Down - camera down
 		transform.setPosition(transform.getPosition() + Vector3(0, -0.5, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
-	case VK_LEFT:
+	case 0x5A:
+		//z - key - camera left
 		transform.setPosition(transform.getPosition() + Vector3(-0.5, 0, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
-	case VK_RIGHT:
+	case 0x58:
+		//X Key - right
 		transform.setPosition(transform.getPosition() + Vector3(0.5, 0, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
-	case 0x57:
-		//w key
+	case 0x46:
+		//f key - forward
 		transform.setPosition(transform.getPosition() + Vector3(0, 0, -0.5));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
-	case 0x53:
-		//S key
+	case 0x42:
+		//B key - backward
 		transform.setPosition(transform.getPosition() + Vector3(0, 0, 0.5));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
@@ -68,12 +72,6 @@ void Application::WalkController::updateObject(Engine::Object& iObject, Engine::
 	case 0x52:
 		//R Key
 		iObject.resetTransform();
-	case VK_NEXT:
-		Engine::Graphics::SkyBox::nextSkyBox();
-		break;
-	case VK_PRIOR:
-		break;
-
 	}
 
 

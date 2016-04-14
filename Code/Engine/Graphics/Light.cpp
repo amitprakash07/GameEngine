@@ -5,7 +5,6 @@
 #include "UniformBlock.h"
 #include "Effect.h"
 
-
 Engine::Graphics::Light::Light(std::string iLightName)
 {
 	lightName = iLightName;
@@ -94,6 +93,11 @@ Engine::Graphics::Light::createLight(std::string iLightName, LightType iLightTyp
 void Engine::Graphics::Light::enableShadow(bool enableShadow)
 {
 	castShadowFlag = enableShadow;
+}
+
+std::string Engine::Graphics::Light::getName() const
+{
+	return lightName;
 }
 
 
@@ -203,10 +207,63 @@ void Engine::Graphics::Light::addLightToEffect
 		tempStruct.effectName = iEffectFileName;
 		tempStruct.shaderType = iShaderType;
 		tempStruct.uniformBlockSet = true;
-		effectFileNames.push_back(tempStruct);
+		effectFileNames.push_back(tempStruct);				
 	}
 }
 
+
+void Engine::Graphics::Light::addLightToAllEffects(ShaderType iShaderType)
+{
+	std::vector<SharedPointer<Effect>> tempEffectList
+		= Effect::getAllEfects();
+	for (std::vector<SharedPointer<Effect>>::iterator i = tempEffectList.begin();
+	i != tempEffectList.end(); ++i)
+	{
+		bool isEffectAlreadyAdded = false;		
+		for (std::vector<EffectStruct>::iterator j = effectFileNames.begin();
+		j != effectFileNames.end(); ++j)
+		{
+			if (j->effectName == ((*i)->getEffectName()) && j->shaderType == iShaderType)
+			{
+				isEffectAlreadyAdded = true;
+				break;
+			}
+		}
+		if (!isEffectAlreadyAdded)
+		{
+			EffectStruct tempStruct;			
+			tempStruct.effectName = (*i)->getEffectName();
+			tempStruct.shaderType = iShaderType;
+			tempStruct.uniformBlockSet = true;
+			effectFileNames.push_back(tempStruct);
+		}
+	}
+}
+
+
+void Engine::Graphics::Light::removeLightFromAllEffects(ShaderType iShaderType)
+{
+	for (std::vector<EffectStruct>::iterator i = effectFileNames.begin();
+	i != effectFileNames.end(); ++i)
+	{
+		if (i->shaderType == iShaderType)
+			effectFileNames.erase(i);
+	}
+}
+
+void Engine::Graphics::Light::removeLightFromEffect(
+	std::string iEffectFileName, ShaderType iShaderType)
+{
+	for (std::vector<EffectStruct>::iterator i = effectFileNames.begin();
+	i!= effectFileNames.end(); ++i)
+	{
+		if (i->effectName == iEffectFileName && i->shaderType == iShaderType)
+		{
+			effectFileNames.erase(i);
+			break;
+		}
+	}
+}
 
 void Engine::Graphics::Light::addLightParameter(std::string iLightParameterName, 
 	DataTypes iLightParameterDataType, 
@@ -284,32 +341,3 @@ void Engine::Graphics::Light::setLightParameterValueToShaderObject()
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

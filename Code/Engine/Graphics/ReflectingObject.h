@@ -28,7 +28,7 @@ namespace Engine
 			void setDynamicTextureSamplerName(std::string samplerUniformName);	
 			void setObjectController(IObjectController *) override;
 			void updateObject() override;
-			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
+			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
 			std::string getMaterialName() override { return materialName; }
 			bool isCollidable() override;
 			bool isPhysicsEnabled() override;
@@ -50,6 +50,7 @@ namespace Engine
 			std::string materialName;
 			std::string textureName;
 			std::string dynamicTextureSamplerName;
+			Math::Vector3 scaleFactor;
 			TextureResource texture;			
 			void renderScene();
 #ifdef PLATFORM_OPEN_GL

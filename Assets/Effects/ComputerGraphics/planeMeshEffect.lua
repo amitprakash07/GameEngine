@@ -1,7 +1,7 @@
 return
 {
-	vertex = "ComputerGraphics/environmentMappingSphereVertex.glsl",
-	fragment = "ComputerGraphics/environmentMappingSphereFragment.glsl",
+	vertex = "ComputerGraphics/planeMeshVertex.glsl",
+	fragment = "ComputerGraphics/planeMeshFragment.glsl",
 	AlphaTransparency = "False",
 	DepthTesting = "True",
 	DepthWriting = "True",

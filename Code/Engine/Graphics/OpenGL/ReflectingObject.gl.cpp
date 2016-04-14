@@ -37,6 +37,7 @@ Engine::Graphics::ReflectingObject::ReflectingObject()
 	mObjectController = nullptr;
 	isInitialTransform = true;
 	mInitialTransform = Math::Transform();
+	scaleFactor = Math::Vector3(1.0, 1.0, 1.0);
 }
 
 
@@ -70,8 +71,8 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 
 		environmentCamera->activateCamera(true);		
 
-		GLsizei textureHeight = 2048;/*Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowHeight();*/
-		GLsizei textureWidth = 2048;/* Engine::Windows::WindowingSystem::getWindowingSystem()->getWindowWidth();*/
+		GLsizei textureHeight = 2048;
+		GLsizei textureWidth = 2048;
 		
 		Engine::Math::Transform cubeMapCameraTransform = environmentCamera->getTransform();
 		for (int i = 5; i >= 0; --i)
@@ -160,7 +161,6 @@ void Engine::Graphics::ReflectingObject::generateCubeMap()
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-
 }
 
 
@@ -281,6 +281,11 @@ void Engine::Graphics::ReflectingObject::draw(bool)
 				Graphics::Vertex,
 				Graphics::WorldToView), effectFile, Graphics::Vertex);
 
+		SharedPointer<Graphics::Uniform> scaleMatrix = Graphics::Uniform::getUniform(
+			tempEffect->getTransformMatrixUniformName(
+				Graphics::Vertex,
+				Graphics::ScaleMatrix), effectFile, Graphics::Vertex);
+
 		SharedPointer<Graphics::Uniform> viewToScreen = Graphics::Uniform::getUniform(
 			tempEffect->getTransformMatrixUniformName(
 				Graphics::Vertex,
@@ -305,6 +310,15 @@ void Engine::Graphics::ReflectingObject::draw(bool)
 					cameraTransform.getOrientation(),
 					cameraTransform.getPosition());
 			worldToView->setUniformValue(worldToViewValues);
+		}
+
+		if (!scaleMatrix.isNull())
+		{
+			Graphics::UniformValues scaleMatrixValues;
+			scaleMatrixValues.matrixValue.Type = Graphics::ScaleMatrix;
+			scaleMatrixValues.matrixValue.matrix = Engine::Math::Matrix4x4::CreateScaleMatrix(
+				scaleFactor);
+			scaleMatrix->setUniformValue(scaleMatrixValues);
 		}
 
 		if (!viewToScreen.isNull())

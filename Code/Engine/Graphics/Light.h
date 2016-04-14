@@ -21,6 +21,7 @@ namespace Engine
 			void setColor(Math::Vector3 iColor);
 			void setMeshName(std::string iMeshName, std::string iMaterialName);
 			void enableShadow(bool enableShadow);
+			std::string getName() const;
 			bool isShadowCastingEnabled() const;
 			float getLightIntensity() const;
 			Engine::Math::Vector3 getLightColor()const;
@@ -29,6 +30,9 @@ namespace Engine
 			void setLightParameterValue(std::string iLightParameterName,
 				DataTypes iLightParameterDataType, Data iParameterValue);
 			void addLightToEffect(std::string iEffectFileName, ShaderType iShaderType);	
+			void addLightToAllEffects(ShaderType iShaderType = Fragment);
+			void removeLightFromEffect(std::string iEffectFileName, ShaderType iShaderType);
+			void removeLightFromAllEffects(ShaderType iShaderType = Fragment);
 			void enableLight(bool iRequest);
 
 			//Object functions
@@ -59,7 +63,7 @@ namespace Engine
 			std::string getTypeInfo() const override;
 			bool isBothSameType(RTTI*, std::string) const override;
 
-		private:
+		private:			
 			void createLightParametersUniformBlock();
 			Light(std::string);
 			std::string lightName;

@@ -19,7 +19,9 @@
 
 
 
-int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_commandLineArguments, int i_initialWindowDisplayState)
+int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, 
+	char* i_commandLineArguments, 
+	int i_initialWindowDisplayState)
 {
 	{
 		//_CrtSetBreakAlloc(156);
@@ -30,49 +32,65 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		scene->renderScene(true);
 
 		
+		//GameObjects	
 
-		//GameObjects
+		Engine::SharedPointer<Engine::Graphics::ReflectingObject> environmentMappingSphere =
+			Engine::Graphics::ReflectingObject::CreateReflectingObject("ComputerGraphics/sphere.mesh",
+				"ComputerGraphics/environmentMappingSphereMaterial.mat", 0.1, 1000.0f);
+		environmentMappingSphere->setTransform(
+			Engine::Math::Vector3(-5, 8, 0), Engine::Math::Quaternion());
+		environmentMappingSphere->setDynamicTextureSamplerName("g_TextureSampler");
+		environmentMappingSphere->setScale(3, 3, 3);
+		scene->addObjectToScene(environmentMappingSphere);
+		Engine::SharedPointer<Engine::Graphics::Effect> environmentMappingSphereEffect = 
+			Engine::Graphics::Effect::getEffect(
+				Engine::Graphics::Material::getMaterial(environmentMappingSphere->getMaterialName().c_str())->getEffectName());
+		//environmentMappingSphere->setObjectController(new Application::ObjectRotateController());
+
 		//floor
-		Engine::SharedPointer<Engine::Graphics::Plane> floor =
-			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/floorMaterial.mat");
+		Engine::SharedPointer<Engine::MeshObject> floor =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh",
+				"ComputerGraphics/floorMaterial.mat");
 		floor->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		floor->setScale(30.0f, 20.0f, 20.0f);
-		scene->addObjectToScene(floor);;
+		scene->addObjectToScene(floor);
 
 		//ceiling
-		Engine::SharedPointer<Engine::Graphics::Plane> ceiling =
-			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/ceilingMaterial.mat");
-		ceiling->setTransform(Engine::Math::Vector3(0, 20, 0), 
+		Engine::SharedPointer<Engine::MeshObject> ceiling =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh",
+				"ComputerGraphics/ceilingMaterial.mat");
+		ceiling->setTransform(Engine::Math::Vector3(0, 20, 0),
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(180.0f),
 				Engine::Math::Vector3(1.0f, 0.0f, 0.0f)));
 		ceiling->setScale(30.0f, 20.0f, 20.0f);
 		scene->addObjectToScene(ceiling);
 
-		Engine::Math::Vector3 normal = ceiling->getNormal();
-
-
+		
 		//rightWall
-		Engine::SharedPointer<Engine::Graphics::Plane> rightWall =
-			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/rightWallMaterial.mat");
-		rightWall->setTransform(Engine::Math::Vector3(15, 10, 0), 
+		Engine::SharedPointer<Engine::MeshObject> rightWall =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh",
+				"ComputerGraphics/rightWallMaterial.mat");
+		rightWall->setTransform(Engine::Math::Vector3(15, 10, 0),
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90),
 				Engine::Math::Vector3(0.0f, 0.0f, -1.0f)));
 		rightWall->setScale(20.0f, 20.0f, 20.0f);
 		scene->addObjectToScene(rightWall);
 
 		//leftWall
-		Engine::SharedPointer<Engine::Graphics::Plane> leftWall =
-			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/leftWallMaterial.mat");
-		leftWall->setTransform(Engine::Math::Vector3(-15, 10, 0), 
+		Engine::SharedPointer<Engine::MeshObject> leftWall =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh", 
+				"ComputerGraphics/leftWallMaterial.mat");
+		leftWall->setTransform(Engine::Math::Vector3(-15, 10, 0),
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
 				Engine::Math::Vector3(0.0f, 0.0f, -1.0f)));
 		leftWall->setScale(20.0f, 20.0f, 20.0f);
 		scene->addObjectToScene(leftWall);
 
 		//frontWall
-		Engine::SharedPointer<Engine::Graphics::Plane> frontWall =
-			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/frontWallMaterial.mat");
-		frontWall->setTransform(Engine::Math::Vector3(0, 10, 20), 
+		Engine::SharedPointer<Engine::MeshObject> frontWall =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh", 
+				"ComputerGraphics/frontWallMaterial.mat");
+		frontWall->setTransform(Engine::Math::Vector3(0, 10, 20),
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90.0f),
 				Engine::Math::Vector3(1.0f, 0.0f, 0.0f)));
 		frontWall->setScale(20.0f, 20.0f, 20.0f);
@@ -80,13 +98,23 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 
 
 		//backWall
-		Engine::SharedPointer<Engine::Graphics::Plane> backWall =
-			Engine::Graphics::Plane::CreatePlane("ComputerGraphics/backWallMaterial.mat");
-		backWall->setTransform(Engine::Math::Vector3(0, 10, -10), 
+		Engine::SharedPointer<Engine::MeshObject> backWall =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh", 
+				"ComputerGraphics/backWallMaterial.mat");
+		backWall->setTransform(Engine::Math::Vector3(0, 10, -10),
 			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
 				Engine::Math::Vector3(1.0f, 0.0f, 0.0f)));
 		backWall->setScale(30.0f, 20.0f, 20.0f);
-		scene->addObjectToScene(backWall);		
+		scene->addObjectToScene(backWall);
+
+
+		//Sphere
+		Engine::SharedPointer<Engine::MeshObject> sphere =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/sphere.mesh",
+				"ComputerGraphics/sphereMaterial.mat");
+		sphere->setTransform(Engine::Math::Vector3(5, 8, 0), Engine::Math::Quaternion());
+		sphere->setScale(3, 3, 3);
+		scene->addObjectToScene(sphere);
 
 		//cube
 		Engine::SharedPointer<Engine::MeshObject> cube =
@@ -106,13 +134,15 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		scene->addObjectToScene(proxyLightSphere);
 		proxyLightSphere->setObjectController(new Application::LightController());
 
+		Engine::SharedPointer<Engine::Graphics::Effect> proxyLightSphereEffect = proxyLightSphere->getEffect();
+
 
 		Engine::SharedPointer<Engine::Graphics::Light> mainLight
 			= Engine::Graphics::Light::createLight("mainLight", Engine::Graphics::LightType::Point);
 		mainLight->setIntensity(1.0f);
 		mainLight->setColor(Engine::Math::Vector3(1.0f, 0.0f, 0.0f));
 		mainLight->setTransform(Engine::Math::Vector3(0, 19, 0),
-			Engine::Math::Quaternion());
+			Engine::Math::Quaternion());		
 		scene->addLightToScene(mainLight);
 
 		Engine::Graphics::Data lightPosition;
@@ -124,7 +154,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 
 		memcpy(&lightPosition.vec3, &vecLightPosition, 3 * sizeof(float));
 		memcpy(&lightColor.vec3, &vecLightColor, 3 * sizeof(float));
-		intensity.floatVal = 0.1f;
+		intensity.floatVal = 0.3f;
 
 
 		mainLight->addLightParameter("lightPosition", Engine::Graphics::DataTypes::vec3,
@@ -133,9 +163,10 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 			intensity);
 		mainLight->addLightParameter("lightColor", Engine::Graphics::DataTypes::vec3,
 			lightColor);
-		mainLight->addLightToEffect(cubeEffect->getEffectName(), Engine::Graphics::Fragment);
-		mainLight->setObjectController(new Application::WalkController());
-		
+		mainLight->addLightToAllEffects();
+		mainLight->setObjectController(new Application::LightController());
+		mainLight->removeLightFromEffect(proxyLightSphereEffect->getEffectName(), Engine::Graphics::Fragment);
+		mainLight->removeLightFromEffect(environmentMappingSphereEffect->getEffectName(), Engine::Graphics::Fragment);
 		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
 				Engine::Math::Vector3(0.0f, 10.0f, 25.0f),
@@ -147,7 +178,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, char* i_comm
 		mainCamera->activateCamera(true);
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
 		mainCamera->setFieldOfView(60.0f);
-		//mainCamera->setObjectController(new Application::WalkController());
+		mainCamera->setObjectController(new Application::WalkController());
 		scene->addCameraToScene(mainCamera);
 
 

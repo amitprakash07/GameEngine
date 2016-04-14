@@ -121,6 +121,12 @@ void Engine::Graphics::ReflectingObject::updateObject()
 }
 
 
+void Engine::Graphics::ReflectingObject::setScale(float x, float y, float z)
+{
+	scaleFactor = Math::Vector3(x, y, z);
+}
+
+
 void Engine::Graphics::ReflectingObject::castShadow(bool, Graphics::ShadowMethod)
 {
 	//To Do

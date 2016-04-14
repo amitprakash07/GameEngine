@@ -16,8 +16,8 @@ uniform float ambientLight = 0.4;
 uniform lightUniforms
 {
 	vec3 lightPosition;
-	float intensity;
-	vec3 lightColor;
+float intensity;
+vec3 lightColor;
 };
 
 //Input
@@ -45,5 +45,5 @@ void main()
 	vec3 diffuse = max(0.0, dot(normalFromNormalMap, i_lightDirectionInTangentSpace)) * intensity * lightColor;
 	vec3 specular = pow(max(0.0, dot(normalFromNormalMap, halfVector)), glossiness) * intensity * specularColor * lightColor;
 	vec3 ambient = vec3(o_color * ambientLight);
-	o_color.rgb = o_color.rgb * (diffuse + specular + vec3(ambientLight))  ;
+	o_color.rgb = o_color.rgb * (diffuse + specular + vec3(ambientLight));
 }

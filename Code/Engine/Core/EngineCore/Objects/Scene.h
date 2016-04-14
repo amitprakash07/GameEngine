@@ -38,6 +38,7 @@ namespace Engine
 		std::vector<SharedPointer<Engine::Graphics::Line>> getLineList() const;
 		std::vector<SharedPointer<Engine::Graphics::ReflectingObject>> getReflectingObjectList() const;
 		std::vector<SharedPointer<Engine::Graphics::Plane>> getPlaneList() const;
+		std::vector<SharedPointer<Engine::Graphics::Light>> getLightList() const;
 		SharedPointer<Camera> getActiveCamera() const;
 		static void deleteAllScene();
 		std::string getTypeInfo() const override { return ""; }

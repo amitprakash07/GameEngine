@@ -103,6 +103,11 @@ return
 			src = "ComputerGraphics/sphere.lua",
 			target = "ComputerGraphics/sphere.mesh",
 		},
+	-- Plane
+		{
+			src = "ComputerGraphics/Plane.lua",
+			target = "ComputerGraphics/Plane.mesh",
+		},
 	},
 -- =====================================================================
 
@@ -148,6 +153,10 @@ return
 		{
 			src = "ComputerGraphics/sphereEffect.lua",
 			target = "ComputerGraphics/sphereEffect.effect"
+		},
+		{
+			src = "ComputerGraphics/planeMeshEffect.lua",
+			target = "ComputerGraphics/planeMeshEffect.effect"
 		},
 	},
 
@@ -225,6 +234,11 @@ return
 		{
 			src = "ComputerGraphics/sphereMaterial.lua",
 			target = "ComputerGraphics/sphereMaterial.mat",
+		},
+		-- planeMeshMaterial
+		{
+			src = "ComputerGraphics/planeMeshMaterial.lua",
+			target = "ComputerGraphics/planeMeshMaterial.mat",
 		},
 	},
 
@@ -424,6 +438,27 @@ return
 
 		},
 	-- *******************************************************************
+	{
+			src = "ComputerGraphics/planeMeshVertex.glsl",
+			target = "ComputerGraphics/planeMeshVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/planeMeshFragment.glsl",
+			target = "ComputerGraphics/planeMeshFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
 	
 	},
 
@@ -542,6 +577,15 @@ return
 			src = "ComputerGraphics/brickWall_3_normal.dds",
 			target = "ComputerGraphics/brickWall_3_normal.dds",
 		},
+	--ceiling Texture
+		{
+			src = "ComputerGraphics/ceiling.dds",
+			target = "ComputerGraphics/ceiling.dds",
+		},
+		{
+			src = "ComputerGraphics/ceiling_normal.dds",
+			target = "ComputerGraphics/ceiling_normal.dds",
+		},
 	--Sand drune Texture
 		{
 			src = "ComputerGraphics/sandDrune.dds",
@@ -554,6 +598,15 @@ return
 		{
 			src = "ComputerGraphics/sandDruneNormalMap.dds",
 			target = "ComputerGraphics/sandDruneNormalMap.dds",
+		},
+	--Sphere Texture
+		{
+			src = "ComputerGraphics/nightSkySpherical.dds",
+			target = "ComputerGraphics/nightSkySpherical.dds",
+		},
+		{
+			src = "ComputerGraphics/nightSkySpherical_normal.dds",
+			target = "ComputerGraphics/nightSkySpherical_normal.dds",
 		},
 	}
 -- ====================================================================

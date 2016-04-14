@@ -307,6 +307,14 @@ std::vector<Engine::SharedPointer<Engine::Graphics::Plane>>
 }
 
 
+std::vector<Engine::SharedPointer<Engine::Graphics::Light>> 
+	Engine::Scene::getLightList() const
+{
+	return mLightList;
+}
+
+
+
 bool Engine::Scene::sortMeshObject(
 	SharedPointer<MeshObject> i_gameObjectOne,
 	SharedPointer<MeshObject> i_gameObjectTwo)
