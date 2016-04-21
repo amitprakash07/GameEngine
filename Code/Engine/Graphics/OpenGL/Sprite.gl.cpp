@@ -50,6 +50,8 @@ Engine::Graphics::Sprite::Sprite(std::string iSpriteName,
 	rows = columns = totalCells = cellToRender = 0;
 	spriteDelay = 10;
 	currentTick = 0;
+	isPlayer = false;
+	mObjectType = ObjectType::NONE;
 }
 
 void Engine::Graphics::Sprite::drawSprite()

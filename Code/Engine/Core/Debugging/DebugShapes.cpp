@@ -78,7 +78,8 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	color.b = iColor.b;
 	color.a = 1.0f;
 	Engine::SharedPointer<Engine::MeshObject> debugBox =
-		Engine::MeshObject::CreateMeshObject("Game/DebugCubeForClass.mesh", "Game/defaultDebugShapes.mat", color);
+		Engine::MeshObject::CreateMeshObject("Game/DebugCubeForClass.mesh", 
+			"Game/defaultDebugShapes.mat", color);
 	debugBox->EnableDebugging(true);
 	debugBox->getMaterial()->changeMaterialColor(iColor.r, iColor.g, iColor.b);
 	Math::Vector3 tempPosition;

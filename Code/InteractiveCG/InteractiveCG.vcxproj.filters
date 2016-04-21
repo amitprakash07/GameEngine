@@ -14,6 +14,9 @@
     <ClInclude Include="ObjectController\FilterChanger.h">
       <Filter>ObjectController</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectController\BumpToToon.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InteractiveCG.cpp" />
@@ -27,6 +30,9 @@
       <Filter>ObjectController</Filter>
     </ClCompile>
     <ClCompile Include="ObjectController\FilterChanger.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectController\BumpToToon.cpp">
       <Filter>ObjectController</Filter>
     </ClCompile>
   </ItemGroup>

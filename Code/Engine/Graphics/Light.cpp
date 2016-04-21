@@ -21,6 +21,7 @@ Engine::Graphics::Light::Light(std::string iLightName)
 	effectFileNames.reserve(20);
 	lightParameterInitialized = false;
 	lightEnabled = true;
+	mObjectType = ObjectType::NONE;
 }
 
 void Engine::Graphics::Light::updateObject()
@@ -341,3 +342,15 @@ void Engine::Graphics::Light::setLightParameterValueToShaderObject()
 		}
 	}
 }
+
+
+Engine::ObjectType Engine::Graphics::Light::getObjectType()
+{
+	return mObjectType;
+}
+
+void Engine::Graphics::Light::setObjectType(ObjectType iObjectType)
+{
+	mObjectType = iObjectType;
+}
+

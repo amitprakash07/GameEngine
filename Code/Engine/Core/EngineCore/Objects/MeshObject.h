@@ -15,7 +15,8 @@ namespace Engine
 	class MeshObject : public IMessageHandler, Object
 	{
 	public:
-		static SharedPointer<MeshObject> CreateMeshObject(std::string, std::string, Engine::Graphics::RGBAColor = {1.0f,1.0f,1.0f,1.0f});
+		static SharedPointer<MeshObject> CreateMeshObject(std::string, std::string, 
+			Engine::Graphics::RGBAColor = {1.0f,1.0f,1.0f,1.0f});
 		void setObjectController(IObjectController *)override;
 		SharedPointer<Engine::Graphics::Mesh>       getMesh() const;
 		SharedPointer<Engine::Graphics::Effect>		getEffect() const;
@@ -25,12 +26,15 @@ namespace Engine
 		bool isRenderable() const override;
 		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
 		void draw(bool drawDebugObject) override;
+		bool IsPlayer() override;
+		void setPlayer(bool i_isPlayer) override;
 		std::string getTypeInfo() const override { return ""; }
 		bool isBothSameType(RTTI*, std::string) const override { return true; }
 		void EnableDebugging(bool enable = false);
 		bool isDebugObject() const override;	
 		void updateObject() override;
 		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
+		void setRenderable(bool iRenderable) override{ renderable = iRenderable; }
 		void resetTransform() override;
 		std::string getMaterialName() override { return mMaterial; }
 		bool isCollidable() override;
@@ -41,6 +45,8 @@ namespace Engine
 		bool castingShadowEnabled() override;
 		void receiveShadow(bool) override;
 		bool receivingShadowEnabled() override;
+		void setObjectType(ObjectType iObjectType) override;
+		ObjectType getObjectType() override;
 		~MeshObject();
 	private:
 		MeshObject(std::string, std::string);
@@ -56,7 +62,8 @@ namespace Engine
 		Math::Vector3								scaleFactor;
 		bool										debugObject;
 		Engine::Graphics::RGBAColor					vertexColor;
-		
+		bool										isPlayer;
+		ObjectType									mObjectType;
 	};
 }
 

@@ -11,6 +11,12 @@
     <ClInclude Include="ObjectController\WalkController.h">
       <Filter>ObjectController</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectController\ServerPlayerController.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectController\ClientPlayerController.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -36,6 +42,12 @@
       <Filter>ObjectController</Filter>
     </ClCompile>
     <ClCompile Include="ObjectController\WalkController.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectController\ServerPlayerController.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectController\ClientPlayerController.cpp">
       <Filter>ObjectController</Filter>
     </ClCompile>
   </ItemGroup>

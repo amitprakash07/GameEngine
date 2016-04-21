@@ -24,6 +24,11 @@ namespace Engine
 			float y()const;
 			float z()const;
 
+			void w(float iW) { mW = iW; }
+			void x(float iX) { mX = iX; }
+			void y(float iY) { mY = iY; }
+			void z(float iZ) { mZ = iZ; }
+
 			//Assignment
 			void operator = (const Quaternion i_rhs);
 
@@ -106,7 +111,10 @@ namespace Engine
 			float mW, mX, mY, mZ;
 			float scalar;
 			Vector3 vector;
-			Quaternion( const float i_w, const float i_x, const float i_y, const float i_z );
+			Quaternion( const float i_w, 
+				const float i_x, 
+				const float i_y, 
+				const float i_z );
 			void splitToScalarVector();
 			void splitFromScalarVector();
 		};

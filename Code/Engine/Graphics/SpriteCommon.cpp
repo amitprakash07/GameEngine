@@ -305,6 +305,32 @@ bool Engine::Graphics::Sprite::receivingShadowEnabled()
 }
 
 
+bool Engine::Graphics::Sprite::IsPlayer()
+{
+	return isPlayer;
+}
+
+
+void Engine::Graphics::Sprite::setPlayer(bool i_isPlayer)
+{
+	isPlayer = i_isPlayer;
+}
+
+
+void Engine::Graphics::Sprite::setObjectType(ObjectType iObjectType)
+{
+	mObjectType = iObjectType;
+}
+
+
+Engine::ObjectType Engine::Graphics::Sprite::getObjectType()
+{
+	return mObjectType;
+}
+
+
+
+
 
 
 

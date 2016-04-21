@@ -185,6 +185,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="InteractiveCG.h" />
+    <ClInclude Include="ObjectController\BumpToToon.h" />
     <ClInclude Include="ObjectController\FilterChanger.h" />
     <ClInclude Include="ObjectController\WalkController.h" />
     <ClInclude Include="ObjectController\RotateObject.h" />
@@ -192,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InteractiveCG.cpp" />
+    <ClCompile Include="ObjectController\BumpToToon.cpp" />
     <ClCompile Include="ObjectController\FilterChanger.cpp" />
     <ClCompile Include="ObjectController\WalkController.cpp" />
     <ClCompile Include="ObjectController\RotateObject.cpp" />

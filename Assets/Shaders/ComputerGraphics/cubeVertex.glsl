@@ -21,8 +21,8 @@ uniform vec4 vertexColorModifier = vec4(1.0);
 uniform lightUniforms
 {
 	vec3 lightPosition;
-float intensity;
-vec3 lightColor;
+	float intensity;
+	vec3 lightColor;
 };
 
 //Input

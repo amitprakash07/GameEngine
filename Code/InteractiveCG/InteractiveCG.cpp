@@ -16,6 +16,7 @@
 #include "ObjectController/RotateObject.h"
 #include "ObjectController/FilterChanger.h"
 #include "../Engine/Graphics/Light.h"
+#include "ObjectController/BumpToToon.h"
 
 
 
@@ -34,7 +35,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE,
 		
 		//GameObjects	
 
-		Engine::SharedPointer<Engine::Graphics::ReflectingObject> environmentMappingSphere =
+		/*Engine::SharedPointer<Engine::Graphics::ReflectingObject> environmentMappingSphere =
 			Engine::Graphics::ReflectingObject::CreateReflectingObject("ComputerGraphics/sphere.mesh",
 				"ComputerGraphics/environmentMappingSphereMaterial.mat", 0.1, 1000.0f);
 		environmentMappingSphere->setTransform(
@@ -44,7 +45,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE,
 		scene->addObjectToScene(environmentMappingSphere);
 		Engine::SharedPointer<Engine::Graphics::Effect> environmentMappingSphereEffect = 
 			Engine::Graphics::Effect::getEffect(
-				Engine::Graphics::Material::getMaterial(environmentMappingSphere->getMaterialName().c_str())->getEffectName());
+				Engine::Graphics::Material::getMaterial(environmentMappingSphere->getMaterialName().c_str())->getEffectName());*/
 		//environmentMappingSphere->setObjectController(new Application::ObjectRotateController());
 
 		//floor
@@ -109,12 +110,24 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE,
 
 
 		//Sphere
-		Engine::SharedPointer<Engine::MeshObject> sphere =
+		Engine::SharedPointer<Engine::MeshObject> sphereWithToon =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/sphere.mesh",
+				"ComputerGraphics/sphereToonMaterial.mat");
+		sphereWithToon->setTransform(Engine::Math::Vector3(5, 8, 0), Engine::Math::Quaternion());
+		sphereWithToon->setScale(3, 3, 3);
+		scene->addObjectToScene(sphereWithToon);
+		sphereWithToon->setRenderable(false);
+		sphereWithToon->setObjectController(new Application::BumpToToon());
+
+
+		Engine::SharedPointer<Engine::MeshObject> sphereWithBump =
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/sphere.mesh",
 				"ComputerGraphics/sphereMaterial.mat");
-		sphere->setTransform(Engine::Math::Vector3(5, 8, 0), Engine::Math::Quaternion());
-		sphere->setScale(3, 3, 3);
-		scene->addObjectToScene(sphere);
+		sphereWithBump->setTransform(Engine::Math::Vector3(5, 8, 0), Engine::Math::Quaternion());
+		sphereWithBump->setScale(3, 3, 3);
+		scene->addObjectToScene(sphereWithBump);
+		//sphereWithBump->setRenderable(false);
+		sphereWithBump->setObjectController(new Application::BumpToToon());
 
 		//cube
 		Engine::SharedPointer<Engine::MeshObject> cube =
@@ -166,7 +179,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE,
 		mainLight->addLightToAllEffects();
 		mainLight->setObjectController(new Application::LightController());
 		mainLight->removeLightFromEffect(proxyLightSphereEffect->getEffectName(), Engine::Graphics::Fragment);
-		mainLight->removeLightFromEffect(environmentMappingSphereEffect->getEffectName(), Engine::Graphics::Fragment);
+		//mainLight->removeLightFromEffect(environmentMappingSphereEffect->getEffectName(), Engine::Graphics::Fragment);
 		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
 				Engine::Math::Vector3(0.0f, 10.0f, 25.0f),

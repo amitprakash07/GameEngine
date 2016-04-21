@@ -42,6 +42,7 @@ namespace Engine
 			bool isRenderable() const override;
 			void draw(bool drawDebugObject) override;	
 			void updateObject() override;
+			void setRenderable(bool iRenderable) override { /*to-do*/ }
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 			void setObjectController(IObjectController *i_ObjectControlller) override;
 			std::string getMaterialName() override { return materialName; }
@@ -53,6 +54,10 @@ namespace Engine
 			bool castingShadowEnabled() override;
 			void receiveShadow(bool) override;
 			bool receivingShadowEnabled() override;
+			bool IsPlayer() override { return false; }
+			void setPlayer(bool) override{}
+			void setObjectType(ObjectType iObjectType) override;
+			ObjectType getObjectType() override;
 		private:
 			static std::vector<SharedPointer<Line>> mLineList;
 			static bool setUniforms();
@@ -60,6 +65,7 @@ namespace Engine
 			IObjectController* mObjectController;
 			LineStruct mLineStruct;
 			bool debugObject;
+			ObjectType mObjectType;
 			static std::string materialName;
 			static bool createBuffer();
 			static bool writeToBuffer();

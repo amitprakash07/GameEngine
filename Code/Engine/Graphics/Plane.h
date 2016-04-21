@@ -32,7 +32,8 @@ namespace Engine
 			void resetTransform() override {}
 			bool isDebugObject() const override;
 			bool isRenderable() const override;
-			void draw(bool drawDebugObject) override;			
+			void draw(bool drawDebugObject) override;
+			void setRenderable(bool iRenderable) override { /*to-do*/ }
 			void updateObject() override;
 			void setObjectController(IObjectController *)override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
@@ -45,6 +46,10 @@ namespace Engine
 			bool castingShadowEnabled() override;
 			void receiveShadow(bool) override;
 			bool receivingShadowEnabled() override;
+			bool IsPlayer() override { return false; }
+			void setPlayer(bool) override{}
+			void setObjectType(ObjectType iObjectType) override;
+			ObjectType getObjectType() override;
 			//IMessageHandler
 			void HandleMessage(
 				Engine::utils::StringHash &,
@@ -62,6 +67,7 @@ namespace Engine
 			bool debugObject;			
 			VertexTextureNormal * vertexattribute;
 			VertexTextureNormal* getVertexAttributeData();
+			ObjectType mObjectType;
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;
 			GLuint vertexBufferId;

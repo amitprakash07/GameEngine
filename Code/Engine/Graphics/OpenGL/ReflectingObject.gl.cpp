@@ -38,6 +38,8 @@ Engine::Graphics::ReflectingObject::ReflectingObject()
 	isInitialTransform = true;
 	mInitialTransform = Math::Transform();
 	scaleFactor = Math::Vector3(1.0, 1.0, 1.0);
+	isPlayer = false;
+	mObjectType = ObjectType::NONE;
 }
 
 

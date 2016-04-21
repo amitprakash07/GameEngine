@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="ObjectController\CameraController.h" />
+    <ClInclude Include="ObjectController\ClientPlayerController.h" />
+    <ClInclude Include="ObjectController\ServerPlayerController.h" />
     <ClInclude Include="ObjectController\WalkController.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -33,6 +35,8 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ObjectController\CameraController.cpp" />
+    <ClCompile Include="ObjectController\ClientPlayerController.cpp" />
+    <ClCompile Include="ObjectController\ServerPlayerController.cpp" />
     <ClCompile Include="ObjectController\WalkController.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -125,7 +129,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Windows.lib;Debugging.lib;OpenGLExtensions.lib;Graphics.lib;EngineCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Windows.lib;Debugging.lib;OpenGLExtensions.lib;Graphics.lib;EngineCore.lib;ws2_32.lib;NetworkManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>copy "$(TargetPath)" "$(GameDir)$(TargetFileName)" /y</Command>

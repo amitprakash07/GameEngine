@@ -67,6 +67,10 @@ return
 			src = "Game/spriteEffect.lua",
 			target = "Game/spriteEffect.effect"
 		},
+		{
+			src = "Game/standardEffectWithSpecAndNormal.lua",
+			target = "Game/standardEffectWithSpecAndNormal.effect"
+		},
 
 	},
 
@@ -208,6 +212,26 @@ return
 			}
 		},
 -- *******************************************************************
+		{
+			src = "Game/standardVertexWithSpecAndNormal.glsl",			
+			target = "Game/standardVertexWithSpecAndNormal.glsl",
+			optionaltype = "vertex",
+			dependencies = 
+			{
+				"Game/shader_common.inc"
+			}
+		},
+		
+		{
+			src = "Game/standardFragmentWithSpecAndNormal.glsl",
+			target = "Game/standardFragmentWithSpecAndNormal.glsl",
+			optionaltype = "fragment",
+			dependencies = 
+			{
+				"Game/shader_common.inc"
+			}
+		},
+-- *******************************************************************
 	},
 
 -- ====================================================================
@@ -216,41 +240,102 @@ return
 -- ===============================TextureBuilder=========================	
 	{
 		BuildTool = "TextureBuilder.exe",
+		--cement wall_D
+		{
+			src = "Game/Arena/cement_wall_COLOR.dds",
+			target = "Game/Arena/cement_wall_COLOR.dds",
+		},
 		{
 			src = "Game/Arena/cement_wall_D.png",
 			target = "Game/Arena/cement_wall_D.png",
 		},
-
+		{
+			src = "Game/Arena/cement_wall_NRM.dds",
+			target = "Game/Arena/cement_wall_NRM.dds",
+		},
+		{
+			src = "Game/Arena/cement_wall_SPEC.dds",
+			target = "Game/Arena/cement_wall_SPEC.dds",
+		},
+		-- floor_D
+		{
+			src = "Game/Arena/floor_COLOR.dds",
+			target = "Game/Arena/floor_COLOR.dds",
+		},
 		{
 			src = "Game/Arena/floor_D.png",
 			target = "Game/Arena/floor_D.png",
 		},
-
+		{
+			src = "Game/Arena/floor_NRM.dds",
+			target = "Game/Arena/floor_NRM.dds",
+		},
+		{
+			src = "Game/Arena/floor_SPEC.dds",
+			target = "Game/Arena/floor_SPEC.dds",
+		},
+		-- metal_brace_D
+		{
+			src = "Game/Arena/metal_brace_COLOR.dds",
+			target = "Game/Arena/metal_brace_COLOR.dds",
+		},
 		{
 			src = "Game/Arena/metal_brace_D.png",
 			target = "Game/Arena/metal_brace_D.png",
 		},
-
+		{
+			src = "Game/Arena/metal_brace_NRM.dds",
+			target = "Game/Arena/metal_brace_NRM.dds",
+		},
+		{
+			src = "Game/Arena/metal_brace_SPEC.dds",
+			target = "Game/Arena/metal_brace_SPEC.dds",
+		},
+		--railing_D
+		{
+			src = "Game/Arena/railing_COLOR.dds",
+			target = "Game/Arena/railing_COLOR.dds",
+		},
 		{
 			src = "Game/Arena/railing_D.png",
 			target = "Game/Arena/railing_D.png",
 		},
-
+		{
+			src = "Game/Arena/railing_NRM.dds",
+			target = "Game/Arena/railing_NRM.dds",
+		},
+		{
+			src = "Game/Arena/railing_SPEC.dds",
+			target = "Game/Arena/railing_SPEC.dds",
+		},
+		--wall_D
+		{
+			src = "Game/Arena/wall_COLOR.dds",
+			target = "Game/Arena/wall_COLOR.dds",
+		},
 		{
 			src = "Game/Arena/wall_D.png",
 			target = "Game/Arena/wall_D.png",
 		},
-
+		{
+			src = "Game/Arena/wall_NRM.dds",
+			target = "Game/Arena/wall_NRM.dds",
+		},
+		{
+			src = "Game/Arena/wall_SPEC.dds",
+			target = "Game/Arena/wall_SPEC.dds",
+		},
+		--Default Texture
 		{
 			src = "Game/defaultTexture.png",
 			target = "Game/defaultTexture.png",
 		},	
-
+		-- Game Logo
 		{
 			src = "Game/logo.png",
 			target = "Game/logo.png",
 		},
-
+		--Sprite
 		{
 			src = "Game/numbers.png",
 			target = "Game/numbers.png",

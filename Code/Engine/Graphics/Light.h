@@ -22,6 +22,7 @@ namespace Engine
 			void setMeshName(std::string iMeshName, std::string iMaterialName);
 			void enableShadow(bool enableShadow);
 			std::string getName() const;
+			void setRenderable(bool iRenderable) override { /*to-do*/ }
 			bool isShadowCastingEnabled() const;
 			float getLightIntensity() const;
 			Engine::Math::Vector3 getLightColor()const;
@@ -55,7 +56,10 @@ namespace Engine
 			bool castingShadowEnabled() override { return false; }
 			void receiveShadow(bool) override {}
 			bool receivingShadowEnabled() override { return false; }
-
+			bool IsPlayer() override { return false; }
+			void setPlayer(bool) override{};
+			void setObjectType(ObjectType iObjectType) override;
+			ObjectType getObjectType() override;
 			//IMessageHandler functions
 			void HandleMessage(
 				Engine::utils::StringHash &,
@@ -81,6 +85,7 @@ namespace Engine
 			LightType mLightType;
 			bool lightParameterInitialized;
 			bool lightEnabled;
+			ObjectType mObjectType;
 		};
 	}
 }

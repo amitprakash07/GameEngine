@@ -25,6 +25,7 @@ Engine::Graphics::SkyBox::SkyBox(std::string material_Name)
 	mObjectController = nullptr;
 	isCurrent = false;
 	stubTransform = Engine::Math::Transform();
+	mObjectType = ObjectType::NONE;
 }
 
 

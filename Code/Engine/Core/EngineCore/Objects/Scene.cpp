@@ -18,6 +18,7 @@ Engine::Scene::Scene(std::string i_sceneName) :
 	render = false;
 	renderDebug = true;
 	mObjectController = nullptr;
+	mObjectType = ObjectType::NONE;
 }
 
 Engine::SharedPointer<Engine::Scene> Engine::Scene::CreateNewScene(std::string i_sceneName)
@@ -526,6 +527,20 @@ bool Engine::Scene::castingShadowEnabled()
 {
 	return false;
 }
+
+
+Engine::ObjectType Engine::Scene::getObjectType()
+{
+	return mObjectType;
+}
+
+
+void Engine::Scene::setObjectType(ObjectType iObjectType)
+{
+	mObjectType = iObjectType;
+}
+
+
 
 
 

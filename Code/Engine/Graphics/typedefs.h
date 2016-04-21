@@ -16,6 +16,13 @@
 
 namespace Engine
 {
+	enum class ObjectType
+	{
+		CLIENT,
+		SERVER,
+		NONE
+	};
+
 	namespace Graphics
 	{
 		typedef
@@ -192,8 +199,7 @@ namespace Engine
 			Projective,
 			ShadowMap,
 			ShadowVolume
-		};
-
+		};		
 	}
 }
 

@@ -12,9 +12,6 @@
 #include "../../../Graphics/ReflectingObject.h"
 #include "../../../Graphics/Light.h"
 
-
-
-
 namespace Engine
 {	
 	class Scene :public Object, IMessageHandler
@@ -40,6 +37,7 @@ namespace Engine
 		std::vector<SharedPointer<Engine::Graphics::Plane>> getPlaneList() const;
 		std::vector<SharedPointer<Engine::Graphics::Light>> getLightList() const;
 		SharedPointer<Camera> getActiveCamera() const;
+		void setRenderable(bool iRenderable) override {}
 		static void deleteAllScene();
 		std::string getTypeInfo() const override { return ""; }
 		bool isBothSameType(RTTI*, std::string) const override { return true; }
@@ -65,8 +63,14 @@ namespace Engine
 		bool castingShadowEnabled() override;
 		void receiveShadow(bool) override;
 		bool receivingShadowEnabled() override;
+		bool IsPlayer() override { return false; }
+		void setPlayer(bool ) override{};
+		void setObjectType(ObjectType iObjectType) override;
+		ObjectType getObjectType() override;
 		//IMesageHandler override function
-		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
+		void HandleMessage(Engine::utils::StringHash &, 
+			RTTI* i_MessageSender, 
+			void* i_pMessageData) override;
 		~Scene();
 	private:
 		static std::map<std::string, SharedPointer<Scene>> mSceneList;
@@ -99,6 +103,7 @@ namespace Engine
 		bool render;
 		bool renderDebug;
 		IObjectController * mObjectController;
+		ObjectType mObjectType;
 	};
 }
 

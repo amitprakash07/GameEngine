@@ -61,6 +61,8 @@ Engine::Camera::Camera(std::string i_name, Math::Vector3 i_position,
 	nearPlane = i_nearPlane;
 	farPlane = i_farPlane;
 	isInitialTransform = true;
+	isPlayer = false;
+	mObjectType = ObjectType::NONE;
 }
 
 void Engine::Camera::setFieldOfView(float i_fieldOfView)
@@ -215,6 +217,33 @@ bool Engine::Camera::receivingShadowEnabled()
 {
 	return false;
 }
+
+
+bool Engine::Camera::IsPlayer()
+{
+	return isPlayer;
+}
+
+void Engine::Camera::setPlayer(bool i_isPlayer)
+{
+	isPlayer = i_isPlayer;
+}
+
+
+Engine::ObjectType Engine::Camera::getObjectType()
+{
+	return mObjectType;
+}
+
+
+void Engine::Camera::setObjectType(ObjectType iObjectType)
+{
+	mObjectType = iObjectType;
+}
+
+
+
+
 
 
 

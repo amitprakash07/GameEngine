@@ -165,6 +165,18 @@ bool Engine::Graphics::Plane::castingShadowEnabled()
 }
 
 
+Engine::ObjectType Engine::Graphics::Plane::getObjectType()
+{
+	return mObjectType;
+}
+
+void Engine::Graphics::Plane::setObjectType(ObjectType iObjectType)
+{
+	mObjectType = iObjectType;
+}
+
+
+
 
 
 

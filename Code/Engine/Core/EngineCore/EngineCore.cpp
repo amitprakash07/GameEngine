@@ -6,6 +6,7 @@
 #include "Objects/Scene.h"
 #include <iostream>
 #include "../../Graphics/Material.h"
+#include "../NetworkManager/NetworkManager.h"
 
 
 
@@ -22,13 +23,14 @@ std::string Engine::EngineCore::textureFolderName;
 
 
 
-void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout)
+void Engine::EngineCore::Initialize(HINSTANCE hInstance, int windowLayout, bool isServer)
 {
 	getMessagingSystem();
 	getStringPool();
 	getWindowingSystem();
 	getInputController();
 	getMouseInputController();
+	Engine::Networking::NetworkManager::CreateNetworkManager(isServer);
 	
 	std::stringstream errormessage;
 	if (!getWindowingSystem().isNull())
@@ -151,7 +153,8 @@ void Engine::EngineCore::onNewFrame()
 
 	if (!hasWindowsSentAMessage)
 	{
-		Engine::Graphics::GraphicsSystem::Render();
+		Networking::NetworkManager::updateNetwork();
+		Engine::Graphics::GraphicsSystem::Render();		
 	}
 	else
 	{

@@ -38,9 +38,6 @@
     <ClCompile Include="Objects\Scene.cpp" />
     <ClCompile Include="WindowingSystem\WindowsProgram.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{887E9B0F-6FC5-4069-BD18-85246309F59E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -133,7 +130,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>MessagingSystem.lib;Utilities.lib;Graphics.lib;Windows.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MessagingSystem.lib;Utilities.lib;Graphics.lib;Windows.lib;ws2_32.lib;NetworkManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006,4221 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>

@@ -40,6 +40,7 @@ namespace Engine
 			void resetTransform() override {}
 			void draw(bool debug = false) override;
 			void debugObject(bool isDebug = false);
+			void setRenderable(bool iRenderable) override { /*to-do*/ }
 			bool isRenderable() const override;
 			bool isDebugObject() const override;	
 			void updateObject() override;
@@ -54,7 +55,10 @@ namespace Engine
 			bool castingShadowEnabled() override;
 			void receiveShadow(bool) override;
 			bool receivingShadowEnabled() override;
-
+			bool IsPlayer() override;
+			void setPlayer(bool i_isPlayer) override;
+			ObjectType getObjectType() override;
+			void setObjectType(ObjectType iObjectType) override;
 			~Sprite();
 		private:
 			Sprite(std::string spriteName,
@@ -86,6 +90,8 @@ namespace Engine
 			vertexTexture * vertexAttribute;
 			vertexTexture*  getTextureAndVerticesData()const;
 			IObjectController * mObjectController;
+			bool isPlayer;
+			ObjectType mObjectType;
 #ifdef PLATFORM_OPEN_GL
 			GLuint s_vertexArrayID;
 			GLuint vertexBufferId;

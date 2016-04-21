@@ -68,6 +68,8 @@ Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialNam
 	vertexModifierUniform = "vertexColorModifier\0";
 	isInitialTransform = true;
 	scaleFactor = Math::Vector3(1.0, 1.0, 1.0);
+	isPlayer = false;
+	mObjectType = ObjectType::NONE;
 }
 
 Engine::MeshObject::MeshObject()
@@ -176,7 +178,7 @@ Engine::MeshObject::~MeshObject()
 
 void Engine::MeshObject::draw(bool drawDebugObject)
 {
-	if (drawDebugObject && debugObject || !debugObject)
+	if (renderable && (drawDebugObject && debugObject || !debugObject))
 	{
 		SharedPointer<Scene> activeScene = Scene::getRenderableScene();
 		SharedPointer<Camera> tempCamera = activeScene->getActiveCamera();
@@ -353,6 +355,33 @@ void Engine::MeshObject::enableCollision(bool)
 {
 	//to do
 }
+
+
+bool Engine::MeshObject::IsPlayer()
+{
+	return isPlayer;
+}
+
+void Engine::MeshObject::setPlayer(bool i_isPlayer)
+{
+	isPlayer = i_isPlayer;
+}
+
+
+Engine::ObjectType Engine::MeshObject::getObjectType()
+{
+	return mObjectType;
+}
+
+void Engine::MeshObject::setObjectType(ObjectType iObjectType)
+{
+	mObjectType = iObjectType;
+}
+
+
+
+
+
 
 
 

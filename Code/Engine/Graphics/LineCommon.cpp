@@ -19,6 +19,7 @@ Engine::Graphics::Line::Line()
 	bufferInitialized = false;
 	vertexBufferInitalized = false;
 	mObjectController = nullptr;
+	mObjectType = ObjectType::NONE;
 }
 
 bool Engine::Graphics::Line::containsDebugLine()
@@ -199,6 +200,19 @@ void Engine::Graphics::Line::enableCollision(bool)
 {
 	//To do - stub
 }
+
+
+void Engine::Graphics::Line::setObjectType(ObjectType iObjectType)
+{
+	mObjectType = iObjectType;
+}
+
+Engine::ObjectType Engine::Graphics::Line::getObjectType()
+{
+	return mObjectType;
+}
+
+
 
 
 

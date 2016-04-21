@@ -238,6 +238,19 @@ bool Engine::Graphics::SkyBox::castingShadowEnabled()
 }
 
 
+Engine::ObjectType Engine::Graphics::SkyBox::getObjectType()
+{
+	return mObjectType;
+}
+
+void Engine::Graphics::SkyBox::setObjectType(ObjectType iObjectType)
+{
+	mObjectType = iObjectType;
+}
+
+
+
+
 
 
 

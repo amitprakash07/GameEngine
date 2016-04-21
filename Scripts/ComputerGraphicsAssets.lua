@@ -158,6 +158,10 @@ return
 			src = "ComputerGraphics/planeMeshEffect.lua",
 			target = "ComputerGraphics/planeMeshEffect.effect"
 		},
+		{
+			src = "ComputerGraphics/sphereToonEffect.lua",
+			target = "ComputerGraphics/sphereToonEffect.effect"
+		},
 	},
 
 -- =======================================================================
@@ -239,6 +243,10 @@ return
 		{
 			src = "ComputerGraphics/planeMeshMaterial.lua",
 			target = "ComputerGraphics/planeMeshMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/sphereToonMaterial.lua",
+			target = "ComputerGraphics/sphereToonMaterial.mat",
 		},
 	},
 
@@ -451,6 +459,27 @@ return
 		{
 			src = "ComputerGraphics/planeMeshFragment.glsl",
 			target = "ComputerGraphics/planeMeshFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
+	{
+			src = "ComputerGraphics/sphereToonVertex.glsl",
+			target = "ComputerGraphics/sphereToonVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/sphereToonFragment.glsl",
+			target = "ComputerGraphics/sphereToonFragment.glsl",
 			optionaltype = "fragment",
 			dependencies =
 			{

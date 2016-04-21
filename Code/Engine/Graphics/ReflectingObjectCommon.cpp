@@ -174,6 +174,32 @@ bool Engine::Graphics::ReflectingObject::isCollidable()
 }
 
 
+bool Engine::Graphics::ReflectingObject::IsPlayer()
+{
+	return isPlayer;
+}
+
+
+void Engine::Graphics::ReflectingObject::setPlayer(bool i_isPlayer)
+{
+	isPlayer = i_isPlayer;
+}
+
+
+void Engine::Graphics::ReflectingObject::setObjectType(ObjectType iObjectType)
+{
+	mObjectType = iObjectType;
+}
+
+
+Engine::ObjectType Engine::Graphics::ReflectingObject::getObjectType()
+{
+	return mObjectType;
+}
+
+
+
+
 
 
 

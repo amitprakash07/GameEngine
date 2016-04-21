@@ -30,6 +30,11 @@ namespace Engine
 		virtual bool castingShadowEnabled() = 0;
 		virtual void receiveShadow(bool) = 0;
 		virtual bool receivingShadowEnabled() = 0;
+		virtual void setRenderable(bool) = 0;
+		virtual bool IsPlayer() = 0;
+		virtual void setPlayer(bool) = 0;
+		virtual void setObjectType(ObjectType) = 0;
+		virtual ObjectType getObjectType() = 0;
 		Object() {}
 		virtual ~Object() {}
 	};

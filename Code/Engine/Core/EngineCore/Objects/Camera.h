@@ -3,7 +3,6 @@
 
 #include "../../../Core/Utilities/IMessageHandler.h"
 #include "../../../Core/Utilities/SharedPointer.h"
-//#include "../../Utilities/IObjectController.h"
 #include "Object.h"
 #include "../enginedefs.h"
 
@@ -20,7 +19,11 @@ namespace Engine
 			Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
 		void resetTransform() override;
 		void draw(bool) override {}
-		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
+		void setRenderable(bool iRenderable) override {  }
+		void HandleMessage(Engine::utils::StringHash &, 
+			RTTI* i_MessageSender, void* i_pMessageData) override;
+		bool IsPlayer() override;
+		void setPlayer(bool i_isPlayer) override;
 		//void setCameraController(IObjectController*);
 		void setFieldOfView(float);
 		float getFieldOfView() const;
@@ -50,6 +53,8 @@ namespace Engine
 		bool castingShadowEnabled() override;
 		void receiveShadow(bool) override;
 		bool receivingShadowEnabled() override;
+		void setObjectType(ObjectType iObjectType) override;
+		ObjectType getObjectType() override;
 	private:
 		Engine::Math::Transform mTransform;
 		Math::Transform mInitialTransform;
@@ -61,6 +66,8 @@ namespace Engine
 		bool active;
 		float nearPlane;
 		float farPlane;
+		bool isPlayer;
+		ObjectType mObjectType;
 		MouseEventAndPosition mMouseCurrentStateAndPosition;
 		MouseEventAndPosition mMousePreviousStateAndPosition;
 		Camera(std::string, Math::Vector3, Math::Quaternion,

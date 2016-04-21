@@ -23,6 +23,7 @@ namespace Engine
 			bool isRenderable() const override;
 			bool isDebugObject() const override;
 			void draw(bool) override;	
+			void setRenderable(bool iRenderable) override { /*to-do*/ }
 			void resetTransform() override;
 			void generateCubeMap();
 			void setDynamicTextureSamplerName(std::string samplerUniformName);	
@@ -38,7 +39,10 @@ namespace Engine
 			bool castingShadowEnabled() override;
 			void receiveShadow(bool) override;
 			bool receivingShadowEnabled() override;
-
+			bool IsPlayer() override;
+			void setPlayer(bool i_isPlayer) override;
+			void setObjectType(ObjectType iObjectType) override;
+			ObjectType getObjectType() override;
 		private:
 			ReflectingObject();
 			bool init();
@@ -51,7 +55,9 @@ namespace Engine
 			std::string textureName;
 			std::string dynamicTextureSamplerName;
 			Math::Vector3 scaleFactor;
-			TextureResource texture;			
+			TextureResource texture;
+			bool isPlayer;
+			ObjectType mObjectType;
 			void renderScene();
 #ifdef PLATFORM_OPEN_GL
 			GLuint renderBuffer[6];

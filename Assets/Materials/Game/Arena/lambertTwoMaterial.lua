@@ -8,7 +8,7 @@ return
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",
-		}		
+		},				
 	},
 	uniforms =
 	{

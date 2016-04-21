@@ -24,6 +24,7 @@ namespace Engine
 			bool isDebugObject() const override;
 			bool isRenderable() const override;
 			void draw(bool drawDebugObject) override;
+			void setRenderable(bool iRenderable) override { /*to-do*/ }
 			void resetTransform() override;
 			void setMaterial(std::string newMaterialName);
 			bool isSkyBoxAvailableIntialized()const;
@@ -39,9 +40,10 @@ namespace Engine
 			bool castingShadowEnabled() override;
 			void receiveShadow(bool) override;
 			bool receivingShadowEnabled() override;
-
-
-
+			bool IsPlayer() override { return false; };
+			void setPlayer(bool) override{}
+			void setObjectType(ObjectType iObjectType) override;
+			ObjectType getObjectType() override;
 			void setCurrentSkyBox();
 			static bool isSkyBoxExist(std::string materialName);
 			void HandleMessage(
@@ -57,6 +59,7 @@ namespace Engine
 			std::string mMaterialName;
 			bool createBuffer();				
 			IObjectController * mObjectController;
+			ObjectType mObjectType;
 			bool isCurrent;
 			static void deactivateAll();
 #ifdef PLATFORM_OPEN_GL

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{C86E1B48-E86F-4561-B149-5B7BF4104B07}"
 EndProject
@@ -98,6 +98,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utilities", "Code\Engine\Co
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EngineCore", "Code\Engine\Core\EngineCore\EngineCore.vcxproj", "{887E9B0F-6FC5-4069-BD18-85246309F59E}"
 	ProjectSection(ProjectDependencies) = postProject
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC} = {B117D4BA-40DE-4B24-95CB-CE72336502EC}
 		{1A97BFDF-D891-474A-86B1-6E76E89ABC73} = {1A97BFDF-D891-474A-86B1-6E76E89ABC73}
 	EndProjectSection
 EndProject
@@ -203,6 +204,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{CA8D
 		Assets\Effects\Game\lineEffect.lua = Assets\Effects\Game\lineEffect.lua
 		Assets\Effects\Game\spriteEffect.lua = Assets\Effects\Game\spriteEffect.lua
 		Assets\Effects\Game\standardEffect.lua = Assets\Effects\Game\standardEffect.lua
+		Assets\Effects\Game\standardEffectWithSpecAndNormal.lua = Assets\Effects\Game\standardEffectWithSpecAndNormal.lua
 		Assets\Effects\Game\transparentEffect.lua = Assets\Effects\Game\transparentEffect.lua
 	EndProjectSection
 EndProject
@@ -214,6 +216,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{9498
 		Assets\Shaders\Game\spriteVertex.glsl = Assets\Shaders\Game\spriteVertex.glsl
 		Assets\Shaders\Game\standard.fshd = Assets\Shaders\Game\standard.fshd
 		Assets\Shaders\Game\standard.vshd = Assets\Shaders\Game\standard.vshd
+		Assets\Shaders\Game\standardFragmentWithSpecAndNormal.glsl = Assets\Shaders\Game\standardFragmentWithSpecAndNormal.glsl
+		Assets\Shaders\Game\standardVertexWithSpecAndNormal.glsl = Assets\Shaders\Game\standardVertexWithSpecAndNormal.glsl
 		Assets\Shaders\Game\transparent.fshd = Assets\Shaders\Game\transparent.fshd
 	EndProjectSection
 EndProject
@@ -255,6 +259,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{7FA5
 		Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua = Assets\Effects\ComputerGraphics\reflectiveSphereEffect.lua
 		Assets\Effects\ComputerGraphics\skyBoxEffect.lua = Assets\Effects\ComputerGraphics\skyBoxEffect.lua
 		Assets\Effects\ComputerGraphics\sphereEffect.lua = Assets\Effects\ComputerGraphics\sphereEffect.lua
+		Assets\Effects\ComputerGraphics\sphereToonEffect.lua = Assets\Effects\ComputerGraphics\sphereToonEffect.lua
 		Assets\Effects\ComputerGraphics\utahTeapotEffect.lua = Assets\Effects\ComputerGraphics\utahTeapotEffect.lua
 	EndProjectSection
 EndProject
@@ -277,6 +282,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{
 		Assets\Materials\ComputerGraphics\skyBoxMaterialThree.lua = Assets\Materials\ComputerGraphics\skyBoxMaterialThree.lua
 		Assets\Materials\ComputerGraphics\skyBoxMaterialTwo.lua = Assets\Materials\ComputerGraphics\skyBoxMaterialTwo.lua
 		Assets\Materials\ComputerGraphics\sphereMaterial.lua = Assets\Materials\ComputerGraphics\sphereMaterial.lua
+		Assets\Materials\ComputerGraphics\sphereToonMaterial.lua = Assets\Materials\ComputerGraphics\sphereToonMaterial.lua
 		Assets\Materials\ComputerGraphics\utahTeapotMaterial.lua = Assets\Materials\ComputerGraphics\utahTeapotMaterial.lua
 	EndProjectSection
 EndProject
@@ -299,6 +305,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{EA91
 		Assets\Shaders\ComputerGraphics\skyBoxFragment.glsl = Assets\Shaders\ComputerGraphics\skyBoxFragment.glsl
 		Assets\Shaders\ComputerGraphics\skyBoxVertex.glsl = Assets\Shaders\ComputerGraphics\skyBoxVertex.glsl
 		Assets\Shaders\ComputerGraphics\sphereFragment.glsl = Assets\Shaders\ComputerGraphics\sphereFragment.glsl
+		Assets\Shaders\ComputerGraphics\sphereToonFragment.glsl = Assets\Shaders\ComputerGraphics\sphereToonFragment.glsl
+		Assets\Shaders\ComputerGraphics\sphereToonVertex.glsl = Assets\Shaders\ComputerGraphics\sphereToonVertex.glsl
 		Assets\Shaders\ComputerGraphics\sphereVertex.glsl = Assets\Shaders\ComputerGraphics\sphereVertex.glsl
 		Assets\Shaders\ComputerGraphics\teapotFragment.glsl = Assets\Shaders\ComputerGraphics\teapotFragment.glsl
 		Assets\Shaders\ComputerGraphics\teapotVertex.glsl = Assets\Shaders\ComputerGraphics\teapotVertex.glsl
@@ -409,6 +417,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Raknet", "Code\Externals\Raknet\Raknet.vcxproj", "{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetworkManager", "Code\Engine\Core\NetworkManager\NetworkManager.vcxproj", "{B117D4BA-40DE-4B24-95CB-CE72336502EC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527} = {012D9A9E-A662-4D8C-8F2C-C7D66BA29527}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -876,18 +889,38 @@ Global
 		{668DCA77-813C-4A0E-820C-4CA6FDEB1FDF}.Release|x64.Build.0 = Release|x64
 		{668DCA77-813C-4A0E-820C-4CA6FDEB1FDF}.Release|x86.ActiveCfg = Release|Win32
 		{668DCA77-813C-4A0E-820C-4CA6FDEB1FDF}.Release|x86.Build.0 = Release|Win32
-		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|Direct3D_64.ActiveCfg = Debug|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|Direct3D_64.ActiveCfg = Debug|x64
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|Direct3D_64.Build.0 = Debug|x64
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|OpenGL_32.ActiveCfg = Debug|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|OpenGL_32.Build.0 = Debug|Win32
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|x64.ActiveCfg = Debug|x64
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|x64.Build.0 = Debug|x64
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|x86.ActiveCfg = Debug|Win32
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Debug|x86.Build.0 = Debug|Win32
-		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|Direct3D_64.ActiveCfg = Release|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|Direct3D_64.ActiveCfg = Release|x64
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|Direct3D_64.Build.0 = Release|x64
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|OpenGL_32.ActiveCfg = Release|Win32
+		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|OpenGL_32.Build.0 = Release|Win32
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|x64.ActiveCfg = Release|x64
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|x64.Build.0 = Release|x64
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|x86.ActiveCfg = Release|Win32
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527}.Release|x86.Build.0 = Release|Win32
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Debug|Direct3D_64.ActiveCfg = Debug|x64
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Debug|Direct3D_64.Build.0 = Debug|x64
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Debug|OpenGL_32.ActiveCfg = Debug|Win32
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Debug|OpenGL_32.Build.0 = Debug|Win32
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Debug|x64.ActiveCfg = Debug|x64
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Debug|x64.Build.0 = Debug|x64
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Debug|x86.ActiveCfg = Debug|Win32
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Debug|x86.Build.0 = Debug|Win32
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|Direct3D_64.ActiveCfg = Release|x64
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|Direct3D_64.Build.0 = Release|x64
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|OpenGL_32.ActiveCfg = Release|Win32
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|OpenGL_32.Build.0 = Release|Win32
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x64.ActiveCfg = Release|x64
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x64.Build.0 = Release|x64
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x86.ActiveCfg = Release|Win32
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -935,5 +968,6 @@ Global
 		{5EF8A44E-593F-45D7-B9C3-4D7130965DEA} = {C121E793-3704-41FD-8651-61C43E64D057}
 		{FC71BA55-020A-4A1D-B503-4DB8A34E55A9} = {C121E793-3704-41FD-8651-61C43E64D057}
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527} = {A38CE98B-1752-4FA7-8FB5-66B33107C40F}
+		{B117D4BA-40DE-4B24-95CB-CE72336502EC} = {C86E1B48-E86F-4561-B149-5B7BF4104B07}
 	EndGlobalSection
 EndGlobal

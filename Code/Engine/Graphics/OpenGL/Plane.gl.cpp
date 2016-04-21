@@ -28,6 +28,7 @@ Engine::Graphics::Plane::Plane(std::string material_name)
 	mTransform = Math::Transform();
 	mMaterialName = material_name;
 	vertexattribute = nullptr;
+	mObjectType = ObjectType::NONE;
 }
 
 

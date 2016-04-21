@@ -15,7 +15,7 @@ namespace Engine
 	class EngineCore
 	{
 	public:
-		static void Initialize(HINSTANCE hInstance, int windowLayout);
+		static void Initialize(HINSTANCE hInstance, int windowLayout, bool isServer);
 		static void onNewFrame();
 		static bool isWindowClosed(HINSTANCE hInstance);
 		static void shutDownEngine();
