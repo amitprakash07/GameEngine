@@ -407,6 +407,13 @@ void Engine::Math::Quaternion::printQuaternion() const
 	std::cout << std::endl;
 }
 
+std::string Engine::Math::Quaternion::toString() const
+{
+	return (std::to_string(mW) + std::to_string(mX)
+		+ std::to_string(mY) + std::to_string(mZ));
+}
+
+
 
 Engine::Math::Vector3 Engine::Math::Quaternion::operator*(const Vector3 i_rhs)
 {

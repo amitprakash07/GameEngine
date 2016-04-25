@@ -494,3 +494,9 @@ bool WindowsUtil::setVSEnvironmentVariableValue(const char* variableName,
 	return(::SetEnvironmentVariable(variableName, value));
 }
 
+
+void WindowsUtil::displayToOutPutWindow(std::string iString)
+{
+	OutputDebugString(iString.c_str());
+}
+

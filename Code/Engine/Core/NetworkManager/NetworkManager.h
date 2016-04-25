@@ -21,16 +21,16 @@ namespace Engine
 			static NetworkPacket getReceivedNetworkPacket();
 			static void setSendingNetworkPacket(NetworkPacket iSendingNetworkPacket);	
 			static GameMessages getCurrentMessage();
+			static std::string getCurrentMessageString();
 		private:
 			static SharedPointer<NetworkManager> mNetworkManager;
 			NetworkManager();
-			SharedPointer<RakNet::RakPeerInterface> mPeerInterface;
-			bool mIsServer;
-			ServerPort_Or_MAxClent mNetworkDetail;
-			RakNet::SocketDescriptor mSocketDetail;
+			System mSystem;
+			bool mIsServer;		
 			NetworkPacket receivingNetworkPacket;
 			NetworkPacket sendingNetworkPacket;
 			GameMessages currentGameMessage;
+			bool isConnected;
 		};
 	}
 }

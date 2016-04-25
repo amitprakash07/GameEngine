@@ -3,8 +3,12 @@
   <ItemGroup>
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="NetworkDefs.h" />
+    <ClInclude Include="Server.h" />
+    <ClInclude Include="Client.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="Client.cpp" />
   </ItemGroup>
 </Project>

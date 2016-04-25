@@ -165,6 +165,15 @@ Engine::Math::Vector3::Vector3( const float i_x, const float i_y, const float i_
 }
 
 
+std::string Engine::Math::Vector3::toString() const
+{
+	std::string returnString;
+	returnString = std::to_string(x) + std::to_string(y) + std::to_string(z);
+	return returnString;
+}
+
+
+
 float* Engine::Math::Vector3::toFloatArray() const
 {
 	float floatArray[3];

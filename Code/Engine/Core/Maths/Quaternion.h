@@ -107,6 +107,10 @@ namespace Engine
 
 
 			void printQuaternion() const;
+
+			std::string toString() const;
+
+
 		private:
 			float mW, mX, mY, mZ;
 			float scalar;

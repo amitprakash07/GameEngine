@@ -5,6 +5,7 @@
 #include "../../StringPoolManager/StringPool.h"
 #include "../EngineCore.h"
 #include <iostream>
+#include "../../NetworkManager/NetworkManager.h"
 
 
 Engine::SharedPointer<Engine::Windows::WindowingSystem> Engine::Windows::WindowingSystem::mWindowingSystem;
@@ -95,6 +96,10 @@ HWND Engine::Windows::WindowingSystem::CreateMainWindowHandle(
 		// The window's "caption"
 		// (The text that is displayed in the title bar)
 		std::string windowCaptionString = "Amit Prakash's - WindowsUtil Game";
+		if (Engine::Networking::NetworkManager::isServerInstance())
+			windowCaptionString += " - Server - ";
+		else
+			windowCaptionString += " - Client - ";
 		//char* windowCaption = "Amit Prakash's - WindowsUtil Game";
 		std::string platform;
 #ifdef PLATFORM_D3D

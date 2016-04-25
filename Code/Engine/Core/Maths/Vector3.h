@@ -4,6 +4,7 @@
 
 #ifndef _MATH_CVECTOR_H
 #define _MATH_CVECTOR_H
+#include <string>
 
 // Class Declaration
 //==================
@@ -55,6 +56,8 @@ namespace Engine
 			float* toFloatArray() const;
 
 			Vector3( const float i_x = 0.0f, const float i_y = 0.0f, const float i_z = 0.0f );			
+
+			std::string toString() const;
 
 			// Data
 			//=====

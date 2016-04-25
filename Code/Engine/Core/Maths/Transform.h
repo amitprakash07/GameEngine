@@ -4,6 +4,7 @@
 #include "Quaternion.h"
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include <string>
 
 namespace Engine
 {
@@ -32,6 +33,7 @@ namespace Engine
 			void VectorTransformTo(Vector3& iDir)const;
 			void VectorTransformFrom(Vector3& iDir)const;
 			void printTransform()const;
+			//sdbnfkjdshfjkstd::string toString();
 		private:
 			Vector3 position;
 			Quaternion orientation;

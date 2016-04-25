@@ -19,11 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Client.h" />
     <ClInclude Include="NetworkDefs.h" />
     <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="Server.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Client.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B117D4BA-40DE-4B24-95CB-CE72336502EC}</ProjectGuid>

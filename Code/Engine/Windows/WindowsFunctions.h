@@ -57,6 +57,8 @@ namespace WindowsUtil
 
 	bool setVSEnvironmentVariableValue(const char* variableName,
 		const char* value);
+
+	void displayToOutPutWindow(std::string iString);
 }
 
 #endif	//Windows Util

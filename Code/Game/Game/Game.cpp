@@ -7,6 +7,7 @@
 #include "../../Engine/Core/Maths/Functions.h"
 #include "../../Engine/Windows/WindowsFunctions.h"
 #include "../../Engine/Core/Debugging/DebugShapes.h"
+#include "../../Engine/Core/NetworkManager/NetworkManager.h"
 #include "ObjectController/CameraController.h"
 #include "../../Engine/Graphics/Sprite.h"
 #include "ObjectController/ClientPlayerController.h"
@@ -16,15 +17,23 @@
 #define shared_pointer_reinterpret_cast_to_object(x) \
 		*reinterpret_cast<Engine::SharedPointer<Engine::Object>*>(&x)
 
+//#define SERVER_INSTANCE
 
 int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, 
 	HINSTANCE, char* i_commandLineArguments, 
 	int i_initialWindowDisplayState)
 {
 	{
+		bool isServer = false;
+		std::string  commandLine(i_commandLineArguments);
+		if (commandLine == "true")
+			isServer = true;
+		else
+			isServer = false;
+			
 		//_CrtSetBreakAlloc(156);
 		Engine::EngineCore::Initialize(i_thisInstanceOfTheProgram, 
-			i_initialWindowDisplayState, false);
+			i_initialWindowDisplayState, isServer);		
 		
 		//Scene
 		Engine::SharedPointer<Engine::Scene> scene = Engine::Scene::CreateNewScene("Scene_01");
@@ -137,8 +146,20 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		clientObject->getMaterial()->changeMaterialColor(1.0, 0.0, 0.0);
 		clientObject->setObjectType(Engine::ObjectType::CLIENT);
 		scene->addObjectToScene(clientObject);
-		//clientObject->setRenderable(false);
+		clientObject->EnableDebugging(true);
 		clientObject->setObjectController(new Game::ClientPlayerController());
+		if(Engine::Networking::NetworkManager::isServerInstance())
+			clientObject->setRenderable(false);		
+		else
+		{
+			//client system
+			Engine::Networking::NetworkPacket mSendPacket{ clientObject->getTransform()};
+			Engine::Networking::NetworkManager::setSendingNetworkPacket(mSendPacket);	
+		}
+		
+		
+
+		
 
 		Engine::SharedPointer<Engine::MeshObject> serverObject =
 			Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
@@ -149,10 +170,17 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		serverObject->getMaterial()->changeMaterialColor(0.0, 1.0, 0.0);
 		scene->addObjectToScene(serverObject);
 		serverObject->setObjectController(new Game::ServerPlayerController());
-		serverObject->setRenderable(false);
-
-
-				
+		serverObject->EnableDebugging(true);
+		if(Engine::Networking::NetworkManager::isServerInstance())
+		{
+			//server system
+			Engine::Networking::NetworkPacket mSendPacket{ serverObject->getTransform() };
+			Engine::Networking::NetworkManager::setSendingNetworkPacket(mSendPacket);					
+		}
+		else
+			//client system
+			serverObject->setRenderable(false);		
+		
 
 
 		Engine::SharedPointer<Engine::Graphics::Light> mainLight
