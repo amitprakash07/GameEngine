@@ -4,6 +4,9 @@
 #include "../../../Externals/Raknet/src/BitStream.h"
 #include "NetworkDefs.h"
 #include <iostream>
+#include "../EngineCore/Objects/Scene.h"
+#include "../EngineCore/EngineCore.h"
+#include "../Utilities/StringUtil.h"
 
 Engine::Networking::Server::Server(int iNumPlayers)
 {
@@ -11,13 +14,25 @@ Engine::Networking::Server::Server(int iNumPlayers)
 	mNumIPs = 1;
 	mMaxPlayers = iNumPlayers;
 	mServerPort = "60001";
+	mServer = nullptr;
+	mPacket = nullptr;
+}
+
+Engine::Networking::Server::Server()
+{
+	mNumSockets = 1;
+	mNumIPs = 1;
+	mMaxPlayers = 8;
+	mServerPort = "60001";
+	mServer = nullptr;
+	mPacket = nullptr;
 }
 
 
 void Engine::Networking::Server::CreateServerInterface()
 {
 	mServer = RakNet::RakPeerInterface::GetInstance();			
-	WindowsUtil::Assert(mServer,"Unable to create the server interface");	
+	WindowsUtil::Assert(mServer!=nullptr,"Unable to create the server interface");	
 	mServer->SetIncomingPassword("admin",
 		static_cast<int>(strlen("admin")));
 	mServer->SetTimeoutTime(30000, RakNet::UNASSIGNED_SYSTEM_ADDRESS);	
@@ -31,8 +46,7 @@ void Engine::Networking::Server::ReceivePackets() //-- In game loop
 	{
 		mPacketIdentifier = GetPacketIdentifier(mPacket);
 		RakNet::BitStream receiveBitStream(mPacket->data,
-			mPacket->length, false);
-		RakNet::BitStream sendBitStream;
+			mPacket->length, false);		
 		switch(mPacketIdentifier)
 		{
 		case ID_DISCONNECTION_NOTIFICATION:
@@ -46,8 +60,55 @@ void Engine::Networking::Server::ReceivePackets() //-- In game loop
 			std::cout << "Already Connected\n";
 			break;
 		case ID_NEW_INCOMING_CONNECTION:
+		{
 			WindowsUtil::displayToOutPutWindow("New Incoming Connection");
 			std::cout << "New Incoming connection\n";
+			RakNet::BitStream bsOut;
+			bsOut.Write(static_cast<RakNet::MessageID>(ID_LOAD_CURRENT_PLAYERS));
+			bsOut.Write(mPlayerLists.size());
+			for (std::map<RakNet::NetworkID, SharedPointer<NetworkPlayer>>::iterator i = mPlayerLists.begin();
+				i != mPlayerLists.end(); ++i)
+			{
+				SharedPointer<MeshObject> tempMeshObject = i->second->GetMeshObject();
+				
+				std::string meshFileNameWithFullPath = tempMeshObject->getMesh()->getMeshFileName();
+				std::string meshFileName =
+					Utils::RemoveString(meshFileNameWithFullPath,
+						EngineCore::getMeshFolderPath());
+
+				std::string materialFileNameWithFullPath = tempMeshObject->getMaterial()->getMaterialName();
+				std::string materialFileName =
+					Utils::RemoveString(materialFileNameWithFullPath,
+						EngineCore::getMaterialFolderPath());
+
+
+				Math::Transform tempTransform = tempMeshObject->getTransform();
+				Engine::Graphics::RGBAColor iColor = tempMeshObject->GetVertexColor();
+				
+				bsOut.Write(meshFileName.size());
+				bsOut.Write(meshFileName.c_str(), meshFileName.size());
+
+				bsOut.Write(materialFileName.size());
+				bsOut.Write(materialFileName.c_str(), materialFileName.size());
+
+				bsOut.Write(tempTransform.getPosition().x);
+				bsOut.Write(tempTransform.getPosition().y);
+				bsOut.Write(tempTransform.getPosition().z);
+
+				bsOut.Write(tempTransform.getOrientation().w());
+				bsOut.Write(tempTransform.getOrientation().x());
+				bsOut.Write(tempTransform.getOrientation().y());
+				bsOut.Write(tempTransform.getOrientation().z());
+
+				bsOut.Write(iColor.r);
+				bsOut.Write(iColor.g);
+				bsOut.Write(iColor.b);
+				bsOut.Write(iColor.a);
+				bsOut.Write(i->second->GetNetworkID());
+			}
+			mServer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0,
+				mPacket->systemAddress, false);
+		}
 			break;
 		case ID_INCOMPATIBLE_PROTOCOL_VERSION:
 			WindowsUtil::displayToOutPutWindow("Incompatible Connection Protocol\n");
@@ -86,7 +147,97 @@ void Engine::Networking::Server::ReceivePackets() //-- In game loop
 			std::cout << "Incorrect Password\n";
 			break;
 		case ID_SPAWN_PLAYER:
-			break;
+		{
+			receiveBitStream.IgnoreBytes(sizeof(RakNet::MessageID));
+			unsigned char* bitStreamData = receiveBitStream.GetData();
+
+			receiveBitStream.IgnoreBytes(sizeof(RakNet::MessageID));
+			Math::Transform tempTransform;
+			Engine::Graphics::RGBAColor tempColor;
+			size_t materialNameSize;
+			size_t meshNameSize;
+
+			char * meshName;
+			receiveBitStream.Read(meshNameSize);
+			meshName = new char[meshNameSize + 1];
+			receiveBitStream.Read(meshName, meshNameSize);
+			meshName[meshNameSize] = '\0';
+
+			char *materialName;
+			receiveBitStream.Read(materialNameSize);
+			materialName = new char[materialNameSize + 1];
+			receiveBitStream.Read(materialName, materialNameSize);
+			materialName[materialNameSize] = '\0';
+
+			float posX, posY, posZ;
+			receiveBitStream.Read(posX);
+			receiveBitStream.Read(posY);
+			receiveBitStream.Read(posZ);
+
+			float rotW, rotX, rotY, rotZ;
+			receiveBitStream.Read(rotW);
+			receiveBitStream.Read(rotX);
+			receiveBitStream.Read(rotY);
+			receiveBitStream.Read(rotZ);
+			tempTransform.setPosition(Math::Vector3(posX, posY, posZ));
+
+			Math::Quaternion tempQuaternion;
+			tempQuaternion.w(rotW);
+			tempQuaternion.x(rotX);
+			tempQuaternion.y(rotY);
+			tempQuaternion.z(rotZ);
+			tempTransform.setOrientation(tempQuaternion);
+
+			receiveBitStream.Read(tempColor.r);
+			receiveBitStream.Read(tempColor.g);
+			receiveBitStream.Read(tempColor.b);
+			receiveBitStream.Read(tempColor.a);
+
+			RakNet::NetworkID networkID;
+			receiveBitStream.Read(networkID);
+
+			std::string tempMeshName = meshName;
+			std::string tempMaterialName = materialName;
+			delete[]meshName;
+			delete[]materialName;
+
+			SharedPointer<NetworkPlayer> tempNetworkPlayer =
+				NetworkPlayer::CreateNetworkPlayer(
+					tempMeshName,
+					tempMaterialName,
+					tempTransform,
+					tempColor);
+
+			tempNetworkPlayer->SetNetworkIDManager(&mNetworkIDManager);
+			tempNetworkPlayer->SetNetworkID(networkID);
+			tempNetworkPlayer->SetControlPlayer(false);
+			mPlayerLists[networkID] = tempNetworkPlayer;
+
+			//Sending to other clients on the network
+			RakNet::BitStream bsOut;
+			bsOut.Write(static_cast<RakNet::MessageID>(ID_SPAWN_PLAYER));
+			bsOut.Write(tempMeshName.size());
+			bsOut.Write(tempMeshName.c_str(), tempMeshName.size());
+
+			bsOut.Write(tempMaterialName.size());
+			bsOut.Write(tempMaterialName.c_str(), tempMaterialName.size());
+
+			bsOut.Write(tempTransform.getPosition().x);
+			bsOut.Write(tempTransform.getPosition().y);
+			bsOut.Write(tempTransform.getPosition().z);
+
+			bsOut.Write(tempTransform.getOrientation().w());
+			bsOut.Write(tempTransform.getOrientation().x());
+			bsOut.Write(tempTransform.getOrientation().y());
+			bsOut.Write(tempTransform.getOrientation().z());
+
+			bsOut.Write(tempColor.r);
+			bsOut.Write(tempColor.g);
+			bsOut.Write(tempColor.b);
+			bsOut.Write(tempColor.a);
+			bsOut.Write(networkID);
+			mServer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mPacket->systemAddress, true);
+		}		
 		default:
 			break;
 		}
@@ -134,8 +285,70 @@ void Engine::Networking::Server::DebugServerInfo()
 	}
 
 	WindowsUtil::displayToOutPutWindow(mServer->GetGuidFromSystemAddress(
-		RakNet::UNASSIGNED_SYSTEM_ADDRESS).ToString());
+		RakNet::UNASSIGNED_SYSTEM_ADDRESS).ToString());	
 }
+
+
+Engine::SharedPointer<Engine::Networking::NetworkPlayer> 
+	Engine::Networking::Server::InstantiateNetworkPlayer(
+	RakNet::NetworkID iNetworkID,
+	std::string i_meshFileName,
+	std::string i_materialName,
+	Math::Transform clientPlayerTransform,
+	Engine::Graphics::RGBAColor iColor)
+{
+	SharedPointer<NetworkPlayer> newPlayer =
+		NetworkPlayer::CreateNetworkPlayer(i_meshFileName,
+			i_materialName, clientPlayerTransform, iColor);
+	newPlayer->SetNetworkIDManager(&mNetworkIDManager);
+	newPlayer->SetNetworkID(iNetworkID);
+	mPlayerLists[newPlayer->GetNetworkID()] = newPlayer;
+	SharedPointer<MeshObject> tempMeshObject = newPlayer->GetMeshObject();
+	Scene::getRenderableScene()->addObjectToScene(tempMeshObject);
+	return newPlayer;
+}
+
+
+void Engine::Networking::Server::addToNetworkPlayerList(
+	SharedPointer<MeshObject> IObject,
+	bool i_isControlPlayer)
+{
+	SharedPointer<NetworkPlayer> tempNetworkPlayer =
+		NetworkPlayer::CreateNetworkPlayer(IObject);
+	tempNetworkPlayer->SetNetworkIDManager(&mNetworkIDManager);
+	mPlayerLists[tempNetworkPlayer->GetNetworkID()] =
+		tempNetworkPlayer;
+	tempNetworkPlayer->SetControlPlayer(i_isControlPlayer);
+}
+
+
+Engine::SharedPointer<Engine::Networking::NetworkPlayer>
+Engine::Networking::Server::GetControlPlayer()
+{
+	for (std::map<RakNet::NetworkID, SharedPointer<Networking::NetworkPlayer>>::iterator i = mPlayerLists.begin();
+		i != mPlayerLists.end(); ++i)
+	{
+		if (i->second->GetControlPlayerStatus())
+			return i->second;
+	}
+	return SharedPointer<Networking::NetworkPlayer>();
+}
+
+
+Engine::SharedPointer<Engine::Networking::NetworkPlayer>
+Engine::Networking::Server::GetNetworkPlayer(
+	RakNet::NetworkID i_networkID)
+{
+	for (std::map<RakNet::NetworkID, SharedPointer<Networking::NetworkPlayer>>::iterator i = mPlayerLists.begin();
+		i != mPlayerLists.end(); ++i)
+	{
+		if (i->first == i_networkID)
+			return i->second;
+	}
+	return SharedPointer<Networking::NetworkPlayer>();
+}
+
+
 
 
 

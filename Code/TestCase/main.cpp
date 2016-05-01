@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-
+#include "../Engine/Core/Utilities/Sort.h"
 
 #define MYSIZEOF(type) (char*)(&type+1)-(char*)(&type)
 char* itoa(int value, int Base);
@@ -11,6 +11,7 @@ void BuildStringFromMatrix(int* Matrix,
 
 int main()
 {
+	Engine::Utils::Sort::TestMergeSort();
 	/*unsigned int a = 0xFFFF;
 	char * test = itoa(a & ((1<<10) - 1) , 2);
 	std::cout << test << std::endl;
@@ -22,9 +23,9 @@ int main()
 	std::cout << std::endl << &b;
 	std::cout << std::endl << (&b) + 1;*/
 
-	unsigned int a = 0x0000ffff;
+	/*unsigned int a = 0x0000ffff;
 	std::cout << itoa(a, 2);
-	std::cout << std::endl<<itoa((a & 0xFFFF0000) >> 15 | (a & 0x0000FFFF) << 15, 2);
+	std::cout << std::endl<<itoa((a & 0xFFFF0000) >> 15 | (a & 0x0000FFFF) << 15, 2);*/
 
 	////std::cout << (~a) + 1;
 	/*int num = 100;

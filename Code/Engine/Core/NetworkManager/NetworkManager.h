@@ -22,10 +22,11 @@ namespace Engine
 			static void setSendingNetworkPacket(NetworkPacket iSendingNetworkPacket);	
 			static GameMessages getCurrentMessage();
 			static std::string getCurrentMessageString();
+			static Handler GetHandler();
 		private:
 			static SharedPointer<NetworkManager> mNetworkManager;
 			NetworkManager();
-			System mSystem;
+			Handler mSystem;
 			bool mIsServer;		
 			NetworkPacket receivingNetworkPacket;
 			NetworkPacket sendingNetworkPacket;

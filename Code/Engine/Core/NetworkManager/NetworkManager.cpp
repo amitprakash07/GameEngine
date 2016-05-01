@@ -29,6 +29,12 @@ void Engine::Networking::NetworkManager::CreateNetworkManager(bool i_isServer,
 	}
 }
 
+Engine::Networking::Handler Engine::Networking::NetworkManager::GetHandler()
+{
+	return mNetworkManager->mSystem;
+}
+
+
 Engine::Networking::NetworkPacket Engine::Networking::NetworkManager::getReceivedNetworkPacket()
 {
 	return mNetworkManager->receivingNetworkPacket;
@@ -74,9 +80,10 @@ void Engine::Networking::NetworkManager::ShutDownNetwork()
 
 Engine::Networking::NetworkManager::NetworkManager()
 {
-	mIsServer = false;	
-	currentGameMessage = UNKNOWN;
+	mIsServer = false;		
 	isConnected = false;
+	Handler tempHandler = Handler();
+	mSystem = tempHandler;
 }
 
 

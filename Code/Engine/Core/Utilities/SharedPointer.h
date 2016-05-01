@@ -23,6 +23,8 @@ namespace Engine
 		bool isNull() const;
 		RTTI* getRawPointer() const;
 
+		/*template<typename T2>
+		SharedPointer<T2> CastSharedPointer();*/
 	private:
 		T*				m_WrappingObject;
 		unsigned int	*m_referenceCount;
@@ -31,19 +33,6 @@ namespace Engine
 }//Engine
 
 #include "SharedPointer.inl"
-
-
- //template <>
- //inline bool Engine::SharedPointer<Engine::RTTI>::isBothSameType(Engine::RTTI* i_ptr)
- //{
- //	if (i_ptr)
- //	{
- //		if (m_WrappingObject->isType(i_ptr))
- //			return true;
- //		return false;
- //	}
- //	return false;
- //}
 
 
 #endif //SHARED_PTR_H

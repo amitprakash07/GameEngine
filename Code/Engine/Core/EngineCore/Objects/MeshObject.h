@@ -47,10 +47,11 @@ namespace Engine
 		bool receivingShadowEnabled() override;
 		void setObjectType(ObjectType iObjectType) override;
 		ObjectType getObjectType() override;
+		Graphics::RGBAColor GetVertexColor() const;
 		~MeshObject();
-	private:
-		MeshObject(std::string, std::string);
 		MeshObject();
+	private:
+		MeshObject(std::string, std::string);		
 		std::string									mMeshName;
 		std::string									mMaterial;
 		std::string									vertexModifierUniform;

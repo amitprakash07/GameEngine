@@ -23,8 +23,10 @@
     <ClInclude Include="HashedString.h" />
     <ClInclude Include="IMessageHandler.h" />
     <ClInclude Include="IObjectController.h" />
+    <ClInclude Include="Sort.h" />
     <ClInclude Include="RTTI.h" />
     <ClInclude Include="SharedPointer.h" />
+    <ClInclude Include="StringUtil.h" />
     <ClInclude Include="UniquePtr.h" />
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +35,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HashedString.cpp" />
+    <ClCompile Include="SharedPointer.cpp" />
+    <ClCompile Include="Sort.cpp" />
+    <ClCompile Include="StringUtil.cpp" />
     <ClCompile Include="UniquePtr.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

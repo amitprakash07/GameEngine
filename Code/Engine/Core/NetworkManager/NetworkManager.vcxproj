@@ -22,11 +22,13 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="NetworkDefs.h" />
     <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="NetworkPlayer.h" />
     <ClInclude Include="Server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="NetworkPlayer.cpp" />
     <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

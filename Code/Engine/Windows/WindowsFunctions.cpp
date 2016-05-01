@@ -6,6 +6,7 @@
 #include <iostream>
 #include <ShlObj.h>
 #include <sstream>
+#include <ctime>
 
 // Interface
 //==========
@@ -429,6 +430,7 @@ bool WindowsUtil::GetLastWriteTime(const char* const i_path,
 	std::string* o_errorMessage)
 {
 	// Get the last time that the file was written to
+	srand(time(nullptr));
 	ULARGE_INTEGER lastWriteTime;
 	{
 		WIN32_FIND_DATA fileData;

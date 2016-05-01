@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="LightController.h" />
     <ClInclude Include="ObjectController\CameraController.h" />
     <ClInclude Include="ObjectController\ClientPlayerController.h" />
     <ClInclude Include="ObjectController\ServerPlayerController.h" />
@@ -34,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="LightController.cpp" />
     <ClCompile Include="ObjectController\CameraController.cpp" />
     <ClCompile Include="ObjectController\ClientPlayerController.cpp" />
     <ClCompile Include="ObjectController\ServerPlayerController.cpp" />

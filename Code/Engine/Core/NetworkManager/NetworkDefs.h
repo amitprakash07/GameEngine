@@ -5,7 +5,6 @@
 #include "Client.h"
 #include "Server.h"
 #include "../Utilities/SharedPointer.h"
-
 #define MAX_CLIENTS 10
 #define SERVER_PORT 60000
 
@@ -15,11 +14,11 @@ namespace Engine
 	{
 		enum GameMessages
 		{
-			UNKNOWN,
-			ID_SPAWN_PLAYER = ID_USER_PACKET_ENUM +1,
-			ID_LOAD_CURRENT_PLAYERS = ID_USER_PACKET_ENUM +2,
-			ID_RE_SYNC_PLAYERS = ID_USER_PACKET_ENUM + 3,
-			ID_SYNC_KEY_PRESS = ID_USER_PACKET_ENUM + 4		
+			ID_SPAWN_PLAYER = ID_USER_PACKET_ENUM + 0,
+			ID_LOAD_CURRENT_PLAYERS = ID_USER_PACKET_ENUM + 1,// For loading the current players in the system
+			ID_RE_SYNC_PLAYERS = ID_USER_PACKET_ENUM + 2,
+			ID_SYNC_KEY_PRESS = ID_USER_PACKET_ENUM + 3,
+			ID_RETRIEVE_SERVER_PLAYER = ID_USER_PACKET_ENUM + 4
 		};
 
 		union ServerPort_Or_MAxClent
@@ -28,20 +27,34 @@ namespace Engine
 			unsigned int maxClient;
 		};
 
-		union System
+		union Handler
 		{
-			Client* mClient;
-			Server* mServer;		
+			Client *mClient;
+			Server *mServer;		
 
-			System()
+			Handler(Handler & iHandler)
+			{
+				mClient = iHandler.mClient;
+				mServer = iHandler.mServer;
+			}
+
+			Handler& operator=(Handler& iHandler) const
+			{
+				Handler tempHandler;
+				tempHandler.mClient = iHandler.mClient;
+				tempHandler.mServer = iHandler.mServer;
+				return tempHandler;
+			}
+			
+			Handler()
 			{
 				mClient = new Client(8);
 				mServer = new Server(8);
 			}
-			~System()
+
+			~Handler()
 			{
-				delete mClient;
-				delete mServer;
+				
 			}
 		};
 

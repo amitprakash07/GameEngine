@@ -1,199 +1,222 @@
-#include <windows.h>
-#include <fstream>
-#include <crtdbg.h>
-#include "../Engine/Core/EngineCore/Objects/Scene.h"
-#include "../Engine/Core/Utilities/SharedPointer.h"
-#include "../Engine/Core/EngineCore/Objects/MeshObject.h"
-#include "../Engine/Core/EngineCore/Objects/Camera.h"
-#include "../Engine/Core/Maths/Functions.h"
-#include "../Engine/Windows/WindowsFunctions.h"
-#include "../Engine/Core/EngineCore/EngineCore.h"
-#include "ObjectController/WalkController.h"
-#include "ObjectController/LightController.h"
-#include "../Engine/Graphics/Plane.h"
-#include "../Engine/Graphics/SkyBox.h"
-#include "../Engine/Graphics/SkyBox.h"
-#include "ObjectController/RotateObject.h"
-#include "ObjectController/FilterChanger.h"
+#include "../Engine/Core/Maths/Vector3.h"
+#include "../Engine/Graphics/uniformdefs.h"
 #include "../Engine/Graphics/Light.h"
-#include "ObjectController/BumpToToon.h"
+#include "../Engine/Core/NetworkManager/NetworkManager.h"
+#include "../Engine/Core/EngineCore/Objects/MeshObject.h"
+#include "../Engine/Core/EngineCore/Objects/Scene.h"
+#include "../Engine/Core/EngineCore/EngineCore.h"
+#include "../Game/Game/ObjectController/CameraController.h"
+#include "../Engine/Core/Maths/Functions.h"
 
 
+#define shared_pointer_reinterpret_cast_to_object(x) \
+		*reinterpret_cast<Engine::SharedPointer<Engine::Object>*>(&x)
 
-int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram, HINSTANCE, 
-	char* i_commandLineArguments, 
+//#define SERVER_INSTANCE
+
+int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
+	HINSTANCE, char* i_commandLineArguments,
 	int i_initialWindowDisplayState)
 {
 	{
+		bool isServer = false;
+		std::string  commandLine(i_commandLineArguments);
+		if (commandLine == "true")
+			isServer = true;
+		else
+			isServer = false;
+
 		//_CrtSetBreakAlloc(156);
-		Engine::EngineCore::Initialize(i_thisInstanceOfTheProgram, i_initialWindowDisplayState);
+		Engine::EngineCore::Initialize(i_thisInstanceOfTheProgram,
+			i_initialWindowDisplayState, isServer);
 
 		//Scene
 		Engine::SharedPointer<Engine::Scene> scene = Engine::Scene::CreateNewScene("Scene_01");
 		scene->renderScene(true);
 
-		
-		//GameObjects	
 
-		/*Engine::SharedPointer<Engine::Graphics::ReflectingObject> environmentMappingSphere =
-			Engine::Graphics::ReflectingObject::CreateReflectingObject("ComputerGraphics/sphere.mesh",
-				"ComputerGraphics/environmentMappingSphereMaterial.mat", 0.1, 1000.0f);
-		environmentMappingSphere->setTransform(
-			Engine::Math::Vector3(-5, 8, 0), Engine::Math::Quaternion());
-		environmentMappingSphere->setDynamicTextureSamplerName("g_TextureSampler");
-		environmentMappingSphere->setScale(3, 3, 3);
-		scene->addObjectToScene(environmentMappingSphere);
-		Engine::SharedPointer<Engine::Graphics::Effect> environmentMappingSphereEffect = 
-			Engine::Graphics::Effect::getEffect(
-				Engine::Graphics::Material::getMaterial(environmentMappingSphere->getMaterialName().c_str())->getEffectName());*/
-		//environmentMappingSphere->setObjectController(new Application::ObjectRotateController());
-
-		//floor
-		Engine::SharedPointer<Engine::MeshObject> floor =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh",
-				"ComputerGraphics/floorMaterial.mat");
-		floor->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
-		floor->setScale(30.0f, 20.0f, 20.0f);
-		scene->addObjectToScene(floor);
-
-		//ceiling
+		//GameObjects		
 		Engine::SharedPointer<Engine::MeshObject> ceiling =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh",
-				"ComputerGraphics/ceilingMaterial.mat");
-		ceiling->setTransform(Engine::Math::Vector3(0, 20, 0),
-			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(180.0f),
-				Engine::Math::Vector3(1.0f, 0.0f, 0.0f)));
-		ceiling->setScale(30.0f, 20.0f, 20.0f);
+			Engine::MeshObject::CreateMeshObject("Game/Arena/ceilingMaterialMesh.mesh",
+				"Game/Arena/ceilingMaterial.mat");
+		ceiling->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(ceiling);
+		Engine::SharedPointer<Engine::Graphics::Effect> standardLightingEffect =
+			ceiling->getEffect();
 
-		
-		//rightWall
-		Engine::SharedPointer<Engine::MeshObject> rightWall =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh",
-				"ComputerGraphics/rightWallMaterial.mat");
-		rightWall->setTransform(Engine::Math::Vector3(15, 10, 0),
-			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90),
-				Engine::Math::Vector3(0.0f, 0.0f, -1.0f)));
-		rightWall->setScale(20.0f, 20.0f, 20.0f);
-		scene->addObjectToScene(rightWall);
+		Engine::SharedPointer<Engine::MeshObject> cementMatObject =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/cementMaterialMesh.mesh",
+				"Game/Arena/cementMaterial.mat");
+		cementMatObject->setTransform(Engine::Math::Vector3(0, 0, 0),
+			Engine::Math::Quaternion());
+		scene->addObjectToScene(cementMatObject);
 
-		//leftWall
-		Engine::SharedPointer<Engine::MeshObject> leftWall =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh", 
-				"ComputerGraphics/leftWallMaterial.mat");
-		leftWall->setTransform(Engine::Math::Vector3(-15, 10, 0),
-			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
-				Engine::Math::Vector3(0.0f, 0.0f, -1.0f)));
-		leftWall->setScale(20.0f, 20.0f, 20.0f);
-		scene->addObjectToScene(leftWall);
+		Engine::SharedPointer<Engine::MeshObject> floorMatObject =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/FloorMaterialMesh.mesh",
+				"Game/Arena/floorMaterial.mat");
+		floorMatObject->setTransform(Engine::Math::Vector3(0, 0, 0),
+			Engine::Math::Quaternion());
+		scene->addObjectToScene(floorMatObject);
 
-		//frontWall
-		Engine::SharedPointer<Engine::MeshObject> frontWall =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh", 
-				"ComputerGraphics/frontWallMaterial.mat");
-		frontWall->setTransform(Engine::Math::Vector3(0, 10, 20),
-			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(90.0f),
-				Engine::Math::Vector3(1.0f, 0.0f, 0.0f)));
-		frontWall->setScale(20.0f, 20.0f, 20.0f);
-		scene->addObjectToScene(frontWall);
+		Engine::SharedPointer<Engine::MeshObject> lambertTwoMatObjects =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/LambertTwoMaterialMesh.mesh",
+				"Game/Arena/lambertTwoMaterial.mat");
+		lambertTwoMatObjects->setTransform(Engine::Math::Vector3(0, 0, 0),
+			Engine::Math::Quaternion());
+		scene->addObjectToScene(lambertTwoMatObjects);
+
+		Engine::SharedPointer<Engine::MeshObject> metals =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/MetalMaterialMesh.mesh",
+				"Game/Arena/metalMaterial.mat");
+		metals->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(metals);
+
+		Engine::SharedPointer<Engine::MeshObject> railing =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/railingMaterialMesh.mesh",
+				"Game/Arena/railingMaterial.mat");
+		railing->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(railing);
+
+		Engine::SharedPointer<Engine::MeshObject> walls =
+			Engine::MeshObject::CreateMeshObject("Game/Arena/wallsMaterialMesh.mesh",
+				"Game/Arena/wallsMaterial.mat");
+		walls->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+		scene->addObjectToScene(walls);
+
+		//DebugObjects
+		/*Engine::Debug::DrawShape(Engine::SPHERE,
+		Engine::Math::Vector3(-70.0f, 0.0f, 0.0f), 1.0f,
+		Engine::Graphics::RGBColor(1.0f, 0.0f, 0.0f));
+
+		Engine::Debug::DrawShape(Engine::SPHERE,
+		Engine::Math::Vector3(0.0f, 0.0f, 0.0f), 1.0f,
+		Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f));
+
+		Engine::Debug::DrawShape(Engine::BOX,
+		Engine::Math::Vector3(200.0f, 50.0f, 0.0f), 1.0f,1.0f,1.0f,
+		Engine::Graphics::RGBColor(1.0f, 0.0f, 1.0f));
+
+		Engine::Debug::DrawShape(Engine::BOX,
+		Engine::Math::Vector3(170.0f, 20.0f, -10.0f), 1.0f, 1.0f, 1.0f,
+		Engine::Graphics::RGBColor(1.0f, 1.0f, 0.0f));
+
+		Engine::Debug::DrawShape(Engine::CYLINDER,
+		Engine::Math::Vector3(100.0f, 20.0f, -20.0f), 1.0f,1.0f,
+		Engine::Graphics::RGBColor(0.0f, 0.0f, 1.0f));
+
+		Engine::Debug::DrawShape(Engine::CYLINDER,
+		Engine::Math::Vector3(-70.0f, 0.0f, 0.0f), 1.0f, 1.0f,
+		Engine::Graphics::RGBColor(0.5f, 0.5f, 0.5f));
+
+		Engine::Debug::DrawShape(Engine::LINE,
+		Engine::Math::Vector3(-53.28f,-108.953f,1043.751f),
+		Engine::Math::Vector3(0.0f,0.0f,0.0f),
+		Engine::Graphics::RGBColor(0,1.0f,0.0f));
 
 
-		//backWall
-		Engine::SharedPointer<Engine::MeshObject> backWall =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Plane.mesh", 
-				"ComputerGraphics/backWallMaterial.mat");
-		backWall->setTransform(Engine::Math::Vector3(0, 10, -10),
-			Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(-90.0f),
-				Engine::Math::Vector3(1.0f, 0.0f, 0.0f)));
-		backWall->setScale(30.0f, 20.0f, 20.0f);
-		scene->addObjectToScene(backWall);
+		Engine::Debug::DrawShape(Engine::LINE,
+		Engine::Math::Vector3(-53.28f, -108.953f, 1043.751f),
+		Engine::Math::Vector3(-70.0f, 0.0f, 0.0f),
+		Engine::Graphics::RGBColor(0, 1.0f, 1.0f));*/
+
+		/*Engine::SharedPointer<Engine::Graphics::Sprite> logoSprite =
+		Engine::Graphics::Sprite::CreateSprite("EAElogo",
+		"Game/spriteMaterial.mat", 0, 100, 900, 800, Engine::Graphics::VIEWPORT_COORDINATE);
+		scene->addObjectToScene(logoSprite);
 
 
-		//Sphere
-		Engine::SharedPointer<Engine::MeshObject> sphereWithToon =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/sphere.mesh",
-				"ComputerGraphics/sphereToonMaterial.mat");
-		sphereWithToon->setTransform(Engine::Math::Vector3(5, 8, 0), Engine::Math::Quaternion());
-		sphereWithToon->setScale(3, 3, 3);
-		scene->addObjectToScene(sphereWithToon);
-		sphereWithToon->setRenderable(false);
-		sphereWithToon->setObjectController(new Application::BumpToToon());
+		Engine::SharedPointer<Engine::Graphics::Sprite> numberSprite =
+		Engine::Graphics::Sprite::CreateSprite("numbers",
+		"Game/numbersMaterial.mat", 1540, 1590, 890, 840, Engine::Graphics::VIEWPORT_COORDINATE);
+		numberSprite->sliceSprite(1, 10);
+		numberSprite->setCellToRender(2);
+		scene->addObjectToScene(numberSprite);*/
 
 
-		Engine::SharedPointer<Engine::MeshObject> sphereWithBump =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/sphere.mesh",
-				"ComputerGraphics/sphereMaterial.mat");
-		sphereWithBump->setTransform(Engine::Math::Vector3(5, 8, 0), Engine::Math::Quaternion());
-		sphereWithBump->setScale(3, 3, 3);
-		scene->addObjectToScene(sphereWithBump);
-		//sphereWithBump->setRenderable(false);
-		sphereWithBump->setObjectController(new Application::BumpToToon());
+		Engine::SharedPointer<Engine::MeshObject> clientObject =
+			Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
+				"Game/defaultDebugShapes.mat");
+		clientObject->setTransform(Engine::Math::Vector3(-250.0f, 20.0f, 700.0f),
+			Engine::Math::Quaternion());
+		clientObject->getMaterial()->changeMaterialColor(1.0, 0.0, 0.0);
+		clientObject->setObjectType(Engine::ObjectType::CLIENT);
+		scene->addObjectToScene(clientObject);
+		clientObject->EnableDebugging(true);
+		clientObject->setObjectController(new Game::ClientPlayerController());
+		if (Engine::Networking::NetworkManager::isServerInstance())
+			clientObject->setRenderable(false);
+		else
+		{
+			//client system
+			Engine::Networking::NetworkPacket mSendPacket{ clientObject->getTransform() };
+			Engine::Networking::NetworkManager::setSendingNetworkPacket(mSendPacket);
+		}
 
-		//cube
-		Engine::SharedPointer<Engine::MeshObject> cube =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/Cube.mesh",
-				"ComputerGraphics/cubeMaterial.mat");
-		cube->setTransform(Engine::Math::Vector3(-2,2,0), Engine::Math::Quaternion());
-		cube->setScale(4,4,4);
-		scene->addObjectToScene(cube);
 
-		Engine::SharedPointer<Engine::Graphics::Effect> cubeEffect = cube->getEffect();
 
-		//Proxy Light
-		Engine::SharedPointer<Engine::MeshObject> proxyLightSphere =
-			Engine::MeshObject::CreateMeshObject("ComputerGraphics/proxyLightSphere.mesh",
-				"ComputerGraphics/proxyLightSphereMaterial.mat");
-		proxyLightSphere->setTransform(Engine::Math::Vector3(0, 18, 0), Engine::Math::Quaternion());
-		scene->addObjectToScene(proxyLightSphere);
-		proxyLightSphere->setObjectController(new Application::LightController());
 
-		Engine::SharedPointer<Engine::Graphics::Effect> proxyLightSphereEffect = proxyLightSphere->getEffect();
+
+		Engine::SharedPointer<Engine::MeshObject> serverObject =
+			Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
+				"Game/defaultDebugShapes.mat");
+		serverObject->setTransform(Engine::Math::Vector3(-50.0f, 20.0f, 700.0f),
+			Engine::Math::Quaternion());
+		serverObject->setObjectType(Engine::ObjectType::SERVER);
+		serverObject->getMaterial()->changeMaterialColor(0.0, 1.0, 0.0);
+		scene->addObjectToScene(serverObject);
+		serverObject->setObjectController(new Game::ServerPlayerController());
+		serverObject->EnableDebugging(true);
+		if (Engine::Networking::NetworkManager::isServerInstance())
+		{
+			//server system
+			Engine::Networking::NetworkPacket mSendPacket{ serverObject->getTransform() };
+			Engine::Networking::NetworkManager::setSendingNetworkPacket(mSendPacket);
+		}
+		else
+			//client system
+			serverObject->setRenderable(false);
+
 
 
 		Engine::SharedPointer<Engine::Graphics::Light> mainLight
-			= Engine::Graphics::Light::createLight("mainLight", Engine::Graphics::LightType::Point);
+			= Engine::Graphics::Light::createLight("mainLight",
+				Engine::Graphics::LightType::Point);
 		mainLight->setIntensity(1.0f);
 		mainLight->setColor(Engine::Math::Vector3(1.0f, 0.0f, 0.0f));
 		mainLight->setTransform(Engine::Math::Vector3(0, 19, 0),
-			Engine::Math::Quaternion());		
+			Engine::Math::Quaternion());
 		scene->addLightToScene(mainLight);
-
 		Engine::Graphics::Data lightPosition;
 		Engine::Graphics::Data  intensity;
 		Engine::Graphics::Data lightColor;
-
-		Engine::Math::Vector3 vecLightPosition = Engine::Math::Vector3(0, 19, 0);
-		Engine::Math::Vector3 vecLightColor = Engine::Math::Vector3(1.0f,1.0f,1.0f);
-
+		Engine::Math::Vector3 vecLightPosition = Engine::Math::Vector3(100.0f, 50.0f, -20.0f);
+		Engine::Math::Vector3 vecLightColor = Engine::Math::Vector3(1.0f, 1.0f, 1.0f);
 		memcpy(&lightPosition.vec3, &vecLightPosition, 3 * sizeof(float));
 		memcpy(&lightColor.vec3, &vecLightColor, 3 * sizeof(float));
-		intensity.floatVal = 0.3f;
-
-
+		intensity.floatVal = 0.8f;
 		mainLight->addLightParameter("lightPosition", Engine::Graphics::DataTypes::vec3,
 			lightPosition);
 		mainLight->addLightParameter("intensity", Engine::Graphics::DataTypes::glfloat,
 			intensity);
 		mainLight->addLightParameter("lightColor", Engine::Graphics::DataTypes::vec3,
 			lightColor);
-		mainLight->addLightToAllEffects();
-		mainLight->setObjectController(new Application::LightController());
-		mainLight->removeLightFromEffect(proxyLightSphereEffect->getEffectName(), Engine::Graphics::Fragment);
-		//mainLight->removeLightFromEffect(environmentMappingSphereEffect->getEffectName(), Engine::Graphics::Fragment);
+		mainLight->addLightToEffect(standardLightingEffect->getEffectName(),
+			Engine::Graphics::Fragment);
+		mainLight->setObjectController(new Game::CameraController());
+
+		//Camera
 		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
-				Engine::Math::Vector3(0.0f, 10.0f, 25.0f),
-				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0.0f),
-					Engine::Math::Vector3(0.0f, 0.5f, 0.0f)));
-
-		
+				Engine::Math::Vector3(-53.258, -108.953, 1043.751),
+				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
+					Engine::Math::Vector3(0, 1, 0)));
 
 		mainCamera->activateCamera(true);
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
+		mainCamera->setFarPlane(10000.0f);
 		mainCamera->setFieldOfView(60.0f);
-		mainCamera->setObjectController(new Application::WalkController());
+		mainCamera->setObjectController(new Game::CameraController());
 		scene->addCameraToScene(mainCamera);
-
 
 		while (!Engine::EngineCore::isWindowClosed(i_thisInstanceOfTheProgram))
 			Engine::EngineCore::onNewFrame();

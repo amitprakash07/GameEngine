@@ -105,6 +105,9 @@ extern PFNGLGETUNIFORMINDICESPROC glGetUniformIndices;
 extern PFNGLGETACTIVEUNIFORMSIVPROC glGetActiveUniformsiv;
 extern PFNGLBINDBUFFERBASEPROC glBindBufferBase;
 
+
+extern PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus;
+
 // Initialization
 //---------------
 

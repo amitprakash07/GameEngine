@@ -102,6 +102,8 @@ PFNGLGETUNIFORMINDICESPROC glGetUniformIndices = nullptr;
 PFNGLGETACTIVEUNIFORMSIVPROC glGetActiveUniformsiv = nullptr;
 PFNGLBINDBUFFERBASEPROC glBindBufferBase = nullptr;
 
+PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus = nullptr;
+
 // Initialization
 //---------------
 
@@ -208,6 +210,8 @@ bool OpenGlExtensions::Load(std::string* o_errorMessage)
 	LOADGLFUNCTION(glGetActiveUniformsiv, PFNGLGETACTIVEUNIFORMSIVPROC);
 	LOADGLFUNCTION(glBindBufferBase, PFNGLBINDBUFFERBASEPROC);
 
+
+	LOADGLFUNCTION(glCheckFramebufferStatus, PFNGLCHECKFRAMEBUFFERSTATUSPROC);
 
 #undef LOADGLFUNCTION
 

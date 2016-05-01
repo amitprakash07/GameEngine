@@ -378,6 +378,12 @@ void Engine::MeshObject::setObjectType(ObjectType iObjectType)
 	mObjectType = iObjectType;
 }
 
+Engine::Graphics::RGBAColor Engine::MeshObject::GetVertexColor() const
+{
+	return vertexColor;
+}
+
+
 
 
 

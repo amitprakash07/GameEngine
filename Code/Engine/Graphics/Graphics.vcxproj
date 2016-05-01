@@ -114,6 +114,7 @@
     </ClCompile>
     <ClCompile Include="SkyBoxCommon.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
+    <ClCompile Include="SSAO.cpp" />
     <ClCompile Include="TextureCommon.cpp" />
     <ClCompile Include="Uniform.common.cpp" />
     <ClCompile Include="UniformBlock.common.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SSAO.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="typedefs.h" />
     <ClInclude Include="Uniform.h" />

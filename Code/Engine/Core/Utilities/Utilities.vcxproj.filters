@@ -8,6 +8,8 @@
     <ClInclude Include="IMessageHandler.h" />
     <ClInclude Include="IObjectController.h" />
     <ClInclude Include="additionaltypes.h" />
+    <ClInclude Include="Sort.h" />
+    <ClInclude Include="StringUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedPointer.inl" />
@@ -16,5 +18,8 @@
   <ItemGroup>
     <ClCompile Include="HashedString.cpp" />
     <ClCompile Include="UniquePtr.cpp" />
+    <ClCompile Include="Sort.cpp" />
+    <ClCompile Include="SharedPointer.cpp" />
+    <ClCompile Include="StringUtil.cpp" />
   </ItemGroup>
 </Project>

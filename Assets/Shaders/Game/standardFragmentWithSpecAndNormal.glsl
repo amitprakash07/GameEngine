@@ -11,7 +11,7 @@ uniform mat4  g_transform_worldToView;
 uniform float glossiness;
 uniform sampler2D g_NormalTextureSampler;
 uniform sampler2D g_SpecularTextureSampler;
-uniform float ambientLight = 0.4;
+uniform float ambientLight = 0.6;
 
 uniform lightUniforms
 {

@@ -42,7 +42,40 @@ return
 		{
 			src = "Game/DebugSphereForClass.lua",
 			target = "Game/DebugSphereForClass.mesh",
-		},		
+		},	
+		{
+			src = "ComputerGraphics/NanoSuit/arms.lua",
+			target = "ComputerGraphics/NanoSuit/arms.mesh",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/body.lua",
+			target = "ComputerGraphics/NanoSuit/body.mesh",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/hands.lua",
+			target = "ComputerGraphics/NanoSuit/hands.mesh",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/Helmet.lua",
+			target = "ComputerGraphics/NanoSuit/Helmet.mesh",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/legs.lua",
+			target = "ComputerGraphics/NanoSuit/legs.mesh",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/lights.lua",
+			target = "ComputerGraphics/NanoSuit/lights.mesh",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/Visor.lua",
+			target = "ComputerGraphics/NanoSuit/Visor.mesh",
+		},	
+		-- proxyLightSphere
+		{
+			src = "ComputerGraphics/proxyLightSphere.lua",
+			target = "ComputerGraphics/proxyLightSphere.mesh",
+		},
 	},
 
 -- =====================================================================
@@ -71,7 +104,11 @@ return
 			src = "Game/standardEffectWithSpecAndNormal.lua",
 			target = "Game/standardEffectWithSpecAndNormal.effect"
 		},
-
+		--proxyLightEffect
+		{
+			src = "ComputerGraphics/proxyLightEffect.lua",
+			target = "ComputerGraphics/proxyLightEffect.effect"
+		},		
 	},
 
 -- =======================================================================
@@ -127,6 +164,39 @@ return
 		{
 			src = "Game/numbersMaterial.lua",
 			target = "Game/numbersMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/armsMaterial.lua",
+			target = "ComputerGraphics/NanoSuit/armsMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/bodyMaterial.lua",
+			target = "ComputerGraphics/NanoSuit/bodyMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/handsMaterial.lua",
+			target = "ComputerGraphics/NanoSuit/handsMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/HelmetMaterial.lua",
+			target = "ComputerGraphics/NanoSuit/HelmetMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/legsMaterial.lua",
+			target = "ComputerGraphics/NanoSuit/legsMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/lightsMaterial.lua",
+			target = "ComputerGraphics/NanoSuit/lightsMaterial.mat",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/VisorMaterial.lua",
+			target = "ComputerGraphics/NanoSuit/VisorMaterial.mat",
+		},
+		-- proxyLightSphere
+		{
+			src = "ComputerGraphics/proxyLightSphereMaterial.lua",
+			target = "ComputerGraphics/proxyLightSphereMaterial.mat",
 		},
 	},
 
@@ -232,6 +302,27 @@ return
 			}
 		},
 -- *******************************************************************
+	{
+			src = "ComputerGraphics/teapotVertex.glsl",
+			target = "ComputerGraphics/teapotVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/teapotFragment.glsl",
+			target = "ComputerGraphics/teapotFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
 	},
 
 -- ====================================================================
@@ -330,6 +421,10 @@ return
 			src = "Game/defaultTexture.png",
 			target = "Game/defaultTexture.png",
 		},	
+		{
+			src = "ComputerGraphics/defaultTexture.png",
+			target = "ComputerGraphics/defaultTexture.png",
+		},
 		-- Game Logo
 		{
 			src = "Game/logo.png",
@@ -340,6 +435,97 @@ return
 			src = "Game/numbers.png",
 			target = "Game/numbers.png",
 		},	
+		--NanoSuit
+		{
+			src = "ComputerGraphics/NanoSuit/arm_dif.png",
+			target = "ComputerGraphics/NanoSuit/arm_dif.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/arm_showroom_ddn.png",
+			target = "ComputerGraphics/NanoSuit/arm_showroom_ddn.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/arm_showroom_spec.png",
+			target = "ComputerGraphics/NanoSuit/arm_showroom_spec.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/body_dif.png",
+			target = "ComputerGraphics/NanoSuit/body_dif.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/body_showroom_ddn.png",
+			target = "ComputerGraphics/NanoSuit/body_showroom_ddn.png",
+		},{
+			src = "ComputerGraphics/NanoSuit/body_showroom_spec.png",
+			target = "ComputerGraphics/NanoSuit/body_showroom_spec.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/cell_arm_alpha.png",
+			target = "ComputerGraphics/NanoSuit/cell_arm_alpha.png",
+		},{
+			src = "ComputerGraphics/NanoSuit/cell_body_alpha.png",
+			target = "ComputerGraphics/NanoSuit/cell_body_alpha.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/cell_ddn.png",
+			target = "ComputerGraphics/NanoSuit/cell_ddn.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/cell_hand_alpha.png",
+			target = "ComputerGraphics/NanoSuit/cell_hand_alpha.png",
+		},{
+			src = "ComputerGraphics/NanoSuit/cell_helmet_alpha.png",
+			target = "ComputerGraphics/NanoSuit/cell_helmet_alpha.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/cell_leg_alpha.png",
+			target = "ComputerGraphics/NanoSuit/cell_leg_alpha.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/glass_ddn.png",
+			target = "ComputerGraphics/NanoSuit/glass_ddn.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/glass_dif.png",
+			target = "ComputerGraphics/NanoSuit/glass_dif.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/hand_dif.png",
+			target = "ComputerGraphics/NanoSuit/hand_dif.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/hand_showroom_ddn.png",
+			target = "ComputerGraphics/NanoSuit/hand_showroom_ddn.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/hand_showroom_spec.png",
+			target = "ComputerGraphics/NanoSuit/hand_showroom_spec.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/helmet_dif.png",
+			target = "ComputerGraphics/NanoSuit/helmet_dif.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/helmet_showroom_ddn.png",
+			target = "ComputerGraphics/NanoSuit/helmet_showroom_ddn.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/helmet_showroom_spec.png",
+			target = "ComputerGraphics/NanoSuit/helmet_showroom_spec.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/leg_dif.png",
+			target = "ComputerGraphics/NanoSuit/leg_dif.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/leg_showroom_ddn.png",
+			target = "ComputerGraphics/NanoSuit/leg_showroom_ddn.png",
+		},
+		{
+			src = "ComputerGraphics/NanoSuit/leg_showroom_spec.png",
+			target = "ComputerGraphics/NanoSuit/leg_showroom_spec.png",
+		},
+
 	}
 -- ====================================================================
 }

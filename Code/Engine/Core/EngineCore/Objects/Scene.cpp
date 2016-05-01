@@ -541,6 +541,13 @@ void Engine::Scene::setObjectType(ObjectType iObjectType)
 }
 
 
+//Engine::SharedPointer<Engine::Object> Engine::Scene::getObject()
+//{
+//	return mMeshObjectInSceneList[0].CastSharedPointer<Object>();
+//}
+
+
+
 
 
 

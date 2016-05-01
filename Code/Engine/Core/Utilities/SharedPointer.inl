@@ -1,4 +1,5 @@
 #include <assert.h>
+//#include "SharedPointer.h"
 
 
 namespace Engine
@@ -121,5 +122,19 @@ namespace Engine
 	{
 		return(reinterpret_cast<RTTI*>(m_WrappingObject));
 	}
+
+
+	/*template <typename T>
+	template<typename T2>
+	SharedPointer<T2> SharedPointer<T>::CastSharedPointer()
+	{
+		T2* CastablePointer;
+		T* tempPointer = new T;
+		memcpy(tempPointer, m_WrappingObject, sizeof(T));
+		CastablePointer = reinterpret_cast<T2*>(tempPointer);
+		SharedPointer<T2> returnSharedPointer =
+			SharedPointer<T2>(CastablePointer, "CatedPointer");
+		return returnSharedPointer;
+	}*/
 
 } //Engine

@@ -66,6 +66,7 @@ namespace Engine
 		bool IsPlayer() override { return false; }
 		void setPlayer(bool ) override{};
 		void setObjectType(ObjectType iObjectType) override;
+		//SharedPointer<Object> getObject();
 		ObjectType getObjectType() override;
 		//IMesageHandler override function
 		void HandleMessage(Engine::utils::StringHash &, 

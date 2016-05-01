@@ -12,6 +12,8 @@
 #include "../../Engine/Graphics/Sprite.h"
 #include "ObjectController/ClientPlayerController.h"
 #include "ObjectController/ServerPlayerController.h"
+#include "LightController.h"
+#include "ObjectController/WalkController.h"
 
 
 #define shared_pointer_reinterpret_cast_to_object(x) \
@@ -46,6 +48,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 				"Game/Arena/ceilingMaterial.mat");
 		ceiling->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(ceiling);	
+
 		Engine::SharedPointer<Engine::Graphics::Effect> standardLightingEffect = 
 			ceiling->getEffect();
 
@@ -87,6 +90,78 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 				"Game/Arena/wallsMaterial.mat");
 		walls->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(walls);
+
+
+		//Proxy Light
+		/*Engine::SharedPointer<Engine::MeshObject> proxyLightSphere =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/proxyLightSphere.mesh",
+				"ComputerGraphics/proxyLightSphereMaterial.mat");
+		proxyLightSphere->setTransform(Engine::Math::Vector3(-50, 100, 700), Engine::Math::Quaternion());
+		scene->addObjectToScene(proxyLightSphere);
+		proxyLightSphere->setScale(6, 6, 6);
+		proxyLightSphere->setObjectController(new Game::LightController());*/
+
+		//Engine::SharedPointer<Engine::Graphics::Effect> proxyLightSphereEffect = proxyLightSphere->getEffect();
+
+		//Nanosuit
+		/*Engine::SharedPointer<Engine::MeshObject> arms =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/NanoSuit/arms.mesh",
+				"ComputerGraphics/NanoSuit/armsMaterial.mat");
+		arms->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
+		arms->setScale(8.0f, 8.0f, 8.0f);
+		scene->addObjectToScene(arms);
+
+
+		Engine::SharedPointer<Engine::Graphics::Effect> standardLightingEffect =
+			arms->getEffect();*/
+
+
+		/*Engine::SharedPointer<Engine::MeshObject> body =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/NanoSuit/body.mesh",
+				"ComputerGraphics/NanoSuit/bodyMaterial.mat");
+		body->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
+		body->setScale(8.0f, 8.0f, 8.0f);
+		scene->addObjectToScene(body);
+
+		Engine::SharedPointer<Engine::MeshObject> hands =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/NanoSuit/hands.mesh",
+				"ComputerGraphics/NanoSuit/handsMaterial.mat");
+		hands->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
+		hands->setScale(8.0f, 8.0f, 8.0f);
+		scene->addObjectToScene(hands);
+
+
+		Engine::SharedPointer<Engine::MeshObject> Helmet =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/NanoSuit/Helmet.mesh",
+				"ComputerGraphics/NanoSuit/HelmetMaterial.mat");
+		Helmet->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
+		Helmet->setScale(8.0f, 8.0f, 8.0f);
+		scene->addObjectToScene(Helmet);
+
+
+		Engine::SharedPointer<Engine::MeshObject> legs =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/NanoSuit/legs.mesh",
+				"ComputerGraphics/NanoSuit/legsMaterial.mat");
+		legs->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
+		legs->setScale(8.0f, 8.0f, 8.0f);
+		scene->addObjectToScene(legs);
+
+
+		Engine::SharedPointer<Engine::MeshObject> lights =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/NanoSuit/lights.mesh",
+				"ComputerGraphics/NanoSuit/lightsMaterial.mat");
+		lights->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
+		lights->setScale(8.0f, 8.0f, 8.0f);
+		scene->addObjectToScene(lights);
+
+
+		Engine::SharedPointer<Engine::MeshObject> Visor =
+			Engine::MeshObject::CreateMeshObject("ComputerGraphics/NanoSuit/Visor.mesh",
+				"ComputerGraphics/NanoSuit/VisorMaterial.mat");
+		Visor->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
+		Visor->setScale(8.0f, 8.0f, 8.0f);
+		scene->addObjectToScene(Visor);*/
+				
 
 		//DebugObjects
 		/*Engine::Debug::DrawShape(Engine::SPHERE,
@@ -138,49 +213,34 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		scene->addObjectToScene(numberSprite);*/
 		
 
-		Engine::SharedPointer<Engine::MeshObject> clientObject =
-			Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
-				"Game/defaultDebugShapes.mat");
-		clientObject->setTransform(Engine::Math::Vector3(-250.0f, 20.0f, 700.0f),
-			Engine::Math::Quaternion());
-		clientObject->getMaterial()->changeMaterialColor(1.0, 0.0, 0.0);
-		clientObject->setObjectType(Engine::ObjectType::CLIENT);
-		scene->addObjectToScene(clientObject);
-		clientObject->EnableDebugging(true);
-		clientObject->setObjectController(new Game::ClientPlayerController());
-		if(Engine::Networking::NetworkManager::isServerInstance())
-			clientObject->setRenderable(false);		
-		else
+		if (Engine::Networking::NetworkManager::isServerInstance())
 		{
-			//client system
-			Engine::Networking::NetworkPacket mSendPacket{ clientObject->getTransform()};
-			Engine::Networking::NetworkManager::setSendingNetworkPacket(mSendPacket);	
-		}
-		
-		
-
-		
-
-		Engine::SharedPointer<Engine::MeshObject> serverObject =
-			Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
-				"Game/defaultDebugShapes.mat");
-		serverObject->setTransform(Engine::Math::Vector3(-50.0f, 20.0f, 700.0f),
-			Engine::Math::Quaternion());
-		serverObject->setObjectType(Engine::ObjectType::SERVER);		
-		serverObject->getMaterial()->changeMaterialColor(0.0, 1.0, 0.0);
-		scene->addObjectToScene(serverObject);
-		serverObject->setObjectController(new Game::ServerPlayerController());
-		serverObject->EnableDebugging(true);
-		if(Engine::Networking::NetworkManager::isServerInstance())
-		{
-			//server system
-			Engine::Networking::NetworkPacket mSendPacket{ serverObject->getTransform() };
-			Engine::Networking::NetworkManager::setSendingNetworkPacket(mSendPacket);					
+			Engine::SharedPointer<Engine::MeshObject> serverObject =
+				Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
+					"Game/defaultDebugShapes.mat");
+			serverObject->setTransform(Engine::Math::Vector3(-50.0f, 20.0f, 700.0f),
+				Engine::Math::Quaternion());
+			serverObject->setObjectType(Engine::ObjectType::SERVER);
+			serverObject->getMaterial()->changeMaterialColor(0.0, 1.0, 0.0);
+			scene->addObjectToScene(serverObject);
+			serverObject->setObjectController(new Game::ServerPlayerController());
+			serverObject->EnableDebugging(true);
+			Engine::Networking::NetworkManager::GetHandler().mServer->addToNetworkPlayerList(serverObject);			
 		}
 		else
-			//client system
-			serverObject->setRenderable(false);		
-		
+		{
+			Engine::SharedPointer<Engine::MeshObject> clientObject =
+				Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
+					"Game/defaultDebugShapes.mat");
+			clientObject->setTransform(Engine::Math::Vector3(-250.0f, 20.0f, 700.0f),
+				Engine::Math::Quaternion());
+			clientObject->getMaterial()->changeMaterialColor(1.0, 0.0, 0.0);
+			clientObject->setObjectType(Engine::ObjectType::CLIENT);
+			scene->addObjectToScene(clientObject);
+			clientObject->EnableDebugging(true);
+			clientObject->setObjectController(new Game::ClientPlayerController());
+			Engine::Networking::NetworkManager::GetHandler().mClient->addToNetworkPlayerList(clientObject);
+		}
 
 
 		Engine::SharedPointer<Engine::Graphics::Light> mainLight
@@ -198,7 +258,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		Engine::Math::Vector3 vecLightColor = Engine::Math::Vector3(1.0f, 1.0f, 1.0f);
 		memcpy(&lightPosition.vec3, &vecLightPosition, 3 * sizeof(float));
 		memcpy(&lightColor.vec3, &vecLightColor, 3 * sizeof(float));
-		intensity.floatVal = 0.8f;
+		intensity.floatVal = 0.4f;
 		mainLight->addLightParameter("lightPosition", Engine::Graphics::DataTypes::vec3,
 			lightPosition);
 		mainLight->addLightParameter("intensity", Engine::Graphics::DataTypes::glfloat,
@@ -207,12 +267,13 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 			lightColor);
 		mainLight->addLightToEffect(standardLightingEffect->getEffectName(),
 			Engine::Graphics::Fragment);
-		mainLight->setObjectController(new Game::CameraController());
+
+		mainLight->setObjectController(new Game::LightController());
 
 		//Camera
 		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
-				Engine::Math::Vector3(-53.258, -108.953, 1043.751),
+				Engine::Math::Vector3(-53.258f, -108.953f, 1043.751f),
 				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
 					Engine::Math::Vector3(0, 1, 0)));
 
@@ -220,8 +281,8 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
 		mainCamera->setFarPlane(10000.0f);
 		mainCamera->setFieldOfView(60.0f);
-		mainCamera->setObjectController(new Game::CameraController());
-		scene->addCameraToScene(mainCamera);
+		mainCamera->setObjectController(new Game::WalkController());
+		scene->addCameraToScene(mainCamera);		
 
 		while (!Engine::EngineCore::isWindowClosed(i_thisInstanceOfTheProgram))
 			Engine::EngineCore::onNewFrame();

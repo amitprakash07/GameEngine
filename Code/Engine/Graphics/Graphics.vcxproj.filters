@@ -89,6 +89,7 @@
     <ClCompile Include="Direct3D\UniformBlock.d3d.cpp">
       <Filter>Direct3D</Filter>
     </ClCompile>
+    <ClCompile Include="SSAO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
@@ -107,5 +108,6 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="UniformBlock.h" />
+    <ClInclude Include="SSAO.h" />
   </ItemGroup>
 </Project>
