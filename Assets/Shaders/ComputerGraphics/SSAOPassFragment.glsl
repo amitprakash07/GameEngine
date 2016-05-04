@@ -8,10 +8,10 @@ layout(binding = 3) uniform sampler2D glColorTexture;
 
 layout(location = 0) in vec2 texCoord;
 
-uniform float radius = 1;
+uniform float radius = 5;
 uniform uint sampleCount = 256;
 uniform mat4 g_transform_viewToScreen;
-uniform float ambientLight = 0.5;
+uniform vec4 ambientLightColor = vec4(0.4);
 
 layout(binding = 0, std140) uniform SAMPLE_POINTS
 {
@@ -49,12 +49,12 @@ void main(void)
 		//Using multiplication rather division for precision
 		samplePosition.xy = (samplePosition.xy * 0.5) + vec2(0.5); 
 
-		float sampleDepthInDepthTexture = texture(glNormalTexture, samplePosition.xy).b;
+		float sampleDepthInDepthTexture = textureLod(glNormalTexture, samplePosition.xy, 0).b;
 
 		float rangeCheck = abs(viewSpacePosition.z - sampleDepthInDepthTexture) < radius ? 1.0 : 0.0;
 		ambientOcclusionFactor += (sampleDepthInDepthTexture <= samplePosition.z ? 1.0 : 0.0) * rangeCheck;
 	}
 
 	ambientOcclusionFactor = 1.0 - (ambientOcclusionFactor / sampleCount);
-	color = textureLod(glColorTexture, P, 0) + vec4(ambientOcclusionFactor * ambientLight) ;
+	color = textureLod(glColorTexture, P, 0) + (ambientLightColor * ambientOcclusionFactor);
 }

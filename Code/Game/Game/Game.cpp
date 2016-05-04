@@ -43,10 +43,6 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		Engine::SharedPointer<Engine::Scene> scene = Engine::Scene::CreateNewScene("Scene_01");
 		scene->renderScene(true);
 
-		/*Engine::Graphics::Material::addMaterialToList("data/Materials/Game/SSAOMaterial.mat");
-		Engine::SharedPointer<Engine::Graphics::Material> ssaoMaterial =
-			Engine::Graphics::Material::getMaterial("data/Materials/Game/SSAOMaterial.mat");*/
-
 		//GameObjects		
 		Engine::SharedPointer<Engine::MeshObject> ceiling =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/ceilingMaterialMesh.mesh", 
@@ -105,7 +101,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 				"ComputerGraphics/proxyLightSphereMaterial.mat");
 		proxyLightSphere->setTransform(Engine::Math::Vector3(-50, 100, 700), Engine::Math::Quaternion());
 		scene->addObjectToScene(proxyLightSphere);
-		proxyLightSphere->setScale(6, 6, 6);
+		proxyLightSphere->setScale(10, 10, 10);
 		proxyLightSphere->setObjectController(new Game::LightController());
 
 		//Engine::SharedPointer<Engine::Graphics::Effect> proxyLightSphereEffect = proxyLightSphere->getEffect();
@@ -169,6 +165,9 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		Visor->setScale(8.0f, 8.0f, 8.0f);
 		scene->addObjectToScene(Visor);
 				
+		scene->EnableAllMeshObjectsForSSAO();
+
+		proxyLightSphere->EnableSSAO(false);
 
 		//DebugObjects
 		/*Engine::Debug::DrawShape(Engine::SPHERE,
@@ -276,6 +275,8 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 			Engine::Graphics::Fragment);
 
 		mainLight->setObjectController(new Game::LightController());
+
+		
 
 		//Camera
 		Engine::SharedPointer<Engine::Camera> mainCamera =

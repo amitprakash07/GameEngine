@@ -446,10 +446,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NanoSuit", "NanoSuit", "{E3
 		Assets\Materials\ComputerGraphics\NanoSuit\VisorMaterial.lua = Assets\Materials\ComputerGraphics\NanoSuit\VisorMaterial.lua
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "john-chapman-SSAO", "Code\Externals\john-chapman-SSAO\john-chapman-SSAO.vcxproj", "{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OOGL", "Code\Externals\OOGL\OOGL.vcxproj", "{26467CB2-8A46-4DD0-892E-C74A936C1163}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Direct3D_64 = Debug|Direct3D_64
@@ -1190,38 +1186,6 @@ Global
 		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x64.Build.0 = Release|x64
 		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x86.ActiveCfg = Release|Win32
 		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x86.Build.0 = Release|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Debug|Direct3D_64.ActiveCfg = Debug|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Debug|Network_Client_32.ActiveCfg = Debug|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Debug|Network_Server_32.ActiveCfg = Debug|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Debug|OpenGL_32.ActiveCfg = Debug|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Debug|x64.ActiveCfg = Debug|x64
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Debug|x64.Build.0 = Debug|x64
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Debug|x86.ActiveCfg = Debug|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Debug|x86.Build.0 = Debug|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Release|Direct3D_64.ActiveCfg = Release|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Release|Network_Client_32.ActiveCfg = Release|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Release|Network_Server_32.ActiveCfg = Release|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Release|OpenGL_32.ActiveCfg = Release|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Release|x64.ActiveCfg = Release|x64
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Release|x64.Build.0 = Release|x64
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Release|x86.ActiveCfg = Release|Win32
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8}.Release|x86.Build.0 = Release|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Debug|Direct3D_64.ActiveCfg = Debug|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Debug|Network_Client_32.ActiveCfg = Debug|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Debug|Network_Server_32.ActiveCfg = Debug|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Debug|OpenGL_32.ActiveCfg = Debug|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Debug|x64.ActiveCfg = Debug|x64
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Debug|x64.Build.0 = Debug|x64
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Debug|x86.ActiveCfg = Debug|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Debug|x86.Build.0 = Debug|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Release|Direct3D_64.ActiveCfg = Release|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Release|Network_Client_32.ActiveCfg = Release|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Release|Network_Server_32.ActiveCfg = Release|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Release|OpenGL_32.ActiveCfg = Release|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Release|x64.ActiveCfg = Release|x64
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Release|x64.Build.0 = Release|x64
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Release|x86.ActiveCfg = Release|Win32
-		{26467CB2-8A46-4DD0-892E-C74A936C1163}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1271,7 +1235,5 @@ Global
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527} = {A38CE98B-1752-4FA7-8FB5-66B33107C40F}
 		{B117D4BA-40DE-4B24-95CB-CE72336502EC} = {C86E1B48-E86F-4561-B149-5B7BF4104B07}
 		{E36B1B5A-5087-465E-A819-4A3CD31E7DDD} = {EBF44EFF-3961-484B-A0F8-A62D333F56F7}
-		{A4449CE6-87FB-48DA-ACF1-2AA773DAC8F8} = {A38CE98B-1752-4FA7-8FB5-66B33107C40F}
-		{26467CB2-8A46-4DD0-892E-C74A936C1163} = {A38CE98B-1752-4FA7-8FB5-66B33107C40F}
 	EndGlobalSection
 EndGlobal

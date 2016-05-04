@@ -171,6 +171,12 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 	return(SharedPointer<Scene>());
 }
 
+void Engine::Scene::EnableAllMeshObjectsForSSAO()
+{
+	for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
+		mMeshObjectInSceneList[i]->EnableSSAO(true);
+}
+
 
 void Engine::Scene::drawScene(bool withDebug)
 {
@@ -183,6 +189,13 @@ void Engine::Scene::drawScene(bool withDebug)
 			(*iL)->setLightParameterValueToShaderObject();
 		}
 	}
+
+	for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
+	{
+		if(!mMeshObjectInSceneList[i]->isSSAOEnabled())
+			mMeshObjectInSceneList[i]->draw(withDebug);
+	}
+
 
 	Graphics::SSAO::GenerateGBuffer();
 	//Generate dynamic Cube Maps
@@ -203,7 +216,10 @@ void Engine::Scene::drawScene(bool withDebug)
 	}
 
 	for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
-		mMeshObjectInSceneList[i]->draw(withDebug);
+	{
+		if(mMeshObjectInSceneList[i]->isSSAOEnabled())
+			mMeshObjectInSceneList[i]->draw(withDebug);
+	}
 
 	for (uint8_t i = 0; i < mPlaneList.size(); i++)
 		mPlaneList[i]->draw(withDebug);

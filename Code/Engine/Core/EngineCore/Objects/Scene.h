@@ -20,6 +20,7 @@ namespace Engine
 		static SharedPointer<Scene> CreateNewScene(std::string);
 		static SharedPointer<Engine::Time::FrameTime> getTimer();
 		static Engine::SharedPointer<Scene> getRenderableScene();
+		void EnableAllMeshObjectsForSSAO();
 		template<typename T>
 		bool addObjectToScene(SharedPointer<T>&);
 		bool addCameraToScene(SharedPointer<Camera>&);
