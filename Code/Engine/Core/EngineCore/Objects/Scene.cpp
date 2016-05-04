@@ -2,6 +2,7 @@
 #include "../../../Graphics/Mesh.h"
 #include "../../../Graphics/SkyBox.h"
 #include <algorithm>
+#include "../../../Graphics/SSAO.h"
 
 std::map<std::string, Engine::SharedPointer<Engine::Scene>> Engine::Scene::mSceneList;
 
@@ -173,6 +174,7 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 
 void Engine::Scene::drawScene(bool withDebug)
 {
+
 	if(mLightList.size()>0)
 	{
 		for (std::vector<SharedPointer<Graphics::Light>>::iterator iL = mLightList.begin();
@@ -181,6 +183,8 @@ void Engine::Scene::drawScene(bool withDebug)
 			(*iL)->setLightParameterValueToShaderObject();
 		}
 	}
+
+	Graphics::SSAO::GenerateGBuffer();
 	//Generate dynamic Cube Maps
 	if(mReflectingObjectList.size()>0)
 	{
@@ -220,6 +224,7 @@ void Engine::Scene::drawScene(bool withDebug)
 	for (uint8_t i = 0; i < mSpriteListInScene.size(); i++)
 		mSpriteListInScene[i]->draw(withDebug);
 
+	Graphics::SSAO::RunSSAO();
 	mTimer->updateDeltaTime();
 	updateScene();
 }
@@ -539,6 +544,13 @@ void Engine::Scene::setObjectType(ObjectType iObjectType)
 {
 	mObjectType = iObjectType;
 }
+
+
+void Engine::Scene::SetMaterial(std::string iMaterialName)
+{
+	//Stub - No Implementation Required
+}
+
 
 
 //Engine::SharedPointer<Engine::Object> Engine::Scene::getObject()

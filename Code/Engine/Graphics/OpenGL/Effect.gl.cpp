@@ -765,6 +765,11 @@ const Engine::Graphics::ConstantTable
 }
 
 
+unsigned Engine::Graphics::Effect::GetProgramID() const
+{
+	return s_programId;
+}
+
 
 
 

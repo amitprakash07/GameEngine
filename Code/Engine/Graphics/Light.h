@@ -60,13 +60,15 @@ namespace Engine
 			void setPlayer(bool) override{};
 			void setObjectType(ObjectType iObjectType) override;
 			ObjectType getObjectType() override;
+			void SetMaterial(std::string iMaterialName) override {}
 			//IMessageHandler functions
 			void HandleMessage(
 				Engine::utils::StringHash &,
 				RTTI* i_MessageSender, void* i_pMessageData) override;
 			std::string getTypeInfo() const override;
 			bool isBothSameType(RTTI*, std::string) const override;
-
+			bool isSSAOEnabled() override { return false; }
+			void EnableSSAO(bool iRequest) override {}
 		private:			
 			void createLightParametersUniformBlock();
 			Light(std::string);

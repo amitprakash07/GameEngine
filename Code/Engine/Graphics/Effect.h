@@ -47,6 +47,9 @@ namespace Engine
 			void changeUniformData(std::string iUniformName,
 				ShaderType iShaderType, UniformValues& iNewValues);
 			const ConstantTable getConstantTable(ShaderType iType) const;
+#ifdef PLATFORM_OPEN_GL
+			unsigned int GetProgramID() const;
+#endif
 			~Effect();
 		private:
 			static std::map<std::string, Engine::SharedPointer<Effect>> mEffectList;

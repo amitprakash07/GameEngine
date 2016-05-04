@@ -55,6 +55,9 @@ namespace Engine
 		bool receivingShadowEnabled() override;
 		void setObjectType(ObjectType iObjectType) override;
 		ObjectType getObjectType() override;
+		void SetMaterial(std::string iMaterialName) override {}
+		bool isSSAOEnabled() override { return false; }
+		void EnableSSAO(bool iRequest) override {}
 	private:
 		Engine::Math::Transform mTransform;
 		Math::Transform mInitialTransform;

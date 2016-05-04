@@ -197,6 +197,12 @@ Engine::ObjectType Engine::Graphics::ReflectingObject::getObjectType()
 	return mObjectType;
 }
 
+void Engine::Graphics::ReflectingObject::SetMaterial(std::string iMaterialName)
+{
+	materialName = iMaterialName;
+}
+
+
 
 
 

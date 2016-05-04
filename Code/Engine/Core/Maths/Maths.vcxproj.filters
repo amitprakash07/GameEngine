@@ -8,6 +8,7 @@
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Vec4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Functions.h" />
@@ -17,5 +18,6 @@
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Vec4.h" />
   </ItemGroup>
 </Project>

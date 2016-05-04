@@ -91,12 +91,12 @@ bool Engine::Graphics::Material::loadMaterial()
 		size_t folderLength = tempName.size();
 		char* effectFolderName = new char[folderLength];
 		memcpy(effectFolderName, tempName.c_str(), folderLength);
-		effectFile = new char[tempSize + folderLength];
+		effectFile = new char[tempSize + folderLength + 1];
 		memcpy(effectFile, effectFolderName, folderLength);
 		memcpy(effectFile + folderLength, currentPosition, tempSize);
 		effectFile[tempSize + folderLength] = '\0';
 		currentPosition += tempSize + 1;
-		delete effectFolderName;
+		delete []effectFolderName;
 	}
 
 	//Loading Effect
@@ -133,12 +133,12 @@ bool Engine::Graphics::Material::loadMaterial()
 				size_t textureFolderLength = textureFolder.size();
 				char* textureFolderName = new char[textureFolderLength];
 				memcpy(textureFolderName, textureFolder.c_str(), textureFolderLength);
-				mTextureMaps[i].file = new char[texturePathLength + textureFolderLength];
+				mTextureMaps[i].file = new char[texturePathLength + textureFolderLength + 1];
 				memcpy(mTextureMaps[i].file, textureFolderName, textureFolderLength);
 				memcpy(mTextureMaps[i].file + textureFolderLength, currentPosition, texturePathLength);
 				mTextureMaps[i].file[textureFolderLength + texturePathLength] = '\0';
 				currentPosition += texturePathLength + 1;				
-				delete textureFolderName;
+				delete []textureFolderName;
 			}
 
 			//Texture Uniform Name
@@ -203,7 +203,7 @@ bool Engine::Graphics::Material::loadMaterial()
 		}
 	}
 
-	delete buffer;
+	delete []buffer;
 	currentPosition = nullptr;
 	buffer = nullptr;
 	return true;

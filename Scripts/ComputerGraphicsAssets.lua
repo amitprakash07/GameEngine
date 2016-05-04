@@ -488,6 +488,27 @@ return
 
 		},
 	-- *******************************************************************
+	{
+			src = "ComputerGraphics/SSAOPassVertex.glsl",
+			target = "ComputerGraphics/SSAOPassVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/SSAOPassFragment.glsl",
+			target = "ComputerGraphics/SSAOPassFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
 	
 	},
 

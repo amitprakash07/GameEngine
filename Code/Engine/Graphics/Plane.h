@@ -50,12 +50,15 @@ namespace Engine
 			void setPlayer(bool) override{}
 			void setObjectType(ObjectType iObjectType) override;
 			ObjectType getObjectType() override;
+			void SetMaterial(std::string iMaterialName) override;
 			//IMessageHandler
 			void HandleMessage(
 				Engine::utils::StringHash &,
 				RTTI* i_MessageSender, void* i_pMessageData) override;
 			std::string getTypeInfo() const override { return ""; }
 			bool isBothSameType(RTTI*, std::string) const override { return true; }
+			bool isSSAOEnabled() override { return false; }
+			void EnableSSAO(bool iRequest) override {}
 		private:
 			Plane(std::string material_name);
 			Math::Transform mTransform;

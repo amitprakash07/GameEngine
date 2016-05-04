@@ -66,12 +66,15 @@ namespace Engine
 		bool IsPlayer() override { return false; }
 		void setPlayer(bool ) override{};
 		void setObjectType(ObjectType iObjectType) override;
+		void SetMaterial(std::string iMaterialName) override;
 		//SharedPointer<Object> getObject();
 		ObjectType getObjectType() override;
 		//IMesageHandler override function
 		void HandleMessage(Engine::utils::StringHash &, 
 			RTTI* i_MessageSender, 
 			void* i_pMessageData) override;
+		bool isSSAOEnabled() override { return false; }
+		void EnableSSAO(bool iRequest) override{}
 		~Scene();
 	private:
 		static std::map<std::string, SharedPointer<Scene>> mSceneList;

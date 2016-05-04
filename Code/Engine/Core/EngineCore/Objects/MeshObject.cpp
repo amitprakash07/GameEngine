@@ -70,6 +70,7 @@ Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialNam
 	scaleFactor = Math::Vector3(1.0, 1.0, 1.0);
 	isPlayer = false;
 	mObjectType = ObjectType::NONE;
+	isSSAO = false;
 }
 
 Engine::MeshObject::MeshObject()
@@ -382,6 +383,26 @@ Engine::Graphics::RGBAColor Engine::MeshObject::GetVertexColor() const
 {
 	return vertexColor;
 }
+
+void Engine::MeshObject::SetMaterial(std::string iMaterialName)
+{
+	mMaterial = iMaterialName;
+}
+
+
+void Engine::MeshObject::EnableSSAO(bool iRequest)
+{
+	isSSAO = iRequest;
+}
+
+
+bool Engine::MeshObject::isSSAOEnabled()
+{
+	return isSSAO;
+}
+
+
+
 
 
 

@@ -22,6 +22,7 @@ namespace Engine
 		virtual void setObjectController(IObjectController* objectController) = 0;
 		virtual void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) = 0;
 		virtual std::string getMaterialName() = 0;
+		virtual void SetMaterial(std::string iMaterialName) = 0;
 		virtual bool isCollidable() = 0;
 		virtual bool isPhysicsEnabled() = 0;
 		virtual void enableCollision(bool) = 0;
@@ -35,6 +36,8 @@ namespace Engine
 		virtual void setPlayer(bool) = 0;
 		virtual void setObjectType(ObjectType) = 0;
 		virtual ObjectType getObjectType() = 0;
+		virtual bool isSSAOEnabled() = 0;
+		virtual void EnableSSAO(bool) = 0;
 		Object() {}
 		virtual ~Object() {}
 	};

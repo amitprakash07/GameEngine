@@ -212,6 +212,12 @@ Engine::ObjectType Engine::Graphics::Line::getObjectType()
 	return mObjectType;
 }
 
+void Engine::Graphics::Line::SetMaterial(std::string iMaterialName)
+{
+	materialName = iMaterialName;
+}
+
+
 
 
 

@@ -328,6 +328,12 @@ Engine::ObjectType Engine::Graphics::Sprite::getObjectType()
 	return mObjectType;
 }
 
+void Engine::Graphics::Sprite::SetMaterial(std::string iMaterialName)
+{
+	mMaterial = iMaterialName;
+}
+
+
 
 
 

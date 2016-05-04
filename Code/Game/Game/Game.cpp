@@ -14,6 +14,7 @@
 #include "ObjectController/ServerPlayerController.h"
 #include "LightController.h"
 #include "ObjectController/WalkController.h"
+#include "../../Engine/Graphics/SSAO.h"
 
 
 #define shared_pointer_reinterpret_cast_to_object(x) \
@@ -37,20 +38,26 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		Engine::EngineCore::Initialize(i_thisInstanceOfTheProgram, 
 			i_initialWindowDisplayState, isServer);		
 		
+		Engine::Graphics::SSAO::InitializeSSAO("Game/SSAOEffect.effect");
 		//Scene
 		Engine::SharedPointer<Engine::Scene> scene = Engine::Scene::CreateNewScene("Scene_01");
 		scene->renderScene(true);
 
+		/*Engine::Graphics::Material::addMaterialToList("data/Materials/Game/SSAOMaterial.mat");
+		Engine::SharedPointer<Engine::Graphics::Material> ssaoMaterial =
+			Engine::Graphics::Material::getMaterial("data/Materials/Game/SSAOMaterial.mat");*/
 
 		//GameObjects		
 		Engine::SharedPointer<Engine::MeshObject> ceiling =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/ceilingMaterialMesh.mesh", 
 				"Game/Arena/ceilingMaterial.mat");
 		ceiling->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
-		scene->addObjectToScene(ceiling);	
+		scene->addObjectToScene(ceiling);
 
-		Engine::SharedPointer<Engine::Graphics::Effect> standardLightingEffect = 
-			ceiling->getEffect();
+		
+
+		/*Engine::SharedPointer<Engine::Graphics::Effect> standardLightingEffect = 
+			ceiling->getEffect();*/
 
 		Engine::SharedPointer<Engine::MeshObject> cementMatObject =
 			Engine::MeshObject::CreateMeshObject("Game/Arena/cementMaterialMesh.mesh", 
@@ -93,18 +100,18 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 
 
 		//Proxy Light
-		/*Engine::SharedPointer<Engine::MeshObject> proxyLightSphere =
+		Engine::SharedPointer<Engine::MeshObject> proxyLightSphere =
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/proxyLightSphere.mesh",
 				"ComputerGraphics/proxyLightSphereMaterial.mat");
 		proxyLightSphere->setTransform(Engine::Math::Vector3(-50, 100, 700), Engine::Math::Quaternion());
 		scene->addObjectToScene(proxyLightSphere);
 		proxyLightSphere->setScale(6, 6, 6);
-		proxyLightSphere->setObjectController(new Game::LightController());*/
+		proxyLightSphere->setObjectController(new Game::LightController());
 
 		//Engine::SharedPointer<Engine::Graphics::Effect> proxyLightSphereEffect = proxyLightSphere->getEffect();
 
 		//Nanosuit
-		/*Engine::SharedPointer<Engine::MeshObject> arms =
+		Engine::SharedPointer<Engine::MeshObject> arms =
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/NanoSuit/arms.mesh",
 				"ComputerGraphics/NanoSuit/armsMaterial.mat");
 		arms->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
@@ -113,10 +120,10 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 
 
 		Engine::SharedPointer<Engine::Graphics::Effect> standardLightingEffect =
-			arms->getEffect();*/
+			arms->getEffect();
 
 
-		/*Engine::SharedPointer<Engine::MeshObject> body =
+		Engine::SharedPointer<Engine::MeshObject> body =
 			Engine::MeshObject::CreateMeshObject("ComputerGraphics/NanoSuit/body.mesh",
 				"ComputerGraphics/NanoSuit/bodyMaterial.mat");
 		body->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
@@ -160,7 +167,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 				"ComputerGraphics/NanoSuit/VisorMaterial.mat");
 		Visor->setTransform(Engine::Math::Vector3(-50, -250, 700), Engine::Math::Quaternion());
 		Visor->setScale(8.0f, 8.0f, 8.0f);
-		scene->addObjectToScene(Visor);*/
+		scene->addObjectToScene(Visor);
 				
 
 		//DebugObjects
@@ -213,7 +220,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		scene->addObjectToScene(numberSprite);*/
 		
 
-		if (Engine::Networking::NetworkManager::isServerInstance())
+		/*if (Engine::Networking::NetworkManager::isServerInstance())
 		{
 			Engine::SharedPointer<Engine::MeshObject> serverObject =
 				Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
@@ -240,7 +247,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 			clientObject->EnableDebugging(true);
 			clientObject->setObjectController(new Game::ClientPlayerController());
 			Engine::Networking::NetworkManager::GetHandler().mClient->addToNetworkPlayerList(clientObject);
-		}
+		}*/
 
 
 		Engine::SharedPointer<Engine::Graphics::Light> mainLight

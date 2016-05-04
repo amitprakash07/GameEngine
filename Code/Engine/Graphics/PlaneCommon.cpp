@@ -176,6 +176,12 @@ void Engine::Graphics::Plane::setObjectType(ObjectType iObjectType)
 }
 
 
+void Engine::Graphics::Plane::SetMaterial(std::string iMaterialName)
+{
+	mMaterialName = iMaterialName;
+}
+
+
 
 
 

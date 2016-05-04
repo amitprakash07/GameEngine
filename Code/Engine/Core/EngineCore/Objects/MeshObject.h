@@ -48,6 +48,9 @@ namespace Engine
 		void setObjectType(ObjectType iObjectType) override;
 		ObjectType getObjectType() override;
 		Graphics::RGBAColor GetVertexColor() const;
+		void SetMaterial(std::string iMaterialName) override;
+		bool isSSAOEnabled() override;
+		void EnableSSAO(bool iRequest) override;
 		~MeshObject();
 		MeshObject();
 	private:
@@ -65,6 +68,7 @@ namespace Engine
 		Engine::Graphics::RGBAColor					vertexColor;
 		bool										isPlayer;
 		ObjectType									mObjectType;
+		bool										isSSAO;
 	};
 }
 

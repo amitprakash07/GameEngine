@@ -104,11 +104,20 @@ return
 			src = "Game/standardEffectWithSpecAndNormal.lua",
 			target = "Game/standardEffectWithSpecAndNormal.effect"
 		},
+		{
+			src = "Game/standardEffectWithSpecAndNormalWithSSAO.lua",
+			target = "Game/standardEffectWithSpecAndNormalWithSSAO.effect"
+		},
 		--proxyLightEffect
 		{
 			src = "ComputerGraphics/proxyLightEffect.lua",
 			target = "ComputerGraphics/proxyLightEffect.effect"
-		},		
+		},
+		--SSAO effect
+		{
+			src = "Game/SSAOEffect.lua",
+			target = "Game/SSAOEffect.effect"
+		}		
 	},
 
 -- =======================================================================
@@ -198,6 +207,11 @@ return
 			src = "ComputerGraphics/proxyLightSphereMaterial.lua",
 			target = "ComputerGraphics/proxyLightSphereMaterial.mat",
 		},
+		--SSAO Material
+		{
+			src = "Game/SSAOMaterial.lua",
+			target = "Game/SSAOMaterial.mat",
+		},		
 	},
 
 -- ======================================================================
@@ -302,7 +316,7 @@ return
 			}
 		},
 -- *******************************************************************
-	{
+		{
 			src = "ComputerGraphics/teapotVertex.glsl",
 			target = "ComputerGraphics/teapotVertex.glsl",
 			optionaltype = "vertex",
@@ -323,7 +337,51 @@ return
 
 		},
 	-- *******************************************************************
+		{
+			src = "ComputerGraphics/SSAOPassVertex.glsl",
+			target = "ComputerGraphics/SSAOPassVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "ComputerGraphics/SSAOPassFragment.glsl",
+			target = "ComputerGraphics/SSAOPassFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
+		{
+			src = "Game/standardVertexWithSpecAndNormalWithSSAO.glsl",
+			target = "Game/standardVertexWithSpecAndNormalWithSSAO.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "Game/standardFragmentWithSpecAndNormalWithSSAO.glsl",
+			target = "Game/standardFragmentWithSpecAndNormalWithSSAO.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
+
 	},
+
 
 -- ====================================================================
 

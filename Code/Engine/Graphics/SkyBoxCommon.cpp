@@ -249,6 +249,12 @@ void Engine::Graphics::SkyBox::setObjectType(ObjectType iObjectType)
 }
 
 
+void Engine::Graphics::SkyBox::SetMaterial(std::string iMaterialName)
+{
+	mMaterialName = iMaterialName;
+}
+
+
 
 
 

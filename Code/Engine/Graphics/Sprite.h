@@ -59,6 +59,9 @@ namespace Engine
 			void setPlayer(bool i_isPlayer) override;
 			ObjectType getObjectType() override;
 			void setObjectType(ObjectType iObjectType) override;
+			void SetMaterial(std::string iMaterialName) override;
+			bool isSSAOEnabled() override { return false; }
+			void EnableSSAO(bool iRequest) override {}
 			~Sprite();
 		private:
 			Sprite(std::string spriteName,

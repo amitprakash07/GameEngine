@@ -58,6 +58,9 @@ namespace Engine
 			void setPlayer(bool) override{}
 			void setObjectType(ObjectType iObjectType) override;
 			ObjectType getObjectType() override;
+			void SetMaterial(std::string iMaterialName) override;
+			bool isSSAOEnabled() override { return false; }
+			void EnableSSAO(bool iRequest) override {}
 		private:
 			static std::vector<SharedPointer<Line>> mLineList;
 			static bool setUniforms();

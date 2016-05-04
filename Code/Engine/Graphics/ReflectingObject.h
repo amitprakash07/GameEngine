@@ -43,6 +43,9 @@ namespace Engine
 			void setPlayer(bool i_isPlayer) override;
 			void setObjectType(ObjectType iObjectType) override;
 			ObjectType getObjectType() override;
+			void SetMaterial(std::string iMaterialName) override;
+			bool isSSAOEnabled() override { return false; }
+			void EnableSSAO(bool iRequest) override {}
 		private:
 			ReflectingObject();
 			bool init();

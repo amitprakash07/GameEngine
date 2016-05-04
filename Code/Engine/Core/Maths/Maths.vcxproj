@@ -23,6 +23,7 @@
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Vec4.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Functions.cpp" />
@@ -31,6 +32,7 @@
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Vec4.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Functions.h" />
