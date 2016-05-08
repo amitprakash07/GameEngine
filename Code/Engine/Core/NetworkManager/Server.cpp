@@ -289,7 +289,58 @@ void Engine::Networking::Server::ReceivePackets()
 			bsOut.Write(networkID);
 			
 			mServer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mPacket->systemAddress, true);
-		}		
+		}	
+		case ID_SYNC_KEY_PRESS:
+		{
+			receiveBitStream.IgnoreBytes(sizeof(RakNet::MessageID));
+			RakNet::NetworkID incomingNetworkID;
+			receiveBitStream.Read(incomingNetworkID);
+			SharedPointer<NetworkPlayer> incomingNetworkPlayer
+				= mPlayerLists[incomingNetworkID];
+
+			//Position
+			float posX, posY, posZ;
+			receiveBitStream.Read(posX);
+			receiveBitStream.Read(posY);
+			receiveBitStream.Read(posZ);
+
+			//Orientation
+			float rotW, rotX, rotY, rotZ;
+			receiveBitStream.Read(rotW);
+			receiveBitStream.Read(rotX);
+			receiveBitStream.Read(rotY);
+			receiveBitStream.Read(rotZ);
+
+			//Update position and orientation
+			Math::Quaternion tempQuaternion;
+			tempQuaternion.w(rotW);
+			tempQuaternion.x(rotX);
+			tempQuaternion.y(rotY);
+			tempQuaternion.z(rotZ);
+			incomingNetworkPlayer->GetMeshObject()->setTransform(
+				Math::Vector3(posX, posY, posZ), tempQuaternion);
+
+			
+			//Send Information to all of the clients
+			RakNet::BitStream bsOut;
+
+			//Network ID
+			bsOut.Write(incomingNetworkID);
+			
+			//Position
+			bsOut.Write(posX);
+			bsOut.Write(posY);
+			bsOut.Write(posZ);
+
+			//Orientation
+			bsOut.Write(rotW);
+			bsOut.Write(rotX);
+			bsOut.Write(rotY);
+			bsOut.Write(rotZ);
+			mServer->Send(&bsOut, HIGH_PRIORITY, 
+				RELIABLE_ORDERED, 0, mPacket->systemAddress, true);
+		}
+		break;
 		default:
 			break;
 		}

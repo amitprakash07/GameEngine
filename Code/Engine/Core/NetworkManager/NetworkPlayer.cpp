@@ -121,6 +121,32 @@ void Engine::Networking::NetworkPlayer::SendNewNetworkPlayer(
 }
 
 
+void Engine::Networking::NetworkPlayer::SendNetworkPlayerUpdates(RakNet::RakPeerInterface* iNetworkHandler)
+{
+
+	//Send Information to all of the clients
+	RakNet::BitStream bsOut;
+
+	//Network ID
+	bsOut.Write(networkID);
+
+	//Position
+	bsOut.Write(mMeshObject->getTransform().getPosition().x);
+	bsOut.Write(mMeshObject->getTransform().getPosition().y);
+	bsOut.Write(mMeshObject->getTransform().getPosition().z);
+
+	//Orientation
+	bsOut.Write(mMeshObject->getTransform().getOrientation().w());
+	bsOut.Write(mMeshObject->getTransform().getOrientation().x());
+	bsOut.Write(mMeshObject->getTransform().getOrientation().y());
+	bsOut.Write(mMeshObject->getTransform().getOrientation().z());
+
+	iNetworkHandler->Send(&bsOut, HIGH_PRIORITY,
+		RELIABLE_ORDERED, 0, RakNet::UNASSIGNED_SYSTEM_ADDRESS, true);
+}
+
+
+
 void Engine::Networking::NetworkPlayer::SetControlPlayer(bool i_isControlPlayer)
 {
 	isControlPlayer = i_isControlPlayer;

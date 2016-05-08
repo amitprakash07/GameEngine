@@ -63,7 +63,7 @@ void Engine::Networking::Client::ClientStartup()
 }
 
 
-void Engine::Networking::Client::ReceivePackets() // in game loop
+void Engine::Networking::Client::ReceivePackets() 
 {
 	for (mPacket = client->Receive(); mPacket; client->DeallocatePacket(mPacket),
 		mPacket = client->Receive())
@@ -310,6 +310,37 @@ void Engine::Networking::Client::ReceivePackets() // in game loop
 			GetControlPlayer()->SendNewNetworkPlayer(client);
 		}
 		break;
+		case ID_SYNC_KEY_PRESS:
+		{
+			receiveBitStream.IgnoreBytes(sizeof(RakNet::MessageID));
+			RakNet::NetworkID incomingNetworkID;
+			receiveBitStream.Read(incomingNetworkID);
+			SharedPointer<NetworkPlayer> incomingNetworkPlayer
+				= mPlayerLists[incomingNetworkID];
+
+			//Position
+			float posX, posY, posZ;
+			receiveBitStream.Read(posX);
+			receiveBitStream.Read(posY);
+			receiveBitStream.Read(posZ);
+
+			//Orientation
+			float rotW, rotX, rotY, rotZ;
+			receiveBitStream.Read(rotW);
+			receiveBitStream.Read(rotX);
+			receiveBitStream.Read(rotY);
+			receiveBitStream.Read(rotZ);
+
+			//Update position and orientation
+			Math::Quaternion tempQuaternion;
+			tempQuaternion.w(rotW);
+			tempQuaternion.x(rotX);
+			tempQuaternion.y(rotY);
+			tempQuaternion.z(rotZ);			
+			incomingNetworkPlayer->GetMeshObject()->setTransform(
+				Math::Vector3(posX, posY, posZ), tempQuaternion);
+		}
+			break;
 		default:
 			//for sending chat messages
 			break;

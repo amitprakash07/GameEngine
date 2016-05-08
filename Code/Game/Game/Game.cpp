@@ -233,7 +233,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 			//serverObject->setObjectController(new Game::ServerPlayerController());
 			serverObject->EnableDebugging(true);
 			serverObject->setObjectController(new Game::WalkController());
-			Engine::Networking::NetworkManager::GetHandler().mServer->addToNetworkPlayerList(serverObject);			
+			Engine::Networking::NetworkManager::GetHandler().mServer->addToNetworkPlayerList(serverObject, true);			
 		}
 		else
 		{
@@ -248,7 +248,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 			clientObject->EnableDebugging(true);
 			//clientObject->setObjectController(new Game::ClientPlayerController());
 			clientObject->setObjectController(new Game::WalkController());
-			Engine::Networking::NetworkManager::GetHandler().mClient->addToNetworkPlayerList(clientObject);
+			Engine::Networking::NetworkManager::GetHandler().mClient->addToNetworkPlayerList(clientObject, true);
 		}
 
 

@@ -26,6 +26,7 @@ namespace Engine
 
 			SharedPointer<MeshObject> GetMeshObject() const;			
 			void SendNewNetworkPlayer(RakNet::RakPeerInterface* iServer);
+			void SendNetworkPlayerUpdates(RakNet::RakPeerInterface* iServer);
 
 		private:
 			NetworkPlayer(std::string i_meshFileName,
