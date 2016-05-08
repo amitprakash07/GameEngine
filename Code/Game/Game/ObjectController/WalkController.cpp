@@ -20,32 +20,32 @@ void Game::WalkController::updateObject(Engine::Object& iObject, Engine::typedef
 	{
 	case VK_PRIOR:
 		//Page up - camera up
-		transform.setPosition(transform.getPosition() + Vector3(0, 0.5, 0));
+		transform.setPosition(transform.getPosition() + Vector3(0, 2.0, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case VK_NEXT:
 		//Page Down - camera down
-		transform.setPosition(transform.getPosition() + Vector3(0, -0.5, 0));
+		transform.setPosition(transform.getPosition() + Vector3(0, -2.0, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case 0x5A:
 		//z - key - camera left
-		transform.setPosition(transform.getPosition() + Vector3(-0.5, 0, 0));
+		transform.setPosition(transform.getPosition() + Vector3(-2.0, 0, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case 0x58:
 		//X Key - right
-		transform.setPosition(transform.getPosition() + Vector3(0.5, 0, 0));
+		transform.setPosition(transform.getPosition() + Vector3(2.0, 0, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case 0x46:
 		//f key - forward
-		transform.setPosition(transform.getPosition() + Vector3(0, 0, -0.5));
+		transform.setPosition(transform.getPosition() + Vector3(0, 0, -2.0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case 0x42:
 		//B key - backward
-		transform.setPosition(transform.getPosition() + Vector3(0, 0, 0.5));
+		transform.setPosition(transform.getPosition() + Vector3(0, 0, 2.0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case 0x41:

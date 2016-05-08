@@ -164,6 +164,10 @@ void Engine::MeshObject::setScale(float x, float y, float z)
 	scaleFactor = Math::Vector3(x, y, z);
 }
 
+Engine::Math::Vector3 Engine::MeshObject::getScale() const
+{
+	return scaleFactor;
+}
 
 
 Engine::Math::Transform Engine::MeshObject::getTransform()
@@ -382,6 +386,11 @@ void Engine::MeshObject::setObjectType(ObjectType iObjectType)
 Engine::Graphics::RGBAColor Engine::MeshObject::GetVertexColor() const
 {
 	return vertexColor;
+}
+
+void Engine::MeshObject::SetVertexColor(float iR, float iG, float iB, float iA)
+{
+	vertexColor = Graphics::RGBAColor(iR, iG, iB, iA);
 }
 
 void Engine::MeshObject::SetMaterial(std::string iMaterialName)

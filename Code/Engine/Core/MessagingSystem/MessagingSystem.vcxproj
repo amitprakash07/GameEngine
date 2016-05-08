@@ -24,9 +24,6 @@
   <ItemGroup>
     <ClCompile Include="MessagingSystem.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="MessagingSystem.inl" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5BE2E9CC-B674-4100-A1C7-E87A3AA48DD7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

@@ -6,7 +6,4 @@
   <ItemGroup>
     <ClCompile Include="MessagingSystem.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="MessagingSystem.inl" />
-  </ItemGroup>
 </Project>

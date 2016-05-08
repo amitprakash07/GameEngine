@@ -206,42 +206,50 @@ void Engine::Networking::Client::ReceivePackets() // in game loop
 			receiveBitStream.Read(playerCount);
 			for (uint8_t i = 0; i<playerCount; i++)
 			{
+				//Mesh File Name
 				char * meshName;
 				receiveBitStream.Read(meshNameSize);
 				meshName = new char[meshNameSize + 1];
 				receiveBitStream.Read(meshName, meshNameSize);
 				meshName[meshNameSize] = '\0';
 
+				//Material File Name
 				char *materialName;
 				receiveBitStream.Read(materialNameSize);
 				materialName = new char[materialNameSize + 1];
 				receiveBitStream.Read(materialName, materialNameSize);
 				materialName[materialNameSize] = '\0';
 
+				//Position
 				float posX, posY, posZ;
 				receiveBitStream.Read(posX);
 				receiveBitStream.Read(posY);
 				receiveBitStream.Read(posZ);
 
+				//Orientation
 				float rotW, rotX, rotY, rotZ;
 				receiveBitStream.Read(rotW);
 				receiveBitStream.Read(rotX);
 				receiveBitStream.Read(rotY);
-				receiveBitStream.Read(rotZ);
-				tempTransform.setPosition(Math::Vector3(posX, posY, posZ));
+				receiveBitStream.Read(rotZ);			
+				
+				//Scale
+				float xScale, yScale, zScale;
+				receiveBitStream.Read(xScale);
+				receiveBitStream.Read(yScale);
+				receiveBitStream.Read(zScale);
 
-				Math::Quaternion tempQuaternion;
-				tempQuaternion.w(rotW);
-				tempQuaternion.x(rotX);
-				tempQuaternion.y(rotY);
-				tempQuaternion.z(rotZ);
-				tempTransform.setOrientation(tempQuaternion);
-
+				//Vertex Color
 				receiveBitStream.Read(tempColor.r);
 				receiveBitStream.Read(tempColor.g);
 				receiveBitStream.Read(tempColor.b);
 				receiveBitStream.Read(tempColor.a);
 
+				//WireFrameInfo
+				bool wireFramStatus;
+				receiveBitStream.Read(wireFramStatus);
+
+				//Network ID
 				RakNet::NetworkID networkID;
 				receiveBitStream.Read(networkID);
 
@@ -249,6 +257,14 @@ void Engine::Networking::Client::ReceivePackets() // in game loop
 				std::string tempMaterialName = materialName;
 				delete[]meshName;
 				delete[]materialName;
+
+				tempTransform.setPosition(Math::Vector3(posX, posY, posZ));
+				Math::Quaternion tempQuaternion;
+				tempQuaternion.w(rotW);
+				tempQuaternion.x(rotX);
+				tempQuaternion.y(rotY);
+				tempQuaternion.z(rotZ);
+				tempTransform.setOrientation(tempQuaternion);
 
 				SharedPointer<NetworkPlayer> tempNetworkPlayer =
 					NetworkPlayer::CreateNetworkPlayer(
@@ -260,6 +276,11 @@ void Engine::Networking::Client::ReceivePackets() // in game loop
 				tempNetworkPlayer->SetNetworkID(networkID);
 				tempNetworkPlayer->SetControlPlayer(false);
 				mPlayerLists[networkID] = tempNetworkPlayer;
+				SharedPointer<MeshObject> tempMeshObject = 
+					tempNetworkPlayer->GetMeshObject();
+				tempMeshObject->setScale(xScale, yScale, zScale);
+				tempMeshObject->EnableDebugging(wireFramStatus);
+				Scene::getRenderableScene()->addObjectToScene(tempMeshObject);
 			}
 
 			GetControlPlayer()->SendNewNetworkPlayer(client);

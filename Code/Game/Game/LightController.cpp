@@ -24,6 +24,7 @@ void Game::LightController::updateObject(Engine::Object& iObject, Engine::typede
 				return (*i);
 			}
 		}
+		return Engine::SharedPointer<Engine::Graphics::Light>();
 	};
 
 	Engine::SharedPointer<Engine::Graphics::Light> mainLight = getMainLight();
@@ -37,29 +38,29 @@ void Game::LightController::updateObject(Engine::Object& iObject, Engine::typede
 	switch (iAction.keyVal)
 	{
 	case VK_UP:
-		transform.setPosition(transform.getPosition() + Vector3(0, 0.5, 0));
+		transform.setPosition(transform.getPosition() + Vector3(0, 0.5f, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case VK_DOWN:
-		transform.setPosition(transform.getPosition() + Vector3(0, -0.5, 0));
+		transform.setPosition(transform.getPosition() + Vector3(0, -0.5f, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case VK_LEFT:
-		transform.setPosition(transform.getPosition() + Vector3(-0.5, 0, 0));
+		transform.setPosition(transform.getPosition() + Vector3(-0.5f, 0, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case VK_RIGHT:
-		transform.setPosition(transform.getPosition() + Vector3(0.5, 0, 0));
+		transform.setPosition(transform.getPosition() + Vector3(0.5f, 0, 0));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case 0x57:
 		//w key
-		transform.setPosition(transform.getPosition() + Vector3(0, 0, -0.5));
+		transform.setPosition(transform.getPosition() + Vector3(0, 0, -0.5f));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case 0x53:
 		//S key
-		transform.setPosition(transform.getPosition() + Vector3(0, 0, 0.5));
+		transform.setPosition(transform.getPosition() + Vector3(0, 0, 0.5f));
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		break;
 	case 0x52:
@@ -68,11 +69,11 @@ void Game::LightController::updateObject(Engine::Object& iObject, Engine::typede
 		break;
 	case 0x4C:
 		//L key
-		mainLightIntensity += 0.2;
+		mainLightIntensity += 0.2f;
 		break;
 	case 0x4B:
 		//K Key
-		mainLightIntensity -= 0.2;
+		mainLightIntensity -= 0.2f;
 		break;
 	}
 

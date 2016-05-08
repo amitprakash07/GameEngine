@@ -39,7 +39,7 @@ void Engine::Networking::Server::CreateServerInterface()
 }
 
 
-void Engine::Networking::Server::ReceivePackets() //-- In game loop
+void Engine::Networking::Server::ReceivePackets() 
 {
 	for (mPacket = mServer->Receive(); mPacket; mServer->DeallocatePacket(mPacket),
 		mPacket = mServer->Receive())
@@ -69,7 +69,7 @@ void Engine::Networking::Server::ReceivePackets() //-- In game loop
 			for (std::map<RakNet::NetworkID, SharedPointer<NetworkPlayer>>::iterator i = mPlayerLists.begin();
 				i != mPlayerLists.end(); ++i)
 			{
-				SharedPointer<MeshObject> tempMeshObject = i->second->GetMeshObject();
+				SharedPointer<MeshObject> tempMeshObject = i->second->GetMeshObject();				
 				
 				std::string meshFileNameWithFullPath = tempMeshObject->getMesh()->getMeshFileName();
 				std::string meshFileName =
@@ -84,26 +84,43 @@ void Engine::Networking::Server::ReceivePackets() //-- In game loop
 
 				Math::Transform tempTransform = tempMeshObject->getTransform();
 				Engine::Graphics::RGBAColor iColor = tempMeshObject->GetVertexColor();
+				bool debugStatus = tempMeshObject->isDebugObject();
+				Math::Vector3 objectScale = tempMeshObject->getScale();
 				
+				//Mesh File Name
 				bsOut.Write(meshFileName.size());
 				bsOut.Write(meshFileName.c_str(), meshFileName.size());
 
+				//Material Name
 				bsOut.Write(materialFileName.size());
 				bsOut.Write(materialFileName.c_str(), materialFileName.size());
 
+				//Poistion
 				bsOut.Write(tempTransform.getPosition().x);
 				bsOut.Write(tempTransform.getPosition().y);
 				bsOut.Write(tempTransform.getPosition().z);
 
+				//Orientation
 				bsOut.Write(tempTransform.getOrientation().w());
 				bsOut.Write(tempTransform.getOrientation().x());
 				bsOut.Write(tempTransform.getOrientation().y());
 				bsOut.Write(tempTransform.getOrientation().z());
 
+				//Scale
+				bsOut.Write(objectScale.x);
+				bsOut.Write(objectScale.y);
+				bsOut.Write(objectScale.z);
+
+				//Vertex Color
 				bsOut.Write(iColor.r);
 				bsOut.Write(iColor.g);
 				bsOut.Write(iColor.b);
 				bsOut.Write(iColor.a);
+
+				//WireFrame Info
+				bsOut.Write(debugStatus);
+
+				//NetworkID
 				bsOut.Write(i->second->GetNetworkID());
 			}
 			mServer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0,
@@ -148,51 +165,56 @@ void Engine::Networking::Server::ReceivePackets() //-- In game loop
 			break;
 		case ID_SPAWN_PLAYER:
 		{
-			receiveBitStream.IgnoreBytes(sizeof(RakNet::MessageID));
-			unsigned char* bitStreamData = receiveBitStream.GetData();
-
-			receiveBitStream.IgnoreBytes(sizeof(RakNet::MessageID));
+			receiveBitStream.IgnoreBytes(sizeof(RakNet::MessageID));			
 			Math::Transform tempTransform;
 			Engine::Graphics::RGBAColor tempColor;
 			size_t materialNameSize;
 			size_t meshNameSize;
 
+			//Mesh File Name
 			char * meshName;
 			receiveBitStream.Read(meshNameSize);
 			meshName = new char[meshNameSize + 1];
 			receiveBitStream.Read(meshName, meshNameSize);
 			meshName[meshNameSize] = '\0';
 
+			//material File 
 			char *materialName;
 			receiveBitStream.Read(materialNameSize);
 			materialName = new char[materialNameSize + 1];
 			receiveBitStream.Read(materialName, materialNameSize);
 			materialName[materialNameSize] = '\0';
 
+			//Position
 			float posX, posY, posZ;
 			receiveBitStream.Read(posX);
 			receiveBitStream.Read(posY);
 			receiveBitStream.Read(posZ);
 
+			//Orientation
 			float rotW, rotX, rotY, rotZ;
 			receiveBitStream.Read(rotW);
 			receiveBitStream.Read(rotX);
 			receiveBitStream.Read(rotY);
-			receiveBitStream.Read(rotZ);
-			tempTransform.setPosition(Math::Vector3(posX, posY, posZ));
+			receiveBitStream.Read(rotZ);			
 
-			Math::Quaternion tempQuaternion;
-			tempQuaternion.w(rotW);
-			tempQuaternion.x(rotX);
-			tempQuaternion.y(rotY);
-			tempQuaternion.z(rotZ);
-			tempTransform.setOrientation(tempQuaternion);
+			//Scale
+			float xScale, yScale, zScale;
+			receiveBitStream.Read(xScale);
+			receiveBitStream.Read(yScale);
+			receiveBitStream.Read(zScale);
 
+			//VertexColor
 			receiveBitStream.Read(tempColor.r);
 			receiveBitStream.Read(tempColor.g);
 			receiveBitStream.Read(tempColor.b);
 			receiveBitStream.Read(tempColor.a);
 
+			//WireFrame Info
+			bool wireFrameStatus;
+			receiveBitStream.Read(wireFrameStatus);
+
+			//Network ID
 			RakNet::NetworkID networkID;
 			receiveBitStream.Read(networkID);
 
@@ -201,6 +223,14 @@ void Engine::Networking::Server::ReceivePackets() //-- In game loop
 			delete[]meshName;
 			delete[]materialName;
 
+
+			tempTransform.setPosition(Math::Vector3(posX, posY, posZ));
+			Math::Quaternion tempQuaternion;
+			tempQuaternion.w(rotW);
+			tempQuaternion.x(rotX);
+			tempQuaternion.y(rotY);
+			tempQuaternion.z(rotZ);
+			tempTransform.setOrientation(tempQuaternion);
 			SharedPointer<NetworkPlayer> tempNetworkPlayer =
 				NetworkPlayer::CreateNetworkPlayer(
 					tempMeshName,
@@ -208,6 +238,11 @@ void Engine::Networking::Server::ReceivePackets() //-- In game loop
 					tempTransform,
 					tempColor);
 
+			SharedPointer<MeshObject> tempMeshObject =
+				tempNetworkPlayer->GetMeshObject();
+			Scene::getRenderableScene()->addObjectToScene(tempMeshObject);
+			tempMeshObject->setScale(xScale, yScale, zScale);
+			tempMeshObject->EnableDebugging(wireFrameStatus);
 			tempNetworkPlayer->SetNetworkIDManager(&mNetworkIDManager);
 			tempNetworkPlayer->SetNetworkID(networkID);
 			tempNetworkPlayer->SetControlPlayer(false);
@@ -216,26 +251,43 @@ void Engine::Networking::Server::ReceivePackets() //-- In game loop
 			//Sending to other clients on the network
 			RakNet::BitStream bsOut;
 			bsOut.Write(static_cast<RakNet::MessageID>(ID_SPAWN_PLAYER));
+
+			//Mesh Name
 			bsOut.Write(tempMeshName.size());
 			bsOut.Write(tempMeshName.c_str(), tempMeshName.size());
 
+			//Material Name
 			bsOut.Write(tempMaterialName.size());
 			bsOut.Write(tempMaterialName.c_str(), tempMaterialName.size());
 
+			//Position
 			bsOut.Write(tempTransform.getPosition().x);
 			bsOut.Write(tempTransform.getPosition().y);
 			bsOut.Write(tempTransform.getPosition().z);
 
+			//orientation
 			bsOut.Write(tempTransform.getOrientation().w());
 			bsOut.Write(tempTransform.getOrientation().x());
 			bsOut.Write(tempTransform.getOrientation().y());
 			bsOut.Write(tempTransform.getOrientation().z());
 
+			//Scale
+			bsOut.Write(xScale);
+			bsOut.Write(yScale);
+			bsOut.Write(zScale);
+
+			//Vertex Color
 			bsOut.Write(tempColor.r);
 			bsOut.Write(tempColor.g);
 			bsOut.Write(tempColor.b);
 			bsOut.Write(tempColor.a);
+
+			//WireFrameInfo
+			bsOut.Write(wireFrameStatus);
+
+			//NetworkID
 			bsOut.Write(networkID);
+			
 			mServer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mPacket->systemAddress, true);
 		}		
 		default:

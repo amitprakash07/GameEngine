@@ -47,6 +47,9 @@ namespace Engine
 			void updateObject() override;
 			void setObjectController(IObjectController* iObjectController) override;
 			void setScale(float iX, float iY, float iZ) override;
+			Math::Vector3 getScale() const override { return Math::Vector3(0.0f);/*Stub*/ }
+			Graphics::RGBAColor GetVertexColor() const override { return RGBAColor(0.0f); }
+			void SetVertexColor(float iR, float iG, float iB, float iA) override{}
 			std::string getMaterialName() override;
 			bool isCollidable() override { return false; }
 			bool isPhysicsEnabled() override { return false; }

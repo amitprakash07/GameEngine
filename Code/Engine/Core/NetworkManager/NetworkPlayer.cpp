@@ -80,22 +80,42 @@ void Engine::Networking::NetworkPlayer::SendNewNetworkPlayer(
 
 	RakNet::BitStream bsOut;
 	bsOut.Write(static_cast<RakNet::MessageID>(ID_SPAWN_PLAYER));
+	//Mesh File
 	bsOut.Write(meshFileName.size());
-	bsOut.Write(meshFileName);
+	bsOut.Write(meshFileName.c_str(),meshFileName.size());
+	
+	//Material File
 	bsOut.Write(materialFileName.size());
-	bsOut.Write(materialFileName);
+	bsOut.Write(materialFileName.c_str(),materialFileName.size());
+
+	//Position
 	bsOut.Write(networkPlayerTransform.getPosition().x);
 	bsOut.Write(networkPlayerTransform.getPosition().y);
 	bsOut.Write(networkPlayerTransform.getPosition().z);
+
+	//Orientetion
 	bsOut.Write(networkPlayerTransform.getOrientation().w());
 	bsOut.Write(networkPlayerTransform.getOrientation().x());
 	bsOut.Write(networkPlayerTransform.getOrientation().y());
 	bsOut.Write(networkPlayerTransform.getOrientation().z());
+
+	//Scale
+	bsOut.Write(mMeshObject->getScale().x);
+	bsOut.Write(mMeshObject->getScale().y);
+	bsOut.Write(mMeshObject->getScale().z);
+
+	//VertexColor
 	bsOut.Write(color.r);
 	bsOut.Write(color.g);
 	bsOut.Write(color.b);
 	bsOut.Write(color.a);
+
+	//WireFrame Info
+	bsOut.Write(mMeshObject->isDebugObject());
+
+	//network Id
 	bsOut.Write(GetNetworkID());
+
 	iServer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0,
 		RakNet::UNASSIGNED_SYSTEM_ADDRESS, true);
 }

@@ -29,6 +29,4 @@ namespace Engine
 	};
 }
 
-#include "MessagingSystem.inl"
-
 #endif

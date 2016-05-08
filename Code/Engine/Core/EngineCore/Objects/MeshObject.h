@@ -34,6 +34,7 @@ namespace Engine
 		bool isDebugObject() const override;	
 		void updateObject() override;
 		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
+		Math::Vector3 getScale() const override;
 		void setRenderable(bool iRenderable) override{ renderable = iRenderable; }
 		void resetTransform() override;
 		std::string getMaterialName() override { return mMaterial; }
@@ -47,7 +48,8 @@ namespace Engine
 		bool receivingShadowEnabled() override;
 		void setObjectType(ObjectType iObjectType) override;
 		ObjectType getObjectType() override;
-		Graphics::RGBAColor GetVertexColor() const;
+		Graphics::RGBAColor GetVertexColor() const override;
+		void SetVertexColor(float iR, float iG, float iB, float iA) override;
 		void SetMaterial(std::string iMaterialName) override;
 		bool isSSAOEnabled() override;
 		void EnableSSAO(bool iRequest) override;

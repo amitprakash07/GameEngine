@@ -158,6 +158,11 @@ namespace Engine
 				a = 1.0f;
 			}
 
+			RGBAColor(float iCommon)
+			{
+				r = g = b = a = iCommon;
+			}
+
 			RGBAColor(float iR, float iG, float iB, float iA)
 			{
 				r = iR;
