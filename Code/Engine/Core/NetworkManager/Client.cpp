@@ -137,49 +137,66 @@ void Engine::Networking::Client::ReceivePackets() // in game loop
 			size_t materialNameSize;
 			size_t meshNameSize;
 
+			//Mesh Name
 			char * meshName;
 			receiveBitStream.Read(meshNameSize);
 			meshName = new char[meshNameSize + 1];
 			receiveBitStream.Read(meshName, meshNameSize);
 			meshName[meshNameSize] = '\0';
 
+			//material Name
 			char *materialName;
 			receiveBitStream.Read(materialNameSize);
 			materialName = new char[materialNameSize + 1];
 			receiveBitStream.Read(materialName, materialNameSize);
 			materialName[materialNameSize] = '\0';
 
+			//Position
 			float posX, posY, posZ;
 			receiveBitStream.Read(posX);
 			receiveBitStream.Read(posY);
 			receiveBitStream.Read(posZ);
 
+			//Orientation
 			float rotW, rotX, rotY, rotZ;
 			receiveBitStream.Read(rotW);
 			receiveBitStream.Read(rotX);
 			receiveBitStream.Read(rotY);
-			receiveBitStream.Read(rotZ);
-			tempTransform.setPosition(Math::Vector3(posX, posY, posZ));
+			receiveBitStream.Read(rotZ);			
 
+			//Scale
+			float xScale, yScale, zScale;
+			receiveBitStream.Read(xScale);
+			receiveBitStream.Read(yScale);
+			receiveBitStream.Read(zScale);
+
+			//Vertex Color
+			receiveBitStream.Read(tempColor.r);
+			receiveBitStream.Read(tempColor.g);
+			receiveBitStream.Read(tempColor.b);
+			receiveBitStream.Read(tempColor.a);
+
+			//WireFrame Info
+			bool wireFrameStatus;
+			receiveBitStream.Read(wireFrameStatus);
+
+			//Network ID
+			RakNet::NetworkID networkID;
+			receiveBitStream.Read(networkID);
+
+
+			std::string tempMeshName = meshName;
+			std::string tempMaterialName = materialName;
+			delete[]meshName;
+			delete[]materialName;
+
+			tempTransform.setPosition(Math::Vector3(posX, posY, posZ));
 			Math::Quaternion tempQuaternion;
 			tempQuaternion.w(rotW);
 			tempQuaternion.x(rotX);
 			tempQuaternion.y(rotY);
 			tempQuaternion.z(rotZ);
 			tempTransform.setOrientation(tempQuaternion);
-
-			receiveBitStream.Read(tempColor.r);
-			receiveBitStream.Read(tempColor.g);
-			receiveBitStream.Read(tempColor.b);
-			receiveBitStream.Read(tempColor.a);
-
-			RakNet::NetworkID networkID;
-			receiveBitStream.Read(networkID);
-
-			std::string tempMeshName = meshName;
-			std::string tempMaterialName = materialName;
-			delete[]meshName;
-			delete[]materialName;
 
 			SharedPointer<NetworkPlayer> tempNetworkPlayer =
 				NetworkPlayer::CreateNetworkPlayer(
@@ -188,6 +205,11 @@ void Engine::Networking::Client::ReceivePackets() // in game loop
 					tempTransform,
 					tempColor);
 
+			SharedPointer<MeshObject> tempMeshObject =
+				tempNetworkPlayer->GetMeshObject();
+			tempMeshObject->setScale(xScale, yScale, zScale);
+			tempMeshObject->EnableDebugging(wireFrameStatus);
+			Scene::getRenderableScene()->addObjectToScene(tempMeshObject);
 			tempNetworkPlayer->SetNetworkIDManager(&mNetworkIDManager);
 			tempNetworkPlayer->SetNetworkID(networkID);
 			tempNetworkPlayer->SetControlPlayer(false);
@@ -272,15 +294,17 @@ void Engine::Networking::Client::ReceivePackets() // in game loop
 						tempMaterialName,
 						tempTransform,
 						tempColor);
-				tempNetworkPlayer->SetNetworkIDManager(&mNetworkIDManager);
-				tempNetworkPlayer->SetNetworkID(networkID);
-				tempNetworkPlayer->SetControlPlayer(false);
+				
 				mPlayerLists[networkID] = tempNetworkPlayer;
 				SharedPointer<MeshObject> tempMeshObject = 
 					tempNetworkPlayer->GetMeshObject();
 				tempMeshObject->setScale(xScale, yScale, zScale);
 				tempMeshObject->EnableDebugging(wireFramStatus);
 				Scene::getRenderableScene()->addObjectToScene(tempMeshObject);
+
+				tempNetworkPlayer->SetNetworkIDManager(&mNetworkIDManager);
+				tempNetworkPlayer->SetNetworkID(networkID);
+				tempNetworkPlayer->SetControlPlayer(false);
 			}
 
 			GetControlPlayer()->SendNewNetworkPlayer(client);
