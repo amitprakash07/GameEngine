@@ -17,6 +17,14 @@ namespace Engine
 			static void InitializeSSAO(std::string i_SSAOEffectFileName);
 			static unsigned int GetSSAOTexture();
 			static unsigned int GetSSAOBlurTexture();
+			static void ToggleColorToOnlyAmbient();
+			static void IncreaseAmbientIntensity();
+			static void DecreaseAmbientIntensity();
+			static void IncreaseRadius();
+			static void DecreaseRadius();
+			static void SetAmbientLightColor(Math::Vector4 iNewColor);
+			//static void SSAOCearBuffer();
+			static void SSAOBindGBuffer();
 		private:
 			static SharedPointer<SSAO> mSSAOInstance;
 			SSAO();
@@ -38,7 +46,9 @@ namespace Engine
 
 			int mSampleCount;
 			float mVaryingRadius;
-
+			bool ambientOnly;
+			float ambientIntensity;
+			Math::Vector4 mLightColor;
 
 			struct samplePoints
 			{
@@ -66,6 +76,10 @@ namespace Engine
 			GLuint mRadius;
 			GLuint mSamplePointCount;
 			GLuint mProjectionMatrix;
+
+			GLuint ambientLightColorUniform;
+			GLuint ambientIntensityUniform;
+			GLuint ambientOnlyUniform;
 			
 
 			//VertexArray for Quad

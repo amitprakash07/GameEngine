@@ -9,8 +9,8 @@ Engine::SharedPointer<Engine::Graphics::SSAO>
 
 void Engine::Graphics::SSAO::GenerateGBuffer()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, mSSAOInstance->glGeometryFrameBuffer);	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	/*glBindFramebuffer(GL_FRAMEBUFFER, mSSAOInstance->glGeometryFrameBuffer);		
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
 	glBindTexture(GL_TEXTURE_2D, mSSAOInstance->glNormalTexture);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -26,6 +26,13 @@ void Engine::Graphics::SSAO::GenerateGBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);		
 }
+
+void Engine::Graphics::SSAO::SSAOBindGBuffer()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, mSSAOInstance->glGeometryFrameBuffer);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 
 unsigned Engine::Graphics::SSAO::GetSSAOBlurTexture()
 {
@@ -65,6 +72,7 @@ void Engine::Graphics::SSAO::InitializeSSAO(std::string i_SSAOEffectFileName)
 		/*Material::addMaterialToList(iGeometryMaterialFileName.c_str());
 		Material::addMaterialToList(iSSAOMAterialFileName.c_str());
 		Material::addMaterialToList(iBlurMaterial.c_str());*/
+
 		//TestBuffers
 		//{
 		//	glGenFramebuffers(1, &mSSAOInstance->testFrameBuffer);
@@ -270,18 +278,41 @@ void Engine::Graphics::SSAO::InitializeSSAO(std::string i_SSAOEffectFileName)
 		mSSAOInstance->mRadius = glGetUniformLocation(mSSAOInstance->SSAOProgram, "radius");
 		errorCode = glGetError();
 		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
-			create Frame Buffer for the G-Buffer");
+			get the uniform location");
 
 		mSSAOInstance->mSamplePointCount = glGetUniformLocation(mSSAOInstance->SSAOProgram, "sampleCount");
 		errorCode = glGetError();
 		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
-			create Frame Buffer for the G-Buffer");
+			get the uniform location");
 
 		mSSAOInstance->mProjectionMatrix = glGetUniformLocation(
 			mSSAOInstance->SSAOProgram, "g_transform_viewToScreen");
 		errorCode = glGetError();
 		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
-			create Frame Buffer for the G-Buffer");
+			get the uniform location");
+
+
+		mSSAOInstance->ambientLightColorUniform = glGetUniformLocation(
+			mSSAOInstance->SSAOProgram, "ambientLightColor");
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			get the uniform location");
+
+
+		mSSAOInstance->ambientIntensityUniform = glGetUniformLocation(
+			mSSAOInstance->SSAOProgram, "ambientIntensity");
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			get the uniform location");
+
+
+		mSSAOInstance->ambientOnlyUniform = glGetUniformLocation(
+			mSSAOInstance->SSAOProgram, "ambientOnly");
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			get the uniform location");
+
+
 
 		glGenVertexArrays(1, &mSSAOInstance->mVertexArray);
 		errorCode = glGetError();
@@ -357,7 +388,43 @@ Engine::Graphics::SSAO::SSAO()
 	glSSAOBlurFrameBuffer = 0;
 	mVaryingRadius = 5.0f;
 	mSampleCount = 256;
+	ambientOnly = false;
+	ambientIntensity = 1.0f;
+	mLightColor = Math::Vector4(0.4, 0.4, 0.4, 0.4);
 }
+
+
+void Engine::Graphics::SSAO::IncreaseAmbientIntensity()
+{
+	mSSAOInstance->ambientIntensity += 0.1;
+}
+
+void Engine::Graphics::SSAO::ToggleColorToOnlyAmbient()
+{
+	mSSAOInstance->ambientOnly = !mSSAOInstance->ambientOnly;
+}
+
+void Engine::Graphics::SSAO::DecreaseAmbientIntensity()
+{
+	mSSAOInstance->ambientIntensity -= 0.1;
+}
+
+void Engine::Graphics::SSAO::DecreaseRadius()
+{
+	mSSAOInstance->mVaryingRadius += 0.5;
+}
+
+void Engine::Graphics::SSAO::IncreaseRadius()
+{
+	mSSAOInstance->mVaryingRadius -= 0.5;
+}
+
+
+void Engine::Graphics::SSAO::SetAmbientLightColor(Math::Vector4 iNewColor)
+{
+	mSSAOInstance->mLightColor = iNewColor;
+}
+
 
 void Engine::Graphics::SSAO::RunSSAO()
 {
@@ -373,69 +440,118 @@ void Engine::Graphics::SSAO::RunSSAO()
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, mSSAOInstance->samplePointsBuffer);
 
-	glUniform1ui(mSSAOInstance->mSamplePointCount, mSSAOInstance->mSampleCount);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+	//SampleCount Uniform
+	{
+		glUniform1ui(mSSAOInstance->mSamplePointCount, mSSAOInstance->mSampleCount);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			create Frame Buffer for the G-Buffer");
+	}
+
+	//Radius Uniform
+	{
+		glUniform1f(mSSAOInstance->mRadius, mSSAOInstance->mVaryingRadius);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			create Frame Buffer for the G-Buffer");
+	}
+
+	
+	//Ambient LightColor Uniform
+	{
+		glUniform4fv(mSSAOInstance->ambientLightColorUniform, 1,
+			reinterpret_cast<float*>(&mSSAOInstance->mLightColor));
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			create Frame Buffer for the G-Buffer");
+	}
+
+	
+	//ambient Only uniform
+	{
+		glUniform1ui(mSSAOInstance->ambientOnlyUniform, mSSAOInstance->ambientOnly);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			create Frame Buffer for the G-Buffer");
+	}
+
+	
+	//ambient Intensity Uniform
+	{
+		glUniform1f(mSSAOInstance->ambientIntensityUniform, mSSAOInstance->ambientIntensity);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			create Frame Buffer for the G-Buffer");
+	}
+
+
+	{
+		SharedPointer<Camera> activeCamera = Scene::getRenderableScene()->getActiveCamera();
+		Math::Matrix4x4 projectionMatrix =
+			Math::Matrix4x4::CreateViewToScreenTransform(
+				activeCamera->getFieldOfView(),
+				activeCamera->getAspectRatio(),
+				activeCamera->getNearPlane(),
+				activeCamera->getFarPlane());
+		glUniformMatrix4fv(mSSAOInstance->mProjectionMatrix,
+			1, GL_FALSE, reinterpret_cast<float*>(&projectionMatrix));
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			create Frame Buffer for the G-Buffer");
+	}
+
+
+	{
+		glActiveTexture(GL_TEXTURE0);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
 			create Frame Buffer for the G-Buffer");
 
-	glUniform1f(mSSAOInstance->mRadius, mSSAOInstance->mVaryingRadius);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+		glBindTexture(GL_TEXTURE_2D, mSSAOInstance->glNormalTexture);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
 			create Frame Buffer for the G-Buffer");
-
-	SharedPointer<Camera> activeCamera = Scene::getRenderableScene()->getActiveCamera();
-	Math::Matrix4x4 projectionMatrix =
-		Math::Matrix4x4::CreateViewToScreenTransform(
-			activeCamera->getFieldOfView(),
-			activeCamera->getAspectRatio(),
-			activeCamera->getNearPlane(),
-			activeCamera->getFarPlane());
-	glUniformMatrix4fv(mSSAOInstance->mProjectionMatrix,
-		1, GL_FALSE, reinterpret_cast<float*>(&projectionMatrix));
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
-			create Frame Buffer for the G-Buffer");
+	}
 
 
-	glActiveTexture(GL_TEXTURE0);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+	{
+		glActiveTexture(GL_TEXTURE1);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
 			create Frame Buffer for the G-Buffer");
 
-	glBindTexture(GL_TEXTURE_2D, mSSAOInstance->glNormalTexture);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+		glBindTexture(GL_TEXTURE_2D, mSSAOInstance->glViewPositionTexture);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			create Frame Buffer for the G-Buffer");
+	}
+
+
+	{
+		glActiveTexture(GL_TEXTURE2);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
 			create Frame Buffer for the G-Buffer");
 
-	glActiveTexture(GL_TEXTURE1);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+		glBindTexture(GL_TEXTURE_2D, mSSAOInstance->glDepthTexture);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+			create Frame Buffer for the G-Buffer");
+	}
+
+
+	{
+		glActiveTexture(GL_TEXTURE3);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
 			create Frame Buffer for the G-Buffer");
 
-	glBindTexture(GL_TEXTURE_2D, mSSAOInstance->glViewPositionTexture);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
+		glBindTexture(GL_TEXTURE_2D, mSSAOInstance->glColorTexture);
+		errorCode = glGetError();
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
 			create Frame Buffer for the G-Buffer");
+	}
 
-	glActiveTexture(GL_TEXTURE2);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
-			create Frame Buffer for the G-Buffer");
-
-	glBindTexture(GL_TEXTURE_2D, mSSAOInstance->glDepthTexture);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
-			create Frame Buffer for the G-Buffer");
-
-	glActiveTexture(GL_TEXTURE3);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
-			create Frame Buffer for the G-Buffer");
-
-	glBindTexture(GL_TEXTURE_2D, mSSAOInstance->glColorTexture);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
-			create Frame Buffer for the G-Buffer");
 
 	glDisable(GL_DEPTH_TEST);
 	errorCode = glGetError();

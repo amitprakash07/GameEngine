@@ -39,13 +39,13 @@ void main()
 {
 	vec4 o_color;
 	vec3 normalFromNormalMap = (texture(g_NormalTextureSampler, i_local_texture).rgb * 2.0) - vec3(1.0);
-	o_normal = vec4(abs(i_local_normal), i_viewVector.z);
+	o_normal = vec4((i_local_normal), i_viewVector.z);
 
 	o_viewPositionTexture = vec4(-i_viewVector.z);
 	//o_viewPositionTexture = vec4(-i_viewVector, 1.0);
 
 	vec3 viewVector = normalize(-(i_viewVector));
-	o_normal = vec4(abs(i_local_normal), viewVector.z);
+	o_normal = vec4((i_local_normal), viewVector.z);
 
 	vec3 halfVector = normalize(i_lightDirectionInTangentSpace + viewVector);
 	o_color.rgb = i_color.rgb * g_PixelColorModifier;

@@ -12,6 +12,8 @@ uniform float radius = 5;
 uniform uint sampleCount = 256;
 uniform mat4 g_transform_viewToScreen;
 uniform vec4 ambientLightColor = vec4(0.4);
+uniform float ambientIntensity = 1.0;
+uniform bool ambientOnly = false;
 
 layout(binding = 0, std140) uniform SAMPLE_POINTS
 {
@@ -56,5 +58,11 @@ void main(void)
 	}
 
 	ambientOcclusionFactor = 1.0 - (ambientOcclusionFactor / sampleCount);
-	color = textureLod(glColorTexture, P, 0) + (ambientLightColor * ambientOcclusionFactor);
+	vec4 ambientTotal = ambientLightColor * ambientOcclusionFactor * ambientIntensity;
+
+	if (!ambientOnly)
+		color = textureLod(glColorTexture, P, 0) + ambientTotal;
+	else
+		color = ambientTotal;
+
 }

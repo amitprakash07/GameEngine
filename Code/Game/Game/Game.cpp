@@ -260,7 +260,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		Engine::Graphics::Data lightPosition;
 		Engine::Graphics::Data  intensity;
 		Engine::Graphics::Data lightColor;
-		Engine::Math::Vector3 vecLightPosition = Engine::Math::Vector3(100.0f, 50.0f, -20.0f);
+		Engine::Math::Vector3 vecLightPosition = Engine::Math::Vector3(-50, 100, 700);
 		Engine::Math::Vector3 vecLightColor = Engine::Math::Vector3(1.0f, 1.0f, 1.0f);
 		memcpy(&lightPosition.vec3, &vecLightPosition, 3 * sizeof(float));
 		memcpy(&lightColor.vec3, &vecLightColor, 3 * sizeof(float));

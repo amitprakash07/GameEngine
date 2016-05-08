@@ -4,6 +4,7 @@
 #include "../../../InteractiveCG/ObjectController/WalkController.h"
 #include "../../../Engine/Core/Maths/Transform.h"
 #include "../../../Engine/Core/Maths/Functions.h"
+#include "../../../Engine/Graphics/SSAO.h"
 
 using namespace Engine::Math;
 void Game::WalkController::updateObject(Engine::Object& iObject, Engine::typedefs::ActionWithKeyBound iAction)
@@ -13,6 +14,8 @@ void Game::WalkController::updateObject(Engine::Object& iObject, Engine::typedef
 	Quaternion rightRotor = Quaternion(ConvertDegreesToRadians(3), Vector3(0, 1, 0));
 	Quaternion upRotor = Quaternion(ConvertDegreesToRadians(-3), Vector3(1, 0, 0));
 	Quaternion downRotor = Quaternion(ConvertDegreesToRadians(3), Vector3(1, 0, 0));
+	Vector3 forwardVector = Matrix4x4(transform.getOrientation(), 
+		transform.getPosition()).getInverse().mul(Vector3(0.0f,0.0f,1.0f)).CreateNormalized();
 	switch (iAction.keyVal)
 	{
 	case VK_PRIOR:
@@ -72,10 +75,27 @@ void Game::WalkController::updateObject(Engine::Object& iObject, Engine::typedef
 	case 0x52:
 		//R Key
 		iObject.resetTransform();
+	case VK_OEM_PLUS:
+		//+ key - increasr radius
+		Engine::Graphics::SSAO::IncreaseRadius();
+		break;
+	case VK_OEM_MINUS:
+		// - Key - decrease radius
+		Engine::Graphics::SSAO::DecreaseRadius();
+		break;	
+	case VK_INSERT:
+		//insert Key -- increase ambient light Intensity
+		Engine::Graphics::SSAO::IncreaseAmbientIntensity();
+		break;
+	case VK_DELETE:
+		//Delete Key -- decrease ambient light intensity
+		Engine::Graphics::SSAO::DecreaseAmbientIntensity();
+		break;
+	case 0x54:
+		//T Key - Toggle occlusion image only
+		Engine::Graphics::SSAO::ToggleColorToOnlyAmbient();
+		break;
 	}
-
-
-
 }
 
 

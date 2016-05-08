@@ -44,5 +44,5 @@ void main()
 	vec3 specularColor = vec3(texture(g_SpecularTextureSampler, i_local_texture));
 	vec3 specular = pow(max(0.0, dot(normalFromNormalMap, halfVector)), glossiness) * intensity * specularColor * lightColor;
 	vec3 ambient = vec3(o_color * ambientLight);
-	o_color.rgb = o_color.rgb * (diffuse + specular + vec3(ambientLight));
+	o_color.rgb = o_color.rgb * (diffuse + specular + ambientLight);
 }

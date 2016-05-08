@@ -180,7 +180,7 @@ void Engine::Scene::EnableAllMeshObjectsForSSAO()
 
 void Engine::Scene::drawScene(bool withDebug)
 {
-
+	Graphics::SSAO::SSAOBindGBuffer();
 	if(mLightList.size()>0)
 	{
 		for (std::vector<SharedPointer<Graphics::Light>>::iterator iL = mLightList.begin();
