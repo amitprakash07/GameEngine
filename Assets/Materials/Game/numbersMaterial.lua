@@ -5,6 +5,7 @@ return
 	{
 		{
 			path = "Game/numbers.png",
+			--path = "Game/defaultTexture.png",
 			uniformName = "g_TextureSampler",
 			shader = "Fragment",
 			mapType = "albedo",

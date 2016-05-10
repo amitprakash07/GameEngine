@@ -127,6 +127,8 @@ void Engine::Networking::NetworkPlayer::SendNetworkPlayerUpdates(RakNet::RakPeer
 	//Send Information to all of the clients
 	RakNet::BitStream bsOut;
 
+	bsOut.Write(static_cast<RakNet::MessageID>(ID_SYNC_KEY_PRESS));
+
 	//Network ID
 	bsOut.Write(networkID);
 

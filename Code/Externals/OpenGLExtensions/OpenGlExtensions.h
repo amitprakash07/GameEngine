@@ -110,6 +110,8 @@ extern PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus;
 
 extern PFNGLDRAWBUFFERSPROC glDrawBuffers;
 
+extern PFNGLBUFFERSUBDATAPROC glBufferSubData;
+
 // Initialization
 //---------------
 

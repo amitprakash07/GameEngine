@@ -106,6 +106,8 @@ PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus = nullptr;
 
 PFNGLDRAWBUFFERSPROC glDrawBuffers = nullptr;
 
+PFNGLBUFFERSUBDATAPROC glBufferSubData = nullptr;
+
 // Initialization
 //---------------
 
@@ -216,6 +218,8 @@ bool OpenGlExtensions::Load(std::string* o_errorMessage)
 	LOADGLFUNCTION(glCheckFramebufferStatus, PFNGLCHECKFRAMEBUFFERSTATUSPROC);
 
 	LOADGLFUNCTION(glDrawBuffers, PFNGLDRAWBUFFERSPROC);
+
+	LOADGLFUNCTION(glBufferSubData, PFNGLBUFFERSUBDATAPROC);
 
 #undef LOADGLFUNCTION
 

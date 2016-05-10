@@ -13,7 +13,8 @@ namespace Engine
 		class Transform
 		{
 		public:	
-			Transform();			
+			Transform();
+			Transform(Math::Vector3 iPosition, Math::Quaternion iOrientation);
 			Vector3 getPosition()const;
 			Quaternion getOrientation()const;
 			Vector3 getForwardVector()const;
@@ -32,8 +33,7 @@ namespace Engine
 			void TransformFrom(Vector3& iPoint)const;
 			void VectorTransformTo(Vector3& iDir)const;
 			void VectorTransformFrom(Vector3& iDir)const;
-			void printTransform()const;
-			//sdbnfkjdshfjkstd::string toString();
+			void printTransform()const;			
 		private:
 			Vector3 position;
 			Quaternion orientation;

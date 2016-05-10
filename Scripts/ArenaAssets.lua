@@ -1,5 +1,13 @@
 return
 {
+-- =========================Generic Builder===========================
+--	{
+		--BuildTool = "GenericBuilder",
+		--{
+			--src = "Fonts/arial.ttf",
+			--target = "Fonts/arial.ttf"
+		--}
+	--},
 -- ===============================MeshBuilder=========================
 	{
 		BuildTool = "MeshBuilder.exe",
@@ -117,6 +125,11 @@ return
 		{
 			src = "Game/SSAOEffect.lua",
 			target = "Game/SSAOEffect.effect"
+		},
+		--Text effect
+		{
+			src = "Game/textEffect.lua",
+			target = "Game/textEffect.effect"
 		}		
 	},
 
@@ -379,6 +392,27 @@ return
 
 		},
 	-- *******************************************************************
+		{
+			src = "Game/textVertex.glsl",
+			target = "Game/textVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "Game/textFragment.glsl",
+			target = "Game/textFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
 
 	},
 
@@ -531,7 +565,8 @@ return
 		{
 			src = "ComputerGraphics/NanoSuit/cell_hand_alpha.png",
 			target = "ComputerGraphics/NanoSuit/cell_hand_alpha.png",
-		},{
+		},
+		{
 			src = "ComputerGraphics/NanoSuit/cell_helmet_alpha.png",
 			target = "ComputerGraphics/NanoSuit/cell_helmet_alpha.png",
 		},
@@ -583,7 +618,6 @@ return
 			src = "ComputerGraphics/NanoSuit/leg_showroom_spec.png",
 			target = "ComputerGraphics/NanoSuit/leg_showroom_spec.png",
 		},
-
 	}
 -- ====================================================================
 }

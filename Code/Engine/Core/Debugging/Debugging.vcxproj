@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DebugMenu.cpp" />
     <ClCompile Include="DebugShapes.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DebugMenu.h" />
     <ClInclude Include="DebugShapes.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -70,6 +70,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="OpenGL\Text.gl.cpp" />
     <ClCompile Include="OpenGL\UniformBlock.gl.cpp" />
     <ClCompile Include="PlaneCommon.cpp" />
     <ClCompile Include="ReflectingObjectCommon.cpp" />
@@ -115,12 +116,15 @@
     <ClCompile Include="SkyBoxCommon.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="SSAO.cpp" />
+    <ClCompile Include="Text.common.cpp" />
     <ClCompile Include="TextureCommon.cpp" />
     <ClCompile Include="Uniform.common.cpp" />
     <ClCompile Include="UniformBlock.common.cpp" />
     <ClCompile Include="uniformdefs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="CheckBox.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="ReflectingObject.h" />
@@ -131,8 +135,10 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="Slider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SSAO.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="typedefs.h" />
     <ClInclude Include="Uniform.h" />
@@ -225,7 +231,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;PLATFORM_OPEN_GL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(DXSDK_DIR)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(FREETYPE_INCLUDES)freetype2;$(FREETYPE_INCLUDES);$(DXSDK_DIR)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
     </ClCompile>
@@ -234,8 +240,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Maths.lib;Windows.lib;OpenGLExtensions.lib;Opengl32.lib;glu32.lib;Utilities.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x64\;$(LibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;Maths.lib;Windows.lib;OpenGLExtensions.lib;Opengl32.lib;glu32.lib;Utilities.lib;Time.lib;MessagingSystem.lib;StringPoolManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(FREE_TYPE_LIB);$(DXSDK_DIR)Lib\x64\;$(LibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4006,4221 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>

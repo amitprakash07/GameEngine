@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "../../../Graphics/Mesh.h"
 #include "../../../Graphics/SkyBox.h"
 #include <algorithm>
 #include "../../../Graphics/SSAO.h"
@@ -63,6 +62,19 @@ bool Engine::Scene::addObjectToScene<Engine::MeshObject>(
 	if (!iMeshObject.isNull())
 	{
 		mMeshObjectInSceneList.push_back(iMeshObject);
+		return true;
+	}
+	return false;
+}
+
+
+template<>
+bool Engine::Scene::addObjectToScene<Engine::Graphics::Text>(
+	SharedPointer<Engine::Graphics::Text> &iText)
+{
+	if(!iText.isNull())
+	{
+		mTextList.push_back(iText);
 		return true;
 	}
 	return false;
@@ -180,7 +192,7 @@ void Engine::Scene::EnableAllMeshObjectsForSSAO()
 
 void Engine::Scene::drawScene(bool withDebug)
 {
-	Graphics::SSAO::SSAOBindGBuffer();
+	//Graphics::SSAO::SSAOBindGBuffer();
 	if(mLightList.size()>0)
 	{
 		for (std::vector<SharedPointer<Graphics::Light>>::iterator iL = mLightList.begin();
@@ -197,7 +209,7 @@ void Engine::Scene::drawScene(bool withDebug)
 	}
 
 
-	Graphics::SSAO::GenerateGBuffer();
+	//Graphics::SSAO::GenerateGBuffer();
 	//Generate dynamic Cube Maps
 	if(mReflectingObjectList.size()>0)
 	{
@@ -239,8 +251,12 @@ void Engine::Scene::drawScene(bool withDebug)
 
 	for (uint8_t i = 0; i < mSpriteListInScene.size(); i++)
 		mSpriteListInScene[i]->draw(withDebug);
+	
+	//Graphics::SSAO::RunSSAO();
 
-	Graphics::SSAO::RunSSAO();
+	for (uint8_t i = 0; i < mTextList.size(); i++)
+		mTextList[i]->draw(false);
+
 	mTimer->updateDeltaTime();
 	updateScene();
 }

@@ -69,7 +69,7 @@ local function BuildAsset( resourceTable, dependencies_table )
 			 else if(i_builderFileName == "EffectBuilder.exe") then
 					subPathName,errorMessage = GetVSEnvironmentVariable("EffectDirName")
 				  else if(i_builderFileName == "TextureBuilder.exe") then
-						subPathName,errorMessage = GetVSEnvironmentVariable("TexturesDir")
+						subPathName,errorMessage = GetVSEnvironmentVariable("TexturesDir")						
 					   end
 				  end
 			 end

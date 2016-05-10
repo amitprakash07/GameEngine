@@ -275,7 +275,8 @@ void Engine::Graphics::SSAO::InitializeSSAO(std::string i_SSAOEffectFileName)
 		
 
 		//UniformLocations
-		mSSAOInstance->mRadius = glGetUniformLocation(mSSAOInstance->SSAOProgram, "radius");
+		mSSAOInstance->mRadius = glGetUniformLocation(mSSAOInstance->SSAOProgram,
+			"radius");
 		errorCode = glGetError();
 		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to \
 			get the uniform location");

@@ -87,6 +87,30 @@ Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateViewToScreenTransform(
 }
 
 
+Engine::Math::Matrix4x4 
+Engine::Math::Matrix4x4::CreateOrthographicViewToScreenTransform(
+	float left, 
+	float right, 
+	float top,
+	float bottom, 
+	float near, 
+	float far)
+{
+	float rightMinusLeft = right - left;
+	float topMinusBottom = top - bottom;
+	float nearMinusFar = near - far;
+	float leftPlusRight = left + right;
+	float topPlusBottom = top + bottom;
+	float nearPlusFar = near + far;
+	return Matrix4x4(
+					2 / rightMinusLeft,								0.0f,								0.0f,				0.0f,
+					0.0f,									2 / topMinusBottom,							0.0f,				0.0f,
+					0.0f,											0.0f,						2 / nearMinusFar,			0.0f,
+			leftPlusRight/(-rightMinusLeft),			topPlusBottom/(-topMinusBottom),	nearPlusFar/(-nearMinusFar),	1.0f);
+}
+
+
+
 Engine::Math::Matrix4x4::Matrix4x4()
 	:
 	m_00( 1.0f ), m_10( 0.0f ), m_20( 0.0f ), m_30( 0.0f ),

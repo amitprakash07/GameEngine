@@ -49,6 +49,9 @@ namespace Engine
 			static Matrix4x4 CreateViewToScreenTransform(
 				const float i_fieldOfView_y, const float i_aspectRatio,
 				const float i_z_nearPlane = 0.1, const float i_z_farPlane = 100);
+			static Matrix4x4 CreateOrthographicViewToScreenTransform(
+				float left, float right, float top, float bottom,
+				float near, float far);
 			static Matrix4x4 getIdentityMatrix();
 			static Matrix4x4 CreateScaleMatrix(const float scaleX,
 				const float scaleY, const float scaleZ);

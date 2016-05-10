@@ -15,6 +15,7 @@
 #include "LightController.h"
 #include "ObjectController/WalkController.h"
 #include "../../Engine/Graphics/SSAO.h"
+#include "../../Engine/Graphics/Text.h"
 
 
 #define shared_pointer_reinterpret_cast_to_object(x) \
@@ -38,7 +39,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		Engine::EngineCore::Initialize(i_thisInstanceOfTheProgram, 
 			i_initialWindowDisplayState, isServer);		
 		
-		Engine::Graphics::SSAO::InitializeSSAO("Game/SSAOEffect.effect");
+		//Engine::Graphics::SSAO::InitializeSSAO("Game/SSAOEffect.effect");
 		//Scene
 		Engine::SharedPointer<Engine::Scene> scene = Engine::Scene::CreateNewScene("Scene_01");
 		scene->renderScene(true);
@@ -94,6 +95,16 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		walls->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
 		scene->addObjectToScene(walls);
 
+		Engine::SharedPointer<Engine::Graphics::Text> mText =
+			Engine::Graphics::Text::CreateText("Game/textEffect.effect", "arial.ttf",
+				Engine::Math::Transform());
+		mText->SetTextToRender("Amit Prakash");
+		Engine::Math::Transform tempTransform = mText->getTransform();
+		tempTransform.setPosition(Engine::Math::Vector3(100, 100, 1.0f));
+		mText->SetVertexColor(0.0f, 1.0f, 0.0f, 1.0f);
+		mText->setTransform(tempTransform.getPosition(), tempTransform.getOrientation());
+		mText->setScale(1.0f, 1.0f, 1.0f);
+		scene->addObjectToScene(mText);
 
 		//Proxy Light
 		/*Engine::SharedPointer<Engine::MeshObject> proxyLightSphere =
@@ -205,7 +216,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 			Engine::Math::Vector3(-70.0f, 0.0f, 0.0f),
 			Engine::Graphics::RGBColor(0, 1.0f, 1.0f));*/
 
-		/*Engine::SharedPointer<Engine::Graphics::Sprite> logoSprite = 
+		Engine::SharedPointer<Engine::Graphics::Sprite> logoSprite = 
 			Engine::Graphics::Sprite::CreateSprite("EAElogo", 
 				"Game/spriteMaterial.mat", 0, 100, 900, 800, Engine::Graphics::VIEWPORT_COORDINATE);
 		scene->addObjectToScene(logoSprite);
@@ -216,40 +227,40 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 				"Game/numbersMaterial.mat", 1540, 1590, 890, 840, Engine::Graphics::VIEWPORT_COORDINATE);
 		numberSprite->sliceSprite(1, 10);
 		numberSprite->setCellToRender(2);
-		scene->addObjectToScene(numberSprite);*/
+		scene->addObjectToScene(numberSprite);
 		
 
-		if (Engine::Networking::NetworkManager::isServerInstance())
-		{
-			Engine::SharedPointer<Engine::MeshObject> serverObject =
-				Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
-					"Game/defaultDebugShapes.mat");
-			serverObject->setTransform(Engine::Math::Vector3(-50.0f, 20.0f, 700.0f),
-				Engine::Math::Quaternion());
-			serverObject->SetVertexColor(0.0f, 1.0f, 0.0f, 1.0f);
-			serverObject->setObjectType(Engine::ObjectType::SERVER);
-			serverObject->getMaterial()->changeMaterialColor(0.0, 1.0, 0.0);
-			scene->addObjectToScene(serverObject);
-			//serverObject->setObjectController(new Game::ServerPlayerController());
-			serverObject->EnableDebugging(true);
-			serverObject->setObjectController(new Game::WalkController());
-			Engine::Networking::NetworkManager::GetHandler().mServer->addToNetworkPlayerList(serverObject, true);			
-		}
-		else
-		{
-			Engine::SharedPointer<Engine::MeshObject> clientObject =
-				Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
-					"Game/defaultDebugShapes.mat");
-			clientObject->setTransform(Engine::Math::Vector3(-250.0f, 20.0f, 700.0f),
-				Engine::Math::Quaternion());
-			clientObject->getMaterial()->changeMaterialColor(1.0, 0.0, 0.0);
-			clientObject->setObjectType(Engine::ObjectType::CLIENT);
-			scene->addObjectToScene(clientObject);
-			clientObject->EnableDebugging(true);
-			//clientObject->setObjectController(new Game::ClientPlayerController());
-			clientObject->setObjectController(new Game::WalkController());
-			Engine::Networking::NetworkManager::GetHandler().mClient->addToNetworkPlayerList(clientObject, true);
-		}
+		//if (Engine::Networking::NetworkManager::isServerInstance())
+		//{
+		//	Engine::SharedPointer<Engine::MeshObject> serverObject =
+		//		Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
+		//			"Game/defaultDebugShapes.mat");
+		//	serverObject->setTransform(Engine::Math::Vector3(-50.0f, 20.0f, 700.0f),
+		//		Engine::Math::Quaternion());
+		//	serverObject->SetVertexColor(0.0f, 1.0f, 0.0f, 1.0f);
+		//	serverObject->setObjectType(Engine::ObjectType::SERVER);
+		//	serverObject->getMaterial()->changeMaterialColor(0.0, 1.0, 0.0);
+		//	scene->addObjectToScene(serverObject);
+		//	//serverObject->setObjectController(new Game::ServerPlayerController());
+		//	serverObject->EnableDebugging(true);
+		//	//serverObject->setObjectController(new Game::WalkController());
+		//	Engine::Networking::NetworkManager::GetHandler().mServer->addToNetworkPlayerList(serverObject, true);			
+		//}
+		//else
+		//{
+		//	Engine::SharedPointer<Engine::MeshObject> clientObject =
+		//		Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh",
+		//			"Game/defaultDebugShapes.mat");
+		//	clientObject->setTransform(Engine::Math::Vector3(-250.0f, 20.0f, 700.0f),
+		//		Engine::Math::Quaternion());
+		//	clientObject->getMaterial()->changeMaterialColor(1.0, 0.0, 0.0);
+		//	clientObject->setObjectType(Engine::ObjectType::CLIENT);
+		//	scene->addObjectToScene(clientObject);
+		//	clientObject->EnableDebugging(true);
+		//	//clientObject->setObjectController(new Game::ClientPlayerController());
+		//	//clientObject->setObjectController(new Game::WalkController());
+		//	Engine::Networking::NetworkManager::GetHandler().mClient->addToNetworkPlayerList(clientObject, true);
+		//}
 
 
 		Engine::SharedPointer<Engine::Graphics::Light> mainLight
@@ -284,7 +295,8 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		//Camera
 		Engine::SharedPointer<Engine::Camera> mainCamera =
 			Engine::Camera::CreateCamera("MainCamera",
-				Engine::Math::Vector3(-53.258f, -108.953f, 1043.751f),
+				//Engine::Math::Vector3(-53.258f, -108.953f, 1043.751f),
+				Engine::Math::Vector3(0.0f, 0.0f, 10.0f),
 				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
 					Engine::Math::Vector3(0, 1, 0)));
 
@@ -292,7 +304,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
 		mainCamera->setFarPlane(10000.0f);
 		mainCamera->setFieldOfView(60.0f);
-		//mainCamera->setObjectController(new Game::WalkController());
+		mainCamera->setObjectController(new Game::WalkController());
 		scene->addCameraToScene(mainCamera);		
 
 		while (!Engine::EngineCore::isWindowClosed(i_thisInstanceOfTheProgram))

@@ -1,6 +1,6 @@
 return 
 {
-	effect = "Game/standardEffectWithSpecAndNormalWithSSAO.effect",
+	effect = "Game/standardEffectWithSpecAndNormal.effect",
 	map =
 	{
 		{

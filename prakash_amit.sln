@@ -210,6 +210,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{CA8D
 		Assets\Effects\Game\standardEffect.lua = Assets\Effects\Game\standardEffect.lua
 		Assets\Effects\Game\standardEffectWithSpecAndNormal.lua = Assets\Effects\Game\standardEffectWithSpecAndNormal.lua
 		Assets\Effects\Game\standardEffectWithSpecAndNormalWithSSAO.lua = Assets\Effects\Game\standardEffectWithSpecAndNormalWithSSAO.lua
+		Assets\Effects\Game\textEffect.lua = Assets\Effects\Game\textEffect.lua
 		Assets\Effects\Game\transparentEffect.lua = Assets\Effects\Game\transparentEffect.lua
 	EndProjectSection
 EndProject
@@ -225,6 +226,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{9498
 		Assets\Shaders\Game\standardFragmentWithSpecAndNormalWithSSAO.glsl = Assets\Shaders\Game\standardFragmentWithSpecAndNormalWithSSAO.glsl
 		Assets\Shaders\Game\standardVertexWithSpecAndNormal.glsl = Assets\Shaders\Game\standardVertexWithSpecAndNormal.glsl
 		Assets\Shaders\Game\standardVertexWithSpecAndNormalWithSSAO.glsl = Assets\Shaders\Game\standardVertexWithSpecAndNormalWithSSAO.glsl
+		Assets\Shaders\Game\textFragment.glsl = Assets\Shaders\Game\textFragment.glsl
+		Assets\Shaders\Game\textVertex.glsl = Assets\Shaders\Game\textVertex.glsl
 		Assets\Shaders\Game\transparent.fshd = Assets\Shaders\Game\transparent.fshd
 	EndProjectSection
 EndProject

@@ -290,6 +290,7 @@ void Engine::Networking::Server::ReceivePackets()
 			
 			mServer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mPacket->systemAddress, true);
 		}	
+		break;
 		case ID_SYNC_KEY_PRESS:
 		{
 			receiveBitStream.IgnoreBytes(sizeof(RakNet::MessageID));
@@ -323,6 +324,8 @@ void Engine::Networking::Server::ReceivePackets()
 			
 			//Send Information to all of the clients
 			RakNet::BitStream bsOut;
+
+			bsOut.Write(static_cast<RakNet::MessageID>(ID_SYNC_KEY_PRESS));
 
 			//Network ID
 			bsOut.Write(incomingNetworkID);

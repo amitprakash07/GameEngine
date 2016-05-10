@@ -11,6 +11,7 @@
 #include "../../../Core/Time/FrameTime.h"
 #include "../../../Graphics/ReflectingObject.h"
 #include "../../../Graphics/Light.h"
+#include "../../../Graphics/Text.h"
 
 namespace Engine
 {	
@@ -90,6 +91,7 @@ namespace Engine
 		std::vector<SharedPointer<Engine::Graphics::ReflectingObject>> mReflectingObjectList;
 		std::vector<SharedPointer<Engine::Graphics::Plane>> mPlaneList;
 		std::vector<SharedPointer<Engine::Graphics::Light>> mLightList;
+		std::vector<SharedPointer<Engine::Graphics::Text>> mTextList;
 		std::map<std::string, SharedPointer<Camera>> mCameraListInScene;
 		static void deactivateAllSceneToRender();
 		void deactivateAllCamera() const;

@@ -1,6 +1,13 @@
+#include <ft2build.h>
+#include FT_FREETYPE_H
 #include <iostream>
 #include <string>
 #include "../Engine/Core/Utilities/Sort.h"
+#include "../Externals/OpenGLExtensions/OpenGlExtensions.h"
+#include "../Engine/Core/Maths/Vector2.h"
+#include "../Engine/Core/Maths/Matrix4x4.h"
+#include <map>
+
 
 #define MYSIZEOF(type) (char*)(&type+1)-(char*)(&type)
 char* itoa(int value, int Base);
@@ -11,12 +18,99 @@ void BuildStringFromMatrix(int* Matrix,
 
 int main()
 {
-	Engine::Utils::Sort::TestMergeSort();
+
+	Engine::Math::Matrix4x4 tempMatrix =
+		Engine::Math::Matrix4x4::CreateOrthographicViewToScreenTransform(
+			0, 800, 0, 600, 0.1, 1000);
+
+	Engine::Math::Vector3 tempVector =
+		Engine::Math::Vector3(-98.0f, -101.0f, 1.0f);
+
+	Engine::Math::Vector3 newVect =
+		tempMatrix.mul(tempVector);
+
+
+
+
+
+
+	//FT_Error error;
+	//FT_Library ft;
+	//if (FT_Init_FreeType(&ft))
+	//{
+	//	std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+	//}
+
+	//FT_Face face;
+	//error = FT_New_Face(ft, "arial.ttf", 0, &face);
+
+	//FT_Set_Pixel_Sizes(face, 0, 48);
+
+	//if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
+	//	std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+
+	//struct Character {
+	//	GLuint TextureID; // ID handle of the glyph texture
+	//	Engine::Math::Vector2 Size; // Size of glyph
+	//	Engine::Math::Vector2 Bearing; // Offset from baseline to left/top of glyph
+	//	GLuint Advance; // Offset to advance to next glyph
+	//};
+
+	//std::map<GLchar, Character> Characters;
+
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
+
+	//for (GLubyte c = 0; c < 128; c++)
+	//{
+	//	// Load character glyph
+	//	if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+	//	{
+	//		std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+	//		continue;
+	//	}
+	//	// Generate texture
+	//	GLuint texture;
+	//	glGenTextures(1, &texture);
+	//	glBindTexture(GL_TEXTURE_2D, texture);
+	//	glTexImage2D(
+	//		GL_TEXTURE_2D,
+	//		0,
+	//		GL_RED,
+	//		face->glyph->bitmap.width,
+	//		face->glyph->bitmap.rows,
+	//		0,
+	//		GL_RED,
+	//		GL_UNSIGNED_BYTE,
+	//		face->glyph->bitmap.buffer
+	//	);
+	//	// Set texture options
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//	// Now store character for later use
+	//	Character character = {
+	//		texture,
+	//		Engine::Math::Vector2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+	//		Engine::Math::Vector2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+	//		face->glyph->advance.x
+	//	};
+	//	Characters.insert(std::pair<GLchar, Character>(c, character));
+	//}
+
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	//FT_Done_Face(face);
+	//FT_Done_FreeType(ft);
+
+	//Engine::Utils::Sort::TestMergeSort();
 	/*unsigned int a = 0xFFFF;
 	char * test = itoa(a & ((1<<10) - 1) , 2);
 	std::cout << test << std::endl;
 	std::string s;*/
-	
+
 	/*int b;
 
 	std::cout << MYSIZEOF(b);
@@ -34,7 +128,7 @@ int main()
 	int i = 0;
 	while(num !=0)
 	{
-		val[i++] = (num % base ) == 
+		val[i++] = (num % base ) ==
 	}*/
 
 	/*unsigned int i = 0;

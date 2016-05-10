@@ -2,8 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="DebugShapes.cpp" />
+    <ClCompile Include="DebugMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugShapes.h" />
+    <ClInclude Include="DebugMenu.h" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,14 @@ Engine::Math::Transform::Transform()
 	orientation = Quaternion();
 }
 
+Engine::Math::Transform::Transform(Math::Vector3 iPosition,
+	Math::Quaternion iOrientation)
+{
+	position = iPosition;
+	orientation = iOrientation;
+}
+
+
 Engine::Math::Vector3 Engine::Math::Transform::getForwardVector() const
 {
 	return(getLocalToWorldMatrix().mul(Vector3(0.0f, 0.0f, 1.0f),true));

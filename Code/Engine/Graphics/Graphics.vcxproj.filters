@@ -90,6 +90,10 @@
       <Filter>Direct3D</Filter>
     </ClCompile>
     <ClCompile Include="SSAO.cpp" />
+    <ClCompile Include="OpenGL\Text.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.common.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
@@ -109,5 +113,9 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="UniformBlock.h" />
     <ClInclude Include="SSAO.h" />
+    <ClInclude Include="Text.h" />
+    <ClInclude Include="Slider.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="CheckBox.h" />
   </ItemGroup>
 </Project>

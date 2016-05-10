@@ -3,8 +3,6 @@
 #include "../../Graphics/Line.h"
 #include "../EngineCore/Objects/Scene.h"
 #include "../EngineCore/EngineCore.h"
-#include "../Maths/Math.h"
-
 
 
 std::vector<Engine::SharedPointer<Engine::Object>> Engine::Debug::debugShapeList;

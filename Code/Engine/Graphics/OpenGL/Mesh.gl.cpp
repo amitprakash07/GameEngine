@@ -269,7 +269,8 @@ bool Engine::Graphics::Mesh::createVertexArray()
 			const GLuint vertexElementLocation = 3;
 			const GLint elementCount = 3; // for 3 floats in the bitangent
 			const GLboolean notNormalized = GL_FALSE; // The given floats should be used as-is
-			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride, offset);
+			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, 
+				notNormalized, stride, offset);
 			GLenum errorCode = glGetError();
 			if (errorCode == GL_NO_ERROR)
 			{
