@@ -21,7 +21,7 @@ namespace Engine
 		void draw(bool) override {}
 		void setRenderable(bool iRenderable) override {  }
 		void HandleMessage(Engine::utils::StringHash &, 
-			RTTI* i_MessageSender, void* i_pMessageData) override;
+			SharedPointer<RTTI> i_MessageSender, void* i_pMessageData) override;
 		bool IsPlayer() override;
 		void setPlayer(bool i_isPlayer) override;
 		//void setCameraController(IObjectController*);
@@ -29,7 +29,7 @@ namespace Engine
 		float getFieldOfView() const;
 		void setAspectRatio(float);
 		float getAspectRatio() const;
-		bool isBothSameType(RTTI*, std::string) const override { return true; }
+		bool isBothSameType(SharedPointer<RTTI>, std::string) const override { return true; }
 		void activateCamera(bool);
 		bool isActive() const;
 		std::string getTypeInfo() const override { return ""; }
@@ -46,7 +46,7 @@ namespace Engine
 		Math::Vector3 getScale() const override { return Math::Vector3(0.0f);/*Stub*/ };
 		Graphics::RGBAColor GetVertexColor() const override { return Graphics::RGBAColor(0.0f);};
 		void SetVertexColor(float iR, float iG, float iB, float iA) override {};
-		void setObjectController(IObjectController* objectController) override;
+		void setObjectController(SharedPointer<IObjectController>objectController) override;
 		std::string getMaterialName() override { return "NO Material"; }
 		bool isCollidable() override;
 		bool isPhysicsEnabled() override;
@@ -66,7 +66,7 @@ namespace Engine
 		Math::Transform mInitialTransform;
 		bool isInitialTransform;
 		std::string mCameraName;
-		IObjectController* mObjectController;
+		SharedPointer<IObjectController> mObjectController;
 		float fieldOfView;
 		float aspectRatio;
 		bool active;

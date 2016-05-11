@@ -24,7 +24,6 @@ Engine::Graphics::Plane::Plane(std::string material_name)
 	indexBufferId = 0;
 	debugObject = false;
 	scaleFactor = Math::Vector3(1.0f, 1.0f, 1.0f);
-	mObjectController = nullptr;
 	mTransform = Math::Transform();
 	mMaterialName = material_name;
 	vertexattribute = nullptr;

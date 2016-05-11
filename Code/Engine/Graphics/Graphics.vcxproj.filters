@@ -94,6 +94,9 @@
       <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Text.common.cpp" />
+    <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="CheckBox.cpp" />
+    <ClCompile Include="Button.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />

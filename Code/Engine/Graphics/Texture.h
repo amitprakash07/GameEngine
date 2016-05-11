@@ -10,11 +10,11 @@
 #include <gl/GLU.h>
 #endif
 
-#include "../Core/Utilities/SharedPointer.h"
+#include "../Core/Utilities/RTTI.h"
 #include <map>
 #include "typedefs.h"
 #include "uniformdefs.h"
-#include <vector>
+
 
 namespace Engine
 {
@@ -40,7 +40,7 @@ namespace Engine
 			const char* getTextureName()const;
 			bool loadTexture();
 			std::string getTypeInfo() const override { return ""; }
-			bool isBothSameType(RTTI*, std::string) const override { return true; }
+			bool isBothSameType(SharedPointer<RTTI>, std::string) const override { return true; }
 			TextureResource getTextureResource() const;
 			void setTextureResource(TextureResource textureResource);
 			void setSamplerID(SamplerID sampleID);

@@ -42,7 +42,7 @@ namespace Engine
 		void setRenderable(bool iRenderable) override {}
 		static void deleteAllScene();
 		std::string getTypeInfo() const override { return ""; }
-		bool isBothSameType(RTTI*, std::string) const override { return true; }
+		bool isBothSameType(SharedPointer<RTTI>, std::string) const override { return true; }
 		static void applyPaintersAlgorithmForTransparency();
 		static void sortAllReflectingObjects();
 		//Object Override functions
@@ -51,7 +51,7 @@ namespace Engine
 		bool isRenderable()const override { return true; }
 		bool isDebugObject()const override { return false; }
 		void updateObject() override;
-		void setObjectController(IObjectController * iObjectController) override;
+		void setObjectController(SharedPointer<IObjectController> iObjectController) override;
 		void setTransform(Engine::Math::Vector3,
 			Engine::Math::Quaternion = Engine::Math::Quaternion())override {}
 		void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
@@ -76,7 +76,7 @@ namespace Engine
 		ObjectType getObjectType() override;
 		//IMesageHandler override function
 		void HandleMessage(Engine::utils::StringHash &, 
-			RTTI* i_MessageSender, 
+			SharedPointer<RTTI> i_MessageSender, 
 			void* i_pMessageData) override;
 		bool isSSAOEnabled() override { return false; }
 		void EnableSSAO(bool iRequest) override{}
@@ -112,7 +112,7 @@ namespace Engine
 		std::string sceneName;
 		bool render;
 		bool renderDebug;
-		IObjectController * mObjectController;
+		SharedPointer<IObjectController> mObjectController;
 		ObjectType mObjectType;
 	};
 }

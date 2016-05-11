@@ -15,8 +15,7 @@ Engine::Graphics::Light::Light(std::string iLightName)
 	isInitialTransform = false;
 	castShadowFlag = true;
 	mIntensity = 1.0f;
-	mLightColor = Math::Vector3(1.0f);	
-	mObjectController = nullptr;
+	mLightColor = Math::Vector3(1.0f);		
 	mLightType = LightType::Directional;
 	effectFileNames.reserve(20);
 	lightParameterInitialized = false;
@@ -26,7 +25,7 @@ Engine::Graphics::Light::Light(std::string iLightName)
 
 void Engine::Graphics::Light::updateObject()
 {
-	if(mObjectController)
+	if(!mObjectController.isNull())
 	{
 		typedefs::ActionWithKeyBound action;
 		action.action = typedefs::Default;
@@ -35,9 +34,9 @@ void Engine::Graphics::Light::updateObject()
 }
 
 
-void Engine::Graphics::Light::setObjectController(IObjectController* iObjectController)
+void Engine::Graphics::Light::setObjectController(SharedPointer<IObjectController>iObjectController)
 {
-	if (iObjectController)
+	if (!iObjectController.isNull())
 		mObjectController = iObjectController;
 }
 
@@ -53,11 +52,11 @@ void Engine::Graphics::Light::draw(bool drawable)
 
 void Engine::Graphics::Light::HandleMessage(
 	Engine::utils::StringHash& i_message, 
-	RTTI* i_MessageSender, void* i_pMessageData)
+	SharedPointer<RTTI> i_MessageSender, void* i_pMessageData)
 {
-	if (i_MessageSender != nullptr && mObjectController)
+	if (!i_MessageSender.isNull() && !mObjectController.isNull())
 	{
-		if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+		if (!i_MessageSender.isNull() && Engine::utils::StringHash("UpdateObject") == i_message && !mObjectController.isNull())
 			mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));
 	}
 }
@@ -102,7 +101,7 @@ std::string Engine::Graphics::Light::getName() const
 }
 
 
-bool Engine::Graphics::Light::isBothSameType(RTTI*, std::string) const
+bool Engine::Graphics::Light::isBothSameType(SharedPointer<RTTI>, std::string) const
 {
 	return true;
 }

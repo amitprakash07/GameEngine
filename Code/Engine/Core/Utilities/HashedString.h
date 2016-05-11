@@ -23,7 +23,7 @@ namespace Engine
 			static unsigned __int32					Hash(const void *, size_t);
 			bool									isNil() const;
 			std::string getTypeInfo() const override { return ""; }
-			bool isBothSameType(RTTI*, std::string) const override { return true; }
+			bool isBothSameType(SharedPointer<RTTI>, std::string) const override { return true; }
 
 		private:
 			unsigned __int32 mHash;

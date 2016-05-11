@@ -44,7 +44,7 @@ namespace Engine
 			bool isRenderable() const override;
 			bool isDebugObject() const override;	
 			void updateObject() override;
-			void setObjectController(IObjectController* objectController) override;
+			void setObjectController(SharedPointer<IObjectController>objectController) override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 			Math::Vector3 getScale() const override { return Math::Vector3(0.0f);/*Stub*/ }
 			Graphics::RGBAColor GetVertexColor() const override { return Graphics::RGBAColor(0.0f); }
@@ -95,7 +95,7 @@ namespace Engine
 			void drawSprite();
 			vertexTexture * vertexAttribute;
 			vertexTexture*  getTextureAndVerticesData()const;
-			IObjectController * mObjectController;
+			SharedPointer<IObjectController>  mObjectController;
 			bool isPlayer;
 			ObjectType mObjectType;
 #ifdef PLATFORM_OPEN_GL

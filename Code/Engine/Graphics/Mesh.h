@@ -8,11 +8,10 @@
 #endif
 
 #include <stdint.h>
-#include <vector>
 #include <map>
-#include "../Core/Utilities/SharedPointer.h"
 #include "typedefs.h"
 #include "../Graphics/Uniform.h"
+#include "../Core/Utilities/RTTI.h"
 
 namespace Engine
 {
@@ -32,7 +31,7 @@ namespace Engine
 			winding getWinding() const;
 			std::string getMeshFileName() const;
 			std::string getTypeInfo() const override { return ""; }
-			bool isBothSameType(RTTI*, std::string) const override { return true; }			
+			bool isBothSameType(SharedPointer<RTTI>, std::string) const override { return true; }			
 			~Mesh();
 		private:
 			static std::map<std::string, SharedPointer<Mesh>> meshList;

@@ -20,7 +20,7 @@ Engine::SharedPointer<Engine::Graphics::SkyBox>
 		Engine::Graphics::Material::addMaterialToList(i_materialName.c_str());
 		Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateObject"));
 		Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, 
-			static_cast<IMessageHandler*>(tempSkyBox.getRawPointer()), Engine::typedefs::HIGH);
+			tempSkyBox.CastSharedPointer<IMessageHandler>(), Engine::typedefs::HIGH);
 		mSkyBoxList[i_materialName] = tempSkyBox;
 		if (tempSkyBox->createBuffer())
 		{
@@ -170,9 +170,9 @@ void Engine::Graphics::SkyBox::resetTransform()
 	
 }
 
-void Engine::Graphics::SkyBox::setObjectController(IObjectController* i_ObjectController)
+void Engine::Graphics::SkyBox::setObjectController(SharedPointer<IObjectController>i_ObjectController)
 {
-	if (mObjectController)
+	if (!mObjectController.isNull())
 		mObjectController = i_ObjectController;
 }
 
@@ -182,17 +182,17 @@ void Engine::Graphics::SkyBox::updateObject()
 	typedefs::ActionWithKeyBound action;
 	action.action = typedefs::Default;
 	action.keyVal = 0x00;
-	if (mObjectController)
+	if (!mObjectController.isNull())
 		mObjectController->updateObject(*this, action);
 }
 
 
 void Engine::Graphics::SkyBox::HandleMessage(Engine::utils::StringHash& i_message,
-	RTTI* i_MessageSender, void* i_pMessageData)
+	SharedPointer<RTTI> i_MessageSender, void* i_pMessageData)
 {
-	if (i_MessageSender != nullptr)
+	if (!i_MessageSender.isNull())
 	{
-		if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+		if (!i_MessageSender.isNull() && Engine::utils::StringHash("UpdateObject") == i_message && !mObjectController.isNull())
 			mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));
 	}
 }

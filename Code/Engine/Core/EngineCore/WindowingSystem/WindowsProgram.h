@@ -25,7 +25,7 @@ namespace Engine
 			bool CreateMainWindow(const HINSTANCE i_thisInstanceOfTheProgram, const int i_initialWindowDisplayState);
 			static bool OnMainWindowClosed(const HINSTANCE i_thisInstanceOfTheProgram);
 			std::string getTypeInfo() const override;
-			bool isBothSameType(RTTI*, std::string) const override;
+			bool isBothSameType(SharedPointer<RTTI>, std::string) const override;
 			int getWindowHeight() const;
 			int getWindowWidth() const;
 			~WindowingSystem();

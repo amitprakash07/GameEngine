@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <windows.h>
-#include "../Utilities/SharedPointer.h"
+#include "../Utilities/RTTI.h"
 
 
 namespace Engine
@@ -21,7 +21,7 @@ namespace Engine
 			float								getdeltaTimeDuringFrame();
 			void								updateDeltaTime();
 			std::string getTypeInfo() const override { return ""; }
-			bool isBothSameType(RTTI*, std::string) const  override { return true; }
+			bool isBothSameType(SharedPointer<RTTI>, std::string) const  override { return true; }
 			static uint64_t						getCurrentTick();
 
 		private:

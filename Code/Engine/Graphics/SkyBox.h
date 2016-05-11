@@ -29,7 +29,7 @@ namespace Engine
 			void setMaterial(std::string newMaterialName);
 			bool isSkyBoxAvailableIntialized()const;
 			void updateObject() override;
-			void setObjectController(IObjectController *)override;
+			void setObjectController(SharedPointer<IObjectController> )override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override{}
 			Math::Vector3 getScale() const override { return Math::Vector3(0.0f);/*Stub*/ }
 			Graphics::RGBAColor GetVertexColor() const override { return Graphics::RGBAColor(0.0f); }
@@ -52,9 +52,9 @@ namespace Engine
 			static bool isSkyBoxExist(std::string materialName);
 			void HandleMessage(
 				Engine::utils::StringHash &,
-				RTTI* i_MessageSender, void* i_pMessageData) override;
+				SharedPointer<RTTI> i_MessageSender, void* i_pMessageData) override;
 			std::string getTypeInfo() const override { return ""; }
-			bool isBothSameType(RTTI*, std::string) const override { return true; }
+			bool isBothSameType(SharedPointer<RTTI>, std::string) const override { return true; }
 			bool isSSAOEnabled() override { return false; }
 			void EnableSSAO(bool iRequest) override {}
 		private:
@@ -64,7 +64,7 @@ namespace Engine
 			Math::Transform stubTransform;
 			std::string mMaterialName;
 			bool createBuffer();				
-			IObjectController * mObjectController;
+			SharedPointer<IObjectController> mObjectController;
 			ObjectType mObjectType;
 			bool isCurrent;
 			static void deactivateAll();

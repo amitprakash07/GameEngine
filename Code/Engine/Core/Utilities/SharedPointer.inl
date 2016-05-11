@@ -1,6 +1,4 @@
 #include <assert.h>
-//#include "SharedPointer.h"
-
 
 namespace Engine
 {
@@ -117,24 +115,23 @@ namespace Engine
 		else return false;
 	}
 
-	template<typename T>
-	inline Engine::RTTI* SharedPointer<T>::getRawPointer() const
+	/*template<typename T>
+	inline Engine::SharedPointer<RTTI> SharedPointer<T>::getRawPointer() const
 	{
-		return(reinterpret_cast<RTTI*>(m_WrappingObject));
-	}
+		return(reinterpret_cast<SharedPointer<RTTI>>(m_WrappingObject));
+	}*/
 
 
-	/*template <typename T>
+	template <typename T>
 	template<typename T2>
 	SharedPointer<T2> SharedPointer<T>::CastSharedPointer()
 	{
-		T2* CastablePointer;
-		T* tempPointer = new T;
-		memcpy(tempPointer, m_WrappingObject, sizeof(T));
-		CastablePointer = reinterpret_cast<T2*>(tempPointer);
-		SharedPointer<T2> returnSharedPointer =
-			SharedPointer<T2>(CastablePointer, "CatedPointer");
-		return returnSharedPointer;
-	}*/
+		T2* CastablePointer = reinterpret_cast<T2*>(m_WrappingObject);
+		SharedPointer<T2> returnPointer;
+		returnPointer.m_WrappingObject = CastablePointer;
+		(*(m_referenceCount))++;
+		returnPointer.m_referenceCount = m_referenceCount;
+		return returnPointer;
+	}
 
 } //Engine

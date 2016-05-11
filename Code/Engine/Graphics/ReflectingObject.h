@@ -27,7 +27,7 @@ namespace Engine
 			void resetTransform() override;
 			void generateCubeMap();
 			void setDynamicTextureSamplerName(std::string samplerUniformName);	
-			void setObjectController(IObjectController *) override;
+			void setObjectController(SharedPointer<IObjectController> ) override;
 			void updateObject() override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
 			Math::Vector3 getScale() const override { return Math::Vector3(0.0f);/*Stub*/ }
@@ -52,7 +52,7 @@ namespace Engine
 		private:
 			ReflectingObject();
 			bool init();
-			IObjectController *mObjectController;
+			SharedPointer<IObjectController> mObjectController;
 			bool cubeMapGenerated;
 			SharedPointer<Engine::Camera> environmentCamera;
 			bool cameraCreated;

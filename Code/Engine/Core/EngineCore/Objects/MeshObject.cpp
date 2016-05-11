@@ -17,7 +17,7 @@ Engine::SharedPointer<Engine::MeshObject> Engine::MeshObject::CreateMeshObject(
 	i_materialName = Engine::EngineCore::getMaterialFolderPath() + i_materialName;
 	SharedPointer<MeshObject> tempMeshObject(new MeshObject(i_meshFileName, i_materialName), "Engine::MeshObject");
 	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateObject"));
-	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempMeshObject.getRawPointer()), Engine::typedefs::HIGH);
+	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, tempMeshObject.CastSharedPointer<IMessageHandler>(), Engine::typedefs::HIGH);
 
 	if (!i_meshFileName.empty() && !i_meshFileName.empty() && !i_materialName.empty())
 	{
@@ -62,8 +62,7 @@ Engine::MeshObject::MeshObject(std::string i_meshName, std::string i_materialNam
 	mTransform = Math::Transform();
 	mInitialTransform = Math::Transform();
 	mMeshName = i_meshName;
-	mMaterial = i_materialName;
-	mObjectController = nullptr;
+	mMaterial = i_materialName;	
 	debugObject = false;
 	vertexModifierUniform = "vertexColorModifier\0";
 	isInitialTransform = true;
@@ -77,8 +76,7 @@ Engine::MeshObject::MeshObject()
 {
 	renderable = true;
 	mMeshName = "";
-	mMaterial = "";
-	mObjectController = nullptr;
+	mMaterial = "";	
 	mTransform.setOrientation(Engine::Math::Quaternion());
 	mTransform.setPosition(Engine::Math::Vector3());
 	debugObject = false;
@@ -95,9 +93,9 @@ bool Engine::MeshObject::isDebugObject() const
 	return debugObject;
 }
 
-void Engine::MeshObject::setObjectController(IObjectController* i_objectController)
+void Engine::MeshObject::setObjectController(SharedPointer<IObjectController>i_objectController)
 {
-	if (i_objectController)
+	if (!i_objectController.isNull())
 		mObjectController = i_objectController;
 }
 
@@ -139,11 +137,11 @@ void Engine::MeshObject::resetTransform()
 }
 
 
-void Engine::MeshObject::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i_MessageSender, void* i_pMessageData)
+void Engine::MeshObject::HandleMessage(Engine::utils::StringHash& i_message, SharedPointer<RTTI> i_MessageSender, void* i_pMessageData)
 {
-	if (i_MessageSender != nullptr)
+	if (!i_MessageSender.isNull())
 	{
-		if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+		if (!i_MessageSender.isNull() && Engine::utils::StringHash("UpdateObject") == i_message && !mObjectController.isNull())
 			mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));		
 	}
 }
@@ -154,7 +152,7 @@ void Engine::MeshObject::updateObject()
 	typedefs::ActionWithKeyBound action;
 	action.action = typedefs::Default;
 	action.keyVal = 0x00;
-	if(mObjectController)
+	if(!mObjectController.isNull())
 		mObjectController->updateObject(*this, action);
 }
 
@@ -177,8 +175,8 @@ Engine::Math::Transform Engine::MeshObject::getTransform()
 
 Engine::MeshObject::~MeshObject()
 {
-	if (mObjectController)
-		delete mObjectController;
+	if (!mObjectController.isNull())
+		mObjectController.deleteObject();
 }
 
 void Engine::MeshObject::draw(bool drawDebugObject)

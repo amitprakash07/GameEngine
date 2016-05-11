@@ -14,8 +14,11 @@ Engine::SharedPointer<Engine::Camera> Engine::Camera::CreateCamera(std::string i
 	SharedPointer<Engine::Camera> tempCamera(new Engine::Camera(i_name, i_position, i_orientation, i_fieldofView, i_aspectRatio), "Engine::Camera");
 	Engine::utils::StringHash temp(Engine::EngineCore::getStringPool()->findString("UpdateObject"));
 	Engine::utils::StringHash tempOne(Engine::EngineCore::getStringPool()->findString("ActionOnMouseEvent"));
-	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, reinterpret_cast<IMessageHandler*>(tempCamera.getRawPointer()), Engine::typedefs::HIGH);
-	Engine::EngineCore::getMessagingSystem()->addMessageHandler(tempOne, reinterpret_cast<IMessageHandler*>(tempCamera.getRawPointer()), Engine::typedefs::HIGH);
+	Engine::EngineCore::getMessagingSystem()->addMessageHandler(temp, 
+		tempCamera.CastSharedPointer<IMessageHandler>(), 
+		Engine::typedefs::HIGH);
+	Engine::EngineCore::getMessagingSystem()->addMessageHandler(tempOne, 
+		tempCamera.CastSharedPointer<IMessageHandler>(), Engine::typedefs::HIGH);
 	return tempCamera;
 }
 
@@ -28,7 +31,6 @@ Engine::Math::Vector3 Engine::Camera::getForwardVector()const
 
 Engine::Camera::Camera()
 {
-	mObjectController = nullptr;
 	mCameraName = "";
 	mTransform.setOrientation(Engine::Math::Quaternion());
 	mTransform.setPosition(Engine::Math::Vector3());
@@ -50,7 +52,6 @@ Engine::Camera::Camera(std::string i_name, Math::Vector3 i_position,
 	float i_farPlane
 	)
 {
-	mObjectController = nullptr;
 	mTransform = Math::Transform();
 	mCameraName = i_name;
 	mTransform.setOrientation(i_orientation);
@@ -155,9 +156,9 @@ void Engine::Camera::setNearPlane(float i_nearPlane)
 
 
 
-void Engine::Camera::HandleMessage(Engine::utils::StringHash& i_message, RTTI* i_MessageSender, void* i_pMessageData)
+void Engine::Camera::HandleMessage(Engine::utils::StringHash& i_message, SharedPointer<RTTI> i_MessageSender, void* i_pMessageData)
 {
-	if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+	if (!i_MessageSender.isNull() && Engine::utils::StringHash("UpdateObject") == i_message && !mObjectController.isNull())
 		mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));
 }
 
@@ -166,14 +167,14 @@ void Engine::Camera::updateObject()
 	typedefs::ActionWithKeyBound action;
 	action.action = typedefs::Default;
 	action.keyVal = 0x00;
-	if (mObjectController)
+	if (!mObjectController.isNull())
 		mObjectController->updateObject(*this, action);
 }
 
 
-void Engine::Camera::setObjectController(IObjectController* i_objectController)
+void Engine::Camera::setObjectController(SharedPointer<IObjectController>i_objectController)
 {
-	if (i_objectController)
+	if (!i_objectController.isNull())
 		mObjectController = i_objectController;
 }
 

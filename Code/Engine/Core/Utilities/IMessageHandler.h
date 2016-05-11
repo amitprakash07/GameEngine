@@ -4,6 +4,7 @@
 #include "../Utilities/HashedString.h"
 #include "../Utilities/additionaltypes.h"
 #include "../Utilities/RTTI.h"
+#include "SharedPointer.h"
 
 
 namespace Engine
@@ -11,9 +12,9 @@ namespace Engine
 	class IMessageHandler : public RTTI
 	{
 	public:
-		virtual void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) = 0; //Do not delete i_messageSenderPointer
+		virtual void HandleMessage(Engine::utils::StringHash &, SharedPointer<RTTI> i_MessageSender, void* i_pMessageData) = 0; //Do not delete i_messageSenderPointer
 		virtual std::string getTypeInfo() const override = 0;
-		virtual bool isBothSameType(RTTI*, std::string) const override = 0;
+		virtual bool isBothSameType(SharedPointer<RTTI>, std::string) const override = 0;
 		virtual  ~IMessageHandler() {};
 		IMessageHandler() {};
 
@@ -21,10 +22,10 @@ namespace Engine
 
 	struct _IMessageHandle
 	{
-		IMessageHandler* mHandler;
+		SharedPointer<IMessageHandler> mHandler;
 		Engine::typedefs::Priority mMessagePriority;
 
-		_IMessageHandle(IMessageHandler* i_handler, Engine::typedefs::Priority i_priority)
+		_IMessageHandle(SharedPointer<IMessageHandler> i_handler, Engine::typedefs::Priority i_priority)
 		{
 			//MessagedAssert(i_handler != nullptr, "Handle Pointer is NUll");
 			mHandler = i_handler;

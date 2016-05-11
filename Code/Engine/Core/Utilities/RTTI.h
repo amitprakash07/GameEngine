@@ -2,6 +2,7 @@
 #define __RTTI_H
 
 #include <string>
+#include "SharedPointer.h"
 
 namespace Engine
 {
@@ -9,7 +10,7 @@ namespace Engine
 	{
 	public:
 		virtual std::string getTypeInfo() const = 0;
-		virtual bool isBothSameType(RTTI*, std::string) const = 0;
+		virtual bool isBothSameType(SharedPointer<RTTI>, std::string) const = 0;
 		virtual ~RTTI() {};
 		RTTI() {};
 	};

@@ -47,7 +47,7 @@ namespace Engine
 			Math::Vector3 getScale() const override { return Math::Vector3(0.0f);/*Stub*/ }
 			Graphics::RGBAColor GetVertexColor() const override { return Graphics::RGBAColor(0.0f); }
 			void SetVertexColor(float iR, float iG, float iB, float iA) override{}
-			void setObjectController(IObjectController *i_ObjectControlller) override;
+			void setObjectController(SharedPointer<IObjectController> i_ObjectControlller) override;
 			std::string getMaterialName() override { return materialName; }
 			bool isCollidable() override;
 			bool isPhysicsEnabled() override;
@@ -68,7 +68,7 @@ namespace Engine
 			static std::vector<SharedPointer<Line>> mLineList;
 			static bool setUniforms();
 			Line();
-			IObjectController* mObjectController;
+			SharedPointer<IObjectController> mObjectController;
 			LineStruct mLineStruct;
 			bool debugObject;
 			ObjectType mObjectType;

@@ -268,14 +268,14 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		// If the key press wasn't handled pass it on to Windows to process in the default way
 		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("KeyDown");
 		SharedPointer<WindowingSystem> tempWindowingSystem = Engine::EngineCore::getWindowingSystem();
-		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, reinterpret_cast<IMessageHandler*>(tempWindowingSystem.getRawPointer()), reinterpret_cast<void*>(i_wParam));
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, tempWindowingSystem.CastSharedPointer<RTTI>(), reinterpret_cast<void*>(i_wParam));
 		break;
 	}
 	case WM_KEYDOWN:
 	{
 		Engine::utils::StringHash temp = Engine::EngineCore::getStringPool()->findString("KeyDown");
 		SharedPointer<WindowingSystem> tempWindowingSystem = Engine::EngineCore::getWindowingSystem();
-		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, reinterpret_cast<IMessageHandler*>(tempWindowingSystem.getRawPointer()), reinterpret_cast<void*>(i_wParam));
+		Engine::EngineCore::getMessagingSystem()->sendMessage(temp, tempWindowingSystem.CastSharedPointer<RTTI>(), reinterpret_cast<void*>(i_wParam));
 		break;
 	}
 	case WM_LBUTTONDOWN:
@@ -287,7 +287,7 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		windowsParameter.wParam = i_wParam;
 		windowsParameter.lParam = i_lParam;
 		Engine::EngineCore::getMessagingSystem()->sendMessage(temp,
-			reinterpret_cast<IMessageHandler*>(tempMouseController.getRawPointer()),
+			tempMouseController.CastSharedPointer<RTTI>(),
 			reinterpret_cast<void*>(&windowsParameter));
 		break;
 	}
@@ -300,7 +300,7 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		windowsParameter.wParam = i_wParam;
 		windowsParameter.lParam = i_lParam;
 		Engine::EngineCore::getMessagingSystem()->sendMessage(temp,
-			reinterpret_cast<IMessageHandler*>(tempMouseController.getRawPointer()),
+			tempMouseController.CastSharedPointer<RTTI>(),
 			reinterpret_cast<void*>(&windowsParameter));
 		break;
 	}
@@ -313,7 +313,7 @@ LRESULT CALLBACK Engine::Windows::WindowingSystem::OnMessageReceived(HWND i_wind
 		windowsParameter.wParam = i_wParam;
 		windowsParameter.lParam = i_lParam;
 		Engine::EngineCore::getMessagingSystem()->sendMessage(temp,
-			reinterpret_cast<IMessageHandler*>(tempMouseController.getRawPointer()),
+			tempMouseController.CastSharedPointer<RTTI>(),
 			reinterpret_cast<void*>(&windowsParameter));
 		break;
 	}
@@ -404,7 +404,7 @@ Engine::Windows::WindowingSystem::~WindowingSystem()
 	s_mainWindow = nullptr;*/
 }
 
-bool Engine::Windows::WindowingSystem::isBothSameType(RTTI*, std::string) const
+bool Engine::Windows::WindowingSystem::isBothSameType(SharedPointer<RTTI>, std::string) const
 {
 	return true;
 }

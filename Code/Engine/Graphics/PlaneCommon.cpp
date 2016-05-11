@@ -47,17 +47,17 @@ void Engine::Graphics::Plane::updateObject()
 	typedefs::ActionWithKeyBound action;
 	action.action = typedefs::Default;
 	action.keyVal = 0x00;
-	if (mObjectController)
+	if (!mObjectController.isNull())
 		mObjectController->updateObject(*this, action);
 }
 
 
 void Engine::Graphics::Plane::HandleMessage(Engine::utils::StringHash& i_message,
-	RTTI* i_MessageSender, void* i_pMessageData)
+	SharedPointer<RTTI> i_MessageSender, void* i_pMessageData)
 {
-	if (i_MessageSender != nullptr)
+	if (!i_MessageSender.isNull())
 	{
-		if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+		if (!i_MessageSender.isNull() && Engine::utils::StringHash("UpdateObject") == i_message && !mObjectController.isNull())
 			mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));
 	}
 }
@@ -68,9 +68,9 @@ Engine::Math::Transform Engine::Graphics::Plane::getTransform()
 }
 
 
-void Engine::Graphics::Plane::setObjectController(IObjectController* i_objectController)
+void Engine::Graphics::Plane::setObjectController(SharedPointer<IObjectController>i_objectController)
 {
-	if (i_objectController)
+	if (!i_objectController.isNull())
 		mObjectController = i_objectController;
 }
 

@@ -16,9 +16,9 @@ namespace Engine
 	public:
 		static SharedPointer<MouseController> getMouseController();
 		Engine::MouseEventAndPosition getCurrentMouseState()const;
-		void HandleMessage(Engine::utils::StringHash &, RTTI*, void* i_pMessageData) override;
+		void HandleMessage(Engine::utils::StringHash &, SharedPointer<RTTI>, void* i_pMessageData) override;
 		std::string getTypeInfo() const override;
-		bool isBothSameType(RTTI*, std::string) const override;
+		bool isBothSameType(SharedPointer<RTTI>, std::string) const override;
 		void leftButtonPressed(bool);
 		void rightButtonPressed(bool);
 		void middleButtonPressed(bool);

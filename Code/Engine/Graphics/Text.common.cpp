@@ -40,8 +40,7 @@ void Engine::Graphics::Text::SetTextToRender(std::string iText)
 
 Engine::Graphics::Text::Text()
 {
-	mColor = RGBAColor();
-	mObjectController = nullptr;
+	mColor = RGBAColor();	
 	mScale = Math::Vector3();
 	mTransform = Math::Transform();
 	vertexBuffer = -1;
@@ -90,11 +89,11 @@ Engine::Graphics::RGBAColor Engine::Graphics::Text::GetVertexColor() const
 
 
 void Engine::Graphics::Text::HandleMessage(Engine::utils::StringHash& i_message,
-	RTTI* i_MessageSender, void* i_pMessageData)
+	SharedPointer<RTTI> i_MessageSender, void* i_pMessageData)
 {
-	if (i_MessageSender != nullptr)
+	if (!i_MessageSender.isNull())
 	{
-		if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+		if (!i_MessageSender.isNull() && Engine::utils::StringHash("UpdateObject") == i_message && !mObjectController.isNull())
 			mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));
 	}
 }
@@ -187,9 +186,9 @@ bool Engine::Graphics::Text::receivingShadowEnabled()
 }
 
 
-void Engine::Graphics::Text::setObjectController(IObjectController* iObjectController)
+void Engine::Graphics::Text::setObjectController(SharedPointer<IObjectController>iObjectController)
 {
-	if (iObjectController)
+	if (!iObjectController.isNull())
 		mObjectController = iObjectController;
 }
 
@@ -224,6 +223,6 @@ void Engine::Graphics::Text::updateObject()
 	typedefs::ActionWithKeyBound action;
 	action.action = typedefs::Default;
 	action.keyVal = 0x00;
-	if (mObjectController)
+	if (!mObjectController.isNull())
 		mObjectController->updateObject(*this, action);
 }

@@ -16,8 +16,7 @@ Engine::Scene::Scene(std::string i_sceneName) :
 	mLightList.reserve(10);
 	sceneName = i_sceneName;
 	render = false;
-	renderDebug = true;
-	mObjectController = nullptr;
+	renderDebug = true;	
 	mObjectType = ObjectType::NONE;
 }
 
@@ -494,7 +493,7 @@ void Engine::Scene::updateObject()
 	typedefs::ActionWithKeyBound action;
 	action.action = typedefs::Default;
 	action.keyVal = 0x00;
-	if (mObjectController)
+	if (!mObjectController.isNull())
 		mObjectController->updateObject(*this, action);
 }
 
@@ -505,20 +504,20 @@ void Engine::Scene::setScale(float x, float y, float z)
 
 
 
-void Engine::Scene::setObjectController(IObjectController* iObjectController)
+void Engine::Scene::setObjectController(SharedPointer<IObjectController>iObjectController)
 {
-	if (iObjectController)
+	if (!iObjectController.isNull())
 		mObjectController = iObjectController;
 }
 
 
 void Engine::Scene::HandleMessage(Engine::utils::StringHash& i_message,
-	RTTI* i_MessageSender, 
+	SharedPointer<RTTI> i_MessageSender, 
 	void* i_pMessageData)
 {
-	if (i_MessageSender != nullptr)
+	if (!i_MessageSender.isNull())
 	{
-		if (i_MessageSender != nullptr && Engine::utils::StringHash("UpdateObject") == i_message && mObjectController)
+		if (!i_MessageSender.isNull() && Engine::utils::StringHash("UpdateObject") == i_message && !mObjectController.isNull())
 			mObjectController->updateObject(*this, *reinterpret_cast<Engine::typedefs::ActionWithKeyBound*>(i_pMessageData));
 	}
 }

@@ -1,10 +1,10 @@
 #ifndef __UNIFORMBLOCK_H
 #define __UNIFORMBLOCK_H
 
-#include "../Core/Utilities/SharedPointer.h"
 #include <vector>
 #include "uniformdefs.h"
 #include <map>
+#include "../Core/Utilities/SharedPointer.h"
 
 namespace Engine
 {

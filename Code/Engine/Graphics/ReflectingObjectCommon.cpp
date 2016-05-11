@@ -104,9 +104,9 @@ void Engine::Graphics::ReflectingObject::setDynamicTextureSamplerName(
 }
 
 
-void Engine::Graphics::ReflectingObject::setObjectController(IObjectController* i_objectController)
+void Engine::Graphics::ReflectingObject::setObjectController(SharedPointer<IObjectController>i_objectController)
 {
-	if (i_objectController)
+	if (!i_objectController.isNull())
 		mObjectController = i_objectController;
 }
 
@@ -116,7 +116,7 @@ void Engine::Graphics::ReflectingObject::updateObject()
 	typedefs::ActionWithKeyBound action;
 	action.action = typedefs::Default;
 	action.keyVal = 0x00;
-	if (mObjectController)
+	if (!mObjectController.isNull())
 		mObjectController->updateObject(*this, action);
 }
 

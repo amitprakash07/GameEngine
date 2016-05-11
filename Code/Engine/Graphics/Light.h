@@ -45,7 +45,7 @@ namespace Engine
 			bool isRenderable() const override;
 			bool isDebugObject() const override;
 			void updateObject() override;
-			void setObjectController(IObjectController* iObjectController) override;
+			void setObjectController(SharedPointer<IObjectController>iObjectController) override;
 			void setScale(float iX, float iY, float iZ) override;
 			Math::Vector3 getScale() const override { return Math::Vector3(0.0f);/*Stub*/ }
 			Graphics::RGBAColor GetVertexColor() const override { return RGBAColor(0.0f); }
@@ -67,9 +67,9 @@ namespace Engine
 			//IMessageHandler functions
 			void HandleMessage(
 				Engine::utils::StringHash &,
-				RTTI* i_MessageSender, void* i_pMessageData) override;
+				SharedPointer<RTTI> i_MessageSender, void* i_pMessageData) override;
 			std::string getTypeInfo() const override;
-			bool isBothSameType(RTTI*, std::string) const override;
+			bool isBothSameType(SharedPointer<RTTI>, std::string) const override;
 			bool isSSAOEnabled() override { return false; }
 			void EnableSSAO(bool iRequest) override {}
 		private:			
@@ -86,7 +86,7 @@ namespace Engine
 			bool castShadowFlag;		
 			float mIntensity;
 			Engine::Math::Vector3 mLightColor;
-			IObjectController * mObjectController;
+			SharedPointer<IObjectController> mObjectController;
 			LightType mLightType;
 			bool lightParameterInitialized;
 			bool lightEnabled;

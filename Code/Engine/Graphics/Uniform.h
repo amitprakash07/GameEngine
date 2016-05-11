@@ -3,8 +3,8 @@
 
 #include "uniformdefs.h"
 #include <map>
-#include "../Core/Utilities/SharedPointer.h"
 #include <vector>
+#include "../../Engine/Core/Utilities/SharedPointer.h"
 
 
 namespace Engine

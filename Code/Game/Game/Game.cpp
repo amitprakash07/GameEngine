@@ -98,7 +98,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		Engine::SharedPointer<Engine::Graphics::Text> mText =
 			Engine::Graphics::Text::CreateText("Game/textEffect.effect", "arial.ttf",
 				Engine::Math::Transform());
-		mText->SetTextToRender("Amit Prakash");
+		mText->SetTextToRender("\namit\nfdhjfhj");
 		Engine::Math::Transform tempTransform = mText->getTransform();
 		tempTransform.setPosition(Engine::Math::Vector3(100, 100, 1.0f));
 		mText->SetVertexColor(0.0f, 1.0f, 0.0f, 1.0f);
@@ -288,9 +288,8 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		mainLight->addLightToEffect(standardLightingEffect->getEffectName(),
 			Engine::Graphics::Fragment);
 
-		mainLight->setObjectController(new Game::LightController());
-
-		
+		mainLight->setObjectController(Engine::SharedPointer<Game::LightController>(
+			new Game::LightController(), "Game::Light").CastSharedPointer<Engine::IObjectController>());		
 
 		//Camera
 		Engine::SharedPointer<Engine::Camera> mainCamera =
@@ -304,7 +303,9 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		mainCamera->setAspectRatio(static_cast<float>(1600.0f / 900.0f));
 		mainCamera->setFarPlane(10000.0f);
 		mainCamera->setFieldOfView(60.0f);
-		mainCamera->setObjectController(new Game::WalkController());
+		mainCamera->setObjectController(
+			Engine::SharedPointer<Game::WalkController>(new Game::WalkController(),
+				"Game::WalkController").CastSharedPointer<Engine::IObjectController>());
 		scene->addCameraToScene(mainCamera);		
 
 		while (!Engine::EngineCore::isWindowClosed(i_thisInstanceOfTheProgram))

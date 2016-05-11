@@ -33,8 +33,7 @@ Engine::Graphics::ReflectingObject::ReflectingObject()
 {
 	texture = -1;		
 	cubeMapGenerated = false;	
-	cameraCreated = false;
-	mObjectController = nullptr;
+	cameraCreated = false;	
 	isInitialTransform = true;
 	mInitialTransform = Math::Transform();
 	scaleFactor = Math::Vector3(1.0, 1.0, 1.0);

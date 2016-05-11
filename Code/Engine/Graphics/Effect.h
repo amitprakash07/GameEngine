@@ -9,16 +9,15 @@
 #endif
 
 #include <map>
-#include "../Core/Utilities/SharedPointer.h"
 #include "Uniform.h"
 #include "UniformBlock.h"
-
+#include "../../Engine/Core/Utilities/RTTI.h"
 
 namespace Engine
-{
+{	
 	namespace Graphics
 	{
-		class Effect :public RTTI
+		class Effect :public Engine::RTTI
 		{
 		public:
 			static bool addEffectToList(std::string);
@@ -32,7 +31,7 @@ namespace Engine
 			bool LoadEffect();
 			bool setShaders() const;
 			std::string getTypeInfo() const override { return ""; }
-			bool isBothSameType(RTTI*, std::string) const  override { return true; }						
+			bool isBothSameType(SharedPointer<RTTI>, std::string) const  override { return true; }						
 			void setMaterialUniformValue(char*, MaterialUniform) const;
 			UniformHandle getUniformHandle(const char *, ShaderType) const;
 			SamplerID getSamplerID(UniformHandle, ShaderType);		

@@ -17,8 +17,7 @@ Engine::Graphics::Line::Line()
 {
 	debugObject = true;
 	bufferInitialized = false;
-	vertexBufferInitalized = false;
-	mObjectController = nullptr;
+	vertexBufferInitalized = false;	
 	mObjectType = ObjectType::NONE;
 }
 
@@ -144,14 +143,14 @@ void Engine::Graphics::Line::updateObject()
 	typedefs::ActionWithKeyBound action;
 	action.action = typedefs::Default;
 	action.keyVal = 0x00;
-	if (mObjectController)
+	if (!mObjectController.isNull())
 		mObjectController->updateObject(*this, action);
 }
 
 
-void Engine::Graphics::Line::setObjectController(IObjectController* i_ObjectControlller)
+void Engine::Graphics::Line::setObjectController(SharedPointer<IObjectController>i_ObjectControlller)
 {
-	if (i_ObjectControlller)
+	if (!i_ObjectControlller.isNull())
 		mObjectController = i_ObjectControlller;
 }
 

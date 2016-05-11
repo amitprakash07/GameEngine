@@ -2,7 +2,6 @@
 #define __TEXT_H
 #include "../Core/EngineCore/Objects/Object.h"
 #include "../../Engine/Core/Utilities/IMessageHandler.h"
-#include "../Core/Utilities/SharedPointer.h"
 #include "../../Externals/OpenGLExtensions/OpenGlExtensions.h"
 #include <map>
 
@@ -29,7 +28,7 @@ namespace Engine
 			void draw(bool drawDebugObject) override;
 			void setRenderable(bool iRenderable) override;
 			void updateObject() override;
-			void setObjectController(IObjectController *)override;
+			void setObjectController(SharedPointer<IObjectController> )override;
 			void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) override;
 			Math::Vector3 getScale() const override;
 			Graphics::RGBAColor GetVertexColor() const override;
@@ -53,9 +52,9 @@ namespace Engine
 			//IMessageHandler
 			void HandleMessage(
 				Engine::utils::StringHash &,
-				RTTI* i_MessageSender, void* i_pMessageData) override;
+				SharedPointer<RTTI> i_MessageSender, void* i_pMessageData) override;
 			std::string getTypeInfo() const override { return ""; }
-			bool isBothSameType(RTTI*, std::string) const override { return true; }			
+			bool isBothSameType(SharedPointer<RTTI>, std::string) const override { return true; }			
 		private:
 			struct Character {
 #ifdef PLATFORM_OPEN_GL
@@ -81,7 +80,7 @@ namespace Engine
 			void InitializeText();
 			Text();
 			RGBAColor mColor;
-			IObjectController * mObjectController;
+			SharedPointer<IObjectController> mObjectController;
 			Math::Vector3 mScale;
 			Math::Transform mTransform;
 			std::string mEffectFileName;

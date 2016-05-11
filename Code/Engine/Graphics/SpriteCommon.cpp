@@ -239,9 +239,9 @@ bool Engine::Graphics::Sprite::isRenderable() const
 }
 
 
-void Engine::Graphics::Sprite::setObjectController(IObjectController* i_ObjectController)
+void Engine::Graphics::Sprite::setObjectController(SharedPointer<IObjectController>i_ObjectController)
 {
-	if (mObjectController)
+	if (!mObjectController.isNull())
 		mObjectController = i_ObjectController;
 }
 

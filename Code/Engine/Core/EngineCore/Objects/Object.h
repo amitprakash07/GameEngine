@@ -4,6 +4,7 @@
 #include "../../Maths/Transform.h"
 #include <string>
 #include "../../../Graphics/typedefs.h"
+#include "../../Utilities/SharedPointer.h"
 
 namespace Engine
 {
@@ -19,7 +20,7 @@ namespace Engine
 		virtual bool isRenderable() const = 0;
 		virtual bool isDebugObject() const = 0;
 		virtual void updateObject() = 0;	
-		virtual void setObjectController(IObjectController* objectController) = 0;
+		virtual void setObjectController(SharedPointer<IObjectController>objectController) = 0;
 		virtual void setScale(float x = 1.0f, float y = 1.0f, float z = 1.0f) = 0;
 		virtual Math::Vector3 getScale() const = 0;
 		virtual std::string getMaterialName() = 0;
@@ -41,6 +42,7 @@ namespace Engine
 		virtual void EnableSSAO(bool) = 0;
 		virtual void SetVertexColor(float iR, float iG, float iB, float iA) = 0;
 		virtual Graphics::RGBAColor GetVertexColor() const = 0;
+		//virtual void ChangeString(std::string) = 0;
 		Object() {}
 		virtual ~Object() {}
 	};

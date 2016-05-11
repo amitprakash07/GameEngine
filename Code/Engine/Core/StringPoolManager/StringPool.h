@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "../Utilities/additionaltypes.h"
-#include "../Utilities/SharedPointer.h"
+#include "../Utilities/RTTI.h"
 
 
 namespace Engine
@@ -15,7 +15,7 @@ namespace Engine
 		static SharedPointer<StringPool>			getStringPool();
 		char*										findString(char*);
 		std::string getTypeInfo() const override { return ""; }
-		bool isBothSameType(RTTI*, std::string)const  override { return true; }
+		bool isBothSameType(SharedPointer<RTTI>, std::string)const  override { return true; }
 				~StringPool();
 	private:
 		static SharedPointer<StringPool>			mStringPool;

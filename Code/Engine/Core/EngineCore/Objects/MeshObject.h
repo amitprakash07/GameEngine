@@ -17,19 +17,19 @@ namespace Engine
 	public:
 		static SharedPointer<MeshObject> CreateMeshObject(std::string, std::string, 
 			Engine::Graphics::RGBAColor = {1.0f,1.0f,1.0f,1.0f});
-		void setObjectController(IObjectController *)override;
+		void setObjectController(SharedPointer<IObjectController> )override;
 		SharedPointer<Engine::Graphics::Mesh>       getMesh() const;
 		SharedPointer<Engine::Graphics::Effect>		getEffect() const;
 		SharedPointer<Engine::Graphics::Material>   getMaterial() const;
 		void setTransform(Engine::Math::Vector3, Engine::Math::Quaternion = Engine::Math::Quaternion()) override;
 		Math::Transform getTransform() override;
 		bool isRenderable() const override;
-		void HandleMessage(Engine::utils::StringHash &, RTTI* i_MessageSender, void* i_pMessageData) override;
+		void HandleMessage(Engine::utils::StringHash &, SharedPointer<RTTI> i_MessageSender, void* i_pMessageData) override;
 		void draw(bool drawDebugObject) override;
 		bool IsPlayer() override;
 		void setPlayer(bool i_isPlayer) override;
 		std::string getTypeInfo() const override { return ""; }
-		bool isBothSameType(RTTI*, std::string) const override { return true; }
+		bool isBothSameType(SharedPointer<RTTI>, std::string) const override { return true; }
 		void EnableDebugging(bool enable = false);
 		bool isDebugObject() const override;	
 		void updateObject() override;
@@ -60,7 +60,7 @@ namespace Engine
 		std::string									mMeshName;
 		std::string									mMaterial;
 		std::string									vertexModifierUniform;
-		IObjectController*							mObjectController;
+		SharedPointer<IObjectController>			mObjectController;
 		bool										renderable;
 		Math::Transform								mTransform;
 		Math::Transform								mInitialTransform;

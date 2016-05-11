@@ -21,8 +21,7 @@ Engine::Graphics::SkyBox::SkyBox(std::string material_Name)
 	mMaterialName = material_Name;
 	s_vertexArrayID = -1;
 	vertexBufferId = -1;
-	indexBufferId = -1;
-	mObjectController = nullptr;
+	indexBufferId = -1;	
 	isCurrent = false;
 	stubTransform = Engine::Math::Transform();
 	mObjectType = ObjectType::NONE;
