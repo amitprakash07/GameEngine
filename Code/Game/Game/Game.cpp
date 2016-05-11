@@ -293,8 +293,7 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 
 		//Camera
 		Engine::SharedPointer<Engine::Camera> mainCamera =
-			Engine::Camera::CreateCamera("MainCamera",
-				//Engine::Math::Vector3(-53.258f, -108.953f, 1043.751f),
+			Engine::Camera::CreateCamera("MainCamera",				
 				Engine::Math::Vector3(0.0f, 0.0f, 10.0f),
 				Engine::Math::Quaternion(Engine::Math::ConvertDegreesToRadians(0),
 					Engine::Math::Vector3(0, 1, 0)));

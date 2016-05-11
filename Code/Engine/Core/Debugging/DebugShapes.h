@@ -26,33 +26,40 @@ namespace Engine
 	{
 	public:
 		static bool IsDebugShapesAvailable();
-		static void DrawShape(ShapeTarget,
+		static SharedPointer<Object> GetDebugShape(std::string iName,
+			ShapeTarget iShape);
+		static void DrawShape(std::string iName,
+			ShapeTarget,
 			Engine::Math::Vector3,
 			float iRadius = 1.0f,
 			Engine::Graphics::RGBColor = Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f)); //Sphere
 
-		static void DrawShape(ShapeTarget,
+		static void DrawShape(std::string iName,
+			ShapeTarget,
 			Engine::Math::Vector3,
 			float iLength = 1.0f,
 			float iWidth = 1.0f, float
 			iHeight = 1.0f,
 			Engine::Graphics::RGBColor = Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f)); //Box
 
-		static void DrawShape(ShapeTarget,
+		static void DrawShape(std::string iName, 
+			ShapeTarget,
 			Engine::Math::Vector3,
 			float iRadius = 1.0f,
 			float iHeight = 1.0f,
 			Engine::Graphics::RGBColor = Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f)); //Cylinder
 
-		static void DrawShape(ShapeTarget,
+		static void DrawShape(std::string iName, 
+			ShapeTarget,
 			Engine::Math::Vector3,
 			Engine::Math::Vector3,
 			Engine::Graphics::RGBColor = Engine::Graphics::RGBColor(0.0f, 1.0f, 0.0f)); //Line
 	private:
 		Debug();
-		static std::vector<Engine::SharedPointer<Engine::Object>> debugShapeList;
-		Engine::SharedPointer<Engine::Object> debugShape;
-		ShapeTarget shapeType;
+		static std::map<ShapeTarget, 
+			std::map<std::string,
+			SharedPointer<Engine::Object>>> debugShapeList;
+		Engine::SharedPointer<Engine::Object> debugShape;		
 	};
 }
 #endif

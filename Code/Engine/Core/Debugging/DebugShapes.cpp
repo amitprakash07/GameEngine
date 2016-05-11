@@ -5,16 +5,18 @@
 #include "../EngineCore/EngineCore.h"
 
 
-std::vector<Engine::SharedPointer<Engine::Object>> Engine::Debug::debugShapeList;
+std::map<Engine::ShapeTarget, std::map<std::string, 
+	Engine::SharedPointer<Engine::Object>>>
+	Engine::Debug::debugShapeList;
 
 bool Engine::Debug::IsDebugShapesAvailable()
 {
 	return (debugShapeList.size() > 0 ? true: false);
 }
 
-
 //Line
-void Engine::Debug::DrawShape(ShapeTarget i_shapeType,
+void Engine::Debug::DrawShape(std::string iName, 
+	ShapeTarget i_shapeType,
 	Engine::Math::Vector3 iStartPoint,
 	Engine::Math::Vector3 iEndPoint,
 	Engine::Graphics::RGBColor iColor)
@@ -34,11 +36,12 @@ void Engine::Debug::DrawShape(ShapeTarget i_shapeType,
 		Engine::Graphics::Line::setMaterialName(materialFolderName);
 	}	
 	Engine::Graphics::Line::AddLine(
-		iStartPoint, iEndPoint, color);
+		iStartPoint, iEndPoint, color);	
 }
 
 //Sphere
-void Engine::Debug::DrawShape(ShapeTarget iShapeType,
+void Engine::Debug::DrawShape(std::string iName, 
+	ShapeTarget iShapeType,
 	Engine::Math::Vector3 iCenter,
 	float iRadius,
 	Engine::Graphics::RGBColor iColor)
@@ -50,7 +53,8 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	color.b = iColor.b;
 	color.a = 1.0f;
 	Engine::SharedPointer<Engine::MeshObject> debugSphere =
-		Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh", "Game/defaultDebugShapes.mat", color);
+		Engine::MeshObject::CreateMeshObject("Game/DebugSphereForClass.mesh", 
+			"Game/defaultDebugShapes.mat", color);
 	debugSphere->EnableDebugging(true);
 	debugSphere->getMaterial()->changeMaterialColor(iColor.r, iColor.g, iColor.b);
 	Math::Vector3 tempPosition;
@@ -59,10 +63,14 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	tempPosition.z = iCenter.z;
 	debugSphere->setTransform(tempPosition, Engine::Math::Quaternion());
 	Engine::Scene::getRenderableScene()->addObjectToScene(debugSphere);
+
+	SharedPointer<Object> tempObject = debugSphere.CastSharedPointer<Object>();
+	debugShapeList[iShapeType][iName] = tempObject;
 }
 
 //Box
-void Engine::Debug::DrawShape(ShapeTarget iShapeType,
+void Engine::Debug::DrawShape(std::string iName, 
+	ShapeTarget iShapeType,
 	Engine::Math::Vector3 i_position,
 	float iLength,
 	float iWidth,
@@ -86,10 +94,14 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	tempPosition.z = i_position.z;
 	debugBox->setTransform(tempPosition, Engine::Math::Quaternion());
 	Engine::Scene::getRenderableScene()->addObjectToScene(debugBox);
+
+	SharedPointer<Object> tempObject = debugBox.CastSharedPointer<Object>();
+	debugShapeList[iShapeType][iName] = tempObject;
 }
 
 //Cylinder
-void Engine::Debug::DrawShape(ShapeTarget iShapeType,
+void Engine::Debug::DrawShape(std::string iName, 
+	ShapeTarget iShapeType,
 	Engine::Math::Vector3 i_position,
 	float iRadius,
 	float iHeight,
@@ -102,7 +114,8 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	color.b = iColor.b;
 	color.a = 1.0f;
 	Engine::SharedPointer<Engine::MeshObject> debugCylinder =
-		Engine::MeshObject::CreateMeshObject("Game/DebugCylinderForClass.mesh", "Game/defaultDebugShapes.mat", color);
+		Engine::MeshObject::CreateMeshObject("Game/DebugCylinderForClass.mesh", 
+			"Game/defaultDebugShapes.mat", color);
 	debugCylinder->EnableDebugging(true);
 	debugCylinder->getMaterial()->changeMaterialColor(iColor.r, iColor.g, iColor.b);
 	Math::Vector3 tempPosition;
@@ -111,8 +124,30 @@ void Engine::Debug::DrawShape(ShapeTarget iShapeType,
 	tempPosition.z = i_position.z;
 	debugCylinder->setTransform(tempPosition, Engine::Math::Quaternion());
 	Engine::Scene::getRenderableScene()->addObjectToScene(debugCylinder);
+
+	SharedPointer<Object> tempObject = debugCylinder.CastSharedPointer<Object>();
+	debugShapeList[iShapeType][iName] = tempObject;
 }
 
+
+Engine::SharedPointer<Engine::Object> Engine::Debug::GetDebugShape(std::string iName,
+	ShapeTarget iShape)
+{
+	for(std::map<ShapeTarget, std::map<std::string, SharedPointer<Object>>>::iterator i = debugShapeList.begin();
+		i!=debugShapeList.end(); ++i)
+	{
+		if (i->first == iShape)
+		{
+			for (std::map<std::string, SharedPointer<Object>>::iterator j = i->second.begin();
+				j != i->second.end(); ++j)
+			{
+				if (j->first == iName)
+					return j->second;
+			}
+		}
+	}
+	return SharedPointer<Object>();
+}
 
 
 
