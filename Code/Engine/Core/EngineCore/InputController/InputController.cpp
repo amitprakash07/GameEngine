@@ -4,6 +4,9 @@
 #include "../../MessagingSystem/MessagingSystem.h"
 #include "../../StringPoolManager/StringPool.h"
 #include "../EngineCore.h"
+#include "../../Debugging/DebugMenu.h"
+#include "../Objects/Scene.h"
+#include "../../Physics/PhysicsSystem.h"
 
 Engine::SharedPointer<Engine::InputController> Engine::InputController::mInputController;
 
@@ -27,52 +30,36 @@ void Engine::InputController::HandleMessage(Engine::utils::StringHash& i_message
 	{
 		if (Engine::utils::StringHash("KeyDown") == i_message)
 		{
-			if (i_pMessageData)
+			if (i_pMessageData && Scene::getRenderableScene()->IsNewFrame())
 			{
 				Engine::typedefs::ActionWithKeyBound action;
 				Engine::utils::StringHash gameObjectController = Engine::EngineCore::getStringPool()->findString("UpdateObject");
+				Engine::utils::StringHash debugMenuController = Engine::EngineCore::getStringPool()->findString("DebugMenuHandler");
 				SharedPointer<InputController> tempInputController = Engine::EngineCore::getInputController();
 				action.keyVal = reinterpret_cast<WPARAM>(i_pMessageData);
-				action.action = typedefs::Default;
-				Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, 
-					tempInputController.CastSharedPointer<RTTI>(), &action);
-				/*
-				switch (reinterpret_cast<WPARAM>(i_pMessageData))
+				action.action = typedefs::Default;				
+				
+				
+				if (action.keyVal == VK_OEM_3)
 				{
-				case VK_LEFT:
-					action.action = Engine::typedefs::MoveLeft;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
-					break;
-				case 0x41:
-					action.action = Engine::typedefs::RotateLeft;
-					//Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
-					break;
-				case VK_RIGHT:
-					action.action = Engine::typedefs::MoveRight;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
-					break;
-				case 0x44:
-					action.action = Engine::typedefs::RotateRight;
-					//Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
-					break;
-				case VK_DOWN:
-					action.action = Engine::typedefs::MoveBackWard;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
-					break;
-				case 0x53:
-					action.action = Engine::typedefs::RotateDown;
-					//Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
-					break;
-				case VK_UP:
-					action.action = Engine::typedefs::MoveForward;
-					Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
-					break;
-				case 0x57:
-					action.action = Engine::typedefs::RotateUp;
-					//Engine::EngineCore::getMessagingSystem()->sendMessage(gameObjectController, tempInputController.getRawPointer(), &action);
-					break;
+					bool CurrentStatus = Debug::DebugMenu::GetDebugMenu()->isActivated();
+					Debug::DebugMenu::GetDebugMenu()->Activate(!CurrentStatus);
+				}					
+
+				if (Debug::DebugMenu::GetDebugMenu()->isActivated())
+					EngineCore::getMessagingSystem()->sendMessage(debugMenuController,
+						tempInputController.CastSharedPointer<RTTI>(), &action);
+				else
+					EngineCore::getMessagingSystem()->sendMessage(gameObjectController,
+						tempInputController.CastSharedPointer<RTTI>(), &action);
+				
+				if(Physics::PhysicsSystem::GetPhysicsSystem()->CollisionDebuggingStatus())
+				{
+					EngineCore::getMessagingSystem()->sendMessage(gameObjectController,
+						tempInputController.CastSharedPointer<RTTI>(), &action);
 				}
-				*/
+
+				Scene::getRenderableScene()->SetNewFrame(false);
 			}
 		}
 	}

@@ -74,6 +74,8 @@ namespace Engine
 		float farPlane;
 		bool isPlayer;
 		ObjectType mObjectType;
+		Engine::Math::Vector3 lookAtTarget;
+		bool isThirdPerson;
 		MouseEventAndPosition mMouseCurrentStateAndPosition;
 		MouseEventAndPosition mMousePreviousStateAndPosition;
 		Camera(std::string, Math::Vector3, Math::Quaternion,

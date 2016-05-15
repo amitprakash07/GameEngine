@@ -18,8 +18,12 @@ void BuildStringFromMatrix(int* Matrix,
 
 int main()
 {
+	std::string a = "amit";
+	std::cout << a << std::endl;
+	a = "Praks";
+	std::cout << a << std::endl;
 
-	Engine::Math::Matrix4x4 tempMatrix =
+	/*Engine::Math::Matrix4x4 tempMatrix =
 		Engine::Math::Matrix4x4::CreateOrthographicViewToScreenTransform(
 			0, 800, 0, 600, 0.1, 1000);
 
@@ -27,7 +31,7 @@ int main()
 		Engine::Math::Vector3(-98.0f, -101.0f, 1.0f);
 
 	Engine::Math::Vector3 newVect =
-		tempMatrix.mul(tempVector);
+		tempMatrix.mul(tempVector);*/
 
 
 

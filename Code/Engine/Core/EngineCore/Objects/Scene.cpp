@@ -2,6 +2,7 @@
 #include "../../../Graphics/SkyBox.h"
 #include <algorithm>
 #include "../../../Graphics/SSAO.h"
+#include "../../Physics/PhysicsSystem.h"
 
 std::map<std::string, Engine::SharedPointer<Engine::Scene>> Engine::Scene::mSceneList;
 
@@ -182,80 +183,111 @@ Engine::SharedPointer<Engine::Scene> Engine::Scene::getRenderableScene()
 	return(SharedPointer<Scene>());
 }
 
+
+Engine::SharedPointer<Engine::MeshObject> Engine::Scene::GetPlayer()
+{
+	SharedPointer<Scene> renderableScene = getRenderableScene();
+	for (uint8_t i = 0; i < renderableScene->mMeshObjectInSceneList.size(); i++)
+	{
+		if (renderableScene->mMeshObjectInSceneList[i]->IsPlayer())
+			return renderableScene->mMeshObjectInSceneList[i];
+	}
+	return SharedPointer<MeshObject>();
+}
+
+
 void Engine::Scene::EnableAllMeshObjectsForSSAO()
 {
 	for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
 		mMeshObjectInSceneList[i]->EnableSSAO(true);
 }
 
+void Engine::Scene::SetNewFrame(bool newFrame)
+{
+	isNextFrame = newFrame;
+}
+
+bool Engine::Scene::IsNewFrame() const
+{
+	return isNextFrame;
+}
+
+
+
 
 void Engine::Scene::drawScene(bool withDebug)
 {
-	//Graphics::SSAO::SSAOBindGBuffer();
-	if(mLightList.size()>0)
+	if (Physics::PhysicsSystem::GetPhysicsSystem()->ShowCollisionMesh())
 	{
-		for (std::vector<SharedPointer<Graphics::Light>>::iterator iL = mLightList.begin();
-		iL!=mLightList.end(); ++iL)
+		Physics::PhysicsSystem::DrawCollisionMesh();
+	}
+	if (!Physics::PhysicsSystem::GetPhysicsSystem()->CollisionDebuggingStatus())
+	{
+		//Graphics::SSAO::SSAOBindGBuffer();
+		if (mLightList.size() > 0)
 		{
-			(*iL)->setLightParameterValueToShaderObject();
+			for (std::vector<SharedPointer<Graphics::Light>>::iterator iL = mLightList.begin();
+				iL != mLightList.end(); ++iL)
+			{
+				(*iL)->setLightParameterValueToShaderObject();
+			}
 		}
-	}
 
-	for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
-	{
-		if(!mMeshObjectInSceneList[i]->isSSAOEnabled())
-			mMeshObjectInSceneList[i]->draw(withDebug);
-	}
-
-
-	//Graphics::SSAO::GenerateGBuffer();
-	//Generate dynamic Cube Maps
-	if(mReflectingObjectList.size()>0)
-	{
-		sortAllReflectingObjects();
-		for (uint8_t i = 0; i < mReflectingObjectList.size(); i++)
+		for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
 		{
-			mReflectingObjectList[i]->generateCubeMap();
+			if (!mMeshObjectInSceneList[i]->isSSAOEnabled())
+				mMeshObjectInSceneList[i]->draw(withDebug);
 		}
-	}
 
-	Engine::SharedPointer<Engine::Graphics::SkyBox> tempSkyBox =
-		Engine::Graphics::SkyBox::getCurrentSkyBox();
-	if(!tempSkyBox.isNull() && tempSkyBox->isSkyBoxAvailableIntialized())
-	{
-		tempSkyBox->draw(true);
-	}
 
-	for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
-	{
-		if(mMeshObjectInSceneList[i]->isSSAOEnabled())
-			mMeshObjectInSceneList[i]->draw(withDebug);
-	}
-
-	for (uint8_t i = 0; i < mPlaneList.size(); i++)
-		mPlaneList[i]->draw(withDebug);
-
-	if (Engine::Graphics::Line::containsDebugLine())
-		Engine::Graphics::Line::drawLines(withDebug);
-
-	
-	//Draw the environment mapping reflecting Objects
-	if (mReflectingObjectList.size()>0)
-	{
-		for (uint8_t i = 0; i < mReflectingObjectList.size(); i++)
+		//Graphics::SSAO::GenerateGBuffer();
+		//Generate dynamic Cube Maps
+		if (mReflectingObjectList.size() > 0)
 		{
-			mReflectingObjectList[i]->draw(true);
+			sortAllReflectingObjects();
+			for (uint8_t i = 0; i < mReflectingObjectList.size(); i++)
+			{
+				mReflectingObjectList[i]->generateCubeMap();
+			}
 		}
+
+		Engine::SharedPointer<Engine::Graphics::SkyBox> tempSkyBox =
+			Engine::Graphics::SkyBox::getCurrentSkyBox();
+		if (!tempSkyBox.isNull() && tempSkyBox->isSkyBoxAvailableIntialized())
+		{
+			tempSkyBox->draw(true);
+		}
+
+		for (uint8_t i = 0; i < mMeshObjectInSceneList.size(); i++)
+		{
+			if (mMeshObjectInSceneList[i]->isSSAOEnabled())
+				mMeshObjectInSceneList[i]->draw(withDebug);
+		}
+
+		for (uint8_t i = 0; i < mPlaneList.size(); i++)
+			mPlaneList[i]->draw(withDebug);
+
+		if (Engine::Graphics::Line::containsDebugLine())
+			Engine::Graphics::Line::drawLines(withDebug);
+
+
+		//Draw the environment mapping reflecting Objects
+		if (mReflectingObjectList.size() > 0)
+		{
+			for (uint8_t i = 0; i < mReflectingObjectList.size(); i++)
+			{
+				mReflectingObjectList[i]->draw(true);
+			}
+		}
+
+		for (uint8_t i = 0; i < mSpriteListInScene.size(); i++)
+			mSpriteListInScene[i]->draw(withDebug);
+
+		//Graphics::SSAO::RunSSAO();
+
+		for (uint8_t i = 0; i < mTextList.size(); i++)
+			mTextList[i]->draw(false);		
 	}
-
-	for (uint8_t i = 0; i < mSpriteListInScene.size(); i++)
-		mSpriteListInScene[i]->draw(withDebug);
-	
-	//Graphics::SSAO::RunSSAO();
-
-	for (uint8_t i = 0; i < mTextList.size(); i++)
-		mTextList[i]->draw(false);
-
 	mTimer->updateDeltaTime();
 	updateScene();
 }

@@ -30,6 +30,7 @@ namespace Engine
 				Transform_Matrix_Type iMatrixType) const;
 			bool LoadEffect();
 			bool setShaders() const;
+			void changeRenderState(__renderState iRenderState, bool iSatus);
 			std::string getTypeInfo() const override { return ""; }
 			bool isBothSameType(SharedPointer<RTTI>, std::string) const  override { return true; }						
 			void setMaterialUniformValue(char*, MaterialUniform) const;

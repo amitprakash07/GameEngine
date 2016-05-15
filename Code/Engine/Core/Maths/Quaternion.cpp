@@ -33,6 +33,19 @@ void Engine::Math::Quaternion::operator=(const Quaternion i_rhs)
 }
 
 
+bool Engine::Math::Quaternion::operator!=(Quaternion i_rhs) const
+{
+	return !(*this == i_rhs);
+}
+
+
+bool Engine::Math::Quaternion::operator==(Quaternion irhs) const
+{
+	bool isEqual = false;
+	isEqual = (mW == irhs.mW && mX == irhs.mX &&
+		mY == irhs.mY && mZ == irhs.mZ);
+	return isEqual;
+}
 
 Engine::Math::Quaternion Engine::Math::Quaternion::slerp(Quaternion fromQuaternion, 
 	Quaternion toQuartenion, 

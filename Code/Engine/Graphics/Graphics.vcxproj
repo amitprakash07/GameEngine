@@ -19,8 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="CheckBox.cpp" />
     <ClCompile Include="Direct3D\Effect.d3d.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -116,18 +114,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="SkyBoxCommon.cpp" />
-    <ClCompile Include="Slider.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="SSAO.cpp" />
     <ClCompile Include="Text.common.cpp" />
     <ClCompile Include="TextureCommon.cpp" />
+    <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="Uniform.common.cpp" />
     <ClCompile Include="UniformBlock.common.cpp" />
     <ClCompile Include="uniformdefs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="CheckBox.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="ReflectingObject.h" />
@@ -138,12 +134,12 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SkyBox.h" />
-    <ClInclude Include="Slider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SSAO.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="typedefs.h" />
+    <ClInclude Include="UIElement.h" />
     <ClInclude Include="Uniform.h" />
     <ClInclude Include="UniformBlock.h" />
     <ClInclude Include="uniformdefs.h" />

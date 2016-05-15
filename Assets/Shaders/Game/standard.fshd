@@ -1,22 +1,10 @@
 /*
 	Fragment shader
 */
+#version 410 core
 
-#include "../../Dependencies/Game/shader_common.inc"
-uniform float3 g_PixelColorModifier;
+uniform vec3 g_PixelColorModifier;
 uniform sampler2D g_TextureSampler;
-
-#if defined(PLATFORM_D3D)
-
-void main(
-		in float4 i_color : COLOR0,
-		in const float3 i_local_normal: NORMAL0,
-		in const float3 i_local_tangent:TANGENT0,
-		in const float3 i_local_bi_tangent:BINORMAL,
-		in const float2 i_local_texture:TEXCOORD0, 
-		out float4 o_color : COLOR0)
-
-#elif defined(PLATFORM_OPEN_GL)
 
 layout(location = 0 ) in vec4 i_color;
 layout(location = 1) in vec3 i_local_normal;
@@ -27,16 +15,11 @@ layout(location = 4) in vec2 i_local_texture;
 out vec4 o_color;
 
 void main()
-
-#endif
-
 {
-	// Set the fragment to the interpolated color that originated as per-vertex data
-	// (where color is represented by 4 floats representing "RGBA" == "Red/Green/Blue/Alpha")
-	{
-		o_color.rgb = i_color.rgb * g_PixelColorModifier;
-		o_color.a = i_color.a;
-		o_color = o_color * SampleTexture(g_TextureSampler,i_local_texture);
-	}
+	
+	o_color.rgb = i_color.rgb * g_PixelColorModifier;
+	o_color.a = i_color.a;
+	o_color = o_color * texture(g_TextureSampler,i_local_texture);
+	
 }
 

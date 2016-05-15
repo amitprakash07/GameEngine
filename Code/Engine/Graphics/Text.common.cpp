@@ -41,10 +41,11 @@ void Engine::Graphics::Text::SetTextToRender(std::string iText)
 Engine::Graphics::Text::Text()
 {
 	mColor = RGBAColor();	
-	mScale = Math::Vector3();
+	mScale = Math::Vector3(1.0f);
 	mTransform = Math::Transform();
 	vertexBuffer = -1;
 	vertexArray = -1;
+	mRenderable = false;
 }
 
 Engine::SharedPointer<Engine::Graphics::Text>
@@ -170,7 +171,7 @@ bool Engine::Graphics::Text::isPhysicsEnabled()
 
 bool Engine::Graphics::Text::isRenderable() const
 {
-	return true;
+	return mRenderable;
 }
 
 
@@ -204,7 +205,7 @@ void Engine::Graphics::Text::setPlayer(bool)
 
 void Engine::Graphics::Text::setRenderable(bool iRenderable)
 {
-	//Stub
+	mRenderable = iRenderable;
 }
 
 void Engine::Graphics::Text::setScale(float x, float y, float z)

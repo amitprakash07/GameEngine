@@ -28,7 +28,7 @@ namespace Engine
 		{
 		public:
 			static void drawLines(bool drawDebugLines);
-			static void AddLine(Engine::Math::Vector3 i_startPoint,
+			static SharedPointer<Line> AddLine(Engine::Math::Vector3 i_startPoint,
 				Engine::Math::Vector3 i_endPoint,
 				RGBAColor iLineColor);
 			static bool containsDebugLine();
@@ -64,12 +64,12 @@ namespace Engine
 			void SetMaterial(std::string iMaterialName) override;
 			bool isSSAOEnabled() override { return false; }
 			void EnableSSAO(bool iRequest) override {}
+			LineStruct mLineStruct;
 		private:
 			static std::vector<SharedPointer<Line>> mLineList;
 			static bool setUniforms();
 			Line();
-			SharedPointer<IObjectController> mObjectController;
-			LineStruct mLineStruct;
+			SharedPointer<IObjectController> mObjectController;			
 			bool debugObject;
 			ObjectType mObjectType;
 			static std::string materialName;

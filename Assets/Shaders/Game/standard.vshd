@@ -2,33 +2,16 @@
 	Vertex shader with vertex color 
 	attribute modifier
 */
-#include "../../Dependencies/Game/shader_common.inc"
-uniform float4x4  g_transform_localToWorld;
-uniform float4x4  g_transform_worldToView;
-uniform float4x4  g_transform_viewToScreen;
-uniform float4 vertexColorModifier;
+#version 410 core
+uniform mat4 g_ScaleTransform = mat4(1.0, 0.0, 0.0, 0.0,
+	0.0, 1.0, 0.0, 0.0,
+	0.0, 0.0, 1.0, 0.0,
+	0.0, 0.0, 0.0, 1.0);
+uniform mat4  g_transform_localToWorld;
+uniform mat4  g_transform_worldToView;
+uniform mat4  g_transform_viewToScreen;
+uniform vec4 vertexColorModifier = vec4(1.0);
 
-
-
-
-#if defined (PLATFORM_D3D)
-
-void main(
-		in const float3 i_local_position : POSITION0,
-		in const float3 i_local_normal: NORMAL0,
-		in const float3 i_local_tangent:TANGENT0,
-		in const float3 i_local_bi_tangent:BINORMAL,
-		in const float2 i_local_texture:TEXCOORD0,
-		in const float4 i_color : COLOR0,
-		out float4 o_position : POSITION0,
-		out float3 o_local_normal: NORMAL0,
-		out float3 o_local_tangent:TANGENT0,
-		out float3 o_local_bi_tangent:BINORMAL,
-		out float2 o_local_texture:TEXCOORD0,	
-		out float4 o_color : COLOR0
-		)
-
-#elif defined(PLATFORM_OPEN_GL)
 
 layout( location = 0 ) in vec3 i_local_position;
 layout(location = 1) in vec3 i_local_normal;
@@ -36,6 +19,7 @@ layout(location = 2) in vec3 i_local_tangent;
 layout(location = 3) in vec3 i_local_bi_tangent;
 layout(location = 4) in vec2 i_local_texture;
 layout( location = 5 ) in vec4 i_color;
+
 layout( location = 0 ) out vec4 o_color;
 layout(location = 1) out vec3 o_local_normal;
 layout(location = 2) out vec3 o_local_tangent;
@@ -43,13 +27,12 @@ layout(location = 3) out vec3 o_local_bi_tangent;
 layout(location = 4) out vec2 o_local_texture;
 
 void main()
-
-#endif
-
 {
-	float4 position_world = Transform(float4(i_local_position,1.0), g_transform_localToWorld);
-	float4 position_view = Transform(float4(position_world), g_transform_worldToView);
-	O_SCREEN_POSITION = Transform( position_view, g_transform_viewToScreen);
+	vec4 scaledPosition = vec4(i_local_position, 1.0) * g_ScaleTransform;
+	vec4 position_world = scaledPosition * g_transform_localToWorld;
+	vec4 position_view = position_world * g_transform_worldToView;
+	vec4 clipSpacePosition = position_view * g_transform_viewToScreen;
+	gl_Position = clipSpacePosition;
 	o_color = i_color*vertexColorModifier;
 	o_local_normal = i_local_normal;
 	o_local_tangent = i_local_tangent;

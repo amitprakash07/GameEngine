@@ -12,6 +12,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Code\Game\Game\Game.vcxproj", "{2A9B8537-3E35-45F6-AB22-9F382ECE45CA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{887E9B0F-6FC5-4069-BD18-85246309F59E} = {887E9B0F-6FC5-4069-BD18-85246309F59E}
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F} = {5EE7AB54-8147-4144-A610-E0E841D9EE2F}
 		{CAC93CCD-8FEB-4452-80E8-11A2D7BDDB82} = {CAC93CCD-8FEB-4452-80E8-11A2D7BDDB82}
 	EndProjectSection
 EndProject
@@ -99,6 +100,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utilities", "Code\Engine\Co
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EngineCore", "Code\Engine\Core\EngineCore\EngineCore.vcxproj", "{887E9B0F-6FC5-4069-BD18-85246309F59E}"
 	ProjectSection(ProjectDependencies) = postProject
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F} = {5EE7AB54-8147-4144-A610-E0E841D9EE2F}
 		{B117D4BA-40DE-4B24-95CB-CE72336502EC} = {B117D4BA-40DE-4B24-95CB-CE72336502EC}
 		{1A97BFDF-D891-474A-86B1-6E76E89ABC73} = {1A97BFDF-D891-474A-86B1-6E76E89ABC73}
 	EndProjectSection
@@ -175,6 +177,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{
 	ProjectSection(SolutionItems) = preProject
 		Assets\Materials\Game\Arena\ceilingMaterial.lua = Assets\Materials\Game\Arena\ceilingMaterial.lua
 		Assets\Materials\Game\Arena\cementMaterial.lua = Assets\Materials\Game\Arena\cementMaterial.lua
+		Assets\Materials\Game\Arena\collisionBoundingBoxMaterial.lua = Assets\Materials\Game\Arena\collisionBoundingBoxMaterial.lua
+		Assets\Materials\Game\Arena\collisionMeshMaterial.lua = Assets\Materials\Game\Arena\collisionMeshMaterial.lua
 		Assets\Materials\Game\defaultDebugShapes.lua = Assets\Materials\Game\defaultDebugShapes.lua
 		Assets\Materials\Game\defaultMaterial.lua = Assets\Materials\Game\defaultMaterial.lua
 		Assets\Materials\Game\Arena\floorMaterial.lua = Assets\Materials\Game\Arena\floorMaterial.lua
@@ -212,6 +216,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{CA8D
 		Assets\Effects\Game\standardEffectWithSpecAndNormalWithSSAO.lua = Assets\Effects\Game\standardEffectWithSpecAndNormalWithSSAO.lua
 		Assets\Effects\Game\textEffect.lua = Assets\Effects\Game\textEffect.lua
 		Assets\Effects\Game\transparentEffect.lua = Assets\Effects\Game\transparentEffect.lua
+		Assets\Effects\Game\wireFrameEffect.lua = Assets\Effects\Game\wireFrameEffect.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{949838A3-5252-42D8-AB70-A8B0C82818B1}"
@@ -229,6 +234,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{9498
 		Assets\Shaders\Game\textFragment.glsl = Assets\Shaders\Game\textFragment.glsl
 		Assets\Shaders\Game\textVertex.glsl = Assets\Shaders\Game\textVertex.glsl
 		Assets\Shaders\Game\transparent.fshd = Assets\Shaders\Game\transparent.fshd
+		Assets\Shaders\Game\wireFrameUnshadedFragment.glsl = Assets\Shaders\Game\wireFrameUnshadedFragment.glsl
+		Assets\Shaders\Game\wireFrameUnshadedVertex.glsl = Assets\Shaders\Game\wireFrameUnshadedVertex.glsl
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{571616AC-B632-4BAA-AA1B-1B73E88BE726}"
@@ -263,6 +270,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{7FA5
 		Assets\Effects\ComputerGraphics\cubeEffect.lua = Assets\Effects\ComputerGraphics\cubeEffect.lua
 		Assets\Effects\ComputerGraphics\environmentMappingSphereEffect.lua = Assets\Effects\ComputerGraphics\environmentMappingSphereEffect.lua
 		Assets\Effects\ComputerGraphics\floorEffect.lua = Assets\Effects\ComputerGraphics\floorEffect.lua
+		Assets\Effects\Game\lineEffect.lua = Assets\Effects\Game\lineEffect.lua
 		Assets\Effects\ComputerGraphics\planeEffect.lua = Assets\Effects\ComputerGraphics\planeEffect.lua
 		Assets\Effects\ComputerGraphics\planeMeshEffect.lua = Assets\Effects\ComputerGraphics\planeMeshEffect.lua
 		Assets\Effects\ComputerGraphics\proxyLightEffect.lua = Assets\Effects\ComputerGraphics\proxyLightEffect.lua
@@ -270,7 +278,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{7FA5
 		Assets\Effects\ComputerGraphics\skyBoxEffect.lua = Assets\Effects\ComputerGraphics\skyBoxEffect.lua
 		Assets\Effects\ComputerGraphics\sphereEffect.lua = Assets\Effects\ComputerGraphics\sphereEffect.lua
 		Assets\Effects\ComputerGraphics\sphereToonEffect.lua = Assets\Effects\ComputerGraphics\sphereToonEffect.lua
+		Assets\Effects\Game\spriteEffect.lua = Assets\Effects\Game\spriteEffect.lua
+		Assets\Effects\Game\SSAOEffect.lua = Assets\Effects\Game\SSAOEffect.lua
+		Assets\Effects\Game\standardEffect.lua = Assets\Effects\Game\standardEffect.lua
+		Assets\Effects\Game\standardEffectWithSpecAndNormal.lua = Assets\Effects\Game\standardEffectWithSpecAndNormal.lua
+		Assets\Effects\Game\standardEffectWithSpecAndNormalWithSSAO.lua = Assets\Effects\Game\standardEffectWithSpecAndNormalWithSSAO.lua
+		Assets\Effects\Game\textEffect.lua = Assets\Effects\Game\textEffect.lua
+		Assets\Effects\Game\transparentEffect.lua = Assets\Effects\Game\transparentEffect.lua
 		Assets\Effects\ComputerGraphics\utahTeapotEffect.lua = Assets\Effects\ComputerGraphics\utahTeapotEffect.lua
+		Assets\Effects\Game\wireFrameEffect.lua = Assets\Effects\Game\wireFrameEffect.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{EBF44EFF-3961-484B-A0F8-A62D333F56F7}"
@@ -279,12 +295,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{
 		Assets\Materials\ComputerGraphics\BlurMaterial.lua = Assets\Materials\ComputerGraphics\BlurMaterial.lua
 		Assets\Materials\ComputerGraphics\ceilingMaterial.lua = Assets\Materials\ComputerGraphics\ceilingMaterial.lua
 		Assets\Materials\ComputerGraphics\cubeMaterial.lua = Assets\Materials\ComputerGraphics\cubeMaterial.lua
+		Assets\Materials\Game\defaultDebugShapes.lua = Assets\Materials\Game\defaultDebugShapes.lua
+		Assets\Materials\Game\defaultMaterial.lua = Assets\Materials\Game\defaultMaterial.lua
 		Assets\Materials\ComputerGraphics\environmentMappingSphereMaterial.lua = Assets\Materials\ComputerGraphics\environmentMappingSphereMaterial.lua
 		Assets\Materials\ComputerGraphics\floorMaterial.lua = Assets\Materials\ComputerGraphics\floorMaterial.lua
 		Assets\Materials\ComputerGraphics\frontWallMaterial.lua = Assets\Materials\ComputerGraphics\frontWallMaterial.lua
 		Assets\Materials\ComputerGraphics\GBufferMaterial.lua = Assets\Materials\ComputerGraphics\GBufferMaterial.lua
 		Assets\Materials\ComputerGraphics\konvinceTeapotMaterial.lua = Assets\Materials\ComputerGraphics\konvinceTeapotMaterial.lua
 		Assets\Materials\ComputerGraphics\leftWallMaterial.lua = Assets\Materials\ComputerGraphics\leftWallMaterial.lua
+		Assets\Materials\Game\lineMaterial.lua = Assets\Materials\Game\lineMaterial.lua
+		Assets\Materials\Game\numbersMaterial.lua = Assets\Materials\Game\numbersMaterial.lua
 		Assets\Materials\ComputerGraphics\planeMeshMaterial.lua = Assets\Materials\ComputerGraphics\planeMeshMaterial.lua
 		Assets\Materials\ComputerGraphics\proxyLightSphereMaterial.lua = Assets\Materials\ComputerGraphics\proxyLightSphereMaterial.lua
 		Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua = Assets\Materials\ComputerGraphics\reflectiveSphereMaterial.lua
@@ -295,7 +315,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{
 		Assets\Materials\ComputerGraphics\skyBoxMaterialTwo.lua = Assets\Materials\ComputerGraphics\skyBoxMaterialTwo.lua
 		Assets\Materials\ComputerGraphics\sphereMaterial.lua = Assets\Materials\ComputerGraphics\sphereMaterial.lua
 		Assets\Materials\ComputerGraphics\sphereToonMaterial.lua = Assets\Materials\ComputerGraphics\sphereToonMaterial.lua
+		Assets\Materials\Game\spriteMaterial.lua = Assets\Materials\Game\spriteMaterial.lua
 		Assets\Materials\ComputerGraphics\SSAOMaterial.lua = Assets\Materials\ComputerGraphics\SSAOMaterial.lua
+		Assets\Materials\Game\SSAOMaterial.lua = Assets\Materials\Game\SSAOMaterial.lua
 		Assets\Materials\ComputerGraphics\utahTeapotMaterial.lua = Assets\Materials\ComputerGraphics\utahTeapotMaterial.lua
 	EndProjectSection
 EndProject
@@ -448,6 +470,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NanoSuit", "NanoSuit", "{E3
 		Assets\Materials\ComputerGraphics\NanoSuit\lightsMaterial.lua = Assets\Materials\ComputerGraphics\NanoSuit\lightsMaterial.lua
 		Assets\Materials\ComputerGraphics\NanoSuit\VisorMaterial.lua = Assets\Materials\ComputerGraphics\NanoSuit\VisorMaterial.lua
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Physics", "Code\Engine\Core\Physics\Physics.vcxproj", "{5EE7AB54-8147-4144-A610-E0E841D9EE2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1189,6 +1213,23 @@ Global
 		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x64.Build.0 = Release|x64
 		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x86.ActiveCfg = Release|Win32
 		{B117D4BA-40DE-4B24-95CB-CE72336502EC}.Release|x86.Build.0 = Release|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Debug|Direct3D_64.ActiveCfg = Debug|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Debug|Network_Client_32.ActiveCfg = Debug|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Debug|Network_Server_32.ActiveCfg = Debug|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Debug|OpenGL_32.ActiveCfg = Debug|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Debug|OpenGL_32.Build.0 = Debug|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Debug|x64.ActiveCfg = Debug|x64
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Debug|x64.Build.0 = Debug|x64
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Debug|x86.ActiveCfg = Debug|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Debug|x86.Build.0 = Debug|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Release|Direct3D_64.ActiveCfg = Release|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Release|Network_Client_32.ActiveCfg = Release|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Release|Network_Server_32.ActiveCfg = Release|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Release|OpenGL_32.ActiveCfg = Release|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Release|x64.ActiveCfg = Release|x64
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Release|x64.Build.0 = Release|x64
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Release|x86.ActiveCfg = Release|Win32
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1238,5 +1279,6 @@ Global
 		{012D9A9E-A662-4D8C-8F2C-C7D66BA29527} = {A38CE98B-1752-4FA7-8FB5-66B33107C40F}
 		{B117D4BA-40DE-4B24-95CB-CE72336502EC} = {C86E1B48-E86F-4561-B149-5B7BF4104B07}
 		{E36B1B5A-5087-465E-A819-4A3CD31E7DDD} = {EBF44EFF-3961-484B-A0F8-A62D333F56F7}
+		{5EE7AB54-8147-4144-A610-E0E841D9EE2F} = {C86E1B48-E86F-4561-B149-5B7BF4104B07}
 	EndGlobalSection
 EndGlobal

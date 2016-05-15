@@ -94,9 +94,7 @@
       <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Text.common.cpp" />
-    <ClCompile Include="Slider.cpp" />
-    <ClCompile Include="CheckBox.cpp" />
-    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="UIElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
@@ -117,8 +115,6 @@
     <ClInclude Include="UniformBlock.h" />
     <ClInclude Include="SSAO.h" />
     <ClInclude Include="Text.h" />
-    <ClInclude Include="Slider.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="CheckBox.h" />
+    <ClInclude Include="UIElement.h" />
   </ItemGroup>
 </Project>

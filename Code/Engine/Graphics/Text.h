@@ -89,6 +89,7 @@ namespace Engine
 			GLuint vertexBuffer;
 			GLuint vertexArray;
 			GLuint textColor;
+			bool mRenderable;
 		};
 	}
 }

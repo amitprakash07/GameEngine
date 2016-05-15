@@ -77,8 +77,7 @@ Engine::MeshObject::MeshObject()
 	renderable = true;
 	mMeshName = "";
 	mMaterial = "";	
-	mTransform.setOrientation(Engine::Math::Quaternion());
-	mTransform.setPosition(Engine::Math::Vector3());
+	mTransform = Math::Transform();
 	debugObject = false;
 	isInitialTransform = true;
 }
@@ -122,8 +121,7 @@ bool Engine::MeshObject::isRenderable() const
 
 void Engine::MeshObject::setTransform(Engine::Math::Vector3 i_positionOffset, Engine::Math::Quaternion i_orientation)
 {
-	mTransform.setOrientation(i_orientation);
-	mTransform.setPosition(i_positionOffset);
+	mTransform = Math::Transform(i_positionOffset, i_orientation);
 	if(isInitialTransform)
 	{
 		mInitialTransform = mTransform;
@@ -198,7 +196,9 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 			float farPlane = tempCamera->getFarPlane();
 			if (debugObject)
 				Engine::Graphics::GraphicsSystem::EnableWireFrame(true);
+			
 			getEffect()->setShaders();
+
 			Math::Transform gameObjectTransform = getTransform();
 			std::string effectFile = getMaterial()->getEffectName();
 
@@ -296,8 +296,8 @@ void Engine::MeshObject::draw(bool drawDebugObject)
 			Engine::Graphics::UniformBlock::setAllUniformBlockForTheEffectInShader(effectFile);
 
 			getMaterial()->setMaterialUniformParameters();
-			getMaterial()->setTextureUniform();
-			getMesh()->drawMesh();
+			getMaterial()->setTextureUniform();			
+			getMesh()->drawMesh();			
 			if (debugObject)
 				Engine::Graphics::GraphicsSystem::EnableWireFrame(false);
 		}

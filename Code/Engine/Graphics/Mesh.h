@@ -11,6 +11,7 @@
 #include <map>
 #include "typedefs.h"
 #include "../Graphics/Uniform.h"
+#include "../Core/Physics/Triangle.h"
 #include "../Core/Utilities/RTTI.h"
 
 namespace Engine
@@ -22,11 +23,13 @@ namespace Engine
 		public:
 			static bool addToMeshList(std::string);
 			static SharedPointer<Mesh> getMesh(std::string);
-			static void deleteAllMesh();
+			static void deleteAllMesh();			
+			int GetTriangleCount() const;
 			bool drawMesh(bool wireFrame = false);
 			bool LoadMesh();
 			vertex* getVertex() const;
 			uint32_t* getIndices() const;
+			Physics::Triangle* GetTriangles() const;
 			void setWinding(winding);
 			winding getWinding() const;
 			std::string getMeshFileName() const;
@@ -41,8 +44,9 @@ namespace Engine
 			winding mWinding;
 			int triangleCount;
 			int vertexCount;
+			Physics::Triangle *mTraingles;
 			std::string meshFileName;
-			static bool isMeshExist(std::string);
+			static bool isMeshExist(std::string);			
 			Mesh(std::string);
 			bool createBuffers();
 #ifdef PLATFORM_OPEN_GL

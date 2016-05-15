@@ -13,6 +13,7 @@ namespace Engine
 {
 	namespace Math
 	{
+		const float Epsilon = 1.0e-9f;
 		class Vector3
 		{
 			// Interface
@@ -31,7 +32,9 @@ namespace Engine
 
 			// Scalar Multiplication
 			Vector3 operator *( const float i_rhs ) const;
-			Vector3& operator *=( const float i_rhs );			
+			Vector3& operator *=( const float i_rhs );		
+
+			Vector3 operator *(const Vector3 i_rhs) const;
 
 			// Division
 			Vector3 operator /( const float i_rhs ) const;
@@ -50,6 +53,10 @@ namespace Engine
 			// Comparison
 			bool operator ==( const Vector3& i_rhs ) const;
 			bool operator !=( const Vector3& i_rhs ) const;
+
+			float& operator[](int iindex);
+			
+			float ScalarTripleProduct(Vector3 iA, Vector3 iB)const;
 
 			void printVector() const;
 

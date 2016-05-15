@@ -1,4 +1,3 @@
-#include "Line.h"
 #include "../Windows/WindowsFunctions.h"
 #include "../Core/EngineCore/EngineCore.h"
 #include "Material.h"
@@ -27,8 +26,11 @@ bool Engine::Graphics::Line::containsDebugLine()
 }
 
 
-
-void Engine::Graphics::Line::AddLine(Engine::Math::Vector3 i_startPoint, Engine::Math::Vector3 i_endPoint, RGBAColor iLineColor)
+Engine::SharedPointer<Engine::Graphics::Line> 
+		Engine::Graphics::Line::AddLine(
+			Engine::Math::Vector3 i_startPoint, 
+			Engine::Math::Vector3 i_endPoint, 
+			RGBAColor iLineColor)
 {
 	SharedPointer<Line> tempLine = SharedPointer<Line>(new Line(), "Engine::Graphics::Line");
 	tempLine->mLineStruct.startPoint = i_startPoint;
@@ -37,6 +39,7 @@ void Engine::Graphics::Line::AddLine(Engine::Math::Vector3 i_startPoint, Engine:
 	tempLine->debugObject = true;
 	mLineList.push_back(tempLine);
 	createBuffer();
+	return tempLine;	
 }
 
 Engine::Math::Transform Engine::Graphics::Line::getTransform()

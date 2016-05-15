@@ -113,16 +113,34 @@ bool Engine::Graphics::Mesh::LoadMesh()
 
 	//creating indices memory
 	if (!mIndices)
+	{
 		mIndices = new uint32_t[triangleCount * 3];
+		
+	}
 	//copying indices data from the memory
 	memcpy(mIndices, reinterpret_cast<uint32_t*>(currentPosition), sizeof(uint32_t) * 3 * triangleCount); //Indices
 
-																										  //Freeing memory
+	mTraingles = new Physics::Triangle[triangleCount];
 	currentPosition = nullptr;
-	delete buffer;
+	delete []buffer;
+
+	for(int i=0, j=0; j < triangleCount; i = i + 3, j++)
+	{
+		memcpy(&mTraingles[j].vertexA, &mVertex[mIndices[i]],sizeof(Graphics::vertex));
+		memcpy(&mTraingles[j].vertexB, &mVertex[mIndices[i+1]], sizeof(Graphics::vertex));
+		memcpy(&mTraingles[j].vertexC, &mVertex[mIndices[i+2]], sizeof(Graphics::vertex));		
+	}
+																										  //Freeing memory
+	
 
 	return true;
 }
+
+int Engine::Graphics::Mesh::GetTriangleCount() const
+{
+	return triangleCount;
+}
+
 
 void Engine::Graphics::Mesh::deleteAllMesh()
 {
@@ -144,18 +162,9 @@ bool Engine::Graphics::Mesh::isMeshExist(std::string i_fileName)
 	return false;
 }
 
-//void Engine::Graphics::Mesh::addUniform(std::string iUniformName, ShaderType iShaderType)
-//{
-//	SharedPointer<Uniform> tempUniform = Uniform::createUniform();
-//	tempUniform->setShaderType(iShaderType);
-//	uniformNames[iUniformName] = tempUniform;
-//}
-//
-//void Engine::Graphics::Mesh::setUniformHandle(std::string uniformName,
-//	std::string effectName)
-//{
-//	SharedPointer<Uniform> tempUniform = uniformNames[uniformName];
-//	tempUniform->setHandle(Engine::Graphics::Effect::getEffect(effectName)->getUniformHandle(
-//		tempUniform->getUniformName(), tempUniform->getShaderType()));
-//}
+
+Engine::Physics::Triangle* Engine::Graphics::Mesh::GetTriangles() const
+{
+	return mTraingles;
+}
 

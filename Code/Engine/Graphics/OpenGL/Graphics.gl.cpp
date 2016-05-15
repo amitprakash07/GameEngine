@@ -81,8 +81,11 @@ bool Engine::Graphics::GraphicsSystem::clear()
 
 	const GLbitfield clear = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 	glClear(clear);
+	glFinish();
 	if (glGetError() == GL_NO_ERROR)
 		return true;
+
+	
 
 	return false;
 }
@@ -262,25 +265,50 @@ bool Engine::Graphics::GraphicsSystem::setRenderState(uint8_t i_renderState)
 	return false;
 }
 
-void Engine::Graphics::GraphicsSystem::EnableAlphaBlending(bool)
+void Engine::Graphics::GraphicsSystem::EnableAlphaBlending(bool iRequest)
 {
-
+	switch (iRequest)
+	{
+	case true:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		break;
+	case false:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		break;
+	}
 }
 
 
-void Engine::Graphics::GraphicsSystem::EnableDepthWriting(bool)
+void Engine::Graphics::GraphicsSystem::EnableDepthWriting(bool iRequest)
 {
-
+	switch (iRequest)
+	{
+	case true:
+		glDepthMask(GL_TRUE);
+		break;
+	case false:
+		glDepthMask(GL_FALSE);
+		break;
+	}
 }
 
 void Engine::Graphics::GraphicsSystem::EnableFaceCulling(bool, Engine::Graphics::CullingMode cullingMode)
 {
-
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
 }
 
-void Engine::Graphics::GraphicsSystem::EnableDepthTesting(bool)
+void Engine::Graphics::GraphicsSystem::EnableDepthTesting(bool iRequest)
 {
-
+	switch (iRequest)
+	{
+	case true:
+		glEnable(GL_DEPTH_TEST);
+		break;
+	case false:
+		glDisable(GL_DEPTH_TEST);
+		break;
+	}
 }
 
 void Engine::Graphics::GraphicsSystem::EnableWireFrame(bool iRequest)

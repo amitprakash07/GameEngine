@@ -41,7 +41,7 @@ bool Engine::Graphics::Mesh::drawMesh(bool)
 	const GLsizei primitiveCountToRender = triangleCount;
 	const GLsizei vertexCountToRender = primitiveCountToRender * 3;
 	glDrawElements(mode, vertexCountToRender, indexType, offset);
-	assert(glGetError() == GL_NO_ERROR);
+	assert(glGetError() == GL_NO_ERROR);	
 	return (glGetError() == GL_NO_ERROR);
 }
 

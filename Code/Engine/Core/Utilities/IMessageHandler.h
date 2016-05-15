@@ -12,9 +12,7 @@ namespace Engine
 	class IMessageHandler : public RTTI
 	{
 	public:
-		virtual void HandleMessage(Engine::utils::StringHash &, SharedPointer<RTTI> i_MessageSender, void* i_pMessageData) = 0; //Do not delete i_messageSenderPointer
-		virtual std::string getTypeInfo() const override = 0;
-		virtual bool isBothSameType(SharedPointer<RTTI>, std::string) const override = 0;
+		virtual void HandleMessage(Engine::utils::StringHash &, SharedPointer<RTTI> i_MessageSender, void* i_pMessageData) = 0; //Do not delete i_messageSenderPointer		
 		virtual  ~IMessageHandler() {};
 		IMessageHandler() {};
 

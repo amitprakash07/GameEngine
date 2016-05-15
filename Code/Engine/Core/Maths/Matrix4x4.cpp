@@ -36,6 +36,30 @@ Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::getIdentityMatrix()
 }
 
 
+Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateLookAtMatrix(Vector3 eye, 
+	Vector3 target,
+	Vector3 upVector)
+{
+	Vector3 forward = (target - eye).CreateNormalized(); //F
+	Vector3 left = upVector.Cross(forward).CreateNormalized(); //L
+	Vector3 up = forward.Cross(left); //U
+	Vector3 Translation = Vector3( //T
+		-left.dot(eye),
+		-upVector.dot(eye),
+		-forward.dot(eye)
+	);
+
+	Matrix4x4 lookAtMatrix{
+		left.x,				left.y,				left.z,				0,
+		up.x,				up.y,				up.z,				0,
+		forward.x,			forward.y,			forward.z,			0,
+		Translation.x,		Translation.y,		Translation.z,		1	};
+
+	return lookAtMatrix;
+}
+
+
+
 Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateScaleMatrix(
 	const float scaleX, 
 	const float scaleY, 
@@ -164,7 +188,7 @@ Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::getInverse()const
 	return inverseMatrix;
 }
 
-Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::operator*(double scalar)const
+Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::operator*(float scalar)const
 {
 	/*
 	http://www.euclideanspace.com/maths/algebra/matrix/resources/code/sftranslation_cpp.htm
@@ -413,7 +437,7 @@ void Engine::Math::Matrix4x4::printMatrix4x4() const
 }
 
 Engine::Math::Matrix4x4 Engine::Math::Matrix4x4::CreateShadowMatrix(
-	const Math::Vector3 iLightPosition, const ParametricPlane iPlane)
+	const Math::Vector3 iLightPosition, const Plane iPlane)
 {
 	Matrix4x4 shadowMatrix;
 	float nDotL = iLightPosition.dot(iPlane.getPlaneNormal());

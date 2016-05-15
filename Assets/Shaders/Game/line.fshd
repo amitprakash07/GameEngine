@@ -2,24 +2,12 @@
 	Fragment shader
 */
 
-#include "../../Dependencies/Game/shader_common.inc"
-
-#if defined(PLATFORM_D3D)
-
-void main(
-		in float4 i_color : COLOR0,		
-		out float4 o_color : COLOR0)
-
-#elif defined(PLATFORM_OPEN_GL)
-
+#version 410 core
 layout(location = 0 ) in vec4 i_color;
 
 out vec4 o_color;
 
 void main()
-
-#endif
-
 {
 	o_color = i_color;	
 }

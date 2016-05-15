@@ -2,38 +2,25 @@
 	Vertex shader with vertex color 
 	attribute modifier
 */
-#include "../../Dependencies/Game/shader_common.inc"
-uniform float4x4  g_transform_worldToView;
-uniform float4x4  g_transform_viewToScreen;
-uniform float4 vertexColorModifier;
+
+#version 410 core
+uniform mat4  g_transform_worldToView;
+uniform mat4  g_transform_viewToScreen;
+uniform vec4 vertexColorModifier = vec4(1.0);
 
 
-
-
-#if defined (PLATFORM_D3D)
-
-void main(
-		in const float3 i_local_position : POSITION0,
-		in const float4 i_color : COLOR0,
-		out float4 o_position : POSITION0,
-		out float4 o_color : COLOR0
-		)
-
-#elif defined(PLATFORM_OPEN_GL)
 
 layout( location = 0 ) in vec3 i_local_position;
 layout( location = 1 ) in vec4 i_color;
+
 layout( location = 0 ) out vec4 o_color;
 
 
 void main()
-
-#endif
-
 {
-	float4 position_view = Transform(float4(i_local_position,1.0), g_transform_worldToView);
-	O_SCREEN_POSITION = Transform( position_view, g_transform_viewToScreen);
-	o_color = i_color*vertexColorModifier;	
+	vec4 position_view = vec4(i_local_position,1.0) * g_transform_worldToView;
+	gl_Position = position_view * g_transform_viewToScreen;
+	o_color = i_color * vertexColorModifier;	
 }
 
 

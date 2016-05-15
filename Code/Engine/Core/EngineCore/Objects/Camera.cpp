@@ -108,8 +108,7 @@ Engine::Math::Transform Engine::Camera::getTransform()
 void Engine::Camera::setTransform(Engine::Math::Vector3 i_positionOffset,
 	Engine::Math::Quaternion i_orientation)
 {
-	mTransform.setOrientation(i_orientation);
-	mTransform.setPosition(i_positionOffset);
+	mTransform = Math::Transform(i_positionOffset, i_orientation);
 	if(isInitialTransform)
 	{
 		isInitialTransform = false;

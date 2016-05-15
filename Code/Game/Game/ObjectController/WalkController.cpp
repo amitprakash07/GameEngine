@@ -1,11 +1,10 @@
 #include "WalkController.h"
 #include "../../../Engine/Core/EngineCore/Objects/Object.h"
 #include "../../../Engine/Core/Maths/Vector3.h"
-#include "../../../InteractiveCG/ObjectController/WalkController.h"
 #include "../../../Engine/Core/Maths/Transform.h"
 #include "../../../Engine/Core/Maths/Functions.h"
-#include "../../../Engine/Graphics/SSAO.h"
 #include "../../../Engine/Core/NetworkManager/NetworkManager.h"
+#include "../../../Engine/Core/EngineCore/Objects/Scene.h"
 
 using namespace Engine::Math;
 void Game::WalkController::updateObject(Engine::Object& iObject, Engine::typedefs::ActionWithKeyBound iAction)
@@ -84,50 +83,7 @@ void Game::WalkController::updateObject(Engine::Object& iObject, Engine::typedef
 		iObject.setTransform(transform.getPosition(), transform.getOrientation());
 		isUpdate = true;
 		break;
-	//case 0x52:
-	//	//R Key
-	//	iObject.resetTransform();
-	//	isUpdate = true;
-	//case VK_OEM_PLUS:
-	//	//+ key - increasr radius
-	//	Engine::Graphics::SSAO::IncreaseRadius();
-	//	isUpdate = false;
-	//	break;
-	//case VK_OEM_MINUS:
-	//	// - Key - decrease radius
-	//	Engine::Graphics::SSAO::DecreaseRadius();
-	//	isUpdate = false;
-	//	break;
-	//case VK_INSERT:
-	//	//insert Key -- increase ambient light Intensity
-	//	Engine::Graphics::SSAO::IncreaseAmbientIntensity();
-	//	isUpdate = false;
-	//	break;
-	//case VK_DELETE:
-	//	//Delete Key -- decrease ambient light intensity
-	//	Engine::Graphics::SSAO::DecreaseAmbientIntensity();
-	//	isUpdate = false;
-	//	break;
-	//case 0x54:
-	//	//T Key - Toggle occlusion image only
-	//	Engine::Graphics::SSAO::ToggleColorToOnlyAmbient();
-	//	isUpdate = false;
-	//	break;
 	}
-	/*if (isUpdate)
-	{
-		RakNet::RakPeerInterface *tempPeer;
-		if (Engine::Networking::NetworkManager::isServerInstance())
-		{
-			tempPeer = Engine::Networking::NetworkManager::GetHandler().mServer->mServer;
-			Engine::Networking::NetworkManager::GetHandler().mServer->GetControlPlayer()->SendNetworkPlayerUpdates(tempPeer);
-		}
-		else
-		{
-			tempPeer = Engine::Networking::NetworkManager::GetHandler().mClient->client;
-			Engine::Networking::NetworkManager::GetHandler().mClient->GetControlPlayer()->SendNetworkPlayerUpdates(tempPeer);
-		}
-	}*/
 }
 
 

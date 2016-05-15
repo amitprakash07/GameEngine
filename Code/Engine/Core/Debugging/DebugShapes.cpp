@@ -7,15 +7,17 @@
 
 std::map<Engine::ShapeTarget, std::map<std::string, 
 	Engine::SharedPointer<Engine::Object>>>
-	Engine::Debug::debugShapeList;
+	Engine::Debug::DebugShapes::debugShapeList;
 
-bool Engine::Debug::IsDebugShapesAvailable()
+bool Engine::Debug::DebugShapes::IsDebugShapesAvailable()
 {
 	return (debugShapeList.size() > 0 ? true: false);
 }
 
 //Line
-void Engine::Debug::DrawShape(std::string iName, 
+Engine::SharedPointer<Engine::Graphics::Line> 
+	Engine::Debug::DebugShapes::DrawShape(
+	std::string iName,
 	ShapeTarget i_shapeType,
 	Engine::Math::Vector3 iStartPoint,
 	Engine::Math::Vector3 iEndPoint,
@@ -35,12 +37,14 @@ void Engine::Debug::DrawShape(std::string iName,
 		Engine::Graphics::Material::addMaterialToList(materialFolderName.c_str());
 		Engine::Graphics::Line::setMaterialName(materialFolderName);
 	}	
-	Engine::Graphics::Line::AddLine(
+
+	return Engine::Graphics::Line::AddLine(
 		iStartPoint, iEndPoint, color);	
 }
 
 //Sphere
-void Engine::Debug::DrawShape(std::string iName, 
+Engine::SharedPointer<Engine::MeshObject> Engine::Debug::DebugShapes::DrawShape(
+	std::string iName,
 	ShapeTarget iShapeType,
 	Engine::Math::Vector3 iCenter,
 	float iRadius,
@@ -66,10 +70,12 @@ void Engine::Debug::DrawShape(std::string iName,
 
 	SharedPointer<Object> tempObject = debugSphere.CastSharedPointer<Object>();
 	debugShapeList[iShapeType][iName] = tempObject;
+	return debugSphere;
 }
 
 //Box
-void Engine::Debug::DrawShape(std::string iName, 
+Engine::SharedPointer<Engine::MeshObject> Engine::Debug::DebugShapes::DrawShape(
+	std::string iName,
 	ShapeTarget iShapeType,
 	Engine::Math::Vector3 i_position,
 	float iLength,
@@ -97,10 +103,12 @@ void Engine::Debug::DrawShape(std::string iName,
 
 	SharedPointer<Object> tempObject = debugBox.CastSharedPointer<Object>();
 	debugShapeList[iShapeType][iName] = tempObject;
+	return debugBox;
 }
 
 //Cylinder
-void Engine::Debug::DrawShape(std::string iName, 
+Engine::SharedPointer<Engine::MeshObject> Engine::Debug::DebugShapes::DrawShape(
+	std::string iName,
 	ShapeTarget iShapeType,
 	Engine::Math::Vector3 i_position,
 	float iRadius,
@@ -127,10 +135,12 @@ void Engine::Debug::DrawShape(std::string iName,
 
 	SharedPointer<Object> tempObject = debugCylinder.CastSharedPointer<Object>();
 	debugShapeList[iShapeType][iName] = tempObject;
+	return debugCylinder;
 }
 
 
-Engine::SharedPointer<Engine::Object> Engine::Debug::GetDebugShape(std::string iName,
+Engine::SharedPointer<Engine::Object> Engine::Debug::DebugShapes::GetDebugShape(
+	std::string iName,
 	ShapeTarget iShape)
 {
 	for(std::map<ShapeTarget, std::map<std::string, SharedPointer<Object>>>::iterator i = debugShapeList.begin();

@@ -154,14 +154,15 @@ void Engine::EngineCore::onNewFrame()
 	if (!hasWindowsSentAMessage)
 	{
 		Networking::NetworkManager::updateNetwork();
-		Engine::Graphics::GraphicsSystem::Render();		
+		Engine::Graphics::GraphicsSystem::Render();	
+		Scene::getRenderableScene()->SetNewFrame(true);
 	}
 	else
-	{
-		TranslateMessage(&message);
-		DispatchMessage(&message);
+	{	
+		TranslateMessage(&message);			
+		DispatchMessage(&message);				
 	}
-
+	
 }
 
 bool Engine::EngineCore::isWindowClosed(HINSTANCE hInstance)

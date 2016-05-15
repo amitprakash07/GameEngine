@@ -9,6 +9,7 @@ GLuint Engine::Graphics::Line::vertexBufferId;
 void Engine::Graphics::Line::drawLines(bool drawDebugLines)
 {
 	GLenum errorCode;
+	glLineWidth(2.0);
 	if(writeToBuffer() && Engine::Graphics::Effect::getEffect(
 		Engine::Graphics::Material::getMaterial(
 			materialName.c_str())->getEffectName())->setShaders()
@@ -17,12 +18,12 @@ void Engine::Graphics::Line::drawLines(bool drawDebugLines)
 		glBindVertexArray(s_vertexArrayID);
 		if (WindowsUtil::Assert((errorCode = glGetError()) == GL_NO_ERROR, "Unable to create the vertex array"))
 		{
-			glDrawArrays(GL_LINES, 0, 14 * mLineList.size());
+			glDrawArrays(GL_LINES, 0, 2 * mLineList.size());
 			WindowsUtil::Assert((errorCode = glGetError()) == GL_NO_ERROR, "Unable to draw the line");
 		}
 	}
-	
-	
+
+	glLineWidth(1.0);	
 }
 
 bool Engine::Graphics::Line::createBuffer()
@@ -82,22 +83,22 @@ bool Engine::Graphics::Line::writeToBuffer()
 		for (int i = 0; i < mLineList.size(); i++)
 		{
 			//StartPoint
-			data[i + 0] = mLineList[i]->mLineStruct.startPoint.x;
-			data[i + 1] = mLineList[i]->mLineStruct.startPoint.y;
-			data[i + 2] = mLineList[i]->mLineStruct.startPoint.z;
-			data[i + 3] = mLineList[i]->mLineStruct.color.r;
-			data[i + 4] = mLineList[i]->mLineStruct.color.g;
-			data[i + 5] = mLineList[i]->mLineStruct.color.b;
-			data[i + 6] = mLineList[i]->mLineStruct.color.a;
+			data[14*i + 0] = mLineList[i]->mLineStruct.startPoint.x;
+			data[14*i + 1] = mLineList[i]->mLineStruct.startPoint.y;
+			data[14*i + 2] = mLineList[i]->mLineStruct.startPoint.z;
+			data[14 * i + 3] = mLineList[i]->mLineStruct.color.r;
+			data[14 * i + 4] = mLineList[i]->mLineStruct.color.g;
+			data[14 * i + 5] = mLineList[i]->mLineStruct.color.b;
+			data[14 * i + 6] = mLineList[i]->mLineStruct.color.a;
 
 			//EndPoint
-			data[i + 7] = mLineList[i]->mLineStruct.endPoint.x;
-			data[i + 8] = mLineList[i]->mLineStruct.endPoint.y;
-			data[i + 9] = mLineList[i]->mLineStruct.endPoint.z;
-			data[i + 10] = mLineList[i]->mLineStruct.color.r;
-			data[i + 11] = mLineList[i]->mLineStruct.color.g;
-			data[i + 12] = mLineList[i]->mLineStruct.color.b;
-			data[i + 13] = mLineList[i]->mLineStruct.color.a;
+			data[14 * i + 7] = mLineList[i]->mLineStruct.endPoint.x;
+			data[14 * i + 8] = mLineList[i]->mLineStruct.endPoint.y;
+			data[14 * i + 9] = mLineList[i]->mLineStruct.endPoint.z;
+			data[14 * i + 10] = mLineList[i]->mLineStruct.color.r;
+			data[14 * i + 11] = mLineList[i]->mLineStruct.color.g;
+			data[14 * i + 12] = mLineList[i]->mLineStruct.color.b;
+			data[14 * i + 13] = mLineList[i]->mLineStruct.color.a;
 		}
 
 		glBufferData(GL_ARRAY_BUFFER, 14 * sizeof(float) * mLineList.size(), data, GL_STATIC_DRAW);

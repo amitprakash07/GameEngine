@@ -79,10 +79,25 @@ return
 			src = "ComputerGraphics/NanoSuit/Visor.lua",
 			target = "ComputerGraphics/NanoSuit/Visor.mesh",
 		},	
-		-- proxyLightSphere
+	-- proxyLightSphere
 		{
 			src = "ComputerGraphics/proxyLightSphere.lua",
 			target = "ComputerGraphics/proxyLightSphere.mesh",
+		},
+	-- Collision Mesh
+		{
+			src = "Game/Arena/CollisionMesh.lua",
+			target = "Game/Arena/CollisionMesh.mesh",
+		},
+	--Collision Bounding Box Mesh
+		{
+			src = "Game/Arena/CollisionBoundingBox.lua",
+			target = "Game/Arena/CollisionBoundingBox.mesh",
+		},
+	--DEadPool
+		{
+			src = "Game/Arena/DeadPool.lua",
+			target = "Game/Arena/DeadPool.mesh",
 		},
 	},
 
@@ -130,7 +145,12 @@ return
 		{
 			src = "Game/textEffect.lua",
 			target = "Game/textEffect.effect"
-		}		
+		},
+		--WireFrame Effect		
+		{
+			src = "Game/wireFrameEffect.lua",
+			target = "Game/wireFrameEffect.effect"
+		}
 	},
 
 -- =======================================================================
@@ -224,6 +244,21 @@ return
 		{
 			src = "Game/SSAOMaterial.lua",
 			target = "Game/SSAOMaterial.mat",
+		},
+		--Collision Mesh Material
+		{
+			src = "Game/Arena/collisionMeshMaterial.lua",
+			target = "Game/Arena/collisionMeshMaterial.mat",
+		},
+		--Collision Nounding Box Material
+		{
+			src = "Game/Arena/collisionBoundingBoxMaterial.lua",
+			target = "Game/Arena/collisionBoundingBoxMaterial.mat",
+		},
+		--DeadPool Material	
+		{
+			src = "Game/Arena/DeadPoolMaterial.lua",
+			target = "Game/Arena/DeadPoolMaterial.mat",
 		},		
 	},
 
@@ -405,6 +440,27 @@ return
 		{
 			src = "Game/textFragment.glsl",
 			target = "Game/textFragment.glsl",
+			optionaltype = "fragment",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+
+		},
+	-- *******************************************************************
+		{
+			src = "Game/wireFrameUnshadedVertex.glsl",
+			target = "Game/wireFrameUnshadedVertex.glsl",
+			optionaltype = "vertex",
+			dependencies =
+			{
+				"ComputerGraphics/shader_common.inc"
+			}
+		},
+
+		{
+			src = "Game/wireFrameUnshadedFragment.glsl",
+			target = "Game/wireFrameUnshadedFragment.glsl",
 			optionaltype = "fragment",
 			dependencies =
 			{
@@ -617,6 +673,11 @@ return
 		{
 			src = "ComputerGraphics/NanoSuit/leg_showroom_spec.png",
 			target = "ComputerGraphics/NanoSuit/leg_showroom_spec.png",
+		},
+		--DeadPool
+		{
+			src = "Game/Arena/DeadPool.jpg",
+			target = "Game/Arena/DeadPool.jpg",
 		},
 	}
 -- ====================================================================

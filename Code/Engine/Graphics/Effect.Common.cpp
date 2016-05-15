@@ -124,6 +124,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 		std::string tempFragment = tempBuffer;
 		fragmentShader += tempFragment;
 		tempBuffer += tempFragment.size() + 1;
+
 		memcpy(renderState, tempBuffer, sizeof(char));
 		tempBuffer += sizeof(char);
 		shaderNames[Fragment] = fragmentShader;
@@ -212,7 +213,7 @@ bool Engine::Graphics::Effect::LoadEffect()
 			}
 		}
 
-		delete buffer;
+		delete[] buffer;
 		return true;
 	}
 	return false;
@@ -325,6 +326,20 @@ void Engine::Graphics::Effect::changeUniformData(
 		tempUniform->setUniformValue(iNewValues);
 	}
 }
+
+
+void Engine::Graphics::Effect::changeRenderState(__renderState iRenderState, bool iSatus)
+{
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
+	/*uint8_t tempRenderState = iRenderState;
+	uint8_t toggledTempRenderState = !tempRenderState;
+	if (iSatus)
+		*renderState |= tempRenderState;
+	else
+		*renderState &= (!tempRenderState);*/
+}
+
 
 
 

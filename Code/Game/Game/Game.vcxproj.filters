@@ -20,6 +20,15 @@
     <ClInclude Include="LightController.h">
       <Filter>ObjectController</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectController\DebugMenuController.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectController\PlayerController.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectController\ThirdPersonPlayer.h">
+      <Filter>ObjectController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -54,6 +63,15 @@
       <Filter>ObjectController</Filter>
     </ClCompile>
     <ClCompile Include="LightController.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectController\DebugMenuController.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectController\PlayerController.cpp">
+      <Filter>ObjectController</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectController\ThirdPersonPlayer.cpp">
       <Filter>ObjectController</Filter>
     </ClCompile>
   </ItemGroup>

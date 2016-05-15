@@ -109,84 +109,87 @@ void Engine::Graphics::Text::InitializeText()
 
 void Engine::Graphics::Text::draw(bool drawDebugObject)
 {
-	GLenum errorCode;
-	Effect::getEffect(mEffectFileName)->setShaders();
-	int width = Engine::EngineCore::getWindowingSystem()->getWindowWidth();
-	int height = Engine::EngineCore::getWindowingSystem()->getWindowHeight();
-	
-	float sx = mScale.x / width;
-	float sy = mScale.x / height;
-
-	glUniform4fv(textColor, 1,
-		reinterpret_cast<float*>(&mColor));
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do pass matrix data");
-
-	glBindVertexArray(vertexArray);
-	errorCode = glGetError();
-	WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do bind vertexArray");
-
-	GLuint tex;
-	glActiveTexture(GL_TEXTURE0);
-	
-	float x = Math::scaleAndBias(mTransform.getPosition().x, 0, width, -1,1);
-	float y = Math::scaleAndBias(mTransform.getPosition().y,0, height, -1,1);
-
-	for (std::string::iterator c = textToBeRendered.begin();
-		c!=textToBeRendered.end(); ++c)
+	if (mRenderable)
 	{
-		Character ch = Characters[mFontName][*c];
-		
-		/*GLfloat xpos = x + ch.Bearing.x * scale;
-		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+		GLenum errorCode;
+		Effect::getEffect(mEffectFileName)->setShaders();
+		int width = Engine::EngineCore::getWindowingSystem()->getWindowWidth();
+		int height = Engine::EngineCore::getWindowingSystem()->getWindowHeight();
 
-		GLfloat w = ch.Size.x * scale;
-		GLfloat h = ch.Size.y * scale;*/
+		float sx = mScale.x / width;
+		float sy = mScale.x / height;
 
-		float x2 = x + ch.Bearing.x * sx;
-		float y2 = -y - ch.Bearing.y * sy;
-		float w = ch.Size.x * sx;
-		float h = ch.Size.y * sy;
-
-		// Update VBO for each character
-		/*GLfloat vertices[6][4] = {
-			{ xpos,     ypos + h,   0.0, 0.0 },
-			{ xpos,     ypos,       0.0, 1.0 },
-			{ xpos + w, ypos,       1.0, 1.0 },
-
-			{ xpos,     ypos + h,   0.0, 0.0 },
-			{ xpos + w, ypos,       1.0, 1.0 },
-			{ xpos + w, ypos + h,   1.0, 0.0 }
-		};*/
-
-		GLfloat box[4][4] = {
-			{ x2,     -y2    , 0, 0 },
-			{ x2 + w, -y2    , 1, 0 },
-			{ x2,     -y2 - h, 0, 1 },
-			{ x2 + w, -y2 - h, 1, 1 },
-		};
-
-		// Render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+		glUniform4fv(textColor, 1,
+			reinterpret_cast<float*>(&mColor));
 		errorCode = glGetError();
-		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do bind texture");
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do pass matrix data");
 
-		// Update content of VBO memory
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+		glBindVertexArray(vertexArray);
 		errorCode = glGetError();
-		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to bind vertex buffer");
+		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do bind vertexArray");
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_DYNAMIC_DRAW); // Be sure to use glBufferSubData and not glBufferData
-		errorCode = glGetError();
-		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do push vertex data");
+		GLuint tex;
+		glActiveTexture(GL_TEXTURE0);
 
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
-		// Render quad
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		errorCode = glGetError();
-		WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do draw quad");
-		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		x += (ch.Advance.x/ 64) * sx;
-		y += (ch.Advance.y / 64) * sy;
+		float x = Math::scaleAndBias(mTransform.getPosition().x, 0, width, -1, 1);
+		float y = Math::scaleAndBias(mTransform.getPosition().y, 0, height, -1, 1);
+
+		for (std::string::iterator c = textToBeRendered.begin();
+			c != textToBeRendered.end(); ++c)
+		{
+			Character ch = Characters[mFontName][*c];
+
+			/*GLfloat xpos = x + ch.Bearing.x * scale;
+			GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+
+			GLfloat w = ch.Size.x * scale;
+			GLfloat h = ch.Size.y * scale;*/
+
+			float x2 = x + ch.Bearing.x * sx;
+			float y2 = -y - ch.Bearing.y * sy;
+			float w = ch.Size.x * sx;
+			float h = ch.Size.y * sy;
+
+			// Update VBO for each character
+			/*GLfloat vertices[6][4] = {
+				{ xpos,     ypos + h,   0.0, 0.0 },
+				{ xpos,     ypos,       0.0, 1.0 },
+				{ xpos + w, ypos,       1.0, 1.0 },
+
+				{ xpos,     ypos + h,   0.0, 0.0 },
+				{ xpos + w, ypos,       1.0, 1.0 },
+				{ xpos + w, ypos + h,   1.0, 0.0 }
+			};*/
+
+			GLfloat box[4][4] = {
+				{ x2,     -y2    , 0, 0 },
+				{ x2 + w, -y2    , 1, 0 },
+				{ x2,     -y2 - h, 0, 1 },
+				{ x2 + w, -y2 - h, 1, 1 },
+			};
+
+			// Render glyph texture over quad
+			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+			errorCode = glGetError();
+			WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do bind texture");
+
+			// Update content of VBO memory
+			glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+			errorCode = glGetError();
+			WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to bind vertex buffer");
+
+			glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_DYNAMIC_DRAW); // Be sure to use glBufferSubData and not glBufferData
+			errorCode = glGetError();
+			WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do push vertex data");
+
+			//glBindBuffer(GL_ARRAY_BUFFER, 0);
+			// Render quad
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			errorCode = glGetError();
+			WindowsUtil::Assert(errorCode == GL_NO_ERROR, "Unable to do draw quad");
+			// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+			x += (ch.Advance.x / 64) * sx;
+			y += (ch.Advance.y / 64) * sy;
+		}
 	}
 }

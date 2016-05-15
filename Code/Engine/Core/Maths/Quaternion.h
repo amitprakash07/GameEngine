@@ -42,6 +42,9 @@ namespace Engine
 			void inverse();
 			Quaternion CreateInverse() const;
 
+			//Equality 
+			bool operator ==(Quaternion irhs) const;
+			bool operator != (Quaternion i_rhs) const;
 
 			//Negate
 			Quaternion operator -()const;

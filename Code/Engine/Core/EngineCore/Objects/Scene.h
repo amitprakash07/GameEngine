@@ -21,6 +21,9 @@ namespace Engine
 		static SharedPointer<Scene> CreateNewScene(std::string);
 		static SharedPointer<Engine::Time::FrameTime> getTimer();
 		static Engine::SharedPointer<Scene> getRenderableScene();
+		static SharedPointer<MeshObject> GetPlayer();
+		void SetNewFrame(bool newFrame);
+		bool IsNewFrame() const;
 		void EnableAllMeshObjectsForSSAO();
 		template<typename T>
 		bool addObjectToScene(SharedPointer<T>&);
@@ -114,6 +117,7 @@ namespace Engine
 		bool renderDebug;
 		SharedPointer<IObjectController> mObjectController;
 		ObjectType mObjectType;
+		bool isNextFrame;
 	};
 }
 
