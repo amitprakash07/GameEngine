@@ -37,7 +37,7 @@ namespace Engine
 				Math::Transform clientPlayerTransform = Math::Transform(),
 				Engine::Graphics::RGBAColor = { 1.0f,1.0f,1.0f,1.0f });
 
-			SharedPointer<NetworkPlayer> GetControlPlayer();
+			std::vector<SharedPointer<NetworkPlayer>> GetControlPlayer();
 			SharedPointer<NetworkPlayer> GetNetworkPlayer(
 				RakNet::NetworkID i_networkID);
 

@@ -166,39 +166,53 @@ int WINAPI WinMain(HINSTANCE i_thisInstanceOfTheProgram,
 		numberSprite->setCellToRender(2);
 		scene->addObjectToScene(numberSprite);*/
 
-
+		
 		if (Engine::Networking::NetworkManager::isServerInstance())
 		{
 			Engine::SharedPointer<Engine::MeshObject> serverObject =
 				Engine::MeshObject::CreateMeshObject("Game/Arena/DeadPool.mesh",
 					"Game/Arena/DeadPoolMaterial.mat");
-			serverObject->setTransform(Engine::Math::Vector3(-50.0f, 20.0f, 700.0f),
+			serverObject->setTransform(Engine::Math::Vector3(-50.0f, -120.0f, 700.0f),
 				Engine::Math::Quaternion());
 			serverObject->SetVertexColor(0.0f, 1.0f, 0.0f, 1.0f);
 			serverObject->setObjectType(Engine::ObjectType::SERVER);
 			serverObject->getMaterial()->changeMaterialColor(0.0, 1.0, 0.0);
 			scene->addObjectToScene(serverObject);
 			//serverObject->setObjectController(new Game::ServerPlayerController());
-			serverObject->EnableDebugging(true);
-			serverObject->setObjectController(Engine::SharedPointer<Game::WalkController>(new Game::WalkController(),
+			serverObject->EnableDebugging(false);
+			serverObject->setObjectController(Engine::SharedPointer<Game::ServerPlayerController>(new Game::ServerPlayerController(),
 				"Game::WalkController").CastSharedPointer<Engine::IObjectController>());
-			Engine::Networking::NetworkManager::GetHandler().mServer->addToNetworkPlayerList(serverObject, true);			
+			Engine::Networking::NetworkManager::GetHandler().mServer->addToNetworkPlayerList(serverObject, true);
+
+			Engine::SharedPointer<Engine::MeshObject> serverFlag =
+				Engine::MeshObject::CreateMeshObject("Game/Arena/serverFlag.mesh",
+					"Game/Arena/serverFlagMaterial.mat");
+			serverFlag->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+			scene->addObjectToScene(serverFlag);
+			Engine::Networking::NetworkManager::GetHandler().mServer->addToNetworkPlayerList(serverFlag, true);
 		}
 		else
 		{
 			Engine::SharedPointer<Engine::MeshObject> clientObject =
 				Engine::MeshObject::CreateMeshObject("Game/Arena/DeadPool.mesh",
 					"Game/Arena/DeadPoolMaterial.mat");
-			clientObject->setTransform(Engine::Math::Vector3(-250.0f, 20.0f, 700.0f),
+			clientObject->setTransform(Engine::Math::Vector3(-250.0f, -120.0f, 700.0f),
 				Engine::Math::Quaternion());
 			clientObject->getMaterial()->changeMaterialColor(1.0, 0.0, 0.0);
 			clientObject->setObjectType(Engine::ObjectType::CLIENT);
 			scene->addObjectToScene(clientObject);
-			clientObject->EnableDebugging(true);
+			clientObject->EnableDebugging(false);
 			//clientObject->setObjectController(new Game::ClientPlayerController());
-			clientObject->setObjectController(Engine::SharedPointer<Game::WalkController>(new Game::WalkController(),
+			clientObject->setObjectController(Engine::SharedPointer<Game::ServerPlayerController>(new Game::ServerPlayerController(),
 				"Game::WalkController").CastSharedPointer<Engine::IObjectController>());
 			Engine::Networking::NetworkManager::GetHandler().mClient->addToNetworkPlayerList(clientObject, true);
+
+			Engine::SharedPointer<Engine::MeshObject> clientFlag =
+				Engine::MeshObject::CreateMeshObject("Game/Arena/clientFlag.mesh",
+					"Game/Arena/clientFlagMaterial.mat");
+			clientFlag->setTransform(Engine::Math::Vector3(0, 0, 0), Engine::Math::Quaternion());
+			scene->addObjectToScene(clientFlag);
+			Engine::Networking::NetworkManager::GetHandler().mServer->addToNetworkPlayerList(clientFlag, true);
 		}
 
 

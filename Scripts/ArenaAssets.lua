@@ -99,6 +99,16 @@ return
 			src = "Game/Arena/DeadPool.lua",
 			target = "Game/Arena/DeadPool.mesh",
 		},
+		--ClientFlag
+		{
+			src = "Game/Arena/clientFlag.lua",
+			target = "Game/Arena/clientFlag.mesh",
+		},
+		--ServerFlag
+		{
+			src = "Game/Arena/serverFlag.lua",
+			target = "Game/Arena/serverFlag.mesh",
+		},
 	},
 
 -- =====================================================================
@@ -259,7 +269,17 @@ return
 		{
 			src = "Game/Arena/DeadPoolMaterial.lua",
 			target = "Game/Arena/DeadPoolMaterial.mat",
-		},		
+		},
+		--	clientFlagMaterial	
+		{
+			src = "Game/Arena/clientFlagMaterial.lua",
+			target = "Game/Arena/clientFlagMaterial.mat",
+		},
+		--serverFlagMaterial
+		{
+			src = "Game/Arena/serverFlagMaterial.lua",
+			target = "Game/Arena/serverFlagMaterial.mat",
+		},
 	},
 
 -- ======================================================================

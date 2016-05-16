@@ -307,7 +307,12 @@ void Engine::Networking::Client::ReceivePackets()
 				tempNetworkPlayer->SetControlPlayer(false);
 			}
 
-			GetControlPlayer()->SendNewNetworkPlayer(client);
+			std::vector<SharedPointer<NetworkPlayer>> controlNetworkPlayer = GetControlPlayer();
+			for(std::vector<SharedPointer<NetworkPlayer>>::iterator i = controlNetworkPlayer.begin();
+				i != controlNetworkPlayer.end(); ++i)
+			{
+				(*i)->SendNewNetworkPlayer(client);
+			}
 		}
 		break;
 		case ID_SYNC_KEY_PRESS:
@@ -389,16 +394,19 @@ void Engine::Networking::Client::addToNetworkPlayerList(
 }
 
 
-Engine::SharedPointer<Engine::Networking::NetworkPlayer> 
+std::vector<Engine::SharedPointer<Engine::Networking::NetworkPlayer>>
 Engine::Networking::Client::GetControlPlayer()
 {
+	std::vector<Engine::SharedPointer<Engine::Networking::NetworkPlayer>>
+		tempNetworkPlayerList;
 	for (std::map<RakNet::NetworkID, SharedPointer<Networking::NetworkPlayer>>::iterator i = mPlayerLists.begin();
 		i != mPlayerLists.end(); ++i)
 	{
 		if (i->second->GetControlPlayerStatus())
-			return i->second;
+			tempNetworkPlayerList.push_back(i->second);
+			
 	}
-	return SharedPointer<Networking::NetworkPlayer>();
+	return tempNetworkPlayerList;
 }
 
 

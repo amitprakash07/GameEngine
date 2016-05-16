@@ -6,6 +6,7 @@
 #include "../../../Engine/Windows/WindowsFunctions.h"
 #include "../../../Engine/Core/Debugging/DebugShapes.h"
 #include "../../../Engine/Core/EngineCore/Objects/Scene.h"
+#include "../../../Engine/Core/NetworkManager/NetworkManager.h"
 
 bool Game::PlayerController::isLineInitialized = false;
 Engine::Math::Vector3 Game::PlayerController::velocity = Engine::Math::Vector3(0.0f);
@@ -32,6 +33,7 @@ void Game::PlayerController::updateObject(Engine::Object& iObject, Engine::typed
 
 	Transform currentObjectTransform =
 		iObject.getTransform();
+	bool isUpdate = false;
 
 	float  delta = Engine::Scene::getRenderableScene()->getTimer()->getdeltaTime();
 	float offset = 200.0f;
@@ -109,25 +111,30 @@ void Game::PlayerController::updateObject(Engine::Object& iObject, Engine::typed
 				{
 					moveTowardsForward = currentObjectTransform.getForwardVector() * (delta*offset);
 				}
+				isUpdate = true;
 			}
 			break;
 			case 0x53:
 				//S Key - 
 				moveTowardsForward = -currentObjectTransform.getForwardVector() * (delta*offset);
+				isUpdate = true;
 				break;
 			case 0x41:
 				//A key - forward
 				currentObjectTransform.Rotate(Engine::Math::ConvertDegreesToRadians(-3),Up);
 				cameraTransform.Rotate(Engine::Math::ConvertDegreesToRadians(-0.5), Up);
+				isUpdate = true;
 				break;
 			case 0x44:
 				//D key - backward
 				currentObjectTransform.Rotate(Engine::Math::ConvertDegreesToRadians(3),Up);
 				cameraTransform.Rotate(Engine::Math::ConvertDegreesToRadians(0.5), Up);
+				isUpdate = true;
 				break;
 			case 0x46:
 				flyCam = true;
 				leftPlayerCameraTransform = cameraTransform;
+				isUpdate = true;
 				break;
 			}
 		}
@@ -174,6 +181,27 @@ void Game::PlayerController::updateObject(Engine::Object& iObject, Engine::typed
 		}
 
 		followUpCamera->setTransform(cameraTransform.getPosition(), cameraTransform.getOrientation());
+	}
+
+	if (isUpdate)
+	{
+		RakNet::RakPeerInterface *tempPeer;
+		if (Engine::Networking::NetworkManager::isServerInstance())
+		{
+			tempPeer = Engine::Networking::NetworkManager::GetHandler().mServer->mServer;
+			Engine::Networking::NetworkManager::GetHandler().mServer->GetControlPlayer()->SendNetworkPlayerUpdates(tempPeer);
+		}
+		else
+		{
+			tempPeer = Engine::Networking::NetworkManager::GetHandler().mClient->client;
+			std::vector<Engine::SharedPointer<Engine::Networking::NetworkPlayer>> networkPlayerList =
+				Engine::Networking::NetworkManager::GetHandler().mClient->GetControlPlayer();
+			for (std::vector<Engine::SharedPointer<Engine::Networking::NetworkPlayer>>::iterator i = networkPlayerList.begin();
+				i != networkPlayerList.end(); ++i)
+			{
+				(*i)->SendNewNetworkPlayer(tempPeer);
+			}
+		}
 	}
 }
 
