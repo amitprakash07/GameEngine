@@ -1,13 +1,5 @@
 return
-{
--- =========================Generic Builder===========================
---	{
-		--BuildTool = "GenericBuilder",
-		--{
-			--src = "Fonts/arial.ttf",
-			--target = "Fonts/arial.ttf"
-		--}
-	--},
+{	
 -- ===============================MeshBuilder=========================
 	{
 		BuildTool = "MeshBuilder.exe",

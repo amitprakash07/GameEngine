@@ -6,7 +6,6 @@
 #include "../../../Engine/Windows/WindowsFunctions.h"
 #include "../../../Engine/Core/Debugging/DebugShapes.h"
 #include "../../../Engine/Core/EngineCore/Objects/Scene.h"
-#include "../../../Engine/Core/NetworkManager/NetworkManager.h"
 
 bool Game::PlayerController::isLineInitialized = false;
 Engine::Math::Vector3 Game::PlayerController::velocity = Engine::Math::Vector3(0.0f);
@@ -33,7 +32,7 @@ void Game::PlayerController::updateObject(Engine::Object& iObject, Engine::typed
 
 	Transform currentObjectTransform =
 		iObject.getTransform();
-	bool isUpdate = false;
+	bool isUpdate = false;	
 
 	float  delta = Engine::Scene::getRenderableScene()->getTimer()->getdeltaTime();
 	float offset = 200.0f;
@@ -181,28 +180,7 @@ void Game::PlayerController::updateObject(Engine::Object& iObject, Engine::typed
 		}
 
 		followUpCamera->setTransform(cameraTransform.getPosition(), cameraTransform.getOrientation());
-	}
-
-	if (isUpdate)
-	{
-		RakNet::RakPeerInterface *tempPeer;
-		if (Engine::Networking::NetworkManager::isServerInstance())
-		{
-			tempPeer = Engine::Networking::NetworkManager::GetHandler().mServer->mServer;
-			Engine::Networking::NetworkManager::GetHandler().mServer->GetControlPlayer()->SendNetworkPlayerUpdates(tempPeer);
-		}
-		else
-		{
-			tempPeer = Engine::Networking::NetworkManager::GetHandler().mClient->client;
-			std::vector<Engine::SharedPointer<Engine::Networking::NetworkPlayer>> networkPlayerList =
-				Engine::Networking::NetworkManager::GetHandler().mClient->GetControlPlayer();
-			for (std::vector<Engine::SharedPointer<Engine::Networking::NetworkPlayer>>::iterator i = networkPlayerList.begin();
-				i != networkPlayerList.end(); ++i)
-			{
-				(*i)->SendNewNetworkPlayer(tempPeer);
-			}
-		}
-	}
+	}	
 }
 
 

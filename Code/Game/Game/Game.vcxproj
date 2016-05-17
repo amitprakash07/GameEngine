@@ -137,7 +137,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Windows.lib;Debugging.lib;OpenGLExtensions.lib;Graphics.lib;EngineCore.lib;ws2_32.lib;NetworkManager.lib;Physics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Windows.lib;Debugging.lib;OpenGLExtensions.lib;Graphics.lib;EngineCore.lib;ws2_32.lib;NetworkManager.lib;Physics.lib;Octree.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>copy "$(TargetPath)" "$(GameDir)$(TargetFileName)" /y</Command>

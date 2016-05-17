@@ -197,7 +197,6 @@
     <ClInclude Include="AssetBuilder.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Scripts\AssetsToBuild.lua" />
     <None Include="..\..\..\Scripts\BuildAssets.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
